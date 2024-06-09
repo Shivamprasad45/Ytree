@@ -19,7 +19,7 @@ const Shop = () => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: "treeInfo",
+    queryKey: ["treeInfo"],
     queryFn: fetchTreeInfo,
   });
 
