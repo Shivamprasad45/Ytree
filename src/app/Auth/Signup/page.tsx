@@ -16,7 +16,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter } from "next/navigation";
 
 import { useSelector } from "react-redux";
-import { LoginSelector, SignupSelector } from "../../Featuers/Auth/AuthSlice";
+import { loginSelector, signupSelector } from "../../Featuers/Auth/AuthSlice";
 import { UserMessage } from "../../../../type";
 
 import MaxWidthRappers from "@/components/MaxWidthRapper";
@@ -24,12 +24,12 @@ import MaxWidthRappers from "@/components/MaxWidthRapper";
 export default function TabsDemo() {
   const router = useRouter();
 
-  const user: UserMessage | null = useSelector(SignupSelector);
+  const user: UserMessage | null = useSelector(signupSelector);
 
   if (user && user.success) {
     router.push("/Login");
   }
-  const Login = useSelector(LoginSelector);
+  const Login = useSelector(loginSelector);
 
   if (Login && Login.success) {
     router.push("/");

@@ -24,9 +24,10 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import MaxWidthRappers from "@/components/MaxWidthRapper";
 import Lefttab from "@/app/Components/lefttab";
+import { AppDispatch } from "@/app/Store/ConfigStore";
 
 const Page = ({ params }: { params: { id: string } }) => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const PlantDetails = useSelector(TreeDetailSelector);
   console.log(PlantDetails, "Plant details");
   useEffect(() => {

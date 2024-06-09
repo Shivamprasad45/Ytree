@@ -1,27 +1,26 @@
 "use client";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { LoginApi, SignupApi } from "./AuthAPI";
-import { EnterUser, User, UserMessage } from "../../../../type";
+import { EnterUser, LoginUser, User, UserMessage } from "../../../../type"; // Adjust the import path as necessary
 
 interface State {
   userData: User[];
   signupStatus: UserMessage | null;
-  LoginStatus: UserMessage | null;
-  // Use lowercase 'userData' for consistency
+  loginStatus: UserMessage | null;
   status: "idle" | "pending" | "fulfilled";
-  error: any | null; // Allow for different error types or null
+  error: any | null;
 }
 
 const initialState: State = {
   userData: [],
   signupStatus: null,
-  LoginStatus: null,
+  loginStatus: null,
   status: "idle",
   error: null,
 };
 
 export const signupUserAsync = createAsyncThunk(
-  "auth/SignupApi", // More descriptive action name
+  "auth/SignupApi",
   async (data: EnterUser) => {
     try {
       const response = await SignupApi(data);
@@ -32,9 +31,10 @@ export const signupUserAsync = createAsyncThunk(
     }
   }
 );
-export const LoginUserAsync = createAsyncThunk(
-  "auth/LoginApi", // More descriptive action name
-  async (data: EnterUser) => {
+
+export const loginUserAsync = createAsyncThunk(
+  "auth/LoginApi",
+  async (data: LoginUser) => {
     try {
       const response = await LoginApi(data);
       return response;
@@ -45,7 +45,7 @@ export const LoginUserAsync = createAsyncThunk(
   }
 );
 
-const AuthSlice = createSlice({
+const authSlice = createSlice({
   name: "Auth",
   initialState,
   reducers: {},
@@ -56,34 +56,29 @@ const AuthSlice = createSlice({
       })
       .addCase(signupUserAsync.fulfilled, (state, action) => {
         state.status = "fulfilled";
-        // Update userData based on backend response structure:
-
-        state.signupStatus = action.payload; // Assuming first element is the created user
+        state.signupStatus = action.payload;
       })
       .addCase(signupUserAsync.rejected, (state, action) => {
         state.status = "idle";
         state.error = action.error;
       })
-      .addCase(LoginUserAsync.pending, (state) => {
+      .addCase(loginUserAsync.pending, (state) => {
         state.status = "pending";
       })
-      .addCase(LoginUserAsync.fulfilled, (state, action) => {
+      .addCase(loginUserAsync.fulfilled, (state, action) => {
         state.status = "fulfilled";
-        // Update userData based on backend response structure:
-
-        state.LoginStatus = action.payload; // Assuming first element is the created user
+        state.loginStatus = action.payload;
       })
-      .addCase(LoginUserAsync.rejected, (state, action) => {
+      .addCase(loginUserAsync.rejected, (state, action) => {
         state.status = "idle";
         state.error = action.error;
       });
   },
 });
 
-export default AuthSlice.reducer;
+export default authSlice.reducer;
 
 export const userSelector = (state: { Auth: State }) => state.Auth.userData;
-// No spread operator needed
-export const SignupSelector = (state: { Auth: State }) =>
+export const signupSelector = (state: { Auth: State }) =>
   state.Auth.signupStatus;
-export const LoginSelector = (state: { Auth: State }) => state.Auth.LoginStatus;
+export const loginSelector = (state: { Auth: State }) => state.Auth.loginStatus;

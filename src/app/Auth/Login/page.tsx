@@ -15,16 +15,14 @@ import SignForm from "../../Featuers/Auth/Components/Signup";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
-import { LoginSelector } from "../../Featuers/Auth/AuthSlice";
+import { loginSelector } from "../../Featuers/Auth/AuthSlice";
 import MaxWidthRappers from "@/components/MaxWidthRapper";
 import { UserMessage } from "../../../../type";
 
 export default function TabsDemos() {
   const router = useRouter();
 
-  const user: UserMessage | null = useSelector(LoginSelector);
-
-  console.log(user, "Userrxlkc");
+  const user: UserMessage | null = useSelector(loginSelector);
 
   if (user && user.success) {
     router.push("/");

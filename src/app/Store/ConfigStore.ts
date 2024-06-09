@@ -1,10 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import AuthSlice from "../Featuers/Auth/AuthSlice";
-import TreeSlice from "../Featuers/Resipe/TreeSlice";
+import authReducer from "../Featuers/Auth/AuthSlice"; // Adjust the import path as necessary
+import treeReducer from "../Featuers/Resipe/TreeSlice"; // Adjust the import path as necessary
 
 export const store = configureStore({
   reducer: {
-    Auth: AuthSlice,
-    Trees: TreeSlice,
+    Auth: authReducer,
+    Trees: treeReducer,
   },
 });
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useDispatch } from "react-redux";
 import { signupUserAsync } from "../AuthSlice";
+import { AppDispatch } from "@/app/Store/ConfigStore";
 
 const formSchema = z.object({
   Username: z.string().min(2, {
@@ -40,13 +41,13 @@ export default function SignForm() {
     },
   });
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log("click");
     console.log(values);
-    dispatch(signupUserAsync(values));
+    dispatch(signupUserAsync(values) as any);
   }
 
   return (

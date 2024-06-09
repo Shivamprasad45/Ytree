@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import { EnterUser, UserMessage } from "../../../../type";
+import { EnterUser, LoginUser, UserMessage } from "../../../../type";
 
 import { toast } from "sonner";
 
@@ -34,7 +34,7 @@ export async function SignupApi(data: EnterUser): Promise<any | undefined> {
   });
 }
 
-export async function LoginApi(data: EnterUser): Promise<any | undefined> {
+export async function LoginApi(data: LoginUser): Promise<any | undefined> {
   return new Promise<any>(async (resolve, reject) => {
     try {
       const response = await axios.post(

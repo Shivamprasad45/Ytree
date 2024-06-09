@@ -79,9 +79,9 @@ const Homes = () => {
               <Carousel className="w-full max-w-full flex items-center justify-between">
                 <CarouselContent className="-ml-1 ">
                   {feature &&
-                    feature.map((data) => (
+                    feature.map((data: TreeInfo) => (
                       <CarouselItem
-                        key={data.id}
+                        key={data._id}
                         className="pl-1 md:basis-1/2 lg:basis-1/3"
                       >
                         <div className="p-1  ">
@@ -121,7 +121,7 @@ const Homes = () => {
               <Carousel className="w-full max-w-full">
                 <CarouselContent className="-ml-1 ">
                   {feature &&
-                    feature.map((data) => (
+                    feature.map((data: TreeInfo) => (
                       <CarouselItem
                         key={data.id}
                         className="pl-1 md:basis-1/2 lg:basis-1/3"

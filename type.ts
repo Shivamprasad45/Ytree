@@ -4,7 +4,7 @@ export interface NavItem {
 }
 
 export interface User {
-  id: string;
+  _id: string;
   Username: string;
   Email: string;
   password: string;
@@ -12,6 +12,12 @@ export interface User {
 
 export interface EnterUser {
   Username: string;
+  Email: string;
+  password: string;
+}
+
+export interface LoginUser {
+  
   Email: string;
   password: string;
 }

@@ -20,7 +20,7 @@ const initialState: State = {
 
 export const PlantsdetailsAsync = createAsyncThunk(
   "auth/SignupApi", // More descriptive action name
-  async (id) => {
+  async (id: string) => {
     try {
       const response = await Plantsdetails(id);
       return response;

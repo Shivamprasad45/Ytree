@@ -15,7 +15,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useDispatch } from "react-redux";
-import { LoginUserAsync } from "../AuthSlice";
+import { loginUserAsync } from "../AuthSlice";
+import { AppDispatch } from "@/app/Store/ConfigStore";
 
 const formSchema = z.object({
   Email: z.string().email().nonempty("Email is required"),
@@ -26,7 +27,7 @@ const formSchema = z.object({
 
 export default function LoginForm() {
   // ...
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,9 +39,7 @@ export default function LoginForm() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.'
 
-    console.log("login");
-    console.log(values);
-    dispatch(LoginUserAsync(values));
+    dispatch(loginUserAsync(values) as any);
   }
 
   return (
