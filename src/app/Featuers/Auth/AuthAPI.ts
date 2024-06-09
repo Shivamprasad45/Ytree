@@ -1,8 +1,7 @@
 "use client";
 import axios from "axios";
-import { EnterUser, User, UserMessage } from "../../../../type";
+import { EnterUser, UserMessage } from "../../../../type";
 
-import { getCurrentDateTime } from "@/app/lib/Messages";
 import { toast } from "sonner";
 
 export async function SignupApi(data: EnterUser): Promise<any | undefined> {
@@ -50,7 +49,7 @@ export async function LoginApi(data: EnterUser): Promise<any | undefined> {
 
       // Extract the created user from the response data
       const Userdata: UserMessage = response.data;
-      
+
       if (Userdata.message) {
         toast(Userdata.message);
         resolve(Userdata);
