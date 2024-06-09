@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import LoginForm from "../../Featuers/Auth/Components/Login";
-import MaxWidthRaper from "../components/MaxWidthRaper";
+
 import SignForm from "../../Featuers/Auth/Components/Signup";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
