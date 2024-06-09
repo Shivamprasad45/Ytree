@@ -31,7 +31,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   console.log(PlantDetails, "Plant details");
   useEffect(() => {
     dispatch(PlantsdetailsAsync(params.id));
-  }, [params.id]);
+  }, [dispatch, params.id]);
 
   return (
     <MaxWidthRappers>

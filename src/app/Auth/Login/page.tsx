@@ -17,15 +17,16 @@ import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { LoginSelector } from "../../Featuers/Auth/AuthSlice";
 import MaxWidthRappers from "@/components/MaxWidthRapper";
+import { UserMessage } from "../../../../type";
 
 export default function TabsDemos() {
   const router = useRouter();
 
-  const user: UserMessage = useSelector(LoginSelector);
+  const user: UserMessage | null = useSelector(LoginSelector);
 
   console.log(user, "Userrxlkc");
 
-  if (user && user.Success) {
+  if (user && user.success) {
     router.push("/");
   }
   return (
