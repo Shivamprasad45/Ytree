@@ -7,8 +7,8 @@ const tags = Array.from({ length: 50 }).map(
   (_, i, a) => `v1.2.0-beta.${a.length - i}`
 );
 import {
-  PlantsdetailsAsync,
   TreeDetailSelector,
+  fetchPlantDetails,
 } from "@/app/Featuers/Tree/TreeSlice";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -28,10 +28,11 @@ import { AppDispatch } from "@/app/Store/ConfigStore";
 
 const Page = ({ params }: { params: { id: string } }) => {
   const dispatch: AppDispatch = useDispatch();
+
   const PlantDetails = useSelector(TreeDetailSelector);
   console.log(PlantDetails, "Plant details");
   useEffect(() => {
-    dispatch(PlantsdetailsAsync(params.id));
+    dispatch(fetchPlantDetails(params.id) as any);
   }, [dispatch, params.id]);
 
   return (

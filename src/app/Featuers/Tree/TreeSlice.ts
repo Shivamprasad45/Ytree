@@ -1,28 +1,25 @@
-"use client";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { TreeInfo } from "../../../../type";
 import { Plantsdetails } from "./TreeAPI";
 
 interface State {
   PlantData: TreeInfo | null;
-
-  // Use lowercase 'userData' for consistency
   status: "idle" | "pending" | "fulfilled";
-  error: any | null; // Allow for different error types or null
+  error: any | null;
 }
 
 const initialState: State = {
   PlantData: null,
-
   status: "idle",
   error: null,
 };
 
-export const PlantsdetailsAsync = createAsyncThunk(
-  "auth/SignupApi", // More descriptive action name
+export const fetchPlantDetails = createAsyncThunk(
+  "auth/LoginApi",
   async (id: string) => {
     try {
       const response = await Plantsdetails(id);
+
       return response;
     } catch (error) {
       console.error(error);
@@ -31,30 +28,27 @@ export const PlantsdetailsAsync = createAsyncThunk(
   }
 );
 
-const TreeSlice = createSlice({
+const treeSlice = createSlice({
   name: "Auth",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(PlantsdetailsAsync.pending, (state) => {
+      .addCase(fetchPlantDetails.pending, (state) => {
         state.status = "pending";
       })
-      .addCase(PlantsdetailsAsync.fulfilled, (state, action) => {
+      .addCase(fetchPlantDetails.fulfilled, (state, action) => {
         state.status = "fulfilled";
-        // Update userData based on backend response structure:
-
-        state.PlantData = action.payload; // Assuming first element is the created user
+        state.PlantData = action.payload;
       })
-      .addCase(PlantsdetailsAsync.rejected, (state, action) => {
+      .addCase(fetchPlantDetails.rejected, (state, action) => {
         state.status = "idle";
         state.error = action.error;
       });
   },
 });
 
-export default TreeSlice.reducer;
+export default treeSlice.reducer;
 
 export const TreeDetailSelector = (state: { Trees: State }) =>
   state.Trees.PlantData;
-// No spread operator needed
