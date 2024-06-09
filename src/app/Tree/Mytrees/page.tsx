@@ -16,7 +16,7 @@ const fetchTreeInfo = async () => {
   return response.data;
 };
 
-const page = () => {
+const Page = () => {
   const {
     data: feature,
     isLoading,
@@ -137,4 +137,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
