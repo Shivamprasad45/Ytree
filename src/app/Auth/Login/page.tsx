@@ -26,9 +26,7 @@ export default function TabsDemos() {
 
   if (user && user.success) {
     console.log("Login ok");
-    router.push(
-      "https://green-29u45vx8v-codewithharry35434gmailcoms-projects.vercel.app/"
-    );
+    router.push("/");
   }
   return (
     <MaxWidthRappers className="items-center flex justify-center pt-12">
