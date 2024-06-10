@@ -7,7 +7,7 @@ export function middleware(request: NextRequest) {
   // Setting CORS headers
   response.headers.append(
     "Access-Control-Allow-Origin",
-    "https://green-29u45vx8v-codewithharry35434gmailcoms-projects.vercel.app"
+    "https://greenfatuer.vercel.app"
   );
   response.headers.append(
     "Access-Control-Allow-Methods",
