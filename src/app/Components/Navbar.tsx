@@ -32,8 +32,9 @@ const Navbar = () => {
           <Link href="/Tree/Shop">
             <span className=" cursor-pointer"> Shop </span>
           </Link>
-
-          <span className="">Get Involved</span>
+          <Link href="/Tree/Mytrees">
+            <span className="">My plants</span>
+          </Link>
         </div>
         <div className="space-x-1">
           <Button>Denote</Button>
