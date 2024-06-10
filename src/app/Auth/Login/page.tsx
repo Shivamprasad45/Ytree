@@ -25,6 +25,7 @@ export default function TabsDemos() {
   const user: UserMessage | null = useSelector(loginSelector);
 
   if (user && user.success) {
+    console.log("Login ok");
     router.push(
       "https://green-29u45vx8v-codewithharry35434gmailcoms-projects.vercel.app/"
     );
@@ -41,7 +42,7 @@ export default function TabsDemos() {
             <CardHeader>
               <CardTitle>Login</CardTitle>
               <CardDescription>
-                Make changes to your account here. Click save when youre done.
+                Make changes to your account here. Click save when yore done.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">

@@ -27,7 +27,8 @@ export default function TabsDemo() {
   const user: UserMessage | null = useSelector(signupSelector);
 
   if (user && user.success) {
-    router.push("/Login");
+    console.log("Sighup correctly");
+    router.push("/Auth/Login");
   }
   const Login = useSelector(loginSelector);
 
@@ -36,7 +37,7 @@ export default function TabsDemo() {
       "https://green-29u45vx8v-codewithharry35434gmailcoms-projects.vercel.app/"
     );
   }
-  // console.log(user.success, "User");
+
   return (
     <MaxWidthRappers className="items-center flex justify-center pt-12">
       <Tabs defaultValue="account" className="w-[400px]">
