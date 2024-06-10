@@ -24,14 +24,13 @@ import MaxWidthRappers from "@/components/MaxWidthRapper";
 export default function TabsDemo() {
   const router = useRouter();
 
-  const user: UserMessage | null = useSelector(signupSelector);
+  const user = useSelector(signupSelector);
 
   if (user && user.success) {
-    console.log("Sighup correctly");
     router.push("/Auth/Login");
   }
   const Login = useSelector(loginSelector);
-
+  console.log(Login);
   if (Login && Login.success) {
     router.push("/");
   }
