@@ -1,5 +1,27 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "Access-Control-Allow-Origin",
+            value:
+              "https://green-29u45vx8v-codewithharry35434gmailcoms-projects.vercel.app", // Update this to specific domains in production
+          },
+          {
+            key: "Access-Control-Allow-Methods",
+            value: "GET,HEAD,OPTIONS,POST,PUT,DELETE",
+          },
+          {
+            key: "Access-Control-Allow-Headers",
+            value: "Content-Type, Authorization",
+          },
+        ],
+      },
+    ];
+  },
   images: {
     domains: [
       "cdn.pixabay.com",

@@ -12,7 +12,9 @@ import { IPlantProfile } from "../../../../type";
 import Link from "next/link";
 
 const fetchTreeInfo = async () => {
-  const response = await axios.get(`http://localhost:3000/api/Tree/Mytree`);
+  const response = await axios.get(
+    `https://green-29u45vx8v-codewithharry35434gmailcoms-projects.vercel.app/api/TreeInfo`
+  );
   return response.data;
 };
 

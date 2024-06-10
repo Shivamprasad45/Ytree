@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
     user.verifyTokenExpiry = undefined;
     await user.save();
 
-    return NextResponse.redirect(new URL("/Verify-succes", req.url));
+    return NextResponse.redirect(new URL("/Auth/Verify-succes", req.url));
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: "Server error" }, { status: 500 });

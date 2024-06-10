@@ -19,7 +19,7 @@ export function middleware(request: NextRequest) {
   );
 
   const path = request.nextUrl.pathname;
-
+  console.log(path, "PATH");
   const isPublic =
     path === "/Auth/Login" ||
     path === "/Auth/Signup" ||
@@ -30,10 +30,12 @@ export function middleware(request: NextRequest) {
   console.log(token, "Token");
 
   if (isPublic && token) {
+    console.log("ok");
     return NextResponse.redirect(new URL("/", request.url));
   }
 
   if (!isPublic && !token) {
+    console.log("ok by");
     return NextResponse.redirect(new URL("/Auth/Signup", request.url));
   }
 
