@@ -5,7 +5,10 @@ export function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
   // Setting CORS headers
-  response.headers.append("Access-Control-Allow-Origin", "*");
+  response.headers.append(
+    "Access-Control-Allow-Origin",
+    "https://green-29u45vx8v-codewithharry35434gmailcoms-projects.vercel.app"
+  );
   response.headers.append(
     "Access-Control-Allow-Methods",
     "GET,HEAD,OPTIONS,POST,PUT"

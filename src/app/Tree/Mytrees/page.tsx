@@ -12,7 +12,7 @@ import { IPlantProfile } from "../../../../type";
 import Link from "next/link";
 
 const fetchTreeInfo = async () => {
-  const response = await axios.get(`${process.env.URL}api/Tree/Mytree`);
+  const response = await axios.get(`http://localhost:3000/api/Tree/Mytree`);
   return response.data;
 };
 

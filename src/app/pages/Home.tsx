@@ -22,7 +22,9 @@ import {
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 const fetchTreeInfo = async () => {
-  const response = await axios.get(`${process.env.URL}/api/TreeInfo`);
+  const response = await axios.get(
+    `https://green-29u45vx8v-codewithharry35434gmailcoms-projects.vercel.app/api/TreeInfo`
+  );
   return response.data;
 };
 const Homes = () => {
