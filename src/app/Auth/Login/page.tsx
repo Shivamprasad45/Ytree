@@ -25,7 +25,9 @@ export default function TabsDemos() {
   const user: UserMessage | null = useSelector(loginSelector);
 
   if (user && user.success) {
-    router.push("/");
+    router.push(
+      "https://green-29u45vx8v-codewithharry35434gmailcoms-projects.vercel.app/"
+    );
   }
   return (
     <MaxWidthRappers className="items-center flex justify-center pt-12">

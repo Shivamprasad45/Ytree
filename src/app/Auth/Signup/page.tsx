@@ -32,7 +32,9 @@ export default function TabsDemo() {
   const Login = useSelector(loginSelector);
 
   if (Login && Login.success) {
-    router.push("/");
+    router.push(
+      "https://green-29u45vx8v-codewithharry35434gmailcoms-projects.vercel.app/"
+    );
   }
   // console.log(user.success, "User");
   return (
