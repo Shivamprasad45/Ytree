@@ -29,9 +29,14 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get("token")?.value || "";
   console.log(token, "Token");
 
-  if (isPublic && token) {
+  if (token) {
     console.log("ok");
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.rewrite(
+      new URL(
+        "https://green-29u45vx8v-codewithharry35434gmailcoms-projects.vercel.app/",
+        request.url
+      )
+    );
   }
 
   if (!isPublic && !token) {
