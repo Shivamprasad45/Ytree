@@ -5,10 +5,7 @@ export function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
   // Setting CORS headers
-  response.headers.append(
-    "Access-Control-Allow-Origin",
-    "https://greenfatuer.vercel.app"
-  );
+  response.headers.append("Access-Control-Allow-Origin", "*");
   response.headers.append(
     "Access-Control-Allow-Methods",
     "GET,HEAD,OPTIONS,POST,PUT"

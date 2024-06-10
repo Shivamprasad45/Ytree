@@ -7,7 +7,7 @@ const nextConfig = {
         headers: [
           {
             key: "Access-Control-Allow-Origin",
-            value: "https://greenfatuer.vercel.app", // Update this to specific domains in production
+            value: "*", // Update this to specific domains in production
           },
           {
             key: "Access-Control-Allow-Methods",
