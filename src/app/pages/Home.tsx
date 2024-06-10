@@ -23,7 +23,7 @@ import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 const fetchTreeInfo = async () => {
   const response = await axios.get(
-    `https://green-29u45vx8v-codewithharry35434gmailcoms-projects.vercel.app/api/TreeInfo`
+    `https://greenfatuer.vercel.app/api/TreeInfo`
   );
   return response.data;
 };

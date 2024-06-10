@@ -5,7 +5,7 @@ export async function Plantsdetails(id: string): Promise<TreeInfo | null> {
   return new Promise<TreeInfo>(async (resolve, reject) => {
     try {
       const Data = await axios.get(
-        `http://localhost:3000/api/Tree/TreeDetails/?id=` + id
+        `https://greenfatuer.vercel.app/api/Tree/TreeDetails/?id=` + id
       );
 
       if (Data.data) {

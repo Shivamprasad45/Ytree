@@ -36,10 +36,7 @@ export async function GET(req: NextRequest) {
     await user.save();
 
     return NextResponse.redirect(
-      new URL(
-        "https://green-29u45vx8v-codewithharry35434gmailcoms-projects.vercel.app/Auth/Verify-succes",
-        req.url
-      )
+      new URL("https://greenfatuer.vercel.app/Auth/Verify-succes", req.url)
     );
   } catch (error) {
     console.error(error);

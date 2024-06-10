@@ -8,7 +8,7 @@ export async function SignupApi(data: EnterUser): Promise<any | undefined> {
   return new Promise<any>(async (resolve, reject) => {
     try {
       const response = await axios.post(
-        `https://green-29u45vx8v-codewithharry35434gmailcoms-projects.vercel.app/api/auth/Signup`,
+        `https://greenfatuer.vercel.app/api/auth/Signup`,
         data
       );
 
@@ -38,7 +38,7 @@ export async function LoginApi(data: LoginUser): Promise<any | undefined> {
   return new Promise<any>(async (resolve, reject) => {
     try {
       const response = await axios.post(
-        `https://green-29u45vx8v-codewithharry35434gmailcoms-projects.vercel.app/api/auth/Login`,
+        `https://greenfatuer.vercel.app/api/auth/Login`,
         data
       );
 
