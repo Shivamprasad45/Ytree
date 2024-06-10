@@ -8,7 +8,7 @@ export async function SignupApi(data: EnterUser): Promise<any | undefined> {
   return new Promise<any>(async (resolve, reject) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/Signup",
+        `${process.env.URL}/api/auth/Signup`,
         data
       );
 
@@ -38,7 +38,7 @@ export async function LoginApi(data: LoginUser): Promise<any | undefined> {
   return new Promise<any>(async (resolve, reject) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/Login",
+        `${process.env.URL}/api/auth/Login`,
         data
       );
 

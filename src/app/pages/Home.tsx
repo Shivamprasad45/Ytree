@@ -22,7 +22,7 @@ import {
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 const fetchTreeInfo = async () => {
-  const response = await axios.get("http://localhost:3000/api/TreeInfo");
+  const response = await axios.get(`${process.env.URL}/api/TreeInfo`);
   return response.data;
 };
 const Homes = () => {
