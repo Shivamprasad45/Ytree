@@ -33,7 +33,7 @@ export function middleware(request: NextRequest) {
     }
 
     // If the token is present but the path is public, rewrite to the home page
-    return NextResponse.rewrite(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   if (!isPublic && !token) {
