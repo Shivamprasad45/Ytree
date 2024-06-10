@@ -1,6 +1,6 @@
 "use server";
 import Signup from "@/Models/SignupModel";
-import { Mail } from "@/Utils/Mailer";
+
 import DbConnect from "@/Utils/mongooesConnect";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
@@ -54,7 +54,7 @@ export async function POST(req: any) {
     return response;
   } catch (error) {
     return NextResponse.json({
-      Error: error,
+      error: error,
     });
   }
 }
