@@ -36,7 +36,6 @@ const Shop = () => {
   }
   return (
     <>
-      <Navbar />
       <MaxWidthRappers>
         <div className="font-sans px-4 py-8">
           <div className="">

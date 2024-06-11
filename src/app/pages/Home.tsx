@@ -46,8 +46,7 @@ const Homes = () => {
   }
   return (
     <>
-      <Navbar />
-      <MaxWidthRappers>
+      <MaxWidthRappers className="xl:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md mx-3">
         <header className="p-5 md:p-8">
           <section className=" ">
             <div className="Image  relative ">
@@ -194,7 +193,7 @@ const Homes = () => {
             {/* //Ready to make diff */}
             <div className="px-10 py-20 flex flex-col justify-center items-center gap-8">
               <div className="text-center">
-                <h1 className="text-4xl font-extrabold text-neutral-900 font-['Plus Jakarta Sans'] leading-10">
+                <h1 className="text-4xl font-extrabold  font-['Plus Jakarta Sans'] leading-10">
                   Ready to make a difference?
                 </h1>
               </div>

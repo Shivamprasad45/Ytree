@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface NavItem {
   href: string;
   title: string;
@@ -17,7 +19,6 @@ export interface EnterUser {
 }
 
 export interface LoginUser {
-  
   Email: string;
   password: string;
 }
@@ -44,4 +45,11 @@ export interface IPlantProfile {
   imageUrl: string;
   name: string;
   age: string;
+}
+
+export interface menuItem {
+  id: number;
+  icon: ReactNode;
+  label: string;
+  path: string;
 }

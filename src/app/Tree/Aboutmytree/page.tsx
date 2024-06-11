@@ -9,32 +9,6 @@ const page = () => {
     <MaxWidthRappers>
       <div className="flex flex-col md:flex-row justify-between overflow-hidden relative md:justify-start items-start min-h-screen py-2">
         {/* Left */}
-        <div className="hidden md:flex flex-col px-2 border h-full min-h-screen">
-          <div className="flex items-center font-semibold justify-between min-w-60 mb-6">
-            <Image
-              width={100}
-              height={100}
-              src="https://images.unsplash.com/photo-1454425064867-5ba516caf601?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8cGxhbnR8fHx8fHwxNzE3NTgzMDI3&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080"
-              className="rounded-full w-12 h-12 hover:border-2 border-black"
-              alt="profile picture"
-            />
-            <span className="text-lg">Shivam</span>
-          </div>
-          <div className="flex flex-col gap-12 items-start mt-32">
-            <p className="flex space-x-16 items-center hover:text-blue-500 hover:bg-gray-100 cursor-pointer p-2 rounded">
-              <TreePalm size={40} />
-              <span className="text-xl">Tree</span>
-            </p>
-            <p className="flex space-x-16 items-center hover:text-blue-500 hover:bg-gray-100 cursor-pointer p-2 rounded">
-              <LogOut size={40} />
-              <span className="text-xl">Logout</span>
-            </p>
-            <p className="flex space-x-16 items-center hover:text-blue-500 hover:bg-gray-100 cursor-pointer p-2 rounded">
-              <User2 size={40} />
-              <span className="text-xl">User</span>
-            </p>
-          </div>
-        </div>
 
         <div className="w-full max-w-2xl ml-8">
           {/* Thank You Note */}
@@ -103,13 +77,6 @@ const page = () => {
       </div>
 
       {/* Bottom Navbar for small screens */}
-      <div className="mb-1 md:hidden fixed bottom-0 w-full bg-transparent z-10">
-        <div className="flex justify-between p-4">
-          <User2 size={30} />
-          <TreePalm size={30} />
-          <LogOut size={30} />
-        </div>
-      </div>
     </MaxWidthRappers>
   );
 };

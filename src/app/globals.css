@@ -60,6 +60,18 @@
 /* Media query for medium and larger screens */
 @media (min-width: 768px) {
   .Image {
-      height: 50vh; /* Sets the height to 50% of the viewport height for medium and larger screens */
+    background-size: cover; /* Ensures the image covers the entire div */
+  background-position: center; /* Centers the image */
+  width: 100%;
+      height: 30vh; /* Sets the height to 50% of the viewport height for medium and larger screens */
+  }
+}
+
+@media (min-width: 668px) {
+  .Image {
+    background-size: cover; /* Ensures the image covers the entire div */
+  background-position: center; /* Centers the image */
+  width: 100%;
+      height: 30vh; /* Sets the height to 50% of the viewport height for medium and larger screens */
   }
 }

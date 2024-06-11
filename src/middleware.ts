@@ -22,7 +22,7 @@ export function middleware(request: NextRequest) {
     path === "/Auth/Verify-succes";
 
   const token = request.cookies.get("token")?.value || "";
-
+  console.log(token, "Token");
   if (token) {
     // If the token is present, allow access to the home page or other private routes
     if (path === "/" || !isPublic) {
@@ -44,5 +44,11 @@ export function middleware(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/", "/Auth/Login", "/Auth/Signup", "/Auth/Verify-succes"],
+  matcher: [
+    "/Auth/Login",
+    "/Auth/Signup",
+    "/Auth/Verify-succes",
+    "/Tree/Mytrees",
+    "/Tree/Aboutmytree",
+  ],
 };

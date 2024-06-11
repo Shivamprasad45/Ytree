@@ -17,9 +17,9 @@ import { useRouter } from "next/navigation";
 
 import { useSelector } from "react-redux";
 import { loginSelector, signupSelector } from "../../Featuers/Auth/AuthSlice";
-import { UserMessage } from "../../../../type";
 
 import MaxWidthRappers from "@/components/MaxWidthRapper";
+import Link from "next/link";
 
 export default function TabsDemo() {
   const router = useRouter();
@@ -53,7 +53,9 @@ export default function TabsDemo() {
             <CardContent className="space-y-2">
               <SignForm />
             </CardContent>
-            <CardFooter>Fill it freely</CardFooter>
+            <CardFooter>
+              <Link href="/">Skip</Link>
+            </CardFooter>
           </Card>
         </TabsContent>
         <TabsContent value="Login">

@@ -1,12 +1,43 @@
 "use client";
-import { LogOut, TreePalm, User2 } from "lucide-react";
+import {
+  BotMessageSquare,
+  ContactRoundIcon,
+  LogOut,
+  MessageCircleCodeIcon,
+  TreePalm,
+  User2,
+} from "lucide-react";
 import Image from "next/image";
 import React from "react";
+import { menuItem } from "../../../type";
+import Link from "next/link";
 
+export const menuItems: menuItem[] = [
+  { id: 1, icon: <TreePalm size={40} />, label: "Trees", path: "/Tree/Shop" },
+  {
+    id: 2,
+    icon: <BotMessageSquare size={40} />,
+    label: "Ai chat",
+    path: "/Chat/AI",
+  },
+  {
+    id: 3,
+    icon: <MessageCircleCodeIcon size={40} />,
+    label: "Message",
+    path: "/Tree/Shop",
+  },
+  {
+    id: 3,
+    icon: <ContactRoundIcon size={40} />,
+    label: "Contact us",
+    path: "/Tree/Shop",
+  },
+  { id: 4, icon: <LogOut size={40} />, label: "Logout", path: "/logout" },
+];
 const Lefttab = () => {
   return (
-    <div className="hidden md:flex flex-col px-2 border h-full">
-      <div className="flex items-center font-semibold justify-between min-w-60 mb-6">
+    <div className="flex flex-col px-2 border-r h-full  ">
+      <div className="flex items-center font-semibold gap-12 justify-start min-w-40 mb-6">
         <Image
           width={100}
           height={100}
@@ -16,19 +47,15 @@ const Lefttab = () => {
         />
         <span className="text-lg">Shivam</span>
       </div>
-      <div className="flex flex-col gap-12 items-start mt-32">
-        <p className="flex space-x-16 items-center hover:text-blue-500 hover:bg-gray-100 cursor-pointer p-2 rounded">
-          <TreePalm size={40} />
-          <span className="text-xl">Tree</span>
-        </p>
-        <p className="flex space-x-16 items-center hover:text-blue-500 hover:bg-gray-100 cursor-pointer p-2 rounded">
-          <LogOut size={40} />
-          <span className="text-xl">Logout</span>
-        </p>
-        <p className="flex space-x-16 items-center hover:text-blue-500 hover:bg-gray-100 cursor-pointer p-2 rounded">
-          <User2 size={40} />
-          <span className="text-xl">User</span>
-        </p>
+      <div className="flex flex-col gap-3 items-start mt-10 bg-scroll">
+        {menuItems.map((item) => (
+          <Link key={item.id} href={item.path}>
+            <p className="flex space-x-16 items-center min-w-40 hover:text-blue-500 hover:bg-gray-100 cursor-pointer p-2 rounded">
+              {item.icon}
+              <span className="text-xl">{item.label}</span>
+            </p>
+          </Link>
+        ))}
       </div>
     </div>
   );

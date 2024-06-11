@@ -4,6 +4,10 @@ import "./globals.css";
 import Providers from "./lib/Providers";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
+import MaxWidthRappers from "@/components/MaxWidthRapper";
+import Bottom from "./Components/bottom";
+import Lefttab from "./Components/lefttab";
+import Navbar from "./Components/Navbar";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -30,7 +34,25 @@ export default function RootLayout({
       >
         <Providers>
           <Toaster />
-          {children}
+          <MaxWidthRappers>
+            <div>
+              <Navbar />
+              <main className="flex flex-col md:flex-row w-full overflow-hidden">
+                {/* Left */}
+                <div className="hidden md:flex md:fixed md:h-full md:w-64">
+                  <Lefttab />
+                </div>
+
+                {/* Middle */}
+                <div className="flex-grow md:ml-56">{children}</div>
+
+                {/* Bottom */}
+                <div className="md:hidden fixed bottom-0 w-full bg-white z-10">
+                  <Bottom />
+                </div>
+              </main>
+            </div>
+          </MaxWidthRappers>
         </Providers>
       </body>
     </html>
