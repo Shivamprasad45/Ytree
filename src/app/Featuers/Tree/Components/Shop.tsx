@@ -6,11 +6,13 @@ import axios from "axios";
 import React from "react";
 import { TreeInfo } from "../../../../../type";
 import Link from "next/link";
-import { SkeletonCard } from "@/app/Components/Scelktion";
+
 import Image from "next/image";
-import Navbar from "@/app/Components/Navbar";
+
 const fetchTreeInfo = async () => {
-  const response = await axios.get("http://localhost:3000/api/Tree/AllTree");
+  const response = await axios.get(
+    "https://greenfatuer.vercel.app/api/Tree/AllTree"
+  );
   return response.data;
 };
 const Shop = () => {
