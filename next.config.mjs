@@ -7,7 +7,7 @@ const nextConfig = {
         headers: [
           {
             key: "Access-Control-Allow-Origin",
-            value: "*", // Update this to specific domains in production
+            value: "https://greenfatuer.vercel.app, http://localhost:3000", // Allow specific domains
           },
           {
             key: "Access-Control-Allow-Methods",
@@ -15,7 +15,7 @@ const nextConfig = {
           },
           {
             key: "Access-Control-Allow-Headers",
-            value: "Content-Type, Authorization",
+            value: "Content-Type, Authorization, X-Requested-With, Accept",
           },
         ],
       },

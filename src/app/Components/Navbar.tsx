@@ -32,7 +32,7 @@ const Navbar = () => {
           <div className="justify-center items-center space-x-10 flex ">
             <span className="">About</span>
 
-            <Link className="flex space-x-2" href="/Tree/Mytrees">
+            <Link className="flex space-x-2" href="/Tree/Cart">
               <span className="relative">
                 <Badge className="absolute bottom-4">3</Badge>
                 <TreesIcon />

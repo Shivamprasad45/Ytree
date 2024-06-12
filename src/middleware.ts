@@ -4,8 +4,21 @@ import type { NextRequest } from "next/server";
 export function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
-  // Setting CORS headers
-  response.headers.append("Access-Control-Allow-Origin", "*");
+  // Define allowed origins
+  const allowedOrigins = [
+    "https://greenfatuer.vercel.app",
+    "http://localhost:3000",
+  ];
+
+  // Get the origin of the request
+  const origin: any = request.headers.get("origin");
+
+  if (allowedOrigins.includes(origin)) {
+    response.headers.append("Access-Control-Allow-Origin", origin);
+  } else {
+    response.headers.append("Access-Control-Allow-Origin", "*");
+  }
+
   response.headers.append(
     "Access-Control-Allow-Methods",
     "GET,HEAD,OPTIONS,POST,PUT"
