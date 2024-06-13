@@ -4,29 +4,29 @@ import type { NextRequest } from "next/server";
 export function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
-  // Define allowed origins
-  const allowedOrigins = [
-    "https://greenfatuer.vercel.app",
-    "http://localhost:3000",
-  ];
-
-  // Get the origin of the request
-  const origin: any = request.headers.get("origin");
-
-  if (allowedOrigins.includes(origin)) {
-    response.headers.append("Access-Control-Allow-Origin", origin);
-  } else {
-    response.headers.append("Access-Control-Allow-Origin", "*");
-  }
-
-  response.headers.append(
+  // Set CORS headers to allow all origins
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  response.headers.set(
     "Access-Control-Allow-Methods",
     "GET,HEAD,OPTIONS,POST,PUT"
   );
-  response.headers.append(
+  response.headers.set(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
+
+  // Handle preflight requests
+  if (request.method === "OPTIONS") {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT",
+        "Access-Control-Allow-Headers":
+          "Origin, X-Requested-With, Content-Type, Accept",
+      },
+    });
+  }
 
   const path = request.nextUrl.pathname;
   const isPublic =
@@ -36,12 +36,12 @@ export function middleware(request: NextRequest) {
 
   const token = request.cookies.get("token")?.value || "";
   console.log(token, "Token");
+
   if (token) {
     // If the token is present, allow access to the home page or other private routes
     if (path === "/" || !isPublic) {
       return response;
     }
-
     // If the token is present but the path is public, rewrite to the home page
     return NextResponse.redirect(new URL("/", request.url));
   }
