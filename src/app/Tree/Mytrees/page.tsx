@@ -11,11 +11,10 @@ import React from "react";
 import { IPlantProfile } from "../../../../type";
 import Link from "next/link";
 import Lefttab from "@/app/Components/lefttab";
+import axiosInstance from "@/lib/Baseurl";
 
 const fetchTreeInfo = async () => {
-  const response = await axios.get(
-    `https://greenfatuer.vercel.app/api/TreeInfo`
-  );
+  const response = await axiosInstance.get(`api/TreeInfo`);
   return response.data;
 };
 

@@ -21,10 +21,9 @@ import {
 } from "@/components/ui/accordion";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
+import axiosInstance from "@/lib/Baseurl";
 const fetchTreeInfo = async () => {
-  const response = await axios.get(
-    `https://greenfatuer.vercel.app/api/TreeInfo`
-  );
+  const response = await axiosInstance.get(`/api/TreeInfo`);
   return response.data;
 };
 const Homes = () => {

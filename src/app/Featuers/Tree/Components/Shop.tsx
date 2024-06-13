@@ -8,9 +8,10 @@ import { TreeInfo } from "../../../../../type";
 import Link from "next/link";
 
 import Image from "next/image";
+import axiosInstance from "@/lib/Baseurl";
 
 const fetchTreeInfo = async () => {
-  const response = await axios.get("api/Tree/AllTree");
+  const response = await axiosInstance.get("/api/Tree/AllTree");
   return response.data;
 };
 const Shop = () => {
