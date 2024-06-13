@@ -10,9 +10,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 const fetchTreeInfo = async () => {
-  const response = await axios.get(
-    "https://greenfatuer.vercel.app/api/Tree/AllTree"
-  );
+  const response = await axios.get("api/Tree/AllTree");
   return response.data;
 };
 const Shop = () => {
