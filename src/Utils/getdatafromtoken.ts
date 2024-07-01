@@ -3,7 +3,7 @@ import jsonwebtoken from "jsonwebtoken";
 import { NextResponse } from "next/server";
 export default async function getdatafromtoken(req: any) {
   try {
-    const token = req.cookies.get("token")?.value || "";
+    const token = (await req.cookies.get("token")?.value!) || "";
 
     const decodedToken: any = await jsonwebtoken.verify(
       token,

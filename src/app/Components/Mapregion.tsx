@@ -11,10 +11,6 @@ const customIcon = new L.Icon({
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
-  shadowUrl:
-    "https://t3.ftcdn.net/jpg/02/19/36/90/360_F_219369048_1MQ8eZynFltpjKqzbm6bHMa4k2FfU0AM.jpg",
-  shadowSize: [41, 41],
-  shadowAnchor: [20, 20],
 });
 
 interface MapProps {
