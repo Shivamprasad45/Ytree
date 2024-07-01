@@ -14,9 +14,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useDispatch } from "react-redux";
-import { loginUserAsync } from "../AuthSlice";
-import { AppDispatch } from "@/app/Store/ConfigStore";
+import { useLoginUserMutation } from "../AuthAPIS";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   Email: z.string().email().nonempty("Email is required"),
@@ -27,7 +26,14 @@ const formSchema = z.object({
 
 export default function LoginForm() {
   // ...
-  const dispatch: AppDispatch = useDispatch();
+  const [LoginUser, { data: Logindata, isLoading: Loginloading }] =
+    useLoginUserMutation();
+  if (Logindata?.success) {
+    toast(Logindata.message);
+  }
+  if (Logindata?.error) {
+    toast(Logindata.error);
+  }
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,11 +41,14 @@ export default function LoginForm() {
       password: "",
     },
   });
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.'
-
-    dispatch(loginUserAsync(values) as any);
+    try {
+      await LoginUser(values);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -73,7 +82,7 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">{Loginloading ? "....Login" : "Login"}</Button>
       </form>
     </Form>
   );

@@ -8,6 +8,7 @@ import MaxWidthRappers from "@/components/MaxWidthRapper";
 import Bottom from "./Components/bottom";
 import Lefttab from "./Components/lefttab";
 import Navbar from "./Components/Navbar";
+import Head from "next/head";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -26,12 +27,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
-        )}
-      >
+      {/* <Head>
+        <script
+          src="https://checkout.razorpay.com/v1/checkout.js"
+          async
+        ></script>
+      </Head> */}
+      <body className="min-h-screen bg-background font-sans antialiased">
         <Providers>
           <Toaster />
           <MaxWidthRappers>

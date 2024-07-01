@@ -4,6 +4,7 @@ import DbConnect from "@/Utils/mongooesConnect";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import jsonwebtoken from "jsonwebtoken";
+import { cookies } from "next/headers";
 
 // Ensure database connection
 DbConnect();
@@ -13,7 +14,7 @@ export async function POST(req: any) {
   try {
     // Parse the request body to get email and password
     const { Email, password } = await req.json();
-
+    console.log("Login");
     // Check if user already exists
     const user = await Signup.findOne({ Email });
 
@@ -42,9 +43,9 @@ export async function POST(req: any) {
     }
 
     // Create a JWT payload
-    const tokenPayload = {
+    const tokenPayload: { id: string; Username: string; email: string } = {
       id: user._id,
-      username: user.username,
+      Username: user.Username,
       email: user.email,
     };
 
@@ -64,12 +65,7 @@ export async function POST(req: any) {
     });
 
     // Set the JWT token as an HTTP-only cookie
-    response.cookies.set("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Use secure flag in production
-      sameSite: "strict", // Adjust sameSite policy as needed
-      maxAge: 60 * 60, // Cookie expiration time (in seconds)
-    });
+    cookies().set({ name: "token", value: token, httpOnly: true });
 
     // Return the response
     return response;

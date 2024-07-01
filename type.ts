@@ -5,13 +5,16 @@ export interface NavItem {
   title: string;
 }
 
-export interface User {
+export interface Data {
   _id: string;
   Username: string;
-  Email: string;
-  password: string;
+  email: string;
 }
-
+export interface User {
+  data: Data;
+  message: string;
+  error: string;
+}
 export interface EnterUser {
   Username: string;
   Email: string;
@@ -52,4 +55,23 @@ export interface menuItem {
   icon: ReactNode;
   label: string;
   path: string;
+}
+
+export interface TreeCart {
+  UserId: string;
+  _id: string;
+  commonName: string;
+  scientificName: string;
+  description: string;
+  growthRequirements: string;
+  benefits: string[];
+  region: string;
+  imageURL: string;
+  price: number;
+  quantity: number;
+}
+export interface Update_Cart {
+  UserId: string;
+  _id: string;
+  Symbol: string;
 }

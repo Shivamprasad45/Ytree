@@ -1,471 +1,265 @@
 "use client";
-import Navbar from "@/app/Components/Navbar";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 
-const tags = Array.from({ length: 50 }).map(
-  (_, i, a) => `v1.2.0-beta.${a.length - i}`
-);
-import {
-  TreeDetailSelector,
-  fetchPlantDetails,
-} from "@/app/Featuers/Tree/TreeSlice";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Minus, Plus } from "lucide-react";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import MaxWidthRappers from "@/components/MaxWidthRapper";
-import Lefttab from "@/app/Components/lefttab";
-import { AppDispatch } from "@/app/Store/ConfigStore";
+// import MaxWidthRappers from "@/components/MaxWidthRapper";
+// import Lefttab from "@/app/Components/lefttab";
+
+import { UserSelector } from "@/app/Featuers/Auth/AuthSlice";
+
+import { TreeCart } from "../../../../type";
+import { toast } from "sonner";
+import { useAddCartMutation } from "@/app/Featuers/Treecart/TreeAPi";
+import { useGetTreeDetailsQuery } from "@/app/Featuers/Tree/TreeServices";
+import Map from "@/app/Components/Mapregion";
+import Link from "next/link";
 
 const Page = ({ params }: { params: { id: string } }) => {
-  const dispatch: AppDispatch = useDispatch();
+  const {
+    data: PlantDetails,
+    isFetching,
+    isError,
+    isLoading: isTreeDetailsLoading,
+  } = useGetTreeDetailsQuery(params.id);
 
-  const PlantDetails = useSelector(TreeDetailSelector);
-  console.log(PlantDetails, "Plant details");
-  useEffect(() => {
-    dispatch(fetchPlantDetails(params.id) as any);
-  }, [dispatch, params.id]);
+  const user = useSelector(UserSelector);
 
+  const [AddPlants, { isLoading: isAddLoading }] = useAddCartMutation();
+  const Addtocart = async () => {
+    try {
+      if (user?.data._id) {
+        const benefits: string[] = [];
+        PlantDetails?.benefits.forEach((item: string) => {
+          benefits.push(item);
+        });
+
+        const treeDetails: TreeCart = {
+          UserId: user.data._id,
+          _id: PlantDetails?._id || "",
+          commonName: PlantDetails?.commonName || "",
+          scientificName: PlantDetails?.scientificName || "",
+          description: PlantDetails?.description || "",
+          price: PlantDetails?.prise || 45,
+          imageURL: PlantDetails?.imageURL || "",
+
+          region: PlantDetails?.region || "",
+          benefits: benefits || [],
+          growthRequirements: PlantDetails?.growthRequirements || "",
+          quantity: 1,
+        };
+        await AddPlants(treeDetails);
+      } else {
+        toast("User id not found");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  if (isTreeDetailsLoading) {
+    return <div>....Loading</div>;
+  }
+  if (isFetching) {
+    return <div>...Fetching</div>;
+  }
   return (
     <div className=" flex flex-row">
       {/* //Left */}
 
       {/* //Middle? */}
-      <div className="font-sans tracking-wide max-md:mx-auto mb-8 ">
-        <div className=" md:min-h-[600px] grid items-start grid-cols-1 lg:grid-cols-5 md:grid-cols-2 gap-2">
-          <div className="lg:col-span-3 h-full items-start">
-            <div className="mx-2 relative h-full flex  ">
-              <Image
-                src="https://images.unsplash.com/photo-1454425064867-5ba516caf601?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8cGxhbnR8fHx8fHwxNzE3NTgzMDI3&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080"
-                alt="Product"
-                className="lg:w-4/5 w-full h-full rounded-xl object-contain"
-                width={400}
-                height={400}
-              />
-
-              <div className="flex space-x-5 items-end absolute right-0 max-md:right-4 md:bottom-4 bottom-0">
-                <div className="bg-white w-10 h-10 grid items-center justify-center rounded-full rotate-90 shrink-0 cursor-pointer">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-4 fill-[#333] inline"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M11.99997 18.1669a2.38 2.38 0 0 1-1.68266-.69733l-9.52-9.52a2.38 2.38 0 1 1 3.36532-3.36532l7.83734 7.83734 7.83734-7.83734a2.38 2.38 0 1 1 3.36532 3.36532l-9.52 9.52a2.38 2.38 0 0 1-1.68266.69734z"
-                      clip-rule="evenodd"
-                      data-original="#000000"
-                    ></path>
-                  </svg>
-                </div>
-                <div className="bg-[#333] w-10 h-10 grid items-center justify-center rounded-full -rotate-90 shrink-0 cursor-pointer">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-4 fill-[#fff] inline"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M11.99997 18.1669a2.38 2.38 0 0 1-1.68266-.69733l-9.52-9.52a2.38 2.38 0 1 1 3.36532-3.36532l7.83734 7.83734 7.83734-7.83734a2.38 2.38 0 1 1 3.36532 3.36532l-9.52 9.52a2.38 2.38 0 0 1-1.68266.69734z"
-                      clip-rule="evenodd"
-                      data-original="#000000"
-                    ></path>
-                  </svg>
-                </div>
+      <div className="relative flex size-full min-h-screen flex-col bg-[#F9FAFA] group/design-root overflow-x-hidden">
+        <div className="layout-container flex h-full grow flex-col">
+          <div className="px-40 flex flex-1 justify-center py-5">
+            <div className="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 md:max-w-[960px] flex-1">
+              <div className="flex flex-wrap justify-between gap-3 p-4">
+                <p className="text-[#1C1D22] tracking-light text-[32px] font-bold leading-tight min-w-72">
+                  {PlantDetails?.commonName}
+                </p>
               </div>
-            </div>
-          </div>
+              <div className="@[480px]:px-4 @[480px]:py-3">
+                <Image
+                  width={1000}
+                  height={200}
+                  className="w-full bg-center bg-no-repeat bg-cover flex flex-col justify-end overflow-hidden bg-[#F9FAFA] max-h-64 rounded-xl"
+                  alt="sf"
+                  src="https://cdn.usegalileo.ai/stability/64c93ee4-25fc-4c96-936f-f479b3a31c60.png"
+                />
+              </div>
 
-          <div className="lg:col-span-2  py-6 px-8 h-full">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-800">
-                {PlantDetails?.commonName}
+              <h2 className="text-[#1C1D22] text-lg font-bold leading-tight tracking-[-0.015em] px-4 text-left pb-2 pt-4">
+                {PlantDetails?.scientificName}
               </h2>
-
-              <div className="flex space-x-2 mt-2">
-                <svg
-                  className="w-4 fill-gray-800"
-                  viewBox="0 0 14 13"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                </svg>
-                <svg
-                  className="w-4 fill-gray-800"
-                  viewBox="0 0 14 13"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                </svg>
-                <svg
-                  className="w-4 fill-gray-800"
-                  viewBox="0 0 14 13"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                </svg>
-                <svg
-                  className="w-4 fill-gray-800"
-                  viewBox="0 0 14 13"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                </svg>
-                <svg
-                  className="w-4 fill-[#CED5D8]"
-                  viewBox="0 0 14 13"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                </svg>
-              </div>
-            </div>
-
-            <div className="mt-8">
-              <h3 className="text-lg font-bold text-gray-800 mb-2">Price</h3>
-              <p className="text-gray-800 text-3xl font-bold">
-                ₹{PlantDetails?.prise}
-              </p>
-            </div>
-
-            <div className="mt-8">
-              <h3 className="text-lg font-bold text-gray-800">Quantity</h3>
-              <div className="flex border w-max mt-4 rounded overflow-hidden space-x-2 items-start justify-center">
-                <Button size={"icon"}>
-                  <Plus />
-                </Button>
-                <span>1</span>
-                <Button size={"icon"}>
-                  <Minus />
-                </Button>
-              </div>
-            </div>
-
-            <div className="flex flex-wrap gap-4 mt-8">
-              <Button>Buy now</Button>
-              <Button>Add to cart</Button>
-            </div>
-
-            <div className="flex flex-wrap items-center text-sm text-gray-800 mt-8 font-semibold">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="fill-current w-6 mr-3"
-                viewBox="0 0 48 48"
-              >
-                <path d="M15.5 33.3h19.1v2H15.5z" data-original="#000000" />
-                <path
-                  d="M45.2 35.3H43v-2h2.2c.4 0 .8-.4.8-.8v-9.1c0-.4-.3-.6-.5-.7l-3.2-1.3c-.3-.2-.8-.5-1.1-1l-6.5-10c-.1-.2-.4-.3-.7-.3H2.8c-.4 0-.8.4-.8.8v21.6c0 .4.4.8.8.8h3.9v2H2.8C1.3 35.3 0 34 0 32.5V10.9c0-1.5 1.3-2.8 2.8-2.8h31.3c1 0 1.9.5 2.4 1.3l6.5 10 .4.4 2.9 1.2c1.1.5 1.7 1.4 1.7 2.5v9.1c0 1.4-1.3 2.7-2.8 2.7z"
-                  data-original="#000000"
-                />
-                <path
-                  d="M26.5 21H3.9v-9.4h22.6zM5.9 19h18.6v-5.4H5.9zm32.9 2H27.9v-9.4h6.3zm-8.9-2h5.7L33 13.6h-3.1zm-19 20.9c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6zm0-9.2c-2 0-3.6 1.6-3.6 3.6s1.6 3.6 3.6 3.6 3.6-1.6 3.6-3.6-1.6-3.6-3.6-3.6zm27.9 9.2c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6zm0-9.2c-2 0-3.6 1.6-3.6 3.6s1.6 3.6 3.6 3.6 3.6-1.6 3.6-3.6-1.6-3.6-3.6-3.6z"
-                  data-original="#000000"
-                />
-              </svg>
-              Free delivery on order ₹100
-            </div>
-
-            <div className="mt-6 hidden md:inline ">
-              <h3 className="mt-8 scroll-m-20 text-2xl font-semibold tracking-tight">
-                Product Description
-              </h3>
-              <p className="leading-7 [&:not(:first-child)]:mt-6">
+              <p className="text-[#1C1D22] text-base font-normal leading-normal pb-3 pt-1 px-4">
                 {PlantDetails?.description}
               </p>
-            </div>
-            <div className="mt-10 max-w-2xl px-6">
-              <h3 className="text-lg font-bold text-gray-800">About tree</h3>
-              <ul className="grid grid-cols-2 gap-3 mt-4">
-                <li className="flex items-center text-sm text-gray-800">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="17"
-                    className="mr-4 bg-green-500 fill-white rounded-full p-[3px]"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M9.707 19.121a.997.997 0 0 1-1.414 0l-5.646-5.647a1.5 1.5 0 0 1 0-2.121l.707-.707a1.5 1.5 0 0 1 2.121 0L9 14.171l9.525-9.525a1.5 1.5 0 0 1 2.121 0l.707.707a1.5 1.5 0 0 1 0 2.121z"
-                      data-original="#000000"
-                    />
-                  </svg>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button variant="outline">Region</Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-80">
-                      <span>{PlantDetails?.region}</span>
-                    </PopoverContent>
-                  </Popover>
-                </li>
-                <li className="flex items-center text-sm text-gray-800">
-                  {" "}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="17"
-                    className="mr-4 bg-green-500 fill-white rounded-full p-[3px]"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M9.707 19.121a.997.997 0 0 1-1.414 0l-5.646-5.647a1.5 1.5 0 0 1 0-2.121l.707-.707a1.5 1.5 0 0 1 2.121 0L9 14.171l9.525-9.525a1.5 1.5 0 0 1 2.121 0l.707.707a1.5 1.5 0 0 1 0 2.121z"
-                      data-original="#000000"
-                    />
-                  </svg>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button variant="outline">growthRequirements</Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-80">
-                      <span>{PlantDetails?.growthRequirements}</span>
-                    </PopoverContent>
-                  </Popover>
-                </li>
-                <li className="flex items-center text-sm text-gray-800">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="17"
-                    className="mr-4 bg-green-500 fill-white rounded-full p-[3px]"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M9.707 19.121a.997.997 0 0 1-1.414 0l-5.646-5.647a1.5 1.5 0 0 1 0-2.121l.707-.707a1.5 1.5 0 0 1 2.121 0L9 14.171l9.525-9.525a1.5 1.5 0 0 1 2.121 0l.707.707a1.5 1.5 0 0 1 0 2.121z"
-                      data-original="#000000"
-                    />
-                  </svg>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button variant="outline">benefits</Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-80">
-                      <div className="p-3 grid grid-flow-row ">
-                        {PlantDetails?.benefits.map((item, index) => (
-                          <span key={index}>
-                            <Badge>{item}</Badge>
-                          </span>
-                        ))}
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                </li>
-                <li className="flex items-center text-sm text-gray-800">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="17"
-                    className="mr-4 bg-green-500 fill-white rounded-full p-[3px]"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M9.707 19.121a.997.997 0 0 1-1.414 0l-5.646-5.647a1.5 1.5 0 0 1 0-2.121l.707-.707a1.5 1.5 0 0 1 2.121 0L9 14.171l9.525-9.525a1.5 1.5 0 0 1 2.121 0l.707.707a1.5 1.5 0 0 1 0 2.121z"
-                      data-original="#000000"
-                    />
-                  </svg>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button variant="outline">scientificName</Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-80">
-                      <span>{PlantDetails?.scientificName}</span>
-                    </PopoverContent>
-                  </Popover>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-6 max-w-2xl px-6">
-          <div className="mt-6 inline md:hidden ">
-            <h3 className="mt-8 scroll-m-20 text-2xl font-semibold tracking-tight">
-              Product Description
-            </h3>
-            <p className="leading-7 [&:not(:first-child)]:mt-6">
-              {PlantDetails?.description}
-            </p>
-          </div>
-        </div>
-        <div className="mt-16 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] p-6">
-          <h3 className="text-lg font-bold text-[#333]">Reviews(10)</h3>
-          <div className="grid md:grid-cols-2 gap-12 mt-6">
-            <div>
-              <div className="space-y-3">
-                <div className="flex items-center">
-                  <p className="text-sm text-[#333] font-bold">5.0</p>
-                  <svg
-                    className="w-5 fill-[#333] ml-1"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <div className="bg-gray-400 rounded w-full h-2 ml-3">
-                    <div className="w-2/3 h-full rounded bg-[#333]"></div>
-                  </div>
-                  <p className="text-sm text-[#333] font-bold ml-3">66%</p>
-                </div>
-
-                <div className="flex items-center">
-                  <p className="text-sm text-[#333] font-bold">4.0</p>
-                  <svg
-                    className="w-5 fill-[#333] ml-1"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <div className="bg-gray-400 rounded w-full h-2 ml-3">
-                    <div className="w-1/3 h-full rounded bg-[#333]"></div>
-                  </div>
-                  <p className="text-sm text-[#333] font-bold ml-3">33%</p>
-                </div>
-
-                <div className="flex items-center">
-                  <p className="text-sm text-[#333] font-bold">3.0</p>
-                  <svg
-                    className="w-5 fill-[#333] ml-1"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <div className="bg-gray-400 rounded w-full h-2 ml-3">
-                    <div className="w-1/6 h-full rounded bg-[#333]"></div>
-                  </div>
-                  <p className="text-sm text-[#333] font-bold ml-3">16%</p>
-                </div>
-
-                <div className="flex items-center">
-                  <p className="text-sm text-[#333] font-bold">2.0</p>
-                  <svg
-                    className="w-5 fill-[#333] ml-1"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <div className="bg-gray-400 rounded w-full h-2 ml-3">
-                    <div className="w-1/12 h-full rounded bg-[#333]"></div>
-                  </div>
-                  <p className="text-sm text-[#333] font-bold ml-3">8%</p>
-                </div>
-
-                <div className="flex items-center">
-                  <p className="text-sm text-[#333] font-bold">1.0</p>
-                  <svg
-                    className="w-5 fill-[#333] ml-1"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <div className="bg-gray-400 rounded w-full h-2 ml-3">
-                    <div className="w-[6%] h-full rounded bg-[#333]"></div>
-                  </div>
-                  <p className="text-sm text-[#333] font-bold ml-3">6%</p>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div className="flex items-start">
-                <img
-                  src="https://readymadeui.com/team-2.webp"
-                  className="w-12 h-12 rounded-full border-2 border-white"
-                />
-                <div className="ml-3">
-                  <h4 className="text-sm font-bold text-[#333]">John Doe</h4>
-                  <div className="flex space-x-1 mt-1">
-                    <svg
-                      className="w-4 fill-[#333]"
-                      viewBox="0 0 14 13"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                    </svg>
-                    <svg
-                      className="w-4 fill-[#333]"
-                      viewBox="0 0 14 13"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                    </svg>
-                    <svg
-                      className="w-4 fill-[#333]"
-                      viewBox="0 0 14 13"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                    </svg>
-                    <svg
-                      className="w-4 fill-[#CED5D8]"
-                      viewBox="0 0 14 13"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                    </svg>
-                    <svg
-                      className="w-4 fill-[#CED5D8]"
-                      viewBox="0 0 14 13"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                    </svg>
-                    <p className="text-xs !ml-2 font-semibold text-[#333]">
-                      2 mins ago
-                    </p>
-                  </div>
-                  <p className="text-sm mt-4 text-[#333]">
-                    Lorem ipsum dolor sit amet, consectetur adipisci elit, sed
-                    eiusmod tempor incidunt ut labore et dolore magna aliqua.
+              <h3 className="text-[#1C1D22] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">
+                Growth Requirements
+              </h3>
+              <div className="p-4 ">
+                <div className="flex flex-col gap-1 border-t border-solid border-t-[#D5D6DD] py-4 pr-2">
+                  {/* <p className="text-[#3C3F4A] text-sm font-normal leading-normal">
+                    Light
+                  </p> */}
+                  <p className="text-[#1C1D22] text-sm font-normal leading-normal">
+                    {PlantDetails?.growthRequirements}
                   </p>
                 </div>
+                {/* <div className="flex flex-col gap-1 border-t border-solid border-t-[#D5D6DD] py-4 pl-2">
+                  <p className="text-[#3C3F4A] text-sm font-normal leading-normal">
+                    Water
+                  </p>
+                  <p className="text-[#1C1D22] text-sm font-normal leading-normal">
+                    Water when top 1-2 inches of soil is dry
+                  </p>
+                </div> */}
+                {/* <div className="flex flex-col gap-1 border-t border-solid border-t-[#D5D6DD] py-4 pr-2">
+                  <p className="text-[#3C3F4A] text-sm font-normal leading-normal">
+                    Humidity
+                  </p>
+                  <p className="text-[#1C1D22] text-sm font-normal leading-normal">
+                    Prefers high humidity
+                  </p>
+                </div> */}
+                {/* <div className="flex flex-col gap-1 border-t border-solid border-t-[#D5D6DD] py-4 pl-2">
+                  <p className="text-[#3C3F4A] text-sm font-normal leading-normal">
+                    Temperature
+                  </p>
+                  <p className="text-[#1C1D22] text-sm font-normal leading-normal">
+                    65-75°F (18-24°C)
+                  </p>
+                </div> */}
               </div>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button className="w-full mt-10 px-4 py-2.5 bg-transparent hover:bg-gray-50 border border-[#333] text-[#333] font-bold rounded">
-                    Read all reviews
+              <h3 className="text-[#1C1D22] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">
+                Benefits
+              </h3>
+              <div className="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+                <div className="flex flex-1 gap-3 rounded-lg border border-[#D5D6DD] bg-[#FFFFFF] p-4 flex-col">
+                  <div
+                    className="text-[#1C1D22]"
+                    data-icon="Sun"
+                    data-size="24px"
+                    data-weight="regular"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24px"
+                      height="24px"
+                      fill="currentColor"
+                      viewBox="0 0 256 256"
+                    >
+                      <path d="M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm72,88a64,64,0,1,1-64-64A64.07,64.07,0,0,1,192,128Zm-16,0a48,48,0,1,0-48,48A48.05,48.05,0,0,0,176,128ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z"></path>
+                    </svg>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <h2 className="text-[#1C1D22] text-base font-bold leading-tight">
+                      Light
+                    </h2>
+                    <p className="text-[#3C3F4A] text-sm font-normal leading-normal">
+                      Bright, indirect light
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-1 gap-3 rounded-lg border border-[#D5D6DD] bg-[#FFFFFF] p-4 flex-col">
+                  <div
+                    className="text-[#1C1D22]"
+                    data-icon="Drop"
+                    data-size="24px"
+                    data-weight="regular"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24px"
+                      height="24px"
+                      fill="currentColor"
+                      viewBox="0 0 256 256"
+                    >
+                      <path d="M174,47.75a254.19,254.19,0,0,0-41.45-38.3,8,8,0,0,0-9.18,0A254.19,254.19,0,0,0,82,47.75C54.51,79.32,40,112.6,40,144a88,88,0,0,0,176,0C216,112.6,201.49,79.32,174,47.75ZM128,216a72.08,72.08,0,0,1-72-72c0-57.23,55.47-105,72-118,16.53,13,72,60.75,72,118A72.08,72.08,0,0,1,128,216Zm55.89-62.66a57.6,57.6,0,0,1-46.56,46.55A8.75,8.75,0,0,1,136,200a8,8,0,0,1-1.32-15.89c16.57-2.79,30.63-16.85,33.44-33.45a8,8,0,0,1,15.78,2.68Z"></path>
+                    </svg>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <h2 className="text-[#1C1D22] text-base font-bold leading-tight">
+                      Water
+                    </h2>
+                    <p className="text-[#3C3F4A] text-sm font-normal leading-normal">
+                      Water when top 1-2 inches of soil is dry
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-1 gap-3 rounded-lg border border-[#D5D6DD] bg-[#FFFFFF] p-4 flex-col">
+                  <div
+                    className="text-[#1C1D22]"
+                    data-icon="Flower"
+                    data-size="24px"
+                    data-weight="regular"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24px"
+                      height="24px"
+                      fill="currentColor"
+                      viewBox="0 0 256 256"
+                    >
+                      <path d="M210.35,129.36c-.81-.47-1.7-.92-2.62-1.36.92-.44,1.81-.89,2.62-1.36a40,40,0,1,0-40-69.28c-.81.47-1.65,1-2.48,1.59.08-1,.13-2,.13-3a40,40,0,0,0-80,0c0,.94,0,1.94.13,3-.83-.57-1.67-1.12-2.48-1.59a40,40,0,1,0-40,69.28c.81.47,1.7.92,2.62,1.36-.92.44-1.81.89-2.62,1.36a40,40,0,1,0,40,69.28c.81-.47,1.65-1,2.48-1.59-.08,1-.13,2-.13,2.95a40,40,0,0,0,80,0c0-.94-.05-1.94-.13-2.95.83.57,1.67,1.12,2.48,1.59A39.79,39.79,0,0,0,190.29,204a40.43,40.43,0,0,0,10.42-1.38,40,40,0,0,0,9.64-73.28ZM104,128a24,24,0,1,1,24,24A24,24,0,0,1,104,128Zm74.35-56.79a24,24,0,1,1,24,41.57c-6.27,3.63-18.61,6.13-35.16,7.19A40,40,0,0,0,154.53,98.1C163.73,84.28,172.08,74.84,178.35,71.21ZM128,32a24,24,0,0,1,24,24c0,7.24-4,19.19-11.36,34.06a39.81,39.81,0,0,0-25.28,0C108,75.19,104,63.24,104,56A24,24,0,0,1,128,32ZM44.86,80a24,24,0,0,1,32.79-8.79c6.27,3.63,14.62,13.07,23.82,26.89A40,40,0,0,0,88.81,120c-16.55-1.06-28.89-3.56-35.16-7.18A24,24,0,0,1,44.86,80ZM77.65,184.79a24,24,0,1,1-24-41.57c6.27-3.63,18.61-6.13,35.16-7.19a40,40,0,0,0,12.66,21.87C92.27,171.72,83.92,181.16,77.65,184.79ZM128,224a24,24,0,0,1-24-24c0-7.24,4-19.19,11.36-34.06a39.81,39.81,0,0,0,25.28,0C148,180.81,152,192.76,152,200A24,24,0,0,1,128,224Zm83.14-48a24,24,0,0,1-32.79,8.79c-6.27-3.63-14.62-13.07-23.82-26.89A40,40,0,0,0,167.19,136c16.55,1.06,28.89,3.56,35.16,7.18A24,24,0,0,1,211.14,176Z"></path>
+                    </svg>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <h2 className="text-[#1C1D22] text-base font-bold leading-tight">
+                      Humidity
+                    </h2>
+                    <p className="text-[#3C3F4A] text-sm font-normal leading-normal">
+                      Prefers high humidity
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-1 gap-3 rounded-lg border border-[#D5D6DD] bg-[#FFFFFF] p-4 flex-col">
+                  <div
+                    className="text-[#1C1D22]"
+                    data-icon="Leaf"
+                    data-size="24px"
+                    data-weight="regular"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24px"
+                      height="24px"
+                      fill="currentColor"
+                      viewBox="0 0 256 256"
+                    >
+                      <path d="M223.45,40.07a8,8,0,0,0-7.52-7.52C139.8,28.08,78.82,51,52.82,94a87.09,87.09,0,0,0-12.76,49c.57,15.92,5.21,32,13.79,47.85l-19.51,19.5a8,8,0,0,0,11.32,11.32l19.5-19.51C81,210.73,97.09,215.37,113,215.94q1.67.06,3.33.06A86.93,86.93,0,0,0,162,203.18C205,177.18,227.93,116.21,223.45,40.07ZM153.75,189.5c-22.75,13.78-49.68,14-76.71.77l88.63-88.62a8,8,0,0,0-11.32-11.32L65.73,179c-13.19-27-13-54,.77-76.71,22.09-36.47,74.6-56.44,141.31-54.06C210.2,114.89,190.22,167.41,153.75,189.5Z"></path>
+                    </svg>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <h2 className="text-[#1C1D22] text-base font-bold leading-tight">
+                      Temperature
+                    </h2>
+                    <p className="text-[#3C3F4A] text-sm font-normal leading-normal">
+                      65-75°F (18-24°C)
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <h3 className="text-[#1C1D22] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">
+                Region
+              </h3>
+              <div className="flex px-4 py-3">
+                <div className=" w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl object-cover">
+                  <Map searchQuery={PlantDetails?.region} />
+                </div>
+              </div>
+              <div className="flex justify-stretch">
+                <div className="flex flex-1 gap-3 flex-wrap px-4 py-3 justify-end">
+                  <Button onClick={() => Addtocart()}>
+                    <span>Add to cart</span>
                   </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-80">
-                  <ScrollArea className="h-72 w-48 rounded-md border">
-                    <div className="p-4">
-                      <h4 className="mb-4 text-sm font-medium leading-none">
-                        Tags
-                      </h4>
-                      {tags.map((tag) => (
-                        <>
-                          <div key={tag} className="text-sm">
-                            {tag}
-                          </div>
-                          <Separator className="my-2" />
-                        </>
-                      ))}
-                    </div>
-                  </ScrollArea>
-                </PopoverContent>
-              </Popover>
+                  <Button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#EEEFF2] text-[#1C1D22] text-sm font-bold leading-normal tracking-[0.015em]">
+                    <span className="truncate">
+                      <Link href="/Tree/Shop"> Back to Plants</Link>
+                    </span>
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

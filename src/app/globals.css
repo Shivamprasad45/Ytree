@@ -89,3 +89,10 @@
 #scroll::-webkit-scrollbar-thumb {
   background: rgb(133, 132, 132);
 }
+
+.img{
+  background-image: url('https://cdn.usegalileo.ai/maps/49db8891-e945-4414-b314-15ef5134f547.png');
+}
+.map{
+  background-image: url('https://cdn.usegalileo.ai/maps/2ff0e106-1e33-46fa-bc34-70d8c445cac5.png');
+}

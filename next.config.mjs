@@ -27,6 +27,7 @@ const nextConfig = {
       "dummyimage.com",
       "img.freepik.com",
       "images.unsplash.com",
+      "cdn.usegalileo.ai",
     ],
   },
 };

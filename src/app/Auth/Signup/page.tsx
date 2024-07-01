@@ -21,14 +21,17 @@ import { loginSelector, signupSelector } from "../../Featuers/Auth/AuthSlice";
 import MaxWidthRappers from "@/components/MaxWidthRapper";
 import Link from "next/link";
 
+
 export default function TabsDemo() {
   const router = useRouter();
 
   const user = useSelector(signupSelector);
 
+  console.log(user, "Signup in user");
   if (user && user.success) {
     router.push("/Auth/Login");
   }
+
   const Login = useSelector(loginSelector);
   console.log(Login);
   if (Login && Login.success) {

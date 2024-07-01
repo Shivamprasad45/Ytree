@@ -1,13 +1,8 @@
-"use client";
-import Chatbot from "@/app/Featuers/AI/components/Chat";
-import React from "react";
+"use server";
+import { cookies } from "next/headers";
 
-const page = () => {
-  return (
-    <div>
-      <Chatbot />
-    </div>
-  );
-};
-
-export default page;
+export default async function Ai() {
+  const cookieStore = cookies();
+  const id = cookieStore.get("id");
+  return id;
+}

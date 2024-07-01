@@ -15,8 +15,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useDispatch } from "react-redux";
-import { signupUserAsync } from "../AuthSlice";
+
 import { AppDispatch } from "@/app/Store/ConfigStore";
+import { useCreateUserMutation } from "../AuthAPIS";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   Username: z.string().min(2, {
@@ -31,7 +33,7 @@ const formSchema = z.object({
 });
 
 export default function SignForm() {
-  // ...
+  // ...useCreateUserMutation
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,14 +42,21 @@ export default function SignForm() {
       password: "",
     },
   });
+  const [signupUser, { data: Signupdata, isLoading: isCreating }] =
+    useCreateUserMutation();
 
+  if (Signupdata?.error) {
+    console.log("OK i error");
+    toast(Signupdata.error);
+  }
   const dispatch: AppDispatch = useDispatch();
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log("click");
-    console.log(values);
-    dispatch(signupUserAsync(values) as any);
+    await signupUser(values);
+    // console.log(values);
+    // dispatch(signupUserAsync(values) as any);
   }
 
   return (
@@ -95,7 +104,7 @@ export default function SignForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">{isCreating ? "...Creating" : "Singup"}</Button>
       </form>
     </Form>
   );

@@ -11,10 +11,9 @@ import React from "react";
 import { IPlantProfile } from "../../../../type";
 import Link from "next/link";
 import Lefttab from "@/app/Components/lefttab";
-import axiosInstance from "@/lib/Baseurl";
 
 const fetchTreeInfo = async () => {
-  const response = await axiosInstance.get(`api/TreeInfo`);
+  const response = await axios.get(`/api/Tree/Mytree`);
   return response.data;
 };
 
@@ -28,6 +27,7 @@ const Page = () => {
     queryFn: fetchTreeInfo,
   });
 
+  console.log(feature, "Feature");
   if (isLoading) {
     return (
       <MaxWidthRappers>

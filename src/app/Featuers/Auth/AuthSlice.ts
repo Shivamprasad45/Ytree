@@ -1,84 +1,50 @@
 "use client";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { LoginApi, SignupApi } from "./AuthAPI";
-import { EnterUser, LoginUser, User, UserMessage } from "../../../../type"; // Adjust the import path as necessary
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
+import { User, UserMessage } from "../../../../type"; // Adjust the import path as necessary
 
 interface State {
-  userData: User[];
+  userData: User | null;
   signupStatus: UserMessage | null;
   loginStatus: UserMessage | null;
-  status: "idle" | "pending" | "fulfilled";
+  isCreating: boolean;
   error: any | null;
 }
 
 const initialState: State = {
-  userData: [],
+  userData: null,
   signupStatus: null,
   loginStatus: null,
-  status: "idle",
+  isCreating: false,
   error: null,
 };
-
-export const signupUserAsync = createAsyncThunk(
-  "auth/SignupApi",
-  async (data: EnterUser) => {
-    try {
-      const response = await SignupApi(data);
-      return response;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  }
-);
-
-export const loginUserAsync = createAsyncThunk(
-  "auth/LoginApi",
-  async (data: LoginUser) => {
-    try {
-      const response = await LoginApi(data);
-      return response;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  }
-);
 
 const authSlice = createSlice({
   name: "Auth",
   initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(signupUserAsync.pending, (state) => {
-        state.status = "pending";
-      })
-      .addCase(signupUserAsync.fulfilled, (state, action) => {
-        state.status = "fulfilled";
-        state.signupStatus = action.payload;
-      })
-      .addCase(signupUserAsync.rejected, (state, action) => {
-        state.status = "idle";
-        state.error = action.error;
-      })
-      .addCase(loginUserAsync.pending, (state) => {
-        state.status = "pending";
-      })
-      .addCase(loginUserAsync.fulfilled, (state, action) => {
-        state.status = "fulfilled";
-        state.loginStatus = action.payload;
-      })
-      .addCase(loginUserAsync.rejected, (state, action) => {
-        state.status = "idle";
-        state.error = action.error;
-      });
+  reducers: {
+    setUserMessage(state, action: PayloadAction<UserMessage>) {
+      state.signupStatus = action.payload;
+    },
+    setLoginMessage(state, action: PayloadAction<UserMessage>) {
+      state.loginStatus = action.payload;
+    },
+
+    setIsCreating(state, action: PayloadAction<boolean>) {
+      state.isCreating = action.payload;
+    },
+    setUserInfo(state, action: PayloadAction<User>) {
+      state.userData = action.payload;
+    },
   },
 });
 
 export default authSlice.reducer;
-
-export const userSelector = (state: { Auth: State }) => state.Auth.userData;
+export const { setUserMessage, setIsCreating, setLoginMessage, setUserInfo } =
+  authSlice.actions;
 export const signupSelector = (state: { Auth: State }) =>
   state.Auth.signupStatus;
+export const signupCreatingSelector = (state: { Auth: State }) =>
+  state.Auth.isCreating;
 export const loginSelector = (state: { Auth: State }) => state.Auth.loginStatus;
+export const UserSelector = (state: { Auth: State }) => state.Auth.userData;

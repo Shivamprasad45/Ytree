@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcrypt";
+
 import Signup from "@/Models/SignupModel";
 import DbConnect from "@/Utils/mongooesConnect";
 
@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
     await user.save();
 
     return NextResponse.redirect(
-      new URL("https://greenfatuer.vercel.app/Auth/Verify-succes", req.url)
+      new URL("http://localhost:3000/Auth/Verify-succes", req.url)
     );
   } catch (error) {
     console.error(error);

@@ -2,15 +2,17 @@
 import {
   BotMessageSquare,
   ContactRoundIcon,
+  ListTree,
   LogOut,
   MessageCircleCodeIcon,
   TreePalm,
-  User2,
 } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { use } from "react";
 import { menuItem } from "../../../type";
 import Link from "next/link";
+import { UserSelector } from "../Featuers/Auth/AuthSlice";
+import { useSelector } from "react-redux";
 
 export const menuItems: menuItem[] = [
   { id: 1, icon: <TreePalm size={40} />, label: "Trees", path: "/Tree/Shop" },
@@ -33,8 +35,16 @@ export const menuItems: menuItem[] = [
     path: "/Tree/Shop",
   },
   { id: 4, icon: <LogOut size={40} />, label: "Logout", path: "/logout" },
+  {
+    id: 4,
+    icon: <ListTree size={40} />,
+    label: "Mytree",
+    path: "/Tree/Mytrees",
+  },
 ];
 const Lefttab = () => {
+  const user = useSelector(UserSelector);
+
   return (
     <div className="flex flex-col px-2 border-r h-full  ">
       <div className="flex items-center font-semibold gap-12 justify-start min-w-40 mb-6">
@@ -45,7 +55,9 @@ const Lefttab = () => {
           className="rounded-full w-12 h-12 hover:border-2 border-black"
           alt="profile picture"
         />
-        <span className="text-lg">Shivam</span>
+        <span className="text-lg">
+          {user && user ? user.data.Username : "xtyy"}
+        </span>
       </div>
       <div className="flex flex-col gap-3 items-start mt-10 bg-scroll">
         {menuItems.map((item) => (

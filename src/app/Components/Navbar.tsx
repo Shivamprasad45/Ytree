@@ -1,5 +1,8 @@
 "use client";
-import React from "react";
+
+import React, { useEffect } from "react";
+// const UserDispatch: AppDispatch = useDispatch();
+//   UserDispatch(FetchUserInfoAsync());
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -12,10 +15,13 @@ import {
 } from "@/components/ui/navigation-menu";
 import Link from "next/link";
 
-import { PalmtreeIcon, TreesIcon } from "lucide-react";
+import { MenuSquare, PalmtreeIcon, TreesIcon } from "lucide-react";
 import { ModeToggle } from "./Togglemode";
 import { Badge } from "@/components/ui/badge";
 import { menuItems } from "./lefttab";
+
+import { Data } from "../../../type";
+
 const Navbar = () => {
   return (
     <nav className="max-w-screen-2xl px-3 md:px-8 font-semibold flex items-center  justify-between py-3  md:py-4 border-b mb-2">
@@ -45,7 +51,9 @@ const Navbar = () => {
           <ModeToggle />
           <NavigationMenu>
             <NavigationMenuItem className="md:hidden">
-              <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+              <NavigationMenuTrigger>
+                <MenuSquare />
+              </NavigationMenuTrigger>
               <NavigationMenuContent className="mr-11">
                 <ul className="grid w-[100px] gap-3 p-4  ">
                   {menuItems.map((component) => (
