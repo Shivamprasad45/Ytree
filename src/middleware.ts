@@ -35,7 +35,7 @@ export function middleware(request: NextRequest) {
     path === "/Auth/Verify-succes";
 
   const token = request.cookies.get("token")?.value || "";
-
+  console.log(token, "Token in Middelwear");
   if (token) {
     // If the token is present, allow access to the home page or other private routes
     if (path === "/" || !isPublic) {
