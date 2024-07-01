@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { TreeCart, Update_Cart, UserMessage } from "../../../../type";
 import { toast } from "sonner";
+// Corrected import name if there's a typo
 import { Treecartdata } from "./TreeSliec";
 // Define a service using a base URL and expected endpoints
 export const CartApi = createApi({
@@ -10,12 +11,13 @@ export const CartApi = createApi({
   endpoints: (builder) => ({
     getCartItemById: builder.query<TreeCart[], string>({
       query: (id) => `/Mycarttree?Id=${id}`,
-
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
           dispatch(Treecartdata(data));
-        } catch (error) {}
+        } catch (error) {
+          console.error("Error fetching cart items:", error);
+        }
       },
       providesTags: ["Cart"],
     }),
@@ -26,11 +28,12 @@ export const CartApi = createApi({
         body: Cart_data,
       }),
       invalidatesTags: ["Cart"],
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      async onQueryStarted(arg, { queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
           toast(data.message);
         } catch (error: any) {
+          console.error("Error adding cart item:", error);
           toast(error.message);
         }
       },
@@ -42,11 +45,12 @@ export const CartApi = createApi({
         body: rest,
       }),
       invalidatesTags: ["Cart"],
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      async onQueryStarted(arg, { queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
           toast(data.message);
         } catch (error: any) {
+          console.error("Error removing cart item:", error);
           toast(error.message);
         }
       },
