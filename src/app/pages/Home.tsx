@@ -27,7 +27,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useGetTreeInfoQuery } from "../Featuers/Tree/TreeServices";
 
 const Homes = () => {
-  const { data } = useGetuserInfoByNameQuery();
+  // const { data } = useGetuserInfoByNameQuery();
 
   const { data: feature, isLoading, isError } = useGetTreeInfoQuery();
 
