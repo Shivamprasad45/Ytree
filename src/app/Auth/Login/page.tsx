@@ -24,7 +24,7 @@ export default function TabsDemos() {
   const router = useRouter();
 
   const user: UserMessage | null = useSelector(loginSelector);
-
+  console.log(user, "Login page");
   if (user && user.success) {
     console.log("Login ok");
     router.push("/");

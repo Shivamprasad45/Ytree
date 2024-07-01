@@ -21,7 +21,6 @@ import { loginSelector, signupSelector } from "../../Featuers/Auth/AuthSlice";
 import MaxWidthRappers from "@/components/MaxWidthRapper";
 import Link from "next/link";
 
-
 export default function TabsDemo() {
   const router = useRouter();
 
@@ -35,6 +34,7 @@ export default function TabsDemo() {
   const Login = useSelector(loginSelector);
   console.log(Login);
   if (Login && Login.success) {
+    console.log("ok login push");
     router.push("/");
   }
 
