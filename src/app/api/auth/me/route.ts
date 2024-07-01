@@ -12,7 +12,12 @@ export async function GET(req: NextRequest) {
   try {
     const userId = await getdatafromtoken(req);
     console.log(userId, "UserId");
-
+    if (userId === null) {
+      return NextResponse.json({
+        message: "User not userid found",
+        error: "error",
+      });
+    }
     const user = await Signup.findOne({ _id: userId }).select("-password");
     console.log(user, "user");
     //check if there is no user
