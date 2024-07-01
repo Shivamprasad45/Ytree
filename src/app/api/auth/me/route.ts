@@ -12,14 +12,9 @@ export async function GET(req: NextRequest) {
   try {
     const userId = await getdatafromtoken(req);
     console.log(userId, "UserId");
-    if (userId!) {
-      return NextResponse.json({
-        message: "UserId not fetch",
-        error: "Error user id not fetch",
-      });
-    }
 
     const user = await Signup.findOne({ _id: userId }).select("-password");
+    console.log(user, "user");
     //check if there is no user
     return NextResponse.json({
       message: "User found",
