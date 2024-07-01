@@ -22,7 +22,7 @@ import {
 import Link from "next/link";
 
 import { useGetuserInfoByNameQuery } from "../Featuers/Auth/AuthAPIS";
-import { useGetCartItemByIdQuery } from "../Featuers/Treecart/TreeServicesAPI";
+
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useGetTreeInfoQuery } from "../Featuers/Tree/TreeServices";
 

@@ -16,12 +16,12 @@ import { useSelector } from "react-redux";
 
 export const menuItems: menuItem[] = [
   { id: 1, icon: <TreePalm size={40} />, label: "Trees", path: "/Tree/Shop" },
-  {
-    id: 2,
-    icon: <BotMessageSquare size={40} />,
-    label: "Ai chat",
-    path: "/Chat/AI",
-  },
+  // {
+  //   id: 2,
+  //   icon: <BotMessageSquare size={40} />,
+  //   label: "Ai chat",
+  //   path: "/Chat/AI",
+  // },
   {
     id: 3,
     icon: <MessageCircleCodeIcon size={40} />,
