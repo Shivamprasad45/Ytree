@@ -22,15 +22,13 @@ import {
 import Link from "next/link";
 
 import { useGetuserInfoByNameQuery } from "../Featuers/Auth/AuthAPIS";
-import { useGetCartItemByIdQuery } from "../Featuers/Treecart/TreeAPi";
+import { useGetCartItemByIdQuery } from "../Featuers/Treecart/TreeServicesAPI";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useGetTreeInfoQuery } from "../Featuers/Tree/TreeServices";
 
 const Homes = () => {
   const { data } = useGetuserInfoByNameQuery();
- 
- ;
- 
+
   const { data: feature, isLoading, isError } = useGetTreeInfoQuery();
 
   if (isLoading) {

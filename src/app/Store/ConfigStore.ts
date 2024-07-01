@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../Featuers/Auth/AuthSlice"; // Adjust the import path as necessary
 import TreeSlice from "../Featuers/Tree/TreeSlice";
 import TreeCart from "../Featuers/Treecart/TreeSliec";
-import { CartApi } from "../Featuers/Treecart/TreeAPi";
+import { CartApi } from "../Featuers/Treecart/TreeServicesAPI";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { AuthApi } from "../Featuers/Auth/AuthAPIS";
 import { TreeApi } from "../Featuers/Tree/TreeServices";

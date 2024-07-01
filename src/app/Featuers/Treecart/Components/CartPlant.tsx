@@ -9,7 +9,10 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { CalendarIcon, Minus, Plus } from "lucide-react";
-import { useGetCartItemByIdQuery, useRemoveCartMutation } from "../TreeAPi";
+import {
+  useGetCartItemByIdQuery,
+  useRemoveCartMutation,
+} from "../TreeServicesAPI";
 import { Button } from "@/components/ui/button";
 import { UserSelector } from "../../Auth/AuthSlice";
 
