@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import React, { useState } from "react";
-import { cartDataSelector } from "../TreeSliec";
+
 import { useSelector } from "react-redux";
 import {
   HoverCard,
