@@ -1,3 +1,4 @@
+"use client";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { TreeCart, Update_Cart, UserMessage } from "../../../../type";
 import { toast } from "sonner";
@@ -9,8 +10,11 @@ export const CartApi = createApi({
   tagTypes: ["Cart"],
   baseQuery: fetchBaseQuery({ baseUrl: "/api/Cart" }),
   endpoints: (builder) => ({
-    getCartItemById: builder.query<TreeCart[], string>({
-      query: (id) => `/Mycarttree?Id=${id}`,
+    getCartItemById: builder.mutation<TreeCart[], string>({
+      query: (id) => ({
+        url: `/Mycarttree?Id=${id}`,
+        method: "POST",
+      }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
@@ -19,7 +23,7 @@ export const CartApi = createApi({
           console.error("Error fetching cart items:", error);
         }
       },
-      providesTags: ["Cart"],
+      invalidatesTags: ["Cart"],
     }),
     AddCart: builder.mutation<UserMessage, TreeCart>({
       query: (Cart_data) => ({
@@ -58,10 +62,8 @@ export const CartApi = createApi({
   }),
 });
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
 export const {
-  useGetCartItemByIdQuery,
+  useGetCartItemByIdMutation,
   useAddCartMutation,
   useRemoveCartMutation,
 } = CartApi;

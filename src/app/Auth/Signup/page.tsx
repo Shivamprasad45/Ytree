@@ -34,7 +34,7 @@ export default function TabsDemo() {
   const Login = useSelector(loginSelector);
   console.log(Login);
   if (Login && Login.success) {
-    router.push("/");
+    router.push("/Auth/Login");
   }
 
   return (

@@ -3,7 +3,7 @@ import DbConnect from "@/Utils/mongooesConnect";
 import { NextRequest, NextResponse } from "next/server";
 DbConnect();
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
     const Id = request.nextUrl.searchParams.get("Id");
     const Cart = await cart.find({ UserId: Id });

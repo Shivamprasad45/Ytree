@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
 import {
@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/hover-card";
 import { CalendarIcon, Minus, Plus } from "lucide-react";
 import {
-  useGetCartItemByIdQuery,
+  useGetCartItemByIdMutation,
   useRemoveCartMutation,
 } from "../TreeServicesAPI";
 import { Button } from "@/components/ui/button";
@@ -20,17 +20,19 @@ const CartPlant = () => {
   const [Id, setId] = useState<string>("");
   //User id fetch
   const user = useSelector(UserSelector);
-  const {
-    data: cartdata,
-    isLoading: isCartLoading,
-    isError,
-    isFetching,
-  } = useGetCartItemByIdQuery(user?.data._id || "");
+  const [FetchCartById, { data: cartdata, isLoading: isCartLoading, isError }] =
+    useGetCartItemByIdMutation();
   //All prices
 
-  // const Total_Cart_price =
-  //   cartdata &&
-  //   cartdata?.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  useEffect(() => {
+    if (user?.data._id) {
+      FetchCartById(user.data._id);
+    }
+  }, [user, FetchCartById]);
+
+  const Total_Cart_price =
+    cartdata &&
+    cartdata?.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   const [Cart_Remove, { isLoading }] = useRemoveCartMutation();
   if (isCartLoading) {
@@ -207,7 +209,7 @@ const CartPlant = () => {
                         Subtotal
                       </p>
                       <p className="text-base leading-none text-gray-800">
-                        {/* {cartdata && Total_Cart_price} */}
+                        {cartdata && Total_Cart_price}
                       </p>
                     </div>
                   </div>
@@ -217,7 +219,7 @@ const CartPlant = () => {
                         Total
                       </p>
                       <p className="text-2xl font-bold leading-normal text-right text-gray-800">
-                        {/* {Total_Cart_price} */}
+                        {Total_Cart_price}
                       </p>
                     </div>
                     <Button className="text-base leading-none w-full py-5 bg-gray-800 border-gray-800 border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 text-white">
