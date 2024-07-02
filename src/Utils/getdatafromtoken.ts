@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export default async function getdatafromtoken(req: NextRequest) {
   try {
-    const token = req.cookies.get("token")?.value || "";
+    const token = req.cookies.get("token")?.value!;
     console.log("Token from cookies:", token);
 
     if (!token) {
@@ -16,7 +16,7 @@ export default async function getdatafromtoken(req: NextRequest) {
       process.env.SECRET_KEY || "defaultSecretKey"
     );
 
-    return decodedToken.id;
+    return decodedToken.id!;
   } catch (error: any) {
     console.error("Error in getdatafromtoken:", error.message);
     return null;
