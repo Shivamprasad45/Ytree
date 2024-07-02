@@ -6,6 +6,7 @@ import {
   LogOut,
   MessageCircleCodeIcon,
   TreePalm,
+  TreesIcon,
 } from "lucide-react";
 import Image from "next/image";
 import React, { use } from "react";
@@ -16,14 +17,14 @@ import { useSelector } from "react-redux";
 
 export const menuItems: menuItem[] = [
   { id: 1, icon: <TreePalm size={40} />, label: "Trees", path: "/Tree/Shop" },
-  // {
-  //   id: 2,
-  //   icon: <BotMessageSquare size={40} />,
-  //   label: "Ai chat",
-  //   path: "/Chat/AI",
-  // },
   {
-    id: 3,
+    id: 6,
+    icon: <TreesIcon size={40} />,
+    label: "Cart",
+    path: "/Tree/Cart",
+  },
+  {
+    id: 2,
     icon: <MessageCircleCodeIcon size={40} />,
     label: "Message",
     path: "/Tree/Shop",
@@ -36,7 +37,7 @@ export const menuItems: menuItem[] = [
   },
   { id: 4, icon: <LogOut size={40} />, label: "Logout", path: "/logout" },
   {
-    id: 4,
+    id: 5,
     icon: <ListTree size={40} />,
     label: "Mytree",
     path: "/Tree/Mytrees",
@@ -62,7 +63,11 @@ const Lefttab = () => {
       <div className="flex flex-col gap-3 items-start mt-10 bg-scroll">
         {menuItems.map((item) => (
           <Link key={item.id} href={item.path}>
-            <p className="flex space-x-16 items-center min-w-40 hover:text-blue-500 hover:bg-gray-100 cursor-pointer p-2 rounded">
+            <p
+              className={`flex space-x-16 ${
+                item.id === 6 ? "hidden" : ""
+              }  items-center min-w-40 hover:text-blue-500 hover:bg-gray-100 cursor-pointer p-2 rounded`}
+            >
               {item.icon}
               <span className="text-xl">{item.label}</span>
             </p>

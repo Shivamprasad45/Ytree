@@ -20,8 +20,6 @@ import { ModeToggle } from "./Togglemode";
 import { Badge } from "@/components/ui/badge";
 import { menuItems } from "./lefttab";
 
-import { Data } from "../../../type";
-
 const Navbar = () => {
   return (
     <nav className="max-w-screen-2xl px-3 md:px-8 font-semibold flex items-center  justify-between py-3  md:py-4 border-b mb-2">
@@ -50,12 +48,12 @@ const Navbar = () => {
         <div className="space-x-1 flex">
           <ModeToggle />
           <NavigationMenu>
-            <NavigationMenuItem className="md:hidden">
+            <NavigationMenuItem className="md:hidden pl-8">
               <NavigationMenuTrigger>
                 <MenuSquare />
               </NavigationMenuTrigger>
-              <NavigationMenuContent className="mr-11">
-                <ul className="grid w-[100px] gap-3 p-4  ">
+              <NavigationMenuContent className="">
+                <ul className=" p-4 grid gap-4 ">
                   {menuItems.map((component) => (
                     <Link
                       className="text-sm"

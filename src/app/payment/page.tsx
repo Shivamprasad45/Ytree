@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { cartDataSelector } from "../Featuers/Treecart/TreeSliec";
+import { Button } from "@/components/ui/button";
 
 declare global {
   interface Window {
@@ -109,8 +110,8 @@ const Payment = () => {
   };
 
   return (
-    <div>
-      <button onClick={handlePayment}>Pay Now</button>
+    <div className="w-full h-full flex items-center text-center justify-center">
+      <Button onClick={handlePayment}>Pay Now</Button>
     </div>
   );
 };
