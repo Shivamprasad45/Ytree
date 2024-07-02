@@ -10,10 +10,10 @@ export const CartApi = createApi({
   tagTypes: ["Cart"],
   baseQuery: fetchBaseQuery({ baseUrl: "/api/Cart" }),
   endpoints: (builder) => ({
-    getCartItemById: builder.mutation<TreeCart[], string>({
+    getCartItemById: builder.query<TreeCart[], string>({
       query: (id) => ({
         url: `/Mycarttree?Id=${id}`,
-        method: "POST",
+        method: "GET",
       }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
@@ -23,7 +23,7 @@ export const CartApi = createApi({
           console.error("Error fetching cart items:", error);
         }
       },
-      invalidatesTags: ["Cart"],
+      providesTags: ["Cart"],
     }),
     AddCart: builder.mutation<UserMessage, TreeCart>({
       query: (Cart_data) => ({
@@ -63,7 +63,7 @@ export const CartApi = createApi({
 });
 
 export const {
-  useGetCartItemByIdMutation,
+  useGetCartItemByIdQuery,
   useAddCartMutation,
   useRemoveCartMutation,
 } = CartApi;

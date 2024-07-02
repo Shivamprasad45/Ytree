@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/hover-card";
 import { CalendarIcon, Minus, Plus } from "lucide-react";
 import {
-  useGetCartItemByIdMutation,
+  useGetCartItemByIdQuery,
   useRemoveCartMutation,
 } from "../TreeServicesAPI";
 import { Button } from "@/components/ui/button";
@@ -20,15 +20,19 @@ const CartPlant = () => {
   const [Id, setId] = useState<string>("");
   //User id fetch
   const user = useSelector(UserSelector);
-  const [FetchCartById, { data: cartdata, isLoading: isCartLoading, isError }] =
-    useGetCartItemByIdMutation();
+
+  const { data: cartdata, isLoading: isCartLoading } = useGetCartItemByIdQuery(
+    user?.data._id!
+  );
+  // const [FetchCartById, { data: cartdata, isLoading: isCartLoading, isError }] =
+  //   useGetCartItemByIdMutation();
   //All prices
 
-  useEffect(() => {
-    if (user?.data._id) {
-      FetchCartById(user.data._id);
-    }
-  }, [user, FetchCartById]);
+  // useEffect(() => {
+  //   if (user?.data._id) {
+  //     FetchCartById(user.data._id);
+  //   }
+  // }, [user, FetchCartById]);
 
   const Total_Cart_price =
     cartdata &&
