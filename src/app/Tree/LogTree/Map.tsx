@@ -59,15 +59,29 @@ const Map: React.FC = () => {
   const [currentLocation, setCurrentLocation] = useState<
     [number, number] | null
   >(null);
-  console.log(currentLocation, "current location");
+  const [currentLocationInfo, setCurrentLocationInfo] = useState<string>("");
+
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setCurrentLocation([
+        async (position) => {
+          const coords: [number, number] = [
             position.coords.latitude,
             position.coords.longitude,
-          ]);
+          ];
+          setCurrentLocation(coords);
+
+          // Fetch area information for the current location
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${coords[0]}&lon=${coords[1]}&format=json`
+          );
+          const data = await response.json();
+
+          if (data && data.display_name) {
+            setCurrentLocationInfo(data.display_name);
+          } else {
+            setCurrentLocationInfo("No area information available.");
+          }
         },
         (error) => {
           console.error("Error getting current location:", error);
@@ -86,6 +100,7 @@ const Map: React.FC = () => {
 
     if (data && data.length > 0) {
       const { lat, lon } = data[0];
+
       setSearchResult([parseFloat(lat), parseFloat(lon)]);
     }
   };
@@ -121,6 +136,8 @@ const Map: React.FC = () => {
             <Popup>
               Your Current Location: <br />
               Latitude: {currentLocation[0]}, Longitude: {currentLocation[1]}
+              <br />
+              Area: {currentLocationInfo}
             </Popup>
           </Marker>
         )}
