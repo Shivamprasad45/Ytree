@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import cart from "@/Models/Cartmodel";
 import DbConnect from "@/Utils/mongooesConnect";
 import { NextRequest, NextResponse } from "next/server";
