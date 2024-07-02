@@ -20,16 +20,22 @@ const CartPlant = () => {
   const [Id, setId] = useState<string>("");
   //User id fetch
   const user = useSelector(UserSelector);
-  const { data: cartdata } = useGetCartItemByIdQuery(user?.data._id!);
+  const {
+    data: cartdata,
+    isLoading: isCartLoading,
+    isError,
+    isFetching,
+  } = useGetCartItemByIdQuery(user?.data._id!);
   //All prices
 
-  const Total_Cart_price = cartdata?.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
+  const Total_Cart_price =
+    cartdata &&
+    cartdata?.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   const [Cart_Remove, { isLoading }] = useRemoveCartMutation();
-
+  if (isCartLoading) {
+    return <div>...Loading</div>;
+  }
   const Update_cart_plants = async (
     id: string,
     UserId: string,
