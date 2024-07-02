@@ -25,12 +25,12 @@ const CartPlant = () => {
     isLoading: isCartLoading,
     isError,
     isFetching,
-  } = useGetCartItemByIdQuery(user?.data._id!);
+  } = useGetCartItemByIdQuery(user?.data._id || "");
   //All prices
 
-  const Total_Cart_price =
-    cartdata &&
-    cartdata?.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  // const Total_Cart_price =
+  //   cartdata &&
+  //   cartdata?.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   const [Cart_Remove, { isLoading }] = useRemoveCartMutation();
   if (isCartLoading) {
@@ -207,7 +207,7 @@ const CartPlant = () => {
                         Subtotal
                       </p>
                       <p className="text-base leading-none text-gray-800">
-                        {Total_Cart_price}
+                        {/* {cartdata && Total_Cart_price} */}
                       </p>
                     </div>
                   </div>
@@ -217,7 +217,7 @@ const CartPlant = () => {
                         Total
                       </p>
                       <p className="text-2xl font-bold leading-normal text-right text-gray-800">
-                        {Total_Cart_price}
+                        {/* {Total_Cart_price} */}
                       </p>
                     </div>
                     <Button className="text-base leading-none w-full py-5 bg-gray-800 border-gray-800 border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 text-white">

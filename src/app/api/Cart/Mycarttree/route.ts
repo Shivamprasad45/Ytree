@@ -2,6 +2,7 @@ import cart from "@/Models/Cartmodel";
 import DbConnect from "@/Utils/mongooesConnect";
 import { NextRequest, NextResponse } from "next/server";
 DbConnect();
+
 export async function GET(request: NextRequest) {
   try {
     const Id = request.nextUrl.searchParams.get("Id");
