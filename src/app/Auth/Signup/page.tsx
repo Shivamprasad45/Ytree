@@ -34,7 +34,6 @@ export default function TabsDemo() {
   const Login = useSelector(loginSelector);
   console.log(Login);
   if (Login && Login.success) {
-    console.log("ok login push");
     router.push("/");
   }
 

@@ -15,6 +15,7 @@ export async function POST(req: any) {
     // Parse the request body to get email and password
     const { Email, password } = await req.json();
     console.log("Login");
+
     // Check if user already exists
     const user = await Signup.findOne({ Email });
 
@@ -65,7 +66,15 @@ export async function POST(req: any) {
     });
 
     // Set the JWT token as an HTTP-only cookie
-    cookies().set({ name: "token", value: token, httpOnly: true });
+    cookies().set({
+      name: "token",
+      value: token,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      sameSite: "lax",
+      domain: process.env.COOKIE_DOMAIN || "https://greenfatuer.vercel.app",
+    });
 
     // Return the response
     return response;
