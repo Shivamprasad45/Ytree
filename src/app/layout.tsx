@@ -49,9 +49,9 @@ export default function RootLayout({
                 <div className="flex-grow md:ml-56">{children}</div>
 
                 {/* Bottom */}
-                <div className="md:hidden fixed bottom-0 w-full bg-white z-10">
+                {/* <div className="md:hidden fixed bottom-0 w-full bg-white z-10">
                   <Bottom />
-                </div>
+                </div> */}
               </main>
             </div>
           </MaxWidthRappers>
