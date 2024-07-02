@@ -1,6 +1,11 @@
 "use client";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { TreeCart, Update_Cart, UserMessage } from "../../../../type";
+import {
+  TreeCart,
+  TreeCarts,
+  Update_Cart,
+  UserMessage,
+} from "../../../../type";
 import { toast } from "sonner";
 // Corrected import name if there's a typo
 import { Treecartdata } from "./TreeSliec";
@@ -10,7 +15,7 @@ export const CartApi = createApi({
   tagTypes: ["Cart"],
   baseQuery: fetchBaseQuery({ baseUrl: "/api/Cart" }),
   endpoints: (builder) => ({
-    getCartItemById: builder.query<TreeCart[], string>({
+    getCartItemById: builder.query<TreeCarts[], string>({
       query: (id) => ({
         url: `/Mycarttree?Id=${id}`,
         method: "GET",

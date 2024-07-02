@@ -24,16 +24,6 @@ const CartPlant = () => {
   const { data: cartdata, isLoading: isCartLoading } = useGetCartItemByIdQuery(
     user?.data._id!
   );
-  // const [FetchCartById, { data: cartdata, isLoading: isCartLoading, isError }] =
-  //   useGetCartItemByIdMutation();
-  //All prices
-
-  // useEffect(() => {
-  //   if (user?.data._id) {
-  //     FetchCartById(user.data._id);
-  //   }
-  // }, [user, FetchCartById]);
-
   const Total_Cart_price =
     cartdata &&
     cartdata?.reduce((acc, item) => acc + item.price * item.quantity, 0);
@@ -97,7 +87,7 @@ const CartPlant = () => {
                 </p>
                 {cartdata?.map((item) => (
                   <div
-                    key={item._id}
+                    key={item.Plant_id}
                     className="md:flex items-center mt-14 py-8 border-t border-gray-200"
                   >
                     <div className="w-1/4">
@@ -118,7 +108,11 @@ const CartPlant = () => {
                             disabled={isLoading}
                             className="cursor-pointer"
                             onClick={() =>
-                              Update_cart_plants(item._id, item.UserId, "Plus")
+                              Update_cart_plants(
+                                item.Plant_id,
+                                item.UserId,
+                                "Plus"
+                              )
                             }
                           >
                             <span>
@@ -133,7 +127,11 @@ const CartPlant = () => {
                             disabled={isLoading || item.quantity === 1}
                             className="cursor-pointer"
                             onClick={() =>
-                              Update_cart_plants(item._id, item.UserId, "Minus")
+                              Update_cart_plants(
+                                item.Plant_id,
+                                item.UserId,
+                                "Minus"
+                              )
                             }
                           >
                             {" "}
@@ -183,7 +181,7 @@ const CartPlant = () => {
                             className="text-xs leading-3 underline text-red-500 pl-5 cursor-pointer"
                             onClick={() =>
                               Update_cart_plants(
-                                item._id,
+                                item.Plant_id,
                                 item.UserId,
                                 "Remove"
                               )
@@ -195,7 +193,7 @@ const CartPlant = () => {
                           </p>
                         </div>
                         <p className="text-base font-black leading-none ">
-                          {item.price}
+                          {item.price * item.quantity}
                         </p>
                       </div>
                     </div>

@@ -43,12 +43,6 @@ export interface TreeInfo {
   id: string;
   prise: number;
 }
-export interface IPlantProfile {
-  _id: string;
-  imageUrl: string;
-  name: string;
-  age: string;
-}
 
 export interface menuItem {
   id: number;
@@ -59,7 +53,7 @@ export interface menuItem {
 
 export interface TreeCart {
   UserId: string;
-  _id: string;
+  Plant_id: string;
   commonName: string;
   scientificName: string;
   description: string;
@@ -74,4 +68,34 @@ export interface Update_Cart {
   UserId: string;
   _id: string;
   Symbol: string;
+}
+export interface TreeCarts {
+  _id: string;
+  UserId: string;
+  Plant_id: string;
+  commonName: string;
+  scientificName: string;
+  description: string;
+  growthRequirements: string;
+  benefits: string[];
+  region: string;
+  imageURL: string;
+  price: number;
+  quantity: number;
+}
+
+export interface InMytrees {
+  UserId: string;
+  imageUrl: string;
+  name: string;
+  age: string;
+  status: number;
+}
+export interface IPlantProfile {
+  _id: string;
+  UserId: string;
+  imageUrl: string;
+  name: string;
+  age: string;
+  status: number;
 }

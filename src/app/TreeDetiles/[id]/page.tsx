@@ -38,7 +38,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
         const treeDetails: TreeCart = {
           UserId: user.data._id,
-          _id: PlantDetails?._id || "",
+          Plant_id: PlantDetails?._id || "",
           commonName: PlantDetails?.commonName || "",
           scientificName: PlantDetails?.scientificName || "",
           description: PlantDetails?.description || "",

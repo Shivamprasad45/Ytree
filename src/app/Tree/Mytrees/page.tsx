@@ -5,12 +5,14 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { LogOut, TreePalm, User2 } from "lucide-react";
+
 import Image from "next/image";
 import React from "react";
 import { IPlantProfile } from "../../../../type";
 import Link from "next/link";
 import Lefttab from "@/app/Components/lefttab";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 const fetchTreeInfo = async () => {
   const response = await axios.get(`/api/Tree/Mytree`);
@@ -75,7 +77,7 @@ const Page = () => {
                       feature.map((artwork: IPlantProfile) => (
                         <div
                           key={artwork._id}
-                          className="w-32 h-44 flex flex-col justify-center items-start gap-2.5"
+                          className="w-32 h-60 flex flex-col justify-center items-start gap-2.5"
                         >
                           <Link href="/Tree/Aboutmytree">
                             <img
@@ -85,11 +87,45 @@ const Page = () => {
                             />
                             <div className="flex flex-col justify-center items-start gap-0.5">
                               <div className="text-black text-xl font-bold font-['Inria_Sans'] leading-normal">
-                                {artwork.name}
+                                {artwork.name.slice(0, 10)}
                               </div>
-                              <div className="text-neutral-400 text-sm font-bold font-['Inria_Sans'] leading-none">
-                                {artwork.age} months old
-                              </div>
+                              {artwork.status === 0 ? (
+                                <div>
+                                  <Badge>Pending</Badge>
+                                </div>
+                              ) : (
+                                (
+                                  <div className="text-neutral-400 text-sm font-bold font-['Inria_Sans'] leading-none">
+                                    {artwork.age} months old
+                                  </div>
+                                ) && artwork.status === 1
+                              )}{" "}
+                              {artwork.status === 1 ? (
+                                <div>
+                                  <Badge>Shipping</Badge>
+                                </div>
+                              ) : (
+                                (
+                                  <div className="text-neutral-400 text-sm font-bold font-['Inria_Sans'] leading-none">
+                                    {artwork.age} months old
+                                  </div>
+                                ) && artwork.status === 2
+                              )}{" "}
+                              {artwork.status === 2 ? (
+                                <div>
+                                  <Button>
+                                    {" "}
+                                    <Link href="/Tree/LogTree"> Planted</Link>
+                                  </Button>
+                                </div>
+                              ) : (
+                                (
+                                  <div className="text-neutral-400 text-sm font-bold font-['Inria_Sans'] leading-none">
+                                    {artwork.age} months old
+                                  </div>
+                                ) && artwork.status === 3
+                              )}
+                              {artwork.status == 3 && <div>{artwork.age}</div>}
                             </div>
                           </Link>
                         </div>
