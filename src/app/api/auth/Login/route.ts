@@ -4,7 +4,6 @@ import DbConnect from "@/Utils/mongooesConnect";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import jsonwebtoken from "jsonwebtoken";
-import { cookies } from "next/headers";
 
 // Ensure database connection
 DbConnect();
@@ -58,6 +57,7 @@ export async function POST(req: any) {
         expiresIn: "1h", // Set token expiration as per your requirement
       }
     );
+    console.log(token, "Token");
 
     // Create a response with a success message
     const response = NextResponse.json({
@@ -65,15 +65,14 @@ export async function POST(req: any) {
       success: true,
     });
 
-    // Set the JWT token as an HTTP-only cookie
-    cookies().set({
+    // Set the JWT token as an HTTP-only cookie in the response headers
+    response.cookies.set({
       name: "token",
       value: token,
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       path: "/",
       sameSite: "lax",
-      domain: process.env.COOKIE_DOMAIN || "https://greenfatuer.vercel.app",
     });
 
     // Return the response
