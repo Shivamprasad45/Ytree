@@ -1,14 +1,8 @@
 "use client";
 import MaxWidthRappers from "@/components/MaxWidthRapper";
 import React, { useEffect, useState } from "react";
-import Navbar from "../Components/Navbar";
+
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
 
 import { TreeInfo } from "../../../type";
 import Image from "next/image";
@@ -27,8 +21,14 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useGetTreeInfoQuery } from "../Featuers/Tree/TreeServices";
 
 const Homes = () => {
-  const { data } = useGetuserInfoByNameQuery();
-
+  const { data: userData } = useGetuserInfoByNameQuery();
+  if (userData?.data) {
+    localStorage.setItem("Id", userData.data._id);
+    localStorage.setItem("User_name", userData.data.Username);
+  }
+  const Get_user_id = localStorage.getItem("Id");
+  const Get_user_name = localStorage.getItem("User_name");
+  console.log(Get_user_id, Get_user_name, "Get user id");
   const { data: feature, isLoading, isError } = useGetTreeInfoQuery();
 
   if (isLoading) {

@@ -19,10 +19,10 @@ import { UserSelector } from "../../Auth/AuthSlice";
 const CartPlant = () => {
   const [Id, setId] = useState<string>("");
   //User id fetch
-  const user = useSelector(UserSelector);
 
+  const Get_user_id = localStorage.getItem("Id");
   const { data: cartdata, isLoading: isCartLoading } = useGetCartItemByIdQuery(
-    user?.data._id!
+    Get_user_id!
   );
   const Total_Cart_price =
     cartdata &&
@@ -39,7 +39,7 @@ const CartPlant = () => {
   ) => {
     try {
       await Cart_Remove({ _id: id, UserId: UserId, Symbol: Symbol });
-      setId(Symbol);
+      setId(id);
     } catch {
       console.log("Update error");
     }
@@ -187,7 +187,7 @@ const CartPlant = () => {
                               )
                             }
                           >
-                            {Id === "Remove" && isLoading
+                            {Id === item._id && isLoading
                               ? "...Removing"
                               : "Remove"}
                           </p>

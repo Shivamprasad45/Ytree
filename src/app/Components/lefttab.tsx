@@ -9,11 +9,11 @@ import {
   TreesIcon,
 } from "lucide-react";
 import Image from "next/image";
-import React, { use } from "react";
+import React from "react";
 import { menuItem } from "../../../type";
 import Link from "next/link";
-import { UserSelector } from "../Featuers/Auth/AuthSlice";
-import { useSelector } from "react-redux";
+// import { UserSelector } from "../Featuers/Auth/AuthSlice";
+// import { useSelector } from "react-redux";
 
 export const menuItems: menuItem[] = [
   { id: 1, icon: <TreePalm size={40} />, label: "Trees", path: "/Tree/Shop" },
@@ -44,8 +44,7 @@ export const menuItems: menuItem[] = [
   },
 ];
 const Lefttab = () => {
-  const user = useSelector(UserSelector);
-
+  const Get_user_name = localStorage.getItem("User_name");
   return (
     <div className="flex flex-col px-2 border-r h-full  ">
       <div className="flex items-center font-semibold gap-12 justify-start min-w-40 mb-6">
@@ -57,7 +56,7 @@ const Lefttab = () => {
           alt="profile picture"
         />
         <span className="text-lg">
-          {user && user ? user.data.Username : "xtyy"}
+          {Get_user_name ? Get_user_name : "xtyy"}
         </span>
       </div>
       <div className="flex flex-col gap-3 items-start mt-10 bg-scroll">
