@@ -20,9 +20,17 @@ const CartPlant = () => {
   const [Id, setId] = useState<string>("");
   //User id fetch
 
-  const Get_user_id = localStorage.getItem("Id");
+  const [User_id, setUser_id] = useState<string>("");
+  useEffect(() => {
+    const Get_user_Id = localStorage.getItem("Id");
+
+    if (Get_user_Id) {
+      setUser_id(Get_user_Id);
+    }
+  }, []);
+
   const { data: cartdata, isLoading: isCartLoading } = useGetCartItemByIdQuery(
-    Get_user_id!
+    User_id!
   );
   const Total_Cart_price =
     cartdata &&

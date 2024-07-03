@@ -1,8 +1,7 @@
-"use server";
 import jsonwebtoken from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-
+export const dynamic = "force-dynamic";
 export default async function getdatafromtoken(req: NextRequest) {
   try {
     const cookieStore = cookies();

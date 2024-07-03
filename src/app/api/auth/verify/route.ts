@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
+export const dynamic = "force-dynamic";
 import Signup from "@/Models/SignupModel";
 import DbConnect from "@/Utils/mongooesConnect";
 

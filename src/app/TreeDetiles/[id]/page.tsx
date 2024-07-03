@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import MaxWidthRappers from "@/components/MaxWidthRapper";
 // import Lefttab from "@/app/Components/lefttab";
-
+export const dynamic = "force-dynamic";
 import { UserSelector } from "@/app/Featuers/Auth/AuthSlice";
 
 import { TreeCart } from "../../../../type";
