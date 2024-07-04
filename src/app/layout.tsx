@@ -8,7 +8,6 @@ import MaxWidthRappers from "@/components/MaxWidthRapper";
 import Bottom from "./Components/bottom";
 import Lefttab from "./Components/lefttab";
 import Navbar from "./Components/Navbar";
-import Head from "next/head";
 
 const fontSans = FontSans({
   subsets: ["latin"],

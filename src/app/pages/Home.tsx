@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 import { TreeInfo } from "../../../type";
-import Image from "next/image";
 
 import {
   Accordion,
@@ -19,13 +18,11 @@ import { useGetuserInfoByNameQuery } from "../Featuers/Auth/AuthAPIS";
 
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useGetTreeInfoQuery } from "../Featuers/Tree/TreeServices";
-const Homes = () => {
-  const { data: userData } = useGetuserInfoByNameQuery();
-  if (userData?.data) {
-    localStorage.setItem("Id", userData.data._id);
-    localStorage.setItem("User_name", userData.data.Username);
-  }
 
+import UserRelaod from "../lib/UserRelaod";
+
+const Homes = () => {
+  UserRelaod();
   const { data: feature, isLoading, isError } = useGetTreeInfoQuery();
 
   if (isLoading) {

@@ -8,13 +8,15 @@ import {
   TreePalm,
   TreesIcon,
 } from "lucide-react";
+
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { menuItem } from "../../../type";
 import Link from "next/link";
-import { string } from "zod";
-// import { UserSelector } from "../Featuers/Auth/AuthSlice";
-// import { useSelector } from "react-redux";
+
+import { usePathname } from "next/navigation";
+import { useSelector } from "react-redux";
+import { UserSelector } from "../Featuers/Auth/AuthSlice";
 
 export const menuItems: menuItem[] = [
   { id: 1, icon: <TreePalm size={40} />, label: "Trees", path: "/Tree/Shop" },
@@ -45,15 +47,22 @@ export const menuItems: menuItem[] = [
   },
 ];
 const Lefttab = () => {
-  const [Name_user, setName_user] = useState<string>("");
-  useEffect(() => {
-    const Get_user_name = localStorage.getItem("User_name");
-
-    if (Get_user_name) {
-      setName_user(Get_user_name);
-    }
-  }, []);
-
+  const route = usePathname();
+  const user = useSelector(UserSelector);
+  if (route === "/Auth/Signup") {
+    return (
+      <>
+        <div className=""></div>
+      </>
+    );
+  }
+  if (route === "/Auth/Login") {
+    return (
+      <>
+        <div className=""></div>
+      </>
+    );
+  }
   return (
     <div className="flex flex-col px-2 border-r h-full  ">
       <div className="flex items-center font-semibold gap-12 justify-start min-w-40 mb-6">
@@ -64,7 +73,9 @@ const Lefttab = () => {
           className="rounded-full w-12 h-12 hover:border-2 border-black"
           alt="profile picture"
         />
-        <span className="text-lg">{Name_user ? Name_user : "xtyy"}</span>
+        <span className="text-lg">
+          {user && user.Username !== "" ? user.Username : "not found"}
+        </span>
       </div>
       <div className="flex flex-col gap-3 items-start mt-10 bg-scroll">
         {menuItems.map((item) => (

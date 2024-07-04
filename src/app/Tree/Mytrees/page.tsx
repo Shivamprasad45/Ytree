@@ -10,7 +10,7 @@ import Image from "next/image";
 import React from "react";
 import { IPlantProfile } from "../../../../type";
 import Link from "next/link";
-import Lefttab from "@/app/Components/lefttab";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
@@ -115,7 +115,12 @@ const Page = () => {
                                 <div>
                                   <Button>
                                     {" "}
-                                    <Link href="/Tree/LogTree"> Planted</Link>
+                                    <Link
+                                      href={`/Tree/LogTree/${artwork._id}/${artwork.UserId}`}
+                                    >
+                                      {" "}
+                                      Planted
+                                    </Link>
                                   </Button>
                                 </div>
                               ) : (

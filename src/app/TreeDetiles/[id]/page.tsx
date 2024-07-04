@@ -3,10 +3,9 @@
 import { Button } from "@/components/ui/button";
 
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-// import MaxWidthRappers from "@/components/MaxWidthRapper";
-// import Lefttab from "@/app/Components/lefttab";
+import React from "react";
+import { useSelector } from "react-redux";
+
 export const dynamic = "force-dynamic";
 import { UserSelector } from "@/app/Featuers/Auth/AuthSlice";
 
@@ -16,8 +15,11 @@ import { useAddCartMutation } from "@/app/Featuers/Treecart/TreeServicesAPI";
 import { useGetTreeDetailsQuery } from "@/app/Featuers/Tree/TreeServices";
 import Map from "@/app/Components/Mapregion";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import UserRelaod from "@/app/lib/UserRelaod";
 
 const Page = ({ params }: { params: { id: string } }) => {
+  UserRelaod();
   const {
     data: PlantDetails,
     isFetching,
@@ -26,18 +28,21 @@ const Page = ({ params }: { params: { id: string } }) => {
   } = useGetTreeDetailsQuery(params.id);
 
   const user = useSelector(UserSelector);
-
+  //For redirect to Login or signup
+  const route = useRouter();
   const [AddPlants, { isLoading: isAddLoading }] = useAddCartMutation();
+  //for user reload
+
   const Addtocart = async () => {
     try {
-      if (user?.data._id) {
+      if (user?._id) {
         const benefits: string[] = [];
         PlantDetails?.benefits.forEach((item: string) => {
           benefits.push(item);
         });
 
         const treeDetails: TreeCart = {
-          UserId: user.data._id,
+          UserId: user._id,
           Plant_id: PlantDetails?._id || "",
           commonName: PlantDetails?.commonName || "",
           scientificName: PlantDetails?.scientificName || "",
@@ -52,7 +57,8 @@ const Page = ({ params }: { params: { id: string } }) => {
         };
         await AddPlants(treeDetails);
       } else {
-        toast("User id not found");
+        toast("User id not found please Signup");
+        route.push("/Auth/Signup");
       }
     } catch (error) {
       console.log(error);
@@ -66,9 +72,6 @@ const Page = ({ params }: { params: { id: string } }) => {
   }
   return (
     <div className=" flex flex-row">
-      {/* //Left */}
-
-      {/* //Middle? */}
       <div className="relative flex size-full min-h-screen flex-col bg-[#F9FAFA] group/design-root overflow-x-hidden">
         <div className="layout-container flex h-full grow flex-col">
           <div className="px-40 flex flex-1 justify-center py-5">

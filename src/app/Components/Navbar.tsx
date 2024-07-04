@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-// const UserDispatch: AppDispatch = useDispatch();
-//   UserDispatch(FetchUserInfoAsync());
+
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -19,8 +18,25 @@ import { MenuSquare, PalmtreeIcon, TreesIcon } from "lucide-react";
 import { ModeToggle } from "./Togglemode";
 import { Badge } from "@/components/ui/badge";
 import { menuItems } from "./lefttab";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
+  const route = usePathname();
+
+  if (route === "/Auth/Login") {
+    return (
+      <>
+        <div className=""></div>
+      </>
+    );
+  }
+  if (route === "/Auth/Signup") {
+    return (
+      <>
+        <div className=""></div>
+      </>
+    );
+  }
   return (
     <nav className="max-w-screen-2xl px-3 md:px-8 font-semibold flex items-center  justify-between py-3  md:py-4 border-b mb-2">
       <Link href={"/"}>

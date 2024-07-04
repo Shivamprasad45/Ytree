@@ -1,10 +1,10 @@
 "use client";
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { User, UserMessage } from "../../../../type"; // Adjust the import path as necessary
+import { Data, User, UserMessage } from "../../../../type"; // Adjust the import path as necessary
 
 interface State {
-  userData: User | null;
+  userData: Data | null;
   signupStatus: UserMessage | null;
   loginStatus: UserMessage | null;
   isCreating: boolean;
@@ -33,7 +33,7 @@ const authSlice = createSlice({
     setIsCreating(state, action: PayloadAction<boolean>) {
       state.isCreating = action.payload;
     },
-    setUserInfo(state, action: PayloadAction<User>) {
+    setUserInfo(state, action: PayloadAction<Data>) {
       state.userData = action.payload;
     },
   },

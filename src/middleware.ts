@@ -56,5 +56,5 @@ export function middleware(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/", "/Auth/Login", "/Auth/Signup", "/Auth/Verify-succes"],
+  matcher: ["/Auth/Login", "/Auth/Signup", "/Auth/Verify-succes"],
 };

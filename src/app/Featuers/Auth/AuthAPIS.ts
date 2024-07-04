@@ -24,7 +24,6 @@ export const AuthApi = createApi({
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          dispatch(setUserInfo(data));
         } catch (error) {
           console.error("Fetching user info failed:", error);
         } finally {

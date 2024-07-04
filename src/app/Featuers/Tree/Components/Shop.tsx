@@ -8,12 +8,14 @@ import { TreeInfo } from "../../../../../type";
 import Link from "next/link";
 
 import Image from "next/image";
+import { useGetuserInfoByNameQuery } from "../../Auth/AuthAPIS";
 
 const fetchTreeInfo = async () => {
   const response = await axios.get("/api/Tree/AllTree");
   return response.data;
 };
 const Shop = () => {
+  const { data: userData } = useGetuserInfoByNameQuery();
   const {
     data: feature,
     isLoading,

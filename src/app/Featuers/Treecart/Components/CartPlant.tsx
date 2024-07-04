@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { useSelector } from "react-redux";
 import {
@@ -16,21 +16,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { UserSelector } from "../../Auth/AuthSlice";
 
+import UserRelaod from "@/app/lib/UserRelaod";
+
 const CartPlant = () => {
   const [Id, setId] = useState<string>("");
   //User id fetch
-
-  const [User_id, setUser_id] = useState<string>("");
-  useEffect(() => {
-    const Get_user_Id = localStorage.getItem("Id");
-
-    if (Get_user_Id) {
-      setUser_id(Get_user_Id);
-    }
-  }, []);
+  UserRelaod();
+  const user = useSelector(UserSelector);
 
   const { data: cartdata, isLoading: isCartLoading } = useGetCartItemByIdQuery(
-    User_id!
+    user?._id!
   );
   const Total_Cart_price =
     cartdata &&
