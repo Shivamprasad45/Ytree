@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
@@ -10,14 +10,28 @@ import { soilTypes } from "@/app/lib/Exports";
 const Map = dynamic(() => import("./Map"), { ssr: false });
 const Logtrees = () => {
   const [selectedSoil, setselectedSoil] = useState<string>("");
+  const [_ID, set_ID] = useState<string>("");
+  const [Plaint_id, setPlaint_id] = useState<string>("");
+  const [User_id, setUser_id] = useState<string>("");
+
   const Searchparams = useSearchParams();
-  const _id = Searchparams.get("id");
-  const Plaint_id = Searchparams.get("Plaintid");
-  const User_id = Searchparams.get("userid");
+
+  useEffect(() => {
+    const _id = Searchparams.get("id");
+    const Plaint_id = Searchparams.get("Plaintid");
+    const User_id = Searchparams.get("userid");
+
+    if (_id && Plaint_id && User_id) {
+      set_ID(_id);
+      setPlaint_id(Plaint_id);
+      setUser_id(User_id);
+    }
+  }, []);
+
   const trees = useSelector(MyTreesSelector);
   const About_Mytree = trees?.find(
     (item) =>
-      item._id === _id && item.Plaintid === Plaint_id && item.UserId === User_id
+      item._id === _ID && item.Plaintid === Plaint_id && item.UserId === User_id
   );
   console.log(About_Mytree);
   const onSoilChange = (onSoilChange: string) => {
