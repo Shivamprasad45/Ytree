@@ -37,8 +37,8 @@ export async function Mail({ Email, Emailtype, UserId }: any) {
         : "Please reset your password using the following link",
     html:
       Emailtype === "VERIFY"
-        ? `<b>Verify your email</b><br><a href="http://localhost:3000/api/auth/verify?token=${hashToken}">Verify</a>`
-        : `<b>Reset your password</b><br><a href="http://localhost:3000/api/auth?reset?token=${hashToken}">Reset</a>`,
+        ? `<b>Verify your email</b><br><a href="https://greenfatuer.vercel.app/api/auth/verify?token=${hashToken}">Verify</a>`
+        : `<b>Reset your password</b><br><a href="https://greenfatuer.vercel.app/api/auth?reset?token=${hashToken}">Reset</a>`,
   };
   const info = await transport.sendMail(mailOptions);
   console.log("Message sent: %s", info.messageId);

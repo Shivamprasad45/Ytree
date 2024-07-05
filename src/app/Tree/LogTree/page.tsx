@@ -1,9 +1,28 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 
 import dynamic from "next/dynamic";
-const Map = dynamic(() => import("../Map"), { ssr: false });
+import { useSearchParams } from "next/navigation";
+import { useSelector } from "react-redux";
+import { MyTreesSelector } from "@/app/Featuers/TreeOrder/TreeOrderSlice";
+import { soilTypes } from "@/app/lib/Exports";
+
+const Map = dynamic(() => import("./Map"), { ssr: false });
 const Logtrees = () => {
+  const [selectedSoil, setselectedSoil] = useState<string>("");
+  const Searchparams = useSearchParams();
+  const _id = Searchparams.get("id");
+  const Plaint_id = Searchparams.get("Plaintid");
+  const User_id = Searchparams.get("userid");
+  const trees = useSelector(MyTreesSelector);
+  const About_Mytree = trees?.find(
+    (item) =>
+      item._id === _id && item.Plaintid === Plaint_id && item.UserId === User_id
+  );
+  console.log(About_Mytree);
+  const onSoilChange = (onSoilChange: string) => {
+    setselectedSoil(onSoilChange);
+  };
   return (
     <div>
       <div className="relative flex size-full min-h-screen flex-col   group/design-root overflow-x-hidden">
@@ -25,10 +44,10 @@ const Logtrees = () => {
                 />
                 <div className="flex flex-col justify-center">
                   <p className="text-[#111811] text-base font-medium leading-normal line-clamp-1">
-                    Swiss Cheese Plant
+                    {About_Mytree?.name}
                   </p>
                   <p className="text-[#608562] text-sm font-normal leading-normal line-clamp-2">
-                    Monstera deliciosa
+                    {About_Mytree?.age}
                   </p>
                 </div>
               </div>
@@ -39,27 +58,25 @@ const Logtrees = () => {
                 <Map />
               </div>
               <div className="flex max-w-[480px] flex-1 flex-wrap items-end gap-4 px-4 py-3">
-                <label className="flex flex-col min-w-40 flex-1">
-                  <p className="text-[#111811] text-base font-medium leading-normal pb-2">
-                    Latitude
-                  </p>
-                  <input
-                    className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#111811] focus:outline-0 focus:ring-0 border-none bg-[#eaf0ea] focus:border-none h-14 placeholder:text-[#608562] p-4 text-base font-normal leading-normal"
-                    value=""
-                  />
-                </label>
+                <div>
+                  <label htmlFor="soilType">Select Soil Type:</label>
+                  <select
+                    id="soilType"
+                    value={selectedSoil}
+                    onChange={(e) => onSoilChange(e.target.value)}
+                  >
+                    <option value="" disabled>
+                      Select soil type
+                    </option>
+                    {soilTypes.map((soilType) => (
+                      <option key={soilType} value={soilType}>
+                        {soilType}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
-              <div className="flex max-w-[480px] flex-1 flex-wrap items-end gap-4 px-4 py-3">
-                <label className="flex flex-col min-w-40 flex-1">
-                  <p className="text-[#111811] text-base font-medium leading-normal pb-2">
-                    Longitude
-                  </p>
-                  <input
-                    className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#111811] focus:outline-0 focus:ring-0 border-none bg-[#eaf0ea] focus:border-none h-14 placeholder:text-[#608562] p-4 text-base font-normal leading-normal"
-                    value=""
-                  />
-                </label>
-              </div>
+              <div className="flex max-w-[480px] flex-1 flex-wrap items-end gap-4 px-4 py-3"></div>
               <div className="flex px-4 py-3">
                 <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 flex-1 bg-[#4cae4f] text-[#111811] text-sm font-bold leading-normal tracking-[0.015em]">
                   <span className="truncate">Save Location</span>

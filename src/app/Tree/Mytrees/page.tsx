@@ -3,9 +3,6 @@
 import MaxWidthRappers from "@/components/MaxWidthRapper";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-
 import Image from "next/image";
 import React from "react";
 import { IPlantProfile } from "../../../../type";
@@ -13,23 +10,15 @@ import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-
-const fetchTreeInfo = async () => {
-  const response = await axios.get(`/api/Tree/Mytree`);
-  return response.data;
-};
+import { useGetMyTreeInfoBy_idQuery } from "@/app/Featuers/TreeOrder/TreeOrderServices";
 
 const Page = () => {
   const {
     data: feature,
     isLoading,
     isError,
-  } = useQuery({
-    queryKey: ["treeInfo"],
-    queryFn: fetchTreeInfo,
-  });
+  } = useGetMyTreeInfoBy_idQuery("6686a511fc13ae2e6f2344fe");
 
-  console.log(feature, "Feature");
   if (isLoading) {
     return (
       <MaxWidthRappers>
@@ -116,7 +105,7 @@ const Page = () => {
                                   <Button>
                                     {" "}
                                     <Link
-                                      href={`/Tree/LogTree/${artwork._id}/${artwork.UserId}`}
+                                      href={`/Tree/LogTree?id=${artwork._id}&Plaintid=${artwork.Plaintid}&userid=${artwork.UserId}`}
                                     >
                                       {" "}
                                       Planted
@@ -141,7 +130,6 @@ const Page = () => {
               </div>
             </div>
           </div>
-          {/* Bottom Navbar for small screens */}
         </main>
       </MaxWidthRappers>
     </div>

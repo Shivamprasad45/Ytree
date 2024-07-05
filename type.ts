@@ -85,6 +85,7 @@ export interface TreeCarts {
 }
 
 export interface InMytrees {
+  Plaintid: string;
   UserId: string;
   imageUrl: string;
   name: string;
@@ -93,9 +94,16 @@ export interface InMytrees {
 }
 export interface IPlantProfile {
   _id: string;
+  Plaintid: string;
   UserId: string;
   imageUrl: string;
   name: string;
   age: string;
   status: number;
 }
+export interface IPlantProfile_Get_One {
+  _id: string;
+  Plaintid: string;
+  UserId: string;
+}
+

@@ -5,7 +5,7 @@ const cartSchema = new Schema({
     type: String,
     required: true,
   },
-  Plant_id: { type: String, required: true },
+  Plaintid: { type: String, required: true },
   commonName: { type: String, required: true },
   scientificName: { type: String, required: true },
   description: { type: String, required: true },
