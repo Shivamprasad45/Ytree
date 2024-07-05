@@ -30,6 +30,9 @@ const nextConfig = {
       "cdn.usegalileo.ai",
     ],
   },
+  experimental: {
+    missingSuspenseWithCSRBailout: false,
+  },
 };
 
 export default nextConfig;
