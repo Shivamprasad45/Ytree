@@ -1,7 +1,7 @@
 import Tree from "@/Models/TreeCollection";
 import DbConnect from "@/Utils/mongooesConnect";
 import { NextRequest, NextResponse } from "next/server";
-
+export const dynamic = "force-dynamic";
 export async function GET(req: NextRequest) {
   try {
     await DbConnect();
@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
     if (!treeDetails) {
       return NextResponse.json({ error: "Tree not found" }, { status: 404 });
     }
-   
+
     return NextResponse.json(treeDetails, { status: 200 });
   } catch (error) {
     console.error("Error fetching tree details:", error);

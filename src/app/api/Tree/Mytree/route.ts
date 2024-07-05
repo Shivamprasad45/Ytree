@@ -1,7 +1,7 @@
 import Mytree from "@/Models/Mytree";
 import DbConnect from "@/Utils/mongooesConnect";
 import { NextRequest, NextResponse } from "next/server";
-
+export const dynamic = "force-dynamic";
 export async function GET(req: NextRequest): Promise<NextResponse> {
   try {
     // Establish database connection

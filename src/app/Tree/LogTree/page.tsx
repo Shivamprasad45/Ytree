@@ -13,9 +13,7 @@ const Logtrees = () => {
   const [_ID, set_ID] = useState<string>("");
   const [Plaint_id, setPlaint_id] = useState<string>("");
   const [User_id, setUser_id] = useState<string>("");
-
   const Searchparams = useSearchParams();
-
   useEffect(() => {
     const _id = Searchparams.get("id");
     const Plaint_id = Searchparams.get("Plaintid");
@@ -26,7 +24,7 @@ const Logtrees = () => {
       setPlaint_id(Plaint_id);
       setUser_id(User_id);
     }
-  }, []);
+  }, [Searchparams]);
 
   const trees = useSelector(MyTreesSelector);
   const About_Mytree = trees?.find(
