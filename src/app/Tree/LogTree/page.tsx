@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
@@ -36,7 +36,7 @@ const Logtrees = () => {
     setselectedSoil(onSoilChange);
   };
   return (
-    <div>
+    <Suspense>
       <div className="relative flex size-full min-h-screen flex-col   group/design-root overflow-x-hidden">
         <div className="layout-container flex h-full grow flex-col">
           <div className="px-40 flex flex-1 justify-center py-5">
@@ -98,7 +98,7 @@ const Logtrees = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Suspense>
   );
 };
 
