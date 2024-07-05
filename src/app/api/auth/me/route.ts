@@ -1,4 +1,3 @@
-"use server";
 import Signup from "@/Models/SignupModel";
 export const dynamic = "force-dynamic";
 import DbConnect from "@/Utils/mongooesConnect";
