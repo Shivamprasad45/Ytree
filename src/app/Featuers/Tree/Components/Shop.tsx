@@ -9,6 +9,7 @@ import Link from "next/link";
 
 import Image from "next/image";
 import { useGetuserInfoByNameQuery } from "../../Auth/AuthAPIS";
+import Loading from "@/app/Loading/Loading";
 
 const fetchTreeInfo = async () => {
   const response = await axios.get("/api/Tree/AllTree");
@@ -27,9 +28,9 @@ const Shop = () => {
 
   if (isLoading) {
     return (
-      <MaxWidthRappers>
-        <div>....Loading</div>
-      </MaxWidthRappers>
+      <div>
+        <Loading />
+      </div>
     );
   }
 

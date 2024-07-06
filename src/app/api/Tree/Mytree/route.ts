@@ -25,7 +25,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const treeData = await Mytree.find({ UserId: userId });
 
     // Log the fetched data for debugging
-    console.log(treeData, "Tree data");
 
     // Check if no data was found
     if (treeData.length === 0) {

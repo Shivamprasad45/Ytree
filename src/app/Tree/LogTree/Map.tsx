@@ -1,16 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  useMap,
-  useMapEvent,
-} from "react-leaflet";
+import React, { useState } from "react";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { Button } from "@/components/ui/button";
+import { useDispatch } from "react-redux";
+import { Use_current_location } from "@/app/Featuers/TreeOrder/TreeOrderSlice";
 
 // Create a custom icon
 const customIcon = new L.Icon({
@@ -25,46 +22,25 @@ const customIcon = new L.Icon({
   shadowAnchor: [20, 20], // Point of the shadow
 });
 
-// MapClickHandler Component
-const MapClickHandler: React.FC<{
-  onMapClick: (latlng: [number, number]) => void;
-}> = ({ onMapClick }) => {
-  useMapEvent("click", (event) => {
-    onMapClick([event.latlng.lat, event.latlng.lng]);
-  });
-  return null;
-};
-
-// MapViewUpdater Component
-const MapViewUpdater: React.FC<{ center: [number, number] | null }> = ({
-  center,
-}) => {
+const MapViewUpdater = ({ coords }: { coords: [number, number] }) => {
   const map = useMap();
-
-  useEffect(() => {
-    if (center) {
-      map.setView(center, map.getZoom());
-    }
-  }, [center, map]);
-
+  map.setView(coords, 13);
   return null;
 };
 
 const Map: React.FC = () => {
-  const [markers, setMarkers] = useState<[number, number][]>([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchResult, setSearchResult] = useState<[number, number] | null>(
-    null
-  );
+  const dispatch = useDispatch();
   const [currentLocation, setCurrentLocation] = useState<
     [number, number] | null
   >(null);
   const [currentLocationInfo, setCurrentLocationInfo] = useState<string>("");
 
-  useEffect(() => {
+  const handleMapClick = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
+          console.log(position.coords.latitude, "lat");
+          console.log(position.coords.longitude, "lon");
           const coords: [number, number] = [
             position.coords.latitude,
             position.coords.longitude,
@@ -76,9 +52,16 @@ const Map: React.FC = () => {
             `https://nominatim.openstreetmap.org/reverse?lat=${coords[0]}&lon=${coords[1]}&format=json`
           );
           const data = await response.json();
-
+          console.log("clicked");
           if (data && data.display_name) {
             setCurrentLocationInfo(data.display_name);
+            dispatch(
+              Use_current_location({
+                long: coords[1], // Longitude
+                late: coords[0], // Latitude
+                Address: data.display_name,
+              })
+            );
           } else {
             setCurrentLocationInfo("No area information available.");
           }
@@ -88,38 +71,12 @@ const Map: React.FC = () => {
         }
       );
     }
-  }, []);
-
-  const handleSearch = async () => {
-    if (!searchQuery) return;
-
-    const response = await fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&q=${searchQuery}`
-    );
-    const data = await response.json();
-
-    if (data && data.length > 0) {
-      const { lat, lon } = data[0];
-
-      setSearchResult([parseFloat(lat), parseFloat(lon)]);
-    }
   };
 
-  const handleMapClick = (latlng: [number, number]) => {
-    setMarkers([...markers, latlng]);
-  };
+  console.log(currentLocation, currentLocationInfo, "All Inflammation");
 
   return (
     <div>
-      <div>
-        <input
-          type="text"
-          placeholder="Search for a place"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <button onClick={handleSearch}>Search</button>
-      </div>
       <MapContainer
         center={[51.505, -0.09]}
         zoom={13}
@@ -129,35 +86,22 @@ const Map: React.FC = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-        <MapClickHandler onMapClick={handleMapClick} />
-        <MapViewUpdater center={searchResult || currentLocation} />
+
         {currentLocation && (
-          <Marker position={currentLocation} icon={customIcon}>
-            <Popup>
-              Your Current Location: <br />
-              Latitude: {currentLocation[0]}, Longitude: {currentLocation[1]}
-              <br />
-              Area: {currentLocationInfo}
-            </Popup>
-          </Marker>
+          <>
+            <Marker position={currentLocation} icon={customIcon}>
+              <Popup>
+                Your Current Location: <br />
+                Latitude: {currentLocation[0]}, Longitude: {currentLocation[1]}
+                <br />
+                Area: {currentLocationInfo}
+              </Popup>
+            </Marker>
+            <MapViewUpdater coords={currentLocation} />
+          </>
         )}
-        {searchResult && (
-          <Marker position={searchResult} icon={customIcon}>
-            <Popup>
-              Searched Location: <br />
-              Latitude: {searchResult[0]}, Longitude: {searchResult[1]}
-            </Popup>
-          </Marker>
-        )}
-        {markers.map((marker, index) => (
-          <Marker key={index} position={marker} icon={customIcon}>
-            <Popup>
-              Marker {index + 1}: <br />
-              Latitude: {marker[0]}, Longitude: {marker[1]}
-            </Popup>
-          </Marker>
-        ))}
       </MapContainer>
+      <Button onClick={handleMapClick}>Use current location</Button>
     </div>
   );
 };

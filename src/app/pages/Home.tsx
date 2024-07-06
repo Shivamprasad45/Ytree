@@ -1,7 +1,7 @@
 "use client";
 import MaxWidthRappers from "@/components/MaxWidthRapper";
 import React, { useEffect, useState } from "react";
-
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
 import { TreeInfo } from "../../../type";
@@ -20,13 +20,19 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useGetTreeInfoQuery } from "../Featuers/Tree/TreeServices";
 
 import UserRelaod from "../lib/UserRelaod";
+import { Loader, LoaderCircle } from "lucide-react";
+import Loading from "../Loading/Loading";
 
 const Homes = () => {
   UserRelaod();
   const { data: feature, isLoading, isError } = useGetTreeInfoQuery();
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
   }
 
   if (isError) {

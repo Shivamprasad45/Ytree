@@ -1,14 +1,8 @@
 // services/authApi.ts
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {
-  Data,
-  EnterUser,
-  IPlantProfile,
-  LoginUser,
-  User,
-  UserMessage,
-} from "../../../../type";
+import { IPlantProfile, Plant_coords, UserMessage } from "../../../../type";
 import { MyTrees_Dis } from "./TreeOrderSlice";
+import { toast } from "sonner";
 
 // Define a service using a base URL and expected endpoints
 export const TreeOrder_API = createApi({
@@ -30,9 +24,31 @@ export const TreeOrder_API = createApi({
         }
       },
     }),
+    Save_plants_coords: builder.mutation<UserMessage, Plant_coords>({
+      query: (data) => ({
+        url: `/Coords`,
+        method: "POST",
+        body: data,
+      }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          if (data.success) {
+            toast(data.message);
+          }
+          if (data.error) {
+            toast(data.message);
+          }
+        } catch (error) {
+          console.error("Fetching user info failed:", error);
+        } finally {
+        }
+      },
+    }),
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetMyTreeInfoBy_idQuery } = TreeOrder_API;
+export const { useGetMyTreeInfoBy_idQuery, useSave_plants_coordsMutation } =
+  TreeOrder_API;

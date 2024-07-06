@@ -2,7 +2,6 @@
 import React from "react";
 import Image from "next/image";
 import MaxWidthRappers from "@/components/MaxWidthRapper";
-import { LogOut, TreePalm, User2 } from "lucide-react";
 
 const page = () => {
   return (

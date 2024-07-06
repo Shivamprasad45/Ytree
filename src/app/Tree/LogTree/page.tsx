@@ -4,8 +4,13 @@ import React, { Suspense, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { useSelector } from "react-redux";
-import { MyTreesSelector } from "@/app/Featuers/TreeOrder/TreeOrderSlice";
+import {
+  Coords_Selector,
+  MyTreesSelector,
+} from "@/app/Featuers/TreeOrder/TreeOrderSlice";
 import { soilTypes } from "@/app/lib/Exports";
+import { Plant_coords } from "../../../../type";
+import { useSave_plants_coordsMutation } from "@/app/Featuers/TreeOrder/TreeOrderServices";
 
 const Map = dynamic(() => import("./Map"), { ssr: false });
 const Logtrees = () => {
@@ -31,9 +36,33 @@ const Logtrees = () => {
     (item) =>
       item._id === _ID && item.Plaintid === Plaint_id && item.UserId === User_id
   );
-  console.log(About_Mytree);
+  console.log(About_Mytree, "About my tree");
   const onSoilChange = (onSoilChange: string) => {
     setselectedSoil(onSoilChange);
+  };
+  const Plants_CurrentLocations = useSelector(Coords_Selector);
+  console.log(Plants_CurrentLocations?.Address, "plants Add");
+  const Save_plant_coords: Plant_coords = {
+    _id: About_Mytree?._id || "",
+    commonName: About_Mytree?.name || "",
+    Plant_id: About_Mytree?.Plaintid || "",
+    imageURL: About_Mytree?.imageUrl || "",
+    UserId: About_Mytree?.UserId || "",
+    Plant_Addresses: Plants_CurrentLocations?.Address || "",
+    long: Plants_CurrentLocations?.long!,
+    late: Plants_CurrentLocations?.late!,
+  };
+
+  //For RTK for query
+  const [Save_coords, { isLoading: isLoading_coords }] =
+    useSave_plants_coordsMutation();
+
+  const Tree_coords_Save = () => {
+    try {
+      Save_coords(Save_plant_coords);
+    } catch (error) {
+      console.log("Fail to save coords");
+    }
   };
   return (
     <Suspense>
@@ -91,7 +120,9 @@ const Logtrees = () => {
               <div className="flex max-w-[480px] flex-1 flex-wrap items-end gap-4 px-4 py-3"></div>
               <div className="flex px-4 py-3">
                 <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 flex-1 bg-[#4cae4f] text-[#111811] text-sm font-bold leading-normal tracking-[0.015em]">
-                  <span className="truncate">Save Location</span>
+                  <span className="truncate" onClick={() => Tree_coords_Save()}>
+                    {isLoading_coords ? "....Saving" : "Save"}
+                  </span>
                 </button>
               </div>
             </div>

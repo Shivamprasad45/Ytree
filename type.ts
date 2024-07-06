@@ -107,3 +107,18 @@ export interface IPlantProfile_Get_One {
   UserId: string;
 }
 
+export interface Plant_coords {
+  _id: string;
+  UserId: string;
+  Plant_id: string;
+  commonName: string;
+  long: number;
+  late: number;
+  imageURL: string;
+  Plant_Addresses: string;
+}
+export interface Coords {
+  long: number;
+  late: number;
+  Address: string;
+}

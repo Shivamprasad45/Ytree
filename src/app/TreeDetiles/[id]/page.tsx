@@ -17,6 +17,7 @@ import Map from "@/app/Components/Mapregion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import UserRelaod from "@/app/lib/UserRelaod";
+import Loading from "@/app/Loading/Loading";
 
 const Page = ({ params }: { params: { id: string } }) => {
   UserRelaod();
@@ -65,7 +66,11 @@ const Page = ({ params }: { params: { id: string } }) => {
     }
   };
   if (isTreeDetailsLoading) {
-    return <div>....Loading</div>;
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
   }
   if (isFetching) {
     return <div>...Fetching</div>;
