@@ -1,7 +1,10 @@
 import mongoose, { Schema } from "mongoose";
-import { string } from "zod";
 
-const MytreeSchema = new Schema({
+export const MytreeSchema = new Schema({
+  _id: {
+    type: String,
+    required: true,
+  },
   Plaintid: {
     type: String,
     required: true,
@@ -19,7 +22,7 @@ const MytreeSchema = new Schema({
     required: true,
   },
   age: {
-    type: String,
+    type: Date,
     required: true,
   },
   status: {

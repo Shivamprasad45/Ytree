@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const cartSchema = new Schema({
+export const cartSchema = new Schema({
   UserId: {
     type: String,
     required: true,

@@ -49,7 +49,7 @@ export default function SignForm() {
     console.log("OK i error");
     toast(Signupdata.error);
   }
-  const dispatch: AppDispatch = useDispatch();
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.

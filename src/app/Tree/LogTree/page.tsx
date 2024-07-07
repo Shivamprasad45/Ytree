@@ -88,7 +88,7 @@ const Logtrees = () => {
                     {About_Mytree?.name}
                   </p>
                   <p className="text-[#608562] text-sm font-normal leading-normal line-clamp-2">
-                    {About_Mytree?.age}
+                    {About_Mytree?.age.toString()}
                   </p>
                 </div>
               </div>

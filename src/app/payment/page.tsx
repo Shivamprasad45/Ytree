@@ -3,6 +3,9 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { cartDataSelector } from "../Featuers/Treecart/TreeSliec";
 import { Button } from "@/components/ui/button";
+import { Before_PlantOrder_Selector } from "../Featuers/TreeOrder/TreeOrderSlice";
+import { useSave_plants_OrderMutation } from "../Featuers/TreeOrder/TreeOrderServices";
+import { Plant_order } from "../../../type";
 
 declare global {
   interface Window {
@@ -12,7 +15,8 @@ declare global {
 
 const Payment = () => {
   const Cart_selector = useSelector(cartDataSelector);
-
+  const plant_order = useSelector(Before_PlantOrder_Selector);
+  const [Comformpayment] = useSave_plants_OrderMutation();
   // Total_price
   const Total_Cart_price = Cart_selector?.reduce(
     (acc, item) => acc + item.price * item.quantity,
@@ -78,15 +82,28 @@ const Payment = () => {
         image:
           "https://img.freepik.com/free-vector/colorful-bird-illustration-gradient_343694-1741.jpg?w=740&t=st=1719754745~exp=1719755345~hmac=68459300e94e40e2f7c06675764c5e72f0d06b5fda351160a6dd9ce5d48e9246",
         order_id: order.id,
-        handler: function (response: any) {
+        handler: async function (response: any) {
           // Validate payment at server - using webhooks is a better idea.
-          alert(response.razorpay_payment_id);
-          alert(response.razorpay_order_id);
-          alert(response.razorpay_signature);
+
           alert(
             `Payment successful. Razorpay payment ID: ${response.razorpay_payment_id}`
           );
+          try {
+            if (!plant_order) {
+              throw new Error("Plant order is undefined");
+            }
+
+            const Order_data: Plant_order = {
+              ...plant_order,
+              Orderid: response.razorpay_order_id,
+            };
+
+            await Comformpayment(Order_data);
+          } catch (error) {
+            alert(error);
+          }
         },
+
         prefill: {
           name: "John Doe",
           email: "john.doe@example.com",

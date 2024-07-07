@@ -98,7 +98,7 @@ export interface IPlantProfile {
   UserId: string;
   imageUrl: string;
   name: string;
-  age: string;
+  age: number;
   status: number;
 }
 export interface IPlantProfile_Get_One {
@@ -121,4 +121,22 @@ export interface Coords {
   long: number;
   late: number;
   Address: string;
+}
+
+interface Addresses {
+  firstName: string;
+  lastName: string;
+  email: string;
+  address: string;
+  phone: string;
+  city: string;
+  state: string;
+  zipCode: string;
+}
+
+export interface Plant_order {
+  Addresss: Addresses;
+  Orderid: string;
+  plants: TreeCart[];
+  User_name: string;
 }

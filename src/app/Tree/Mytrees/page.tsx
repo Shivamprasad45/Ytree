@@ -2,22 +2,23 @@
 
 import MaxWidthRappers from "@/components/MaxWidthRapper";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-
 import Image from "next/image";
 import React from "react";
 import { IPlantProfile } from "../../../../type";
 import Link from "next/link";
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useGetMyTreeInfoBy_idQuery } from "@/app/Featuers/TreeOrder/TreeOrderServices";
+import { useSelector } from "react-redux";
+import { UserSelector } from "@/app/Featuers/Auth/AuthSlice";
 
 const Page = () => {
+  const user = useSelector(UserSelector);
   const {
     data: feature,
     isLoading,
     isError,
-  } = useGetMyTreeInfoBy_idQuery("6686a511fc13ae2e6f2344fe");
+  } = useGetMyTreeInfoBy_idQuery(user?._id!);
 
   if (isLoading) {
     return (
@@ -30,6 +31,13 @@ const Page = () => {
   if (isError) {
     return <p>Error: Failed to fetch tree information</p>;
   }
+
+  const getDaysOld = (age: string | number | Date) => {
+    const artworkAge = new Date(age).getTime();
+    const currentTime = Date.now();
+    const timeDifference = currentTime - artworkAge;
+    return Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+  };
 
   return (
     <div>
@@ -60,7 +68,7 @@ const Page = () => {
                 </div>
               </div>
               <div className="mt-6">
-                <ScrollArea className="w-full md:w-[70vw] whitespace-nowrap rounded-md ">
+                <ScrollArea className="w-full md:w-[70vw] whitespace-nowrap rounded-md">
                   <div className="flex w-max space-x-4 p-4">
                     {feature &&
                       feature.map((artwork: IPlantProfile) => (
@@ -83,43 +91,43 @@ const Page = () => {
                                   <Badge>Pending</Badge>
                                 </div>
                               ) : (
-                                (
+                                artwork.status === 1 && (
                                   <div className="text-neutral-400 text-sm font-bold font-['Inria_Sans'] leading-none">
-                                    {artwork.age} months old
+                                    {getDaysOld(artwork.age).toLocaleString()}{" "}
+                                    days old
                                   </div>
-                                ) && artwork.status === 1
-                              )}{" "}
+                                )
+                              )}
                               {artwork.status === 1 ? (
                                 <div>
                                   <Badge>Shipping</Badge>
                                 </div>
                               ) : (
-                                (
+                                artwork.status === 2 && (
                                   <div className="text-neutral-400 text-sm font-bold font-['Inria_Sans'] leading-none">
-                                    {artwork.age} months old
+                                    {getDaysOld(artwork.age).toLocaleString()}{" "}
+                                    days old
                                   </div>
-                                ) && artwork.status === 2
-                              )}{" "}
+                                )
+                              )}
                               {artwork.status === 2 ? (
                                 <div>
                                   <Button>
-                                    {" "}
                                     <Link
                                       href={`/Tree/LogTree?id=${artwork._id}&Plaintid=${artwork.Plaintid}&userid=${artwork.UserId}`}
                                     >
-                                      {" "}
                                       Planted
                                     </Link>
                                   </Button>
                                 </div>
                               ) : (
-                                (
+                                artwork.status === 3 && (
                                   <div className="text-neutral-400 text-sm font-bold font-['Inria_Sans'] leading-none">
-                                    {artwork.age} months old
+                                    {getDaysOld(artwork.age).toLocaleString()}{" "}
+                                    days old
                                   </div>
-                                ) && artwork.status === 3
+                                )
                               )}
-                              {artwork.status == 3 && <div>{artwork.age}</div>}
                             </div>
                           </Link>
                         </div>

@@ -228,7 +228,7 @@ const CartPlant = () => {
                       </p>
                     </div>
                     <Button className="text-base leading-none w-full py-5 bg-gray-800 border-gray-800 border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 text-white">
-                      <Link href="/payment">Checkout</Link>
+                      <Link href="/Tree/Checkout">Checkout</Link>
                     </Button>
                   </div>
                 </div>

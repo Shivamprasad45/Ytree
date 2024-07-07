@@ -51,8 +51,9 @@ const Map: React.FC = () => {
           const response = await fetch(
             `https://nominatim.openstreetmap.org/reverse?lat=${coords[0]}&lon=${coords[1]}&format=json`
           );
+
           const data = await response.json();
-          console.log("clicked");
+          console.log(data, "clicked");
           if (data && data.display_name) {
             setCurrentLocationInfo(data.display_name);
             dispatch(
