@@ -86,31 +86,18 @@ const Page = () => {
                               <div className="text-black text-xl font-bold font-['Inria_Sans'] leading-normal">
                                 {artwork.name.slice(0, 10)}
                               </div>
-                              {artwork.status === 0 ? (
+                              {artwork.status === 0 && (
                                 <div>
                                   <Badge>Pending</Badge>
                                 </div>
-                              ) : (
-                                artwork.status === 1 && (
-                                  <div className="text-neutral-400 text-sm font-bold font-['Inria_Sans'] leading-none">
-                                    {getDaysOld(artwork.age).toLocaleString()}{" "}
-                                    days old
-                                  </div>
-                                )
                               )}
-                              {artwork.status === 1 ? (
+                              {artwork.status === 1 && (
                                 <div>
                                   <Badge>Shipping</Badge>
                                 </div>
-                              ) : (
-                                artwork.status === 2 && (
-                                  <div className="text-neutral-400 text-sm font-bold font-['Inria_Sans'] leading-none">
-                                    {getDaysOld(artwork.age).toLocaleString()}{" "}
-                                    days old
-                                  </div>
-                                )
                               )}
-                              {artwork.status === 2 ? (
+
+                              {artwork.status === 2 && (
                                 <div>
                                   <Button>
                                     <Link
@@ -120,13 +107,12 @@ const Page = () => {
                                     </Link>
                                   </Button>
                                 </div>
-                              ) : (
-                                artwork.status === 3 && (
-                                  <div className="text-neutral-400 text-sm font-bold font-['Inria_Sans'] leading-none">
-                                    {getDaysOld(artwork.age).toLocaleString()}{" "}
-                                    days old
-                                  </div>
-                                )
+                              )}
+                              {artwork.status === 3 && (
+                                <div className="text-neutral-400 text-sm font-bold font-['Inria_Sans'] leading-none">
+                                  {getDaysOld(artwork.age).toLocaleString()}{" "}
+                                  days old
+                                </div>
                               )}
                             </div>
                           </Link>

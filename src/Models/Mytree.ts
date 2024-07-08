@@ -1,10 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
 export const MytreeSchema = new Schema({
-  _id: {
-    type: String,
-    required: true,
-  },
   Plaintid: {
     type: String,
     required: true,

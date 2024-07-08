@@ -89,7 +89,7 @@ export interface InMytrees {
   UserId: string;
   imageUrl: string;
   name: string;
-  age: string;
+  age: number;
   status: number;
 }
 export interface IPlantProfile {

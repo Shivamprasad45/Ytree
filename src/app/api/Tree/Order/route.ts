@@ -2,7 +2,7 @@ import cart from "@/Models/Cartmodel";
 import Order from "@/Models/CheckoutSchema";
 import DbConnect from "@/Utils/mongooesConnect";
 import { NextRequest, NextResponse } from "next/server";
-import { IPlantProfile, Plant_order, TreeCarts } from "../../../../../type";
+import { InMytrees, TreeCarts } from "../../../../../type";
 import Mytree from "@/Models/Mytree";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
@@ -21,8 +21,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     // Assuming TreeCarts and IPlantProfile are properly defined interfaces
     treeData[0].plants.forEach(async (item: TreeCarts) => {
       for (let i = 0; i < item.quantity; i++) {
-        const mytreedata: IPlantProfile = {
-          _id: item._id,
+        const mytreedata: InMytrees = {
           Plaintid: item.Plant_id,
           UserId: item.UserId,
           age: Date.now(),
