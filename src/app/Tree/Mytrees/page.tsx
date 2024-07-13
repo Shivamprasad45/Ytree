@@ -1,9 +1,8 @@
 "use client";
-
 import MaxWidthRappers from "@/components/MaxWidthRapper";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { IPlantProfile } from "../../../../type";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
@@ -14,12 +13,16 @@ import { UserSelector } from "@/app/Featuers/Auth/AuthSlice";
 
 const Page = () => {
   const user = useSelector(UserSelector);
+
   const {
     data: feature,
     isLoading,
     isError,
+    refetch,
   } = useGetMyTreeInfoBy_idQuery(user?._id!);
-
+  useEffect(() => {
+    refetch();
+  }, []);
   if (isLoading) {
     return (
       <MaxWidthRappers>
@@ -74,11 +77,19 @@ const Page = () => {
                       feature.map((artwork: IPlantProfile) => (
                         <div
                           key={artwork._id}
-                          className="w-32 h-60 flex flex-col justify-center items-start gap-2.5"
+                          className={`w-32 h-60 flex flex-col justify-center items-start gap-2.5   `}
                         >
-                          <Link href="/Tree/Aboutmytree">
+                          <Link
+                            href={
+                              artwork.status === 3
+                                ? `/Tree/Aboutmytree/${artwork.findtree_id}`
+                                : "/Tree/Mytrees"
+                            }
+                          >
                             <img
-                              className="w-32 h-32 rounded-lg"
+                              className={`w-32 h-32 rounded-lg  ${
+                                artwork.status === 3 ? "border-2" : ""
+                              }`}
                               src="https://images.unsplash.com/photo-1454425064867-5ba516caf601?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8cGxhbnR8fHx8fHwxNzE3NTgzMDI3&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080"
                               alt="Plant"
                             />

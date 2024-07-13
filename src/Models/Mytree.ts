@@ -5,6 +5,10 @@ export const MytreeSchema = new Schema({
     type: String,
     required: true,
   },
+  findtree_id: {
+    type: String,
+    required: true,
+  },
   UserId: {
     type: String,
     required: true,

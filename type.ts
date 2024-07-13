@@ -86,6 +86,7 @@ export interface TreeCarts {
 
 export interface InMytrees {
   Plaintid: string;
+  findtree_id: string;
   UserId: string;
   imageUrl: string;
   name: string;
@@ -95,6 +96,7 @@ export interface InMytrees {
 export interface IPlantProfile {
   _id: string;
   Plaintid: string;
+  findtree_id: string;
   UserId: string;
   imageUrl: string;
   name: string;
@@ -109,6 +111,17 @@ export interface IPlantProfile_Get_One {
 
 export interface Plant_coords {
   _id: string;
+  find_id: string;
+  UserId: string;
+  Plant_id: string;
+  commonName: string;
+  long: number;
+  late: number;
+  imageURL: string;
+  Plant_Addresses: string;
+}
+export interface Enter_Plant_coords {
+  find_id: string;
   UserId: string;
   Plant_id: string;
   commonName: string;

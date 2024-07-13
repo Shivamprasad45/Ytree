@@ -2,14 +2,14 @@
 import React, { Suspense, useEffect, useState } from "react";
 
 import dynamic from "next/dynamic";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSelector } from "react-redux";
 import {
   Coords_Selector,
   MyTreesSelector,
 } from "@/app/Featuers/TreeOrder/TreeOrderSlice";
 import { soilTypes } from "@/app/lib/Exports";
-import { Plant_coords } from "../../../../type";
+import { Enter_Plant_coords, Plant_coords } from "../../../../type";
 import { useSave_plants_coordsMutation } from "@/app/Featuers/TreeOrder/TreeOrderServices";
 
 const Map = dynamic(() => import("./Map"), { ssr: false });
@@ -19,6 +19,8 @@ const Logtrees = () => {
   const [Plaint_id, setPlaint_id] = useState<string>("");
   const [User_id, setUser_id] = useState<string>("");
   const Searchparams = useSearchParams();
+
+  const route = useRouter();
   useEffect(() => {
     const _id = Searchparams.get("id");
     const Plaint_id = Searchparams.get("Plaintid");
@@ -36,14 +38,14 @@ const Logtrees = () => {
     (item) =>
       item._id === _ID && item.Plaintid === Plaint_id && item.UserId === User_id
   );
-  console.log(About_Mytree, "About my tree");
+
   const onSoilChange = (onSoilChange: string) => {
     setselectedSoil(onSoilChange);
   };
   const Plants_CurrentLocations = useSelector(Coords_Selector);
-  console.log(Plants_CurrentLocations?.Address, "plants Add");
-  const Save_plant_coords: Plant_coords = {
-    _id: About_Mytree?._id || "",
+
+  const Save_plant_coords: Enter_Plant_coords = {
+    find_id: About_Mytree?.findtree_id || "",
     commonName: About_Mytree?.name || "",
     Plant_id: About_Mytree?.Plaintid || "",
     imageURL: About_Mytree?.imageUrl || "",
@@ -54,9 +56,13 @@ const Logtrees = () => {
   };
 
   //For RTK for query
-  const [Save_coords, { isLoading: isLoading_coords }] =
-    useSave_plants_coordsMutation();
-
+  const [
+    Save_coords,
+    { isLoading: isLoading_coords, isSuccess: is_coord_success },
+  ] = useSave_plants_coordsMutation();
+  if (is_coord_success) {
+    route.push("/Tree/Mytrees");
+  }
   const Tree_coords_Save = () => {
     try {
       Save_coords(Save_plant_coords);

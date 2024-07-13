@@ -2,38 +2,62 @@ import Plants_coordinates from "@/Models/CoordinatsPlants";
 import Mytree from "@/Models/Mytree";
 import DbConnect from "@/Utils/mongooesConnect";
 import { NextRequest, NextResponse } from "next/server";
-export async function POST(req: NextRequest, res: NextResponse) {
+import mongoose from "mongoose";
+import { z } from "zod";
+
+// Define a Zod schema for ObjectId validation
+const ObjectIdSchema = z
+  .string()
+  .refine((val) => mongoose.Types.ObjectId.isValid(val), {
+    message: "Invalid ObjectId",
+  });
+
+export async function POST(req: NextRequest) {
   try {
     await DbConnect();
     const Plant_coord_data = await req.json();
-    await Mytree.findByIdAndUpdate(Plant_coord_data._id, {
-      status: 3,
-      age: Date.now(),
-    });
+
+    // Validate the _id field
+
+    const dtat = await Mytree.findOneAndUpdate(
+      { findtree_id: Plant_coord_data.find_id },
+      {
+        status: 3,
+        age: Date.now(),
+      }
+    );
+    console.log(dtat, "clfafsgagh");
     const Coords = await Plants_coordinates.insertMany(Plant_coord_data);
 
     if (!Coords) {
-      return NextResponse.json({ error: "not found" });
+      return NextResponse.json({ error: "not found" }, { status: 404 });
     }
 
     return NextResponse.json({ success: true, message: "Save successfully" });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error fetching tree details:", error);
-    return NextResponse.json({ error: error });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
-export async function GET(req: NextRequest, res: NextResponse) {
+
+export async function GET(req: NextRequest) {
   try {
     await DbConnect();
 
     const id = req.nextUrl.searchParams.get("id");
-    const Coords = await Plants_coordinates.findById(id);
+
+    // Validate the id parameter
+
+    const Coords = await Plants_coordinates.findOne({ find_id: id });
+    console.log(Coords, "coords");
+
     if (!Coords) {
-      return NextResponse.json({ error: "not found" });
+      return NextResponse.json({ error: "not found" }, { status: 404 });
     }
-    return NextResponse.json({ data: Coords });
-  } catch (error) {
+
+    return NextResponse.json(Coords);
+  } catch (error: any) {
     console.error("Error fetching tree details:", error);
-    return NextResponse.json({ error: error });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

@@ -1,9 +1,23 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import MaxWidthRappers from "@/components/MaxWidthRapper";
+import { useAbout_my_treeQuery } from "@/app/Featuers/TreeOrder/TreeOrderServices";
+import Loading from "@/app/Loading/Loading";
 
-const page = () => {
+const Page = ({ params }: { params: { id: string } }) => {
+  const { data, isLoading, isError, refetch } = useAbout_my_treeQuery(
+    params.id!
+  );
+  console.log(data, "Coords");
+  if (isLoading) {
+    return (
+      <div className="">
+        <Loading />
+      </div>
+    );
+  }
+
   return (
     <MaxWidthRappers>
       <div className="flex flex-col md:flex-row justify-between overflow-hidden relative md:justify-start items-start min-h-screen py-2">
@@ -45,7 +59,7 @@ const page = () => {
             <p className="text-sm md:text-base">
               You have funded the planting of 10 trees
             </p>
-            <p className="text-sm md:text-base">Order #12345678</p>
+            <p className="text-sm md:text-base">Order :{data?._id}</p>
           </div>
 
           {/* Tree Location Details */}
@@ -59,8 +73,8 @@ const page = () => {
                 <span className="font-semibold">Planting Region</span>
               </div>
               <div className="flex justify-between text-sm md:text-base mt-2">
-                <span>Pine</span>
-                <span>Oregon, United States</span>
+                <span>{data?.commonName}</span>
+                <span>{data?.Plant_Addresses}</span>
               </div>
             </div>
           </div>
@@ -70,7 +84,11 @@ const page = () => {
             <p className="text-sm md:text-base font-semibold">
               GPS Coordinates
             </p>
-            <p className="text-sm md:text-base">45.5231° N, 122.6765° W</p>
+            <p className="text-sm md:text-base">
+              {data?.long}
+              {"  "}
+              {data?.late}
+            </p>
           </div>
         </div>
       </div>
@@ -80,4 +98,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

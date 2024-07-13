@@ -4,7 +4,7 @@ import DbConnect from "@/Utils/mongooesConnect";
 import { NextRequest, NextResponse } from "next/server";
 import { InMytrees, TreeCarts } from "../../../../../type";
 import Mytree from "@/Models/Mytree";
-
+import shortid from "shortid";
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     // Establish database connection
@@ -21,7 +21,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     // Assuming TreeCarts and IPlantProfile are properly defined interfaces
     treeData[0].plants.forEach(async (item: TreeCarts) => {
       for (let i = 0; i < item.quantity; i++) {
+        const id = shortid.generate();
         const mytreedata: InMytrees = {
+          findtree_id: id,
           Plaintid: item.Plant_id,
           UserId: item.UserId,
           age: Date.now(),

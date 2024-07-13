@@ -1,6 +1,7 @@
 // services/authApi.ts
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
+  Enter_Plant_coords,
   IPlantProfile,
   Plant_coords,
   Plant_order,
@@ -31,7 +32,7 @@ export const TreeOrder_API = createApi({
         }
       },
     }),
-    Save_plants_coords: builder.mutation<UserMessage, Plant_coords>({
+    Save_plants_coords: builder.mutation<UserMessage, Enter_Plant_coords>({
       query: (data) => ({
         url: `/Coords`,
         method: "POST",
@@ -45,7 +46,7 @@ export const TreeOrder_API = createApi({
             toast(data.message);
           }
           if (data.error) {
-            toast(data.message);
+            toast(data.error);
           }
         } catch (error) {
           console.error("Fetching user info failed:", error);
@@ -75,6 +76,21 @@ export const TreeOrder_API = createApi({
         }
       },
     }),
+    About_my_tree: builder.query<Plant_coords, string>({
+      query: (id) => ({
+        url: `/Coords?id=${id}`,
+        method: "GET",
+      }),
+
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+        } catch (error) {
+          console.error("Fetching user info failed:", error);
+        } finally {
+        }
+      },
+    }),
   }),
 });
 
@@ -84,4 +100,5 @@ export const {
   useGetMyTreeInfoBy_idQuery,
   useSave_plants_coordsMutation,
   useSave_plants_OrderMutation,
+  useAbout_my_treeQuery,
 } = TreeOrder_API;

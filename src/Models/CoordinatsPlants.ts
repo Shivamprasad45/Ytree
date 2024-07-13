@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 const Plants_coordinate_Schema = new Schema({
-  _id: {
+  find_id: {
     type: String,
     required: true,
   },
