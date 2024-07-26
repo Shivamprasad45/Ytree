@@ -42,7 +42,10 @@ const Navbar = () => {
       <Link href={"/"}>
         <div className="flex space-x-2 text-sm md:text-lg">
           <span>
-            <PalmtreeIcon />
+            <img
+              src="https://i.postimg.cc/cHCpYFRM/plant2.png"
+              className="w-10 h-8"
+            />
           </span>
           <span>GreenFeauter</span>
         </div>

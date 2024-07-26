@@ -119,17 +119,20 @@ export interface Plant_coords {
   late: number;
   imageURL: string;
   Plant_Addresses: string;
+  subscription: CustomSubscription;
 }
 export interface Enter_Plant_coords {
   find_id: string;
   UserId: string;
   Plant_id: string;
   commonName: string;
-  long: number;
   late: number;
+  long: number;
   imageURL: string;
   Plant_Addresses: string;
+  subscription: CustomSubscription;
 }
+
 export interface Coords {
   long: number;
   late: number;
@@ -152,4 +155,13 @@ export interface Plant_order {
   Orderid: string;
   plants: TreeCart[];
   User_name: string;
+}
+
+export interface CustomSubscription {
+  endpoint: string;
+  expirationTime: number | null;
+  keys: {
+    p256dh: string;
+    auth: string;
+  };
 }

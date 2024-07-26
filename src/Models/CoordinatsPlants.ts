@@ -15,11 +15,18 @@ const Plants_coordinate_Schema = new Schema({
   long: { type: Number, required: true },
   imageURL: { type: String, required: true },
   Plant_Addresses: { type: String, required: true },
+  subscription: {
+    endpoint: String,
+    keys: {
+      p256dh: String,
+      auth: String,
+    },
+  },
 });
 
 // Check if the model already exists to prevent overwriting
 const Plants_coordinates =
-  mongoose.models.Plants_coordinate ||
-  mongoose.model("Plants_coordinate", Plants_coordinate_Schema);
+  mongoose.models.plants_coordinates ||
+  mongoose.model("plants_coordinates", Plants_coordinate_Schema);
 
 export default Plants_coordinates;

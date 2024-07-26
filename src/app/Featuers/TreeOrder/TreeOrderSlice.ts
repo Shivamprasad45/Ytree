@@ -1,6 +1,11 @@
 "use client";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { Coords, IPlantProfile, Plant_order } from "../../../../type";
+import {
+  Coords,
+  CustomSubscription,
+  IPlantProfile,
+  Plant_order,
+} from "../../../../type";
 
 // Adjust the import path as necessary
 
@@ -8,12 +13,14 @@ interface State {
   IPlantProfile: IPlantProfile[] | null;
   Coords: Coords | null;
   Order_before: Plant_order | null;
+  Subcription: CustomSubscription | null;
 }
 
 const initialState: State = {
   IPlantProfile: null,
   Coords: null,
   Order_before: null,
+  Subcription: null,
 };
 
 const OrderSlice = createSlice({
@@ -30,15 +37,26 @@ const OrderSlice = createSlice({
       console.log(action.payload, "Use coords");
       state.Order_before = action.payload;
     },
+    Allow_Notification(state, action: PayloadAction<CustomSubscription>) {
+      console.log(action.payload, "Use coords");
+      state.Subcription = action.payload;
+    },
   },
 });
 
 export default OrderSlice.reducer;
-export const { MyTrees_Dis, Use_current_location, Plant_Order_before } =
-  OrderSlice.actions;
+export const {
+  MyTrees_Dis,
+  Use_current_location,
+  Plant_Order_before,
+  Allow_Notification,
+} = OrderSlice.actions;
 
 export const MyTreesSelector = (state: { order: State }) =>
   state.order.IPlantProfile;
 export const Coords_Selector = (state: { order: State }) => state.order.Coords;
 export const Before_PlantOrder_Selector = (state: { order: State }) =>
   state.order.Order_before;
+export const Allow_Notification_Endpoints_Selector = (state: {
+  order: State;
+}) => state.order.Subcription;
