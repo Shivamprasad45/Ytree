@@ -1,7 +1,7 @@
 "use client";
 import MaxWidthRappers from "@/components/MaxWidthRapper";
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+
 import { Button } from "@/components/ui/button";
 
 import { TreeInfo } from "../../../type";
@@ -14,14 +14,15 @@ import {
 } from "@/components/ui/accordion";
 import Link from "next/link";
 
-import { useGetuserInfoByNameQuery } from "../Featuers/Auth/AuthAPIS";
+
 
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useGetTreeInfoQuery } from "../Featuers/Tree/TreeServices";
 
 import UserRelaod from "../lib/UserRelaod";
-import { Loader, LoaderCircle } from "lucide-react";
+import { Loader } from "lucide-react";
 import Loading from "../Loading/Loading";
+import Image from "next/image";
 
 const Homes = () => {
   UserRelaod();
@@ -57,7 +58,9 @@ const Homes = () => {
                   </span>
                 </div>
                 <div className="mt-4">
-                  <Button className="">Shop plant</Button>
+                  <Button className="" > 
+                    <Link href='/Tree/Shop'>Shop plant</Link>
+                    </Button>
                 </div>
               </div>
             </div>
@@ -81,10 +84,11 @@ const Homes = () => {
                       >
                         <Link href={`/TreeDetiles/${artwork._id}`}>
                           <div className="Depth8Frame0 h-32 flex-col justify-start items-start flex">
-                            <img
-                              className="Depth9Frame0 w-56 h-32 relative rounded-xl"
-                              src="https://via.placeholder.com/223x125"
-                            />
+                          <Image height={200} width={400}
+                            className="w-56 h-32 relative rounded-xl"
+                            src="https://via.placeholder.com/223x125"
+                            alt="img "
+                          />
                           </div>
                           <div className="Depth8Frame1 w-56 h-24 pb-3 flex-col justify-start items-start flex">
                             <div className="Depth9Frame0 w-56 h-6 flex-col justify-start items-start flex">
@@ -106,7 +110,7 @@ const Homes = () => {
               </ScrollArea>
             </div>
           </section>
-          {/* //Feauter tree */}
+          {/* //Feature tree */}
           <section className="my-10 md:my-14">
             <div className="items-start flex flex-col text-start">
               <h1 className="scroll-m-20 text-2xl font-semibold tracking-tight">
@@ -122,10 +126,12 @@ const Homes = () => {
                         key={artwork._id}
                         className="Depth5Frame3 w-56 h-48 flex-col justify-start items-start gap-3 inline-flex"
                       >
+                        <Link href={`/TreeDetiles/${artwork._id}`}>
                         <div className="Depth6Frame0 w-56 h-32 flex-col justify-start items-start flex">
-                          <img
-                            className="Depth7Frame0 w-56 h-32 relative rounded-xl"
+                          <Image height={200} width={400}
+                            className="w-56 h-32 relative rounded-xl"
                             src="https://via.placeholder.com/223x125"
+                            alt="img "
                           />
                         </div>
                         <div className="Depth6Frame1 w-56 h-14 pb-3 flex-col justify-start items-start flex">
@@ -140,6 +146,7 @@ const Homes = () => {
                             </div>
                           </div>
                         </div>
+                        </Link>
                       </div>
                     ))}
                 </div>
@@ -154,7 +161,9 @@ const Homes = () => {
                 </h1>
               </div>
               <div className="w-full flex justify-center">
-                <Button>Shop Trees</Button>
+              <Button className="" > 
+                    <Link href='/Tree/Shop'>Shop plant</Link>
+                    </Button>
               </div>
             </div>
 

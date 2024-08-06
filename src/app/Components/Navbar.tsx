@@ -19,8 +19,12 @@ import { ModeToggle } from "./Togglemode";
 import { Badge } from "@/components/ui/badge";
 import { menuItems } from "./lefttab";
 import { usePathname } from "next/navigation";
+import { cartDataSelector } from "../Featuers/Treecart/TreeSliec";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
+
+  const cartItem= useSelector(cartDataSelector)
   const route = usePathname();
 
   if (route === "/Auth/Login") {
@@ -47,7 +51,7 @@ const Navbar = () => {
               className="w-10 h-8"
             />
           </span>
-          <span>GreenFeauter</span>
+          <span>Xplants</span>
         </div>
       </Link>
       <div className="flex space-x-32 items-center justify-center ">
@@ -57,7 +61,7 @@ const Navbar = () => {
 
             <Link className="flex space-x-2" href="/Tree/Cart">
               <span className="relative">
-                <Badge className="absolute bottom-4">3</Badge>
+                <Badge className="absolute bottom-4">{cartItem?.length}</Badge>
                 <TreesIcon />
               </span>
               <span className="">Cart</span>
