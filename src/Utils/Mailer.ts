@@ -2,11 +2,11 @@ import Signup from "@/Models/SignupModel";
 import nodemailer from "nodemailer";
 import bcrypt from "bcrypt";
 const transport = nodemailer.createTransport({
-  host: "sandbox.smtp.mailtrap.io",
+  service: "gmail",
   port: 2525,
   auth: {
-    user: "31ce8d9f577599",
-    pass: "d3ce8a10c77d50",
+    user: "codewithharry35434@gmail.com",
+    pass: "jphx akne ccrt twoo",
   },
 });
 
@@ -27,7 +27,7 @@ export async function Mail({ Email, Emailtype, UserId }: any) {
   }
   // send mail with defined transport object
   const mailOptions = {
-    from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>',
+    from: '"Xplant 👻" <codewithharry35434@gmail.com>',
     to: Email,
     subject:
       Emailtype === "VERIFY" ? "Verify your email" : "Reset your password",
