@@ -10,45 +10,46 @@ const PushNotifications: React.FC = () => {
 
   useEffect(() => {
     const askPermission = async () => {
-      const permission = await Notification.requestPermission();
-      if (permission !== "granted") {
-        console.error("Permission not granted for Notification");
-      } else {
+      try {
+        // Request permission for notifications
+        const permission = await Notification.requestPermission();
+        if (permission !== "granted") {
+          console.error("Permission not granted for Notification");
+          return;
+        }
+
+        // Register service worker and subscribe to push notifications
         const registerServiceWorker = async () => {
-          const registration = await navigator.serviceWorker.register(
-            "/service-worker.js"
-          );
-          const subscription: PushSubscription =
-            await registration.pushManager.subscribe({
+          try {
+            const registration = await navigator.serviceWorker.register("/service-worker.js");
+            const subscription: PushSubscription = await registration.pushManager.subscribe({
               userVisibleOnly: true,
-              applicationServerKey:
-                "BNkXUDivzy5aHZv0A1GZcrlG2mjX9hs00LHhy0YILw0Q9NXUS2JgpjB3fqR_2KSnkDeim7x8egVUzsDQbRJLy58",
+              applicationServerKey: "BBPuBPUtiQ9XMcGyj_fAuupMTl_-pishcrf2Sk6HVLyQ8E3aJhvDNeiLznsSmmxT-BK52HT-hxLJqzdij23dxuk",
             });
-          console.log(subscription, "Subscription");
+            console.log(subscription, "Subscription");
 
-          const customSubscription: CustomSubscription = {
-            endpoint: subscription.endpoint,
-            expirationTime: subscription.expirationTime,
-            keys: {
-              p256dh: subscription.toJSON().keys?.p256dh || "",
-              auth: subscription.toJSON().keys?.auth || "",
-            },
-          };
+            const customSubscription: CustomSubscription = {
+              
+              endpoint: subscription.endpoint,
+              expirationTime: subscription.expirationTime,
+              keys: {
+                p256dh: subscription.toJSON().keys?.p256dh || "",
+                auth: subscription.toJSON().keys?.auth || "",
+              },
+            };
+            console.log(customSubscription, "Custom Subscription");
 
-          dispatch(Allow_Notification(customSubscription));
-          // Send subscription to backend
-          // await fetch("http://localhost:3001/subscribe", {
-          //   method: "POST",
-          //   body: JSON.stringify(customSubscription),
-          //   headers: {
-          //     "Content-Type": "application/json",
-          //   },
-          // });
+            dispatch(Allow_Notification(customSubscription));
+          } catch (error) {
+            console.error("Error during service worker registration or push subscription:", error);
+          }
         };
 
         if ("serviceWorker" in navigator) {
-          registerServiceWorker().catch((error) => console.error(error));
+          await registerServiceWorker();
         }
+      } catch (error) {
+        console.error("Error requesting notification permission:", error);
       }
     };
 

@@ -30,7 +30,7 @@ export const menuItems: menuItem[] = [
     id: 2,
     icon: <MessageCircleCodeIcon size={40} />,
     label: "Message",
-    path: "/Tree/Task",
+    path: "/Tree/Shop",
   },
   {
     id: 3,
