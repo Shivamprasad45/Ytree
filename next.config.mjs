@@ -29,6 +29,7 @@ const nextConfig = {
       "images.unsplash.com",
       "cdn.usegalileo.ai",
       "via.placeholder.com",
+      "i.postimg.cc"
     ],
   },
   experimental: {

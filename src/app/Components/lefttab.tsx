@@ -63,6 +63,13 @@ const Lefttab = () => {
       </>
     );
   }
+  if (route === "/Auth/Resend") {
+    return (
+      <>
+        <div className=""></div>
+      </>
+    );
+  }
   return (
     <div className="flex flex-col px-2 border-r h-full  ">
       <div className="flex items-center font-semibold gap-12 justify-start min-w-40 mb-6">

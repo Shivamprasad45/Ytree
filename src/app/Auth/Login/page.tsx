@@ -19,6 +19,7 @@ import { loginSelector } from "../../Featuers/Auth/AuthSlice";
 import MaxWidthRappers from "@/components/MaxWidthRapper";
 import { UserMessage } from "../../../../type";
 import Link from "next/link";
+import Resend from "../Resend/page";
 
 export default function TabsDemos() {
   const router = useRouter();
@@ -47,7 +48,12 @@ export default function TabsDemos() {
             <CardContent className="space-y-2">
               <LoginForm />
             </CardContent>
-            <Link href="/">Skip</Link>
+            <CardFooter className="flex justify-between">
+              <Link href="/">Skip</Link>
+              <p>
+                <Link href="/Auth/Resend">Resend</Link>
+              </p>
+            </CardFooter>
           </Card>
         </TabsContent>
         <TabsContent value="Login">
@@ -59,7 +65,9 @@ export default function TabsDemos() {
             <CardContent className="space-y-6">
               <SignForm />
             </CardContent>
-            <CardFooter>Fill it freely</CardFooter>
+            <CardFooter>
+              <Link href="/">Skip</Link>
+            </CardFooter>
           </Card>
         </TabsContent>
       </Tabs>

@@ -21,10 +21,11 @@ import { menuItems } from "./lefttab";
 import { usePathname } from "next/navigation";
 import { cartDataSelector } from "../Featuers/Treecart/TreeSliec";
 import { useSelector } from "react-redux";
+import ConnectionStatus from "../lib/Connection";
+import Image from "next/image";
 
 const Navbar = () => {
-
-  const cartItem= useSelector(cartDataSelector)
+  const cartItem = useSelector(cartDataSelector);
   const route = usePathname();
 
   if (route === "/Auth/Login") {
@@ -41,12 +42,23 @@ const Navbar = () => {
       </>
     );
   }
+  if (route === "/Auth/Resend") {
+    return (
+      <>
+        <div className=""></div>
+      </>
+    );
+  }
   return (
     <nav className="max-w-screen-2xl px-3 md:px-8 font-semibold flex items-center  justify-between py-3  md:py-4 border-b mb-2">
+      <ConnectionStatus />
       <Link href={"/"}>
         <div className="flex space-x-2 text-sm md:text-lg">
           <span>
-            <img
+            <Image
+              height={300}
+              width={400}
+              alt="https://i.postimg.cc/cHCpYFRM/plant2.png"
               src="https://i.postimg.cc/cHCpYFRM/plant2.png"
               className="w-10 h-8"
             />

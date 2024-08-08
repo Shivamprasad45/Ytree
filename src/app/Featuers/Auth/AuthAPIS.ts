@@ -10,7 +10,7 @@ import {
 import {
   setIsCreating,
   setLoginMessage,
-  setUserInfo,
+
   setUserMessage,
 } from "./AuthSlice";
 
@@ -66,6 +66,17 @@ export const AuthApi = createApi({
         }
       },
     }),
+    Resend_email_verification: builder.mutation<UserMessage, string>({
+      query: (email) => ({
+        url: `/Resend`,
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ResendEmail: email }), // Wrap the email in an object
+      }),
+    }),
+    
   }),
 });
 
@@ -75,4 +86,5 @@ export const {
   useGetuserInfoByNameQuery,
   useCreateUserMutation,
   useLoginUserMutation,
+  useResend_email_verificationMutation,
 } = AuthApi;

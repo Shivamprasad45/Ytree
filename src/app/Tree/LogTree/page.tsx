@@ -8,7 +8,7 @@ import {
   Coords_Selector,
   MyTreesSelector,
 } from "@/app/Featuers/TreeOrder/TreeOrderSlice";
-import { soilTypes } from "@/app/lib/Exports";
+
 import { Enter_Plant_coords } from "../../../../type";
 import { useSave_plants_coordsMutation } from "@/app/Featuers/TreeOrder/TreeOrderServices";
 import PushNotifications from "@/app/lib/PushNoti";
@@ -16,7 +16,6 @@ import PushNotifications from "@/app/lib/PushNoti";
 const Map = dynamic(() => import("./Map"), { ssr: false });
 
 const Logtrees = () => {
-  const [selectedSoil, setselectedSoil] = useState<string>("");
   const [_ID, set_ID] = useState<string>("");
   const [Plaint_id, setPlaint_id] = useState<string>("");
   const [User_id, setUser_id] = useState<string>("");
@@ -36,16 +35,11 @@ const Logtrees = () => {
 
   const trees = useSelector(MyTreesSelector);
   const Notification = useSelector(Allow_Notification_Endpoints_Selector);
-  console.log(Notification, "Notification");
 
   const About_Mytree = trees?.find(
     (item) =>
       item._id === _ID && item.Plaintid === Plaint_id && item.UserId === User_id
   );
-
-  const onSoilChange = (soilType: string) => {
-    setselectedSoil(soilType);
-  };
 
   const Plants_CurrentLocations = useSelector(Coords_Selector);
 
@@ -125,25 +119,7 @@ const Logtrees = () => {
               <div className="">
                 <Map />
               </div>
-              <div className="flex max-w-[480px] flex-1 flex-wrap items-end gap-4 px-4 py-3">
-                <div>
-                  <label htmlFor="soilType">Select Soil Type:</label>
-                  <select
-                    id="soilType"
-                    value={selectedSoil}
-                    onChange={(e) => onSoilChange(e.target.value)}
-                  >
-                    <option value="" disabled>
-                      Select soil type
-                    </option>
-                    {soilTypes.map((soilType) => (
-                      <option key={soilType} value={soilType}>
-                        {soilType}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
+              <div className="flex max-w-[480px] flex-1 flex-wrap items-end gap-4 px-4 py-3"></div>
               <div className="flex max-w-[480px] flex-1 flex-wrap items-end gap-4 px-4 py-3"></div>
               <div className="flex px-4 py-3">
                 <button

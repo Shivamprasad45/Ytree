@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { UserSelector } from "../../Auth/AuthSlice";
 
 import UserRelaod from "@/app/lib/UserRelaod";
+import Image from "next/image";
 
 const CartPlant = () => {
   const [Id, setId] = useState<string>("");
@@ -110,7 +111,7 @@ const CartPlant = () => {
                     className="md:flex items-center mt-14 py-8 border-t border-gray-200"
                   >
                     <div className="w-1/4">
-                      <img
+                      <Image 
                         src="https://cdn.tuk.dev/assets/templates/e-commerce-kit/bestSeller3.png"
                         alt="hhh"
                         className="w-full h-full object-center object-cover"

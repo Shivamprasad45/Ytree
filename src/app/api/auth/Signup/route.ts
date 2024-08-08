@@ -22,7 +22,7 @@ export async function POST(request: any) {
 
     // Hash the password before storing it in the database
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log("Data ", Email, "   ", password, "   ", hashedPassword);
+    
 
     // If user is created successfully, return a success message
     const user = await Signup.create({
@@ -32,7 +32,7 @@ export async function POST(request: any) {
     });
     await Mail({ Email, Emailtype: "VERIFY", UserId: user._id });
     return NextResponse.json({
-      message: "user created successfully",
+      message: "user created successfully,check your mail for verification",
       success: true,
     });
   } catch (error) {
