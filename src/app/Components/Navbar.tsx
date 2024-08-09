@@ -5,12 +5,8 @@ import React, { useEffect } from "react";
 import {
   NavigationMenu,
   NavigationMenuContent,
-  NavigationMenuIndicator,
   NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
   NavigationMenuTrigger,
-  NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 import Link from "next/link";
 
@@ -60,10 +56,17 @@ const Navbar = () => {
               width={400}
               alt="https://i.postimg.cc/cHCpYFRM/plant2.png"
               src="https://i.postimg.cc/cHCpYFRM/plant2.png"
-              className="w-10 h-8"
+              className="w-10 h-8 "
             />
           </span>
-          <span>Xplants</span>
+          <div className="text-container">
+            <span className="letter">Y</span>
+            <span className="letter">p</span>
+            <span className="letter">l</span>
+            <span className="letter">a</span>
+            <span className="letter">n</span>
+            <span className="letter">t</span>
+          </div>
         </div>
       </Link>
       <div className="flex space-x-32 items-center justify-center ">

@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useGetMyTreeInfoBy_idQuery } from "@/app/Featuers/TreeOrder/TreeOrderServices";
 import { useSelector } from "react-redux";
 import { UserSelector } from "@/app/Featuers/Auth/AuthSlice";
+import Loading from "@/app/Loading/Loading";
 
 const Page = () => {
   const user = useSelector(UserSelector);
@@ -26,13 +27,17 @@ const Page = () => {
   if (isLoading) {
     return (
       <MaxWidthRappers>
-        <div>....Loading</div>
+        <Loading />
       </MaxWidthRappers>
     );
   }
 
   if (isError) {
-    return <p>Error: Failed to fetch tree information</p>;
+    return (
+      <div className="pt-10 w-[80vw] h-[90vh] text-center items-center justify-center scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+        🙄 Oops you not plant any trees
+      </div>
+    );
   }
 
   const getDaysOld = (age: string | number | Date) => {

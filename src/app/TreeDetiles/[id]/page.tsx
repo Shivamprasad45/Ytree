@@ -77,12 +77,12 @@ const Page = ({ params }: { params: { id: string } }) => {
   }
   return (
     <div className=" flex flex-row">
-      <div className="relative flex size-full min-h-screen flex-col bg-[#F9FAFA] group/design-root overflow-x-hidden">
+      <div className="relative flex size-full min-h-screen flex-col  group/design-root overflow-x-hidden">
         <div className="layout-container flex h-full grow flex-col">
           <div className="px-40 flex flex-1 justify-center py-5">
             <div className="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 md:max-w-[960px] flex-1">
               <div className="flex flex-wrap justify-between gap-3 p-4">
-                <p className="text-[#1C1D22] tracking-light text-[32px] font-bold leading-tight min-w-72">
+                <p className=" tracking-light text-[32px] font-bold leading-tight min-w-72">
                   {PlantDetails?.commonName}
                 </p>
               </div>
@@ -96,56 +96,56 @@ const Page = ({ params }: { params: { id: string } }) => {
                 />
               </div>
 
-              <h2 className="text-[#1C1D22] text-lg font-bold leading-tight tracking-[-0.015em] px-4 text-left pb-2 pt-4">
+              <h2 className=" text-lg font-bold leading-tight tracking-[-0.015em] px-4 text-left pb-2 pt-4">
                 {PlantDetails?.scientificName}
               </h2>
-              <p className="text-[#1C1D22] text-base font-normal leading-normal pb-3 pt-1 px-4">
+              <p className=" text-base font-normal leading-normal pb-3 pt-1 px-4">
                 {PlantDetails?.description}
               </p>
-              <h3 className="text-[#1C1D22] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">
+              <h3 className=" text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">
                 Growth Requirements
               </h3>
               <div className="p-4 ">
                 <div className="flex flex-col gap-1 border-t border-solid border-t-[#D5D6DD] py-4 pr-2">
-                  {/* <p className="text-[#3C3F4A] text-sm font-normal leading-normal">
+                  {/* <p className="] text-sm font-normal leading-normal">
                     Light
                   </p> */}
-                  <p className="text-[#1C1D22] text-sm font-normal leading-normal">
+                  <p className=" text-sm font-normal leading-normal">
                     {PlantDetails?.growthRequirements}
                   </p>
                 </div>
                 {/* <div className="flex flex-col gap-1 border-t border-solid border-t-[#D5D6DD] py-4 pl-2">
-                  <p className="text-[#3C3F4A] text-sm font-normal leading-normal">
+                  <p className="] text-sm font-normal leading-normal">
                     Water
                   </p>
-                  <p className="text-[#1C1D22] text-sm font-normal leading-normal">
+                  <p className=" text-sm font-normal leading-normal">
                     Water when top 1-2 inches of soil is dry
                   </p>
                 </div> */}
                 {/* <div className="flex flex-col gap-1 border-t border-solid border-t-[#D5D6DD] py-4 pr-2">
-                  <p className="text-[#3C3F4A] text-sm font-normal leading-normal">
+                  <p className="] text-sm font-normal leading-normal">
                     Humidity
                   </p>
-                  <p className="text-[#1C1D22] text-sm font-normal leading-normal">
+                  <p className=" text-sm font-normal leading-normal">
                     Prefers high humidity
                   </p>
                 </div> */}
                 {/* <div className="flex flex-col gap-1 border-t border-solid border-t-[#D5D6DD] py-4 pl-2">
-                  <p className="text-[#3C3F4A] text-sm font-normal leading-normal">
+                  <p className="] text-sm font-normal leading-normal">
                     Temperature
                   </p>
-                  <p className="text-[#1C1D22] text-sm font-normal leading-normal">
+                  <p className=" text-sm font-normal leading-normal">
                     65-75°F (18-24°C)
                   </p>
                 </div> */}
               </div>
-              <h3 className="text-[#1C1D22] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">
+              <h3 className=" text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">
                 Benefits
               </h3>
               <div className="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
-                <div className="flex flex-1 gap-3 rounded-lg border border-[#D5D6DD] bg-[#FFFFFF] p-4 flex-col">
+                <div className="flex flex-1 gap-3 rounded-lg border border-[#D5D6DD]  p-4 flex-col">
                   <div
-                    className="text-[#1C1D22]"
+                    className=""
                     data-icon="Sun"
                     data-size="24px"
                     data-weight="regular"
@@ -161,17 +161,17 @@ const Page = ({ params }: { params: { id: string } }) => {
                     </svg>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <h2 className="text-[#1C1D22] text-base font-bold leading-tight">
+                    <h2 className=" text-base font-bold leading-tight">
                       Light
                     </h2>
-                    <p className="text-[#3C3F4A] text-sm font-normal leading-normal">
+                    <p className="] text-sm font-normal leading-normal">
                       Bright, indirect light
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-1 gap-3 rounded-lg border border-[#D5D6DD] bg-[#FFFFFF] p-4 flex-col">
+                <div className="flex flex-1 gap-3 rounded-lg border border-[#D5D6DD] p-4 flex-col">
                   <div
-                    className="text-[#1C1D22]"
+                    className=""
                     data-icon="Drop"
                     data-size="24px"
                     data-weight="regular"
@@ -187,17 +187,17 @@ const Page = ({ params }: { params: { id: string } }) => {
                     </svg>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <h2 className="text-[#1C1D22] text-base font-bold leading-tight">
+                    <h2 className=" text-base font-bold leading-tight">
                       Water
                     </h2>
-                    <p className="text-[#3C3F4A] text-sm font-normal leading-normal">
+                    <p className="] text-sm font-normal leading-normal">
                       Water when top 1-2 inches of soil is dry
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-1 gap-3 rounded-lg border border-[#D5D6DD] bg-[#FFFFFF] p-4 flex-col">
+                <div className="flex flex-1 gap-3 rounded-lg border border-[#D5D6DD]  p-4 flex-col">
                   <div
-                    className="text-[#1C1D22]"
+                    className=""
                     data-icon="Flower"
                     data-size="24px"
                     data-weight="regular"
@@ -213,17 +213,17 @@ const Page = ({ params }: { params: { id: string } }) => {
                     </svg>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <h2 className="text-[#1C1D22] text-base font-bold leading-tight">
+                    <h2 className=" text-base font-bold leading-tight">
                       Humidity
                     </h2>
-                    <p className="text-[#3C3F4A] text-sm font-normal leading-normal">
+                    <p className=" text-sm font-normal leading-normal">
                       Prefers high humidity
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-1 gap-3 rounded-lg border border-[#D5D6DD] bg-[#FFFFFF] p-4 flex-col">
+                <div className="flex flex-1 gap-3 rounded-lg border border-[#D5D6DD]  p-4 flex-col">
                   <div
-                    className="text-[#1C1D22]"
+                    className=""
                     data-icon="Leaf"
                     data-size="24px"
                     data-weight="regular"
@@ -239,16 +239,16 @@ const Page = ({ params }: { params: { id: string } }) => {
                     </svg>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <h2 className="text-[#1C1D22] text-base font-bold leading-tight">
+                    <h2 className=" text-base font-bold leading-tight">
                       Temperature
                     </h2>
-                    <p className="text-[#3C3F4A] text-sm font-normal leading-normal">
+                    <p className="] text-sm font-normal leading-normal">
                       65-75°F (18-24°C)
                     </p>
                   </div>
                 </div>
               </div>
-              <h3 className="text-[#1C1D22] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">
+              <h3 className=" text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">
                 Region
               </h3>
               <div className="flex px-4 py-3">
@@ -261,7 +261,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                   <Button onClick={() => Addtocart()}>
                     <span>Add to cart</span>
                   </Button>
-                  <Button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#EEEFF2] text-[#1C1D22] text-sm font-bold leading-normal tracking-[0.015em]">
+                  <Button className="">
                     <span className="truncate">
                       <Link href="/Tree/Shop"> Back to Plants</Link>
                     </span>

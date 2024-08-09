@@ -18,6 +18,7 @@ import { UserSelector } from "../../Auth/AuthSlice";
 
 import UserRelaod from "@/app/lib/UserRelaod";
 import Image from "next/image";
+import Loading from "@/app/Loading/Loading";
 
 const CartPlant = () => {
   const [Id, setId] = useState<string>("");
@@ -34,7 +35,11 @@ const CartPlant = () => {
 
   const [Cart_Remove, { isLoading }] = useRemoveCartMutation();
   if (isCartLoading) {
-    return <div>...Loading</div>;
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
   }
   const Update_cart_plants = async (
     id: string,
@@ -68,50 +73,44 @@ const CartPlant = () => {
                 className="lg:w-1/2 w-full md:pl-10 pl-4 pr-10 md:pr-4 md:py-12 py-8  overflow-y-auto overflow-x-hidden h-screen"
                 id="scroll"
               >
-                 <Link href="/"> 
-                <div className="flex items-center text-gray-500 hover:text-gray-600 cursor-pointer">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="icon icon-tabler icon-tabler-chevron-left"
-                    width={16}
-                    height={16}
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <polyline points="15 6 9 12 15 18" />
-                  </svg>
-                  <p className="text-sm pl-2 leading-none">
-                 
-                    Back
-                    
-                    
-                   </p>
-                </div>
+                <Link href="/">
+                  <div className="flex items-center text-gray-500 hover:text-gray-600 cursor-pointer">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="icon icon-tabler icon-tabler-chevron-left"
+                      width={16}
+                      height={16}
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <polyline points="15 6 9 12 15 18" />
+                    </svg>
+                    <p className="text-sm pl-2 leading-none">Back</p>
+                  </div>
                 </Link>
                 <p className="text-5xl font-black leading-10 text-gray-800 pt-3">
-                   Bag
-               
+                  Bag
                 </p>
-                {
-                  cartdata?.length ===0 &&<div className="md:flex items-center mt-14 py-8 border-t  ">
-                    
-                    
-                    
-                   <p className="text-3xl font-black leading-10"> Add plants in Cart</p>
-                   </div>
-                }
+                {cartdata?.length === 0 && (
+                  <div className="md:flex items-center mt-14 py-8 border-t  ">
+                    <p className="text-3xl font-black leading-10 underline">
+                      {" "}
+                      <Link href="/Tree/Shop">Add plants in Cart</Link>
+                    </p>
+                  </div>
+                )}
                 {cartdata?.map((item) => (
                   <div
                     key={item.Plant_id}
                     className="md:flex items-center mt-14 py-8 border-t border-gray-200"
                   >
                     <div className="w-1/4">
-                      <Image 
+                      <Image
                         src="https://cdn.tuk.dev/assets/templates/e-commerce-kit/bestSeller3.png"
                         alt="hhh"
                         className="w-full h-full object-center object-cover"
@@ -244,9 +243,13 @@ const CartPlant = () => {
                         {Total_Cart_price}
                       </p>
                     </div>
-                   {cartdata?.length !==0 && user !==null ? <Button className="text-base leading-none w-full py-5 bg-gray-800 border-gray-800 border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 text-white">
-                      <Link href="/Tree/Checkout">Checkout</Link>
-                    </Button>:""}
+                    {cartdata?.length !== 0 && user !== null ? (
+                      <Button className="text-base leading-none w-full py-5 bg-gray-800 border-gray-800 border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 text-white">
+                        <Link href="/Tree/Checkout">Checkout</Link>
+                      </Button>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
               </div>
