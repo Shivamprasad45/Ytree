@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { cartDataSelector } from "../../Treecart/TreeSliec";
+
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -25,6 +25,7 @@ import { Plant_order } from "../../../../../type";
 import UserRelaod from "@/app/lib/UserRelaod";
 import { UserSelector } from "../../Auth/AuthSlice";
 import { useRouter } from "next/navigation";
+import { useGetCartItemByIdQuery } from "../../Treecart/TreeServicesAPI";
 
 const formSchema = z.object({
   firstName: z.string().min(1, {
@@ -59,20 +60,23 @@ function Checkout() {
   const form = useForm({
     resolver: zodResolver(formSchema),
   });
-
-  const CartData = useSelector(cartDataSelector);
+  const user = useSelector(UserSelector);
+  const { data: cartdata, isLoading: isCartLoading } = useGetCartItemByIdQuery(
+    user?._id!
+  );
+  // const cartdata = useSelector(cartdataSelector);
 
   const Total_Cart_price =
-    CartData &&
-    CartData?.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    cartdata &&
+    cartdata?.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const dispatch = useDispatch();
 
   //   const [] = useSave_plants_OrderMutation();
-  const user = useSelector(UserSelector);
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     const Plant_order_data: Plant_order = {
       Addresss: values,
-      plants: CartData!,
+      plants: cartdata!,
       User_name: user?.Username || "",
       Orderid: "",
     };
@@ -88,7 +92,7 @@ function Checkout() {
             <div className="px-4 py-8 sm:overflow-auto sm:h-[calc(100vh-60px)]">
               <div className="space-y-4">
                 {/* Product Details - Same as provided */}
-                {CartData?.map((item) => (
+                {cartdata?.map((item) => (
                   <div key={item.UserId} className="flex items-start gap-4">
                     <div className="w-32 h-28 max-lg:w-24 max-lg:h-24 flex p-3 shrink-0 bg-gray-300 rounded-md">
                       <img
@@ -202,7 +206,7 @@ function Checkout() {
                         <FormLabel>Phone No.</FormLabel>
                         <FormControl>
                           <Input
-                            type="number"
+                            type="tel"
                             placeholder="Phone No."
                             {...field}
                             className="px-4 py-3 bg-gray-100 focus:bg-transparent text-gray-800 w-full text-sm rounded-md focus:outline-blue-600"

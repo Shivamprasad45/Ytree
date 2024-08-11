@@ -113,6 +113,8 @@ const CartPlant = () => {
                       <Image
                         src="https://cdn.tuk.dev/assets/templates/e-commerce-kit/bestSeller3.png"
                         alt="hhh"
+                        width={300}
+                        height={300}
                         className="w-full h-full object-center object-cover"
                       />
                     </div>

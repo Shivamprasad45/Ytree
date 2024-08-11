@@ -21,15 +21,18 @@ const PushNotifications: React.FC = () => {
         // Register service worker and subscribe to push notifications
         const registerServiceWorker = async () => {
           try {
-            const registration = await navigator.serviceWorker.register("/service-worker.js");
-            const subscription: PushSubscription = await registration.pushManager.subscribe({
-              userVisibleOnly: true,
-              applicationServerKey: "BBPuBPUtiQ9XMcGyj_fAuupMTl_-pishcrf2Sk6HVLyQ8E3aJhvDNeiLznsSmmxT-BK52HT-hxLJqzdij23dxuk",
-            });
+            const registration = await navigator.serviceWorker.register(
+              "/service-worker.js"
+            );
+            const subscription: PushSubscription =
+              await registration.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey:
+                  "BBPuBPUtiQ9XMcGyj_fAuupMTl_-pishcrf2Sk6HVLyQ8E3aJhvDNeiLznsSmmxT-BK52HT-hxLJqzdij23dxuk",
+              });
             console.log(subscription, "Subscription");
 
             const customSubscription: CustomSubscription = {
-              
               endpoint: subscription.endpoint,
               expirationTime: subscription.expirationTime,
               keys: {
@@ -41,7 +44,10 @@ const PushNotifications: React.FC = () => {
 
             dispatch(Allow_Notification(customSubscription));
           } catch (error) {
-            console.error("Error during service worker registration or push subscription:", error);
+            console.error(
+              "Error during service worker registration or push subscription:",
+              error
+            );
           }
         };
 

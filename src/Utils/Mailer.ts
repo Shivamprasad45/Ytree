@@ -1,41 +1,43 @@
 import Signup from "@/Models/SignupModel";
-import nodemailer from "nodemailer";
 import bcrypt from "bcrypt";
-const transport = nodemailer.createTransport({
-  service: "gmail",
-  port: 2525,
+import nodemailer from "nodemailer";
+
+// Define your SMTP credentials in environment variables
+const BREVO_SMTP_HOST = 'smtp-relay.brevo.com';
+const BREVO_SMTP_PORT = 587; // or 465 for SSL
+const BREVO_SMTP_USER = '7a1a80002@smtp-brevo.com'; // Your Brevo SMTP login
+const BREVO_SMTP_PASS = '8jpFKkSmR1Vy4XqL'; // Your Brevo SMTP password
+
+// Configure Nodemailer with Brevo SMTP
+const transporter = nodemailer.createTransport({
+  host: BREVO_SMTP_HOST,
+  port: BREVO_SMTP_PORT,
+  secure: false, // true for 465, false for other ports
   auth: {
-    user: "codewithharry35434@gmail.com",
-    pass: "jphx akne ccrt twoo",
+    user: BREVO_SMTP_USER,
+    pass: BREVO_SMTP_PASS,
   },
+  logger: true, // Enable detailed logs
+  debug: true, // Include debug output
 });
 
-// async..await is not allowed in global scope, must use a wrapper
 export async function Mail({ Email, Emailtype, UserId }: any) {
   const hashToken = await bcrypt.hash(UserId.toString(), 10);
+
+  // Update the user with the appropriate token
   if (Emailtype === "VERIFY") {
     await Signup.findOneAndUpdate(UserId, {
       verifyToken: hashToken,
-      verifyTokenExpiry: Date.now() + 3600000,
+      verifyTokenExpiry: Date.now() + 3600000, // 1 hour
     });
-  }
-  if (Emailtype === "RESET") {
+  } else if (Emailtype === "RESET") {
     await Signup.findOneAndUpdate(UserId, {
       forgotpasswordToken: hashToken,
-      forgotpasswordTokenExpiry: Date.now() + 3600000,
+      forgotpasswordTokenExpiry: Date.now() + 3600000, // 1 hour
     });
   }
-  // send mail with defined transport object
-  const mailOptions = {
-    from: '"Xplant 👻" <codewithharry35434@gmail.com>',
-    to: Email,
-    subject:
-        Emailtype === "VERIFY" ? "Verify your email" : "Reset your password",
-    text:
-        Emailtype === "VERIFY"
-            ? "Please verify your email using the following code or link"
-            : "Please reset your password using the following link",
-    html: `
+
+  const emailContent = `
    <section style="max-width: 640px; padding: 24px; margin: 0 auto; background-color: white;">
     <header>
         <a href="#">
@@ -89,10 +91,19 @@ export async function Mail({ Email, Emailtype, UserId }: any) {
     </footer>
 </section>
 
-    `,
-};
+    `
 
-  const info = await transport.sendMail(mailOptions);
-  console.log("Message sent: %s", info.messageId);
-  // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
+  const mailOptions = {
+    from: '"Xplant" <codewithharry35434@gmail.com>', // Sender address
+    to: Email, // Recipient address
+    subject: Emailtype === "VERIFY" ? "Verify your email" : "Reset your password",
+    html: emailContent, // Email content in HTML format
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully:", info.response);
+  } catch (error) {
+    console.error("Error sending email:", error);
+  }
 }

@@ -11,8 +11,10 @@ import { useGetMyTreeInfoBy_idQuery } from "@/app/Featuers/TreeOrder/TreeOrderSe
 import { useSelector } from "react-redux";
 import { UserSelector } from "@/app/Featuers/Auth/AuthSlice";
 import Loading from "@/app/Loading/Loading";
+import UserRelaod from "@/app/lib/UserRelaod";
 
 const Page = () => {
+  UserRelaod();
   const user = useSelector(UserSelector);
 
   const {

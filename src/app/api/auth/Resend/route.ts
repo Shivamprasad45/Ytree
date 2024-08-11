@@ -19,9 +19,13 @@ export async function POST(req: NextRequest) {
 
     // Query the database with the extracted email
     const user = await Signup.findOne({ Email: ResendEmail });
-    console.log(user,"user")
+   
     if (!user) {
       return NextResponse.json({ error: "User not found" });
+    }
+
+    if (user.isVerfied) {
+      return NextResponse.json({ error: "you are already verified" });
     }
    await Mail({ Email:user.Email, Emailtype: "VERIFY", UserId: user._id })
     

@@ -45,6 +45,8 @@ const Map: React.FC = () => {
             position.coords.latitude,
             position.coords.longitude,
           ];
+          console.log(coords[0], "long");
+          console.log(coords[1], "late");
           setCurrentLocation(coords);
 
           // Fetch area information for the current location
@@ -102,7 +104,9 @@ const Map: React.FC = () => {
           </>
         )}
       </MapContainer>
-      <Button onClick={handleMapClick}>Use current location</Button>
+      <div className="pt-6">
+        <Button onClick={handleMapClick}>Use current location</Button>
+      </div>
     </div>
   );
 };
