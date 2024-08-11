@@ -3,19 +3,17 @@ import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 
 // Define your SMTP credentials in environment variables
-const BREVO_SMTP_HOST = 'smtp-relay.brevo.com';
+
 const BREVO_SMTP_PORT = 587; // or 465 for SSL
-const BREVO_SMTP_USER = '7a1a80002@smtp-brevo.com'; // Your Brevo SMTP login
-const BREVO_SMTP_PASS = '8jpFKkSmR1Vy4XqL'; // Your Brevo SMTP password
 
 // Configure Nodemailer with Brevo SMTP
 const transporter = nodemailer.createTransport({
-  host: BREVO_SMTP_HOST,
+  host: "smtp-relay.brevo.com",
   port: BREVO_SMTP_PORT,
   secure: false, // true for 465, false for other ports
   auth: {
-    user: BREVO_SMTP_USER,
-    pass: BREVO_SMTP_PASS,
+    user: "7a1a80002@smtp-brevo.com",
+    pass: "8jpFKkSmR1Vy4XqL",
   },
   logger: true, // Enable detailed logs
   debug: true, // Include debug output
