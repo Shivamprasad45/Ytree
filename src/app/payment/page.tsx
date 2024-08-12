@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Before_PlantOrder_Selector } from "../Featuers/TreeOrder/TreeOrderSlice";
 import { useSave_plants_OrderMutation } from "../Featuers/TreeOrder/TreeOrderServices";
 import { Plant_order } from "../../../type";
+import { useRouter } from "next/navigation";
 
 declare global {
   interface Window {
@@ -17,6 +18,7 @@ const Payment = () => {
   const Cart_selector = useSelector(cartDataSelector);
   const plant_order = useSelector(Before_PlantOrder_Selector);
   const [Comformpayment] = useSave_plants_OrderMutation();
+  const router = useRouter();
   // Total_price
   const Total_Cart_price = Cart_selector?.reduce(
     (acc, item) => acc + item.price * item.quantity,
@@ -77,7 +79,7 @@ const Payment = () => {
         amount: order.amount,
         currency: order.currency,
         order: order.id,
-        name: "Green Feature",
+        name: "Yplant",
         description: "Test Transaction",
         image:
           "https://img.freepik.com/free-vector/colorful-bird-illustration-gradient_343694-1741.jpg?w=740&t=st=1719754745~exp=1719755345~hmac=68459300e94e40e2f7c06675764c5e72f0d06b5fda351160a6dd9ce5d48e9246",
@@ -99,6 +101,8 @@ const Payment = () => {
             };
 
             await Comformpayment(Order_data);
+
+            router.push("/Tree/Mytrees");
           } catch (error) {
             alert(error);
           }

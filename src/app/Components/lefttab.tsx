@@ -7,6 +7,7 @@ import {
   MessageCircleCodeIcon,
   TreePalm,
   TreesIcon,
+  UserX2Icon,
 } from "lucide-react";
 
 import Image from "next/image";
@@ -19,29 +20,29 @@ import { useSelector } from "react-redux";
 import { UserSelector } from "../Featuers/Auth/AuthSlice";
 
 export const menuItems: menuItem[] = [
-  { id: 1, icon: <TreePalm size={40} />, label: "Trees", path: "/Tree/Shop" },
+  { id: 1, icon: <TreePalm size={20} />, label: "Trees", path: "/Tree/Shop" },
   {
     id: 6,
-    icon: <TreesIcon size={40} />,
+    icon: <TreesIcon size={20} />,
     label: "Cart",
     path: "/Tree/Cart",
   },
   {
     id: 2,
-    icon: <MessageCircleCodeIcon size={40} />,
+    icon: <MessageCircleCodeIcon size={20} />,
     label: "Message",
     path: "/Tree/Shop",
   },
   {
     id: 3,
-    icon: <ContactRoundIcon size={40} />,
+    icon: <ContactRoundIcon size={20} />,
     label: "Contact us",
     path: "/Tree/Shop",
   },
-  { id: 4, icon: <LogOut size={40} />, label: "Logout", path: "/logout" },
+  { id: 4, icon: <LogOut size={20} />, label: "Logout", path: "/logout" },
   {
     id: 5,
-    icon: <ListTree size={40} />,
+    icon: <ListTree size={20} />,
     label: "Mytree",
     path: "/Tree/Mytrees",
   },
@@ -82,7 +83,9 @@ const Lefttab = () => {
             alt="profile picture"
           />
           <span className="text-lg">
-            {user && user.Username !== "" ? user.Username : "not found"}
+            {user && user.Username !== ""
+              ? user.Username.slice(0, 8)
+              : "not found"}
           </span>
         </div>
       ) : (
@@ -90,7 +93,7 @@ const Lefttab = () => {
           className="flex items-center  gap-12 justify-start min-w-40 mb-6 pl-4 underline text-blue-500"
           href="/Auth/Login"
         >
-          Sign up
+          <UserX2Icon />
         </Link>
       )}
       <div className="flex flex-col gap-3 items-start mt-10 bg-scroll">
@@ -102,7 +105,7 @@ const Lefttab = () => {
               }  items-center min-w-40 hover:text-blue-500 hover:bg-gray-100 cursor-pointer p-2 rounded`}
             >
               {item.icon}
-              <span className="text-xl">{item.label}</span>
+              <span className="">{item.label}</span>
             </p>
           </Link>
         ))}

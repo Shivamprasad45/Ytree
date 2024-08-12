@@ -40,6 +40,7 @@ export const AuthApi = createApi({
         dispatch(setIsCreating(true));
         try {
           const { data } = await queryFulfilled;
+          console.log(data ,"signup data")
           dispatch(setUserMessage(data));
         } catch (error) {
           console.error("Signup failed:", error);

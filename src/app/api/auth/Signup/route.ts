@@ -30,7 +30,7 @@ export async function POST(request: any) {
       Email,
       password: hashedPassword,
     });
-    await Mail({ Email, Emailtype: "VERIFY", UserId: user._id });
+     Mail({ Email, Emailtype: "VERIFY", UserId: user._id });
     return NextResponse.json({
       message: "user created successfully,check your mail for verification",
       success: true,

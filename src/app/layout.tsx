@@ -26,13 +26,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      {/* <Head>
-        <script
-          src="https://checkout.razorpay.com/v1/checkout.js"
-          async
-        ></script>
-      </Head> */}
-      <body className="min-h-screen bg-background font-sans antialiased">
+      <body
+        className={cn(
+          "min-h-screen bg-background font-sans antialiased",
+          fontSans.variable
+        )}
+      >
         <Providers>
           <Toaster />
           <MaxWidthRappers>
@@ -59,3 +58,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+// flex-grow md:ml-56
