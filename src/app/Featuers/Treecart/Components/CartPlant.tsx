@@ -16,14 +16,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { UserSelector } from "../../Auth/AuthSlice";
 
-import UserRelaod from "@/app/lib/UserRelaod";
 import Image from "next/image";
 import Loading from "@/app/Loading/Loading";
 
 const CartPlant = () => {
   const [Id, setId] = useState<string>("");
   //User id fetch
-  UserRelaod();
+
   const user = useSelector(UserSelector);
 
   const { data: cartdata, isLoading: isCartLoading } = useGetCartItemByIdQuery(

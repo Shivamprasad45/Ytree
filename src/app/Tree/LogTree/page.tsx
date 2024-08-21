@@ -12,7 +12,6 @@ import {
 import { Enter_Plant_coords } from "../../../../type";
 import { useSave_plants_coordsMutation } from "@/app/Featuers/TreeOrder/TreeOrderServices";
 import PushNotifications from "@/app/lib/PushNoti";
-import UserRelaod from "@/app/lib/UserRelaod";
 
 const Map = dynamic(() => import("./Map"), { ssr: false });
 
@@ -33,7 +32,7 @@ const Logtrees = () => {
       setUser_id(User_id);
     }
   }, [Searchparams]);
-  UserRelaod();
+
   const trees = useSelector(MyTreesSelector);
   const Notification = useSelector(Allow_Notification_Endpoints_Selector);
 

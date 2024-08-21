@@ -7,7 +7,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 export const dynamic = "force-dynamic";
-import { UserSelector } from "@/app/Featuers/Auth/AuthSlice";
 
 import { TreeCart } from "../../../../type";
 import { toast } from "sonner";
@@ -16,11 +15,11 @@ import { useGetTreeDetailsQuery } from "@/app/Featuers/Tree/TreeServices";
 import Map from "@/app/Components/Mapregion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import UserRelaod from "@/app/lib/UserRelaod";
+
 import Loading from "@/app/Loading/Loading";
+import { useSession } from "next-auth/react";
 
 const Page = ({ params }: { params: { id: string } }) => {
-  UserRelaod();
   const {
     data: PlantDetails,
     isFetching,
@@ -28,7 +27,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     isLoading: isTreeDetailsLoading,
   } = useGetTreeDetailsQuery(params.id);
 
-  const user = useSelector(UserSelector);
+  const { data: user, status } = useSession();
   //For redirect to Login or signup
   const route = useRouter();
   const [AddPlants, { isLoading: isAddLoading }] = useAddCartMutation();
@@ -36,14 +35,14 @@ const Page = ({ params }: { params: { id: string } }) => {
 
   const Addtocart = async () => {
     try {
-      if (user?._id) {
+      if (user?.user.id) {
         const benefits: string[] = [];
         PlantDetails?.benefits.forEach((item: string) => {
           benefits.push(item);
         });
 
         const treeDetails: TreeCart = {
-          UserId: user._id,
+          UserId: user.user.id,
           Plant_id: PlantDetails?._id || "",
           commonName: PlantDetails?.commonName || "",
           scientificName: PlantDetails?.scientificName || "",
@@ -59,7 +58,7 @@ const Page = ({ params }: { params: { id: string } }) => {
         await AddPlants(treeDetails);
       } else {
         toast("User id not found please Signup");
-        route.push("/Auth/Signup");
+        route.push("/Signup");
       }
     } catch (error) {
       console.log(error);

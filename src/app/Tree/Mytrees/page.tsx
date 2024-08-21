@@ -11,10 +11,8 @@ import { useGetMyTreeInfoBy_idQuery } from "@/app/Featuers/TreeOrder/TreeOrderSe
 import { useSelector } from "react-redux";
 import { UserSelector } from "@/app/Featuers/Auth/AuthSlice";
 import Loading from "@/app/Loading/Loading";
-import UserRelaod from "@/app/lib/UserRelaod";
 
 const Page = () => {
-  UserRelaod();
   const user = useSelector(UserSelector);
 
   const {
@@ -54,7 +52,6 @@ const Page = () => {
       <MaxWidthRappers className="mt-3">
         <main className="flex flex-col md:flex-row justify-between overflow-hidden relative md:justify-start w-full h-[100vh]">
           {/* Left Sidebar */}
-
           {/* Main Content */}
           <div className="flex-1 p-4">
             {/* Profile Image for small screens */}

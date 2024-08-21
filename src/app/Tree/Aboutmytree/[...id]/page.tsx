@@ -4,13 +4,12 @@ import Image from "next/image";
 import MaxWidthRappers from "@/components/MaxWidthRapper";
 import { useAbout_my_treeQuery } from "@/app/Featuers/TreeOrder/TreeOrderServices";
 import Loading from "@/app/Loading/Loading";
-import UserRelaod from "@/app/lib/UserRelaod";
 
 const Page = ({ params }: { params: { id: string } }) => {
   const { data, isLoading, isError, refetch } = useAbout_my_treeQuery(
     params.id!
   );
-  UserRelaod();
+
   if (isLoading) {
     return (
       <div className="">

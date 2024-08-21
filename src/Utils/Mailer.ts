@@ -1,5 +1,3 @@
-import Signup from "@/Models/SignupModel";
-import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 
 // Define your SMTP credentials in environment variables
@@ -19,21 +17,18 @@ const transporter = nodemailer.createTransport({
   debug: true, // Include debug output
 });
 
-export async function Mail({ Email, Emailtype, UserId }: any) {
-  const hashToken = await bcrypt.hash(UserId.toString(), 10);
+export async function Mail({
+  Email,
+  Emailtype,
+  UserId,
+}: {
+  Email: string;
+  Emailtype: string;
+  UserId: string;
+}) {
+  const hashToken = UserId;
 
   // Update the user with the appropriate token
-  if (Emailtype === "VERIFY") {
-    await Signup.findOneAndUpdate(UserId, {
-      verifyToken: hashToken,
-      verifyTokenExpiry: Date.now() + 3600000, // 1 hour
-    });
-  } else if (Emailtype === "RESET") {
-    await Signup.findOneAndUpdate(UserId, {
-      forgotpasswordToken: hashToken,
-      forgotpasswordTokenExpiry: Date.now() + 3600000, // 1 hour
-    });
-  }
 
   const emailContent = `
    <section style="max-width: 640px; padding: 24px; margin: 0 auto; background-color: white;">
@@ -89,12 +84,13 @@ export async function Mail({ Email, Emailtype, UserId }: any) {
     </footer>
 </section>
 
-    `
+    `;
 
   const mailOptions = {
     from: '"Xplant" <codewithharry35434@gmail.com>', // Sender address
     to: Email, // Recipient address
-    subject: Emailtype === "VERIFY" ? "Verify your email" : "Reset your password",
+    subject:
+      Emailtype === "VERIFY" ? "Verify your email" : "Reset your password",
     html: emailContent, // Email content in HTML format
   };
 

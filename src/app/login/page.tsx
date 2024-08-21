@@ -1,10 +1,10 @@
-import Register from "@/app/Featuers/Auth/Components/Signup";
+import Login from "@/app/Featuers/Auth/Components/Login";
 import React from "react";
 
 const page = () => {
   return (
     <div>
-      <Register />
+      <Login />
     </div>
   );
 };

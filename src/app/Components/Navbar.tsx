@@ -28,32 +28,16 @@ import { useSelector } from "react-redux";
 import ConnectionStatus from "../lib/Connection";
 import Image from "next/image";
 import { UserSelector } from "../Featuers/Auth/AuthSlice";
+import { Button } from "@/components/ui/button";
+import { signOut } from "next-auth/react";
 
 const Navbar = () => {
   const cartItem = useSelector(cartDataSelector);
   const user = useSelector(UserSelector);
   const route = usePathname();
 
-  if (route === "/Auth/Login") {
-    return (
-      <>
-        <div className=""></div>
-      </>
-    );
-  }
-  if (route === "/Auth/Signup") {
-    return (
-      <>
-        <div className=""></div>
-      </>
-    );
-  }
-  if (route === "/Auth/Resend") {
-    return (
-      <>
-        <div className=""></div>
-      </>
-    );
+  if (["/Signup", "/login", "/Resend"].includes(route)) {
+    return null; // No sidebar on these routes
   }
 
   return (
@@ -92,6 +76,9 @@ const Navbar = () => {
               </span>
               <span className="">Cart</span>
             </Link>
+            <div className="">
+              <Button onClick={() => signOut()}>Logout</Button>
+            </div>
           </div>
         </div>
 

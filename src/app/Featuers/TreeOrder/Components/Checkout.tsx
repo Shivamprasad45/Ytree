@@ -22,7 +22,7 @@ import {
   Plant_Order_before,
 } from "../TreeOrderSlice";
 import { Plant_order } from "../../../../../type";
-import UserRelaod from "@/app/lib/UserRelaod";
+
 import { UserSelector } from "../../Auth/AuthSlice";
 import { useRouter } from "next/navigation";
 import { useGetCartItemByIdQuery } from "../../Treecart/TreeServicesAPI";
@@ -56,7 +56,7 @@ const formSchema = z.object({
 
 function Checkout() {
   const route = useRouter();
-  UserRelaod();
+
   const form = useForm({
     resolver: zodResolver(formSchema),
   });

@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
-import Signup from "@/Models/SignupModel";
+User;
 import DbConnect from "@/Utils/mongooesConnect";
+import { User } from "@/Models/SignupModel";
 
 // Connect to the database
 DbConnect();
@@ -17,9 +18,8 @@ export async function GET(req: NextRequest) {
     }
 
     // Find user by token and check if token is still valid
-    const user = await Signup.findOne({
+    const user = await User.findOne({
       verifyToken: token,
-      verifyTokenExpiry: { $gt: Date.now() },
     });
 
     if (!user) {
@@ -31,8 +31,8 @@ export async function GET(req: NextRequest) {
 
     // Update user's verification status
     user.isVerfied = true;
-    user.verifyToken = undefined;
-    user.verifyTokenExpiry = undefined;
+    user.verificationToken = undefined;
+
     await user.save();
 
     return NextResponse.redirect(

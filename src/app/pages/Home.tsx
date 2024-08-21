@@ -14,18 +14,14 @@ import {
 } from "@/components/ui/accordion";
 import Link from "next/link";
 
-
-
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useGetTreeInfoQuery } from "../Featuers/Tree/TreeServices";
 
-import UserRelaod from "../lib/UserRelaod";
-import { Loader } from "lucide-react";
 import Loading from "../Loading/Loading";
 import Image from "next/image";
 
+import { useSession } from "next-auth/react";
 const Homes = () => {
-  UserRelaod();
   const { data: feature, isLoading, isError } = useGetTreeInfoQuery();
 
   if (isLoading) {
@@ -39,6 +35,7 @@ const Homes = () => {
   if (isError) {
     return <p>Error: Failed to fetch tree information</p>;
   }
+
   return (
     <>
       <MaxWidthRappers className="xl:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md mx-3">
@@ -58,9 +55,9 @@ const Homes = () => {
                   </span>
                 </div>
                 <div className="mt-4">
-                  <Button className="" > 
-                    <Link href='/Tree/Shop'>Shop plant</Link>
-                    </Button>
+                  <Button className="">
+                    <Link href="/Tree/Shop">Shop plant</Link>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -84,11 +81,13 @@ const Homes = () => {
                       >
                         <Link href={`/TreeDetiles/${artwork._id}`}>
                           <div className="Depth8Frame0 h-32 flex-col justify-start items-start flex">
-                          <Image height={200} width={400}
-                            className="w-56 h-32 relative rounded-xl"
-                            src="https://via.placeholder.com/223x125"
-                            alt="img "
-                          />
+                            <Image
+                              height={200}
+                              width={400}
+                              className="w-56 h-32 relative rounded-xl"
+                              src="https://via.placeholder.com/223x125"
+                              alt="img "
+                            />
                           </div>
                           <div className="Depth8Frame1 w-56 h-24 pb-3 flex-col justify-start items-start flex">
                             <div className="Depth9Frame0 w-56 h-6 flex-col justify-start items-start flex">
@@ -127,25 +126,27 @@ const Homes = () => {
                         className="Depth5Frame3 w-56 h-48 flex-col justify-start items-start gap-3 inline-flex"
                       >
                         <Link href={`/TreeDetiles/${artwork._id}`}>
-                        <div className="Depth6Frame0 w-56 h-32 flex-col justify-start items-start flex">
-                          <Image height={200} width={400}
-                            className="w-56 h-32 relative rounded-xl"
-                            src="https://via.placeholder.com/223x125"
-                            alt="img "
-                          />
-                        </div>
-                        <div className="Depth6Frame1 w-56 h-14 pb-3 flex-col justify-start items-start flex">
-                          <div className="Depth7Frame0 w-56 h-6 flex-col justify-start items-start flex">
-                            <div className="WhiteDogwood self-stretch text-neutral-900 text-base font-medium font-['Plus Jakarta Sans'] leading-normal">
-                              {artwork.commonName}
+                          <div className="Depth6Frame0 w-56 h-32 flex-col justify-start items-start flex">
+                            <Image
+                              height={200}
+                              width={400}
+                              className="w-56 h-32 relative rounded-xl"
+                              src="https://via.placeholder.com/223x125"
+                              alt="img "
+                            />
+                          </div>
+                          <div className="Depth6Frame1 w-56 h-14 pb-3 flex-col justify-start items-start flex">
+                            <div className="Depth7Frame0 w-56 h-6 flex-col justify-start items-start flex">
+                              <div className="WhiteDogwood self-stretch text-neutral-900 text-base font-medium font-['Plus Jakarta Sans'] leading-normal">
+                                {artwork.commonName}
+                              </div>
+                            </div>
+                            <div className="Depth7Frame1 w-56 h-5 flex-col justify-start items-start flex">
+                              <div className="15 self-stretch text-neutral-500 text-sm font-normal font-['Plus Jakarta Sans'] leading-tight">
+                                ${artwork.prise}
+                              </div>
                             </div>
                           </div>
-                          <div className="Depth7Frame1 w-56 h-5 flex-col justify-start items-start flex">
-                            <div className="15 self-stretch text-neutral-500 text-sm font-normal font-['Plus Jakarta Sans'] leading-tight">
-                              ${artwork.prise}
-                            </div>
-                          </div>
-                        </div>
                         </Link>
                       </div>
                     ))}
@@ -161,9 +162,9 @@ const Homes = () => {
                 </h1>
               </div>
               <div className="w-full flex justify-center">
-              <Button className="" > 
-                    <Link href='/Tree/Shop'>Shop plant</Link>
-                    </Button>
+                <Button className="">
+                  <Link href="/Tree/Shop">Shop plant</Link>
+                </Button>
               </div>
             </div>
 
