@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: "/payment",
     },
-    sitemap: `${process.env.URL}/sitemap.xml`,
+    sitemap: `https://ytree.vercel.app/sitemap.xml`,
   };
 }
