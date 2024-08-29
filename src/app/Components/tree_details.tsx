@@ -63,16 +63,7 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
       console.log(error);
     }
   };
-  //   if (isTreeDetailsLoading) {
-  //     return (
-  //       <div>
-  //         <Loading />
-  //       </div>
-  //     );
-  //   }
-  //   if (isFetching) {
-  //     return <div>...Fetching</div>;
-  //   }
+
   return (
     <div className=" flex flex-row">
       <div className="relative flex size-full min-h-screen flex-col  group/design-root overflow-x-hidden">

@@ -8,16 +8,21 @@ import { TreeInfo } from "../../../../../type";
 import Link from "next/link";
 
 import Image from "next/image";
-// import { useGetuserInfoByNameQuery } from "../../Auth/AuthAPIS";
+
 import Loading from "@/app/Loading/Loading";
 import { useSelector } from "react-redux";
 import { UserSelector } from "../../Auth/AuthSlice";
 import { Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Metadata } from "next";
 
 const fetchTreeInfo = async () => {
   const response = await axios.get("/api/Tree/AllTree");
   return response.data;
+};
+const metadata: Metadata = {
+  title: "Shop of Trees ",
+  description: "All Trees in one page",
 };
 const Shop = () => {
   // const { data: userData } = useGetuserInfoByNameQuery();
