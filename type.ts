@@ -42,6 +42,10 @@ export interface TreeInfo {
   imageURL: string;
   id: string;
   prise: number;
+  growthTips: string;
+  seoTitle: string;
+  seoDescription: string;
+  seoKeywords: string[];
 }
 
 export interface menuItem {

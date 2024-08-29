@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
   // Set CORS headers to allow all origins
@@ -30,9 +30,7 @@ export function middleware(request: NextRequest) {
 
   const path = request.nextUrl.pathname;
   const isPublic =
-    path === "/Auth/Login" ||
-    path === "/Auth/Signup" ||
-    path === "/Auth/Verify-succes";
+    path === "/login" || path === "/Signup" || path === "/Auth/Verify-succes";
 
   const token = request.cookies.get("token")?.value || "";
   console.log(token, "Token in Middelwear");

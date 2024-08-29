@@ -4,13 +4,20 @@ import { login } from "@/action/action";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useSession } from "next-auth/react";
 
-import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
 
 const Login = () => {
+  const route = useRouter();
+  const { data: session, status } = useSession();
+
+  if (session?.user) {
+    route.push("/");
+  }
   return (
     <div className="mt-10 max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white border border-primary  dark:bg-black">
       <form
@@ -30,6 +37,7 @@ const Login = () => {
             toast.success("Login successful", {
               id: toastId,
             });
+            route.refresh();
           } else {
             toast.error(String(err), {
               id: toastId,

@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 
 import Link from "next/link";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -16,7 +15,6 @@ import {
   LucideMenu,
   ShoppingBasket,
   TreesIcon,
-  User2Icon,
   UserX2Icon,
 } from "lucide-react";
 import { ModeToggle } from "./Togglemode";
@@ -30,16 +28,20 @@ import Image from "next/image";
 import { UserSelector } from "../Featuers/Auth/AuthSlice";
 import { Button } from "@/components/ui/button";
 import { signOut } from "next-auth/react";
+import { useGetCartItemByIdQuery } from "../Featuers/Treecart/TreeServicesAPI";
 
 const Navbar = () => {
-  const cartItem = useSelector(cartDataSelector);
   const user = useSelector(UserSelector);
+  const { data: cartdata, isLoading: isCartLoading } = useGetCartItemByIdQuery(
+    user?._id!
+  );
+
   const route = usePathname();
 
   if (["/Signup", "/login", "/Resend"].includes(route)) {
     return null; // No sidebar on these routes
   }
-
+  const Total_cart_item = cartdata?.reduce((a, b) => a + b.quantity, 0);
   return (
     <nav className="max-w-screen-2xl px-3 md:px-8 font-semibold flex items-center  justify-between py-3  md:py-4 border-b mb-2">
       <ConnectionStatus />
@@ -67,18 +69,28 @@ const Navbar = () => {
       <div className="flex space-x-32 items-center justify-center ">
         <div className=" hidden md:inline  ">
           <div className="justify-center items-center space-x-10 flex ">
-            <span className="">About</span>
+            <span className="cursor-auto">
+              <Link href="/About">About</Link>
+            </span>
 
             <Link className="flex space-x-2" href="/Tree/Cart">
               <span className="relative">
-                <Badge className="absolute bottom-4">{cartItem?.length}</Badge>
+                <Badge className="absolute bottom-4">{Total_cart_item}</Badge>
                 <TreesIcon />
               </span>
               <span className="">Cart</span>
             </Link>
-            <div className="">
-              <Button onClick={() => signOut()}>Logout</Button>
-            </div>
+            {user?.email ? (
+              <div className="">
+                <Button onClick={() => signOut()}>Logout</Button>
+              </div>
+            ) : (
+              <div className="">
+                <Link href="/login">
+                  <Button>Sigin</Button>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
 

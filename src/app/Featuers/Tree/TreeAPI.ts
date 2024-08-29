@@ -8,7 +8,6 @@ export async function Plantsdetails(id: string): Promise<TreeInfo | null> {
 
       if (Data.data) {
         resolve(Data.data);
-        console.log(Data.data, "terre");
       }
     } catch (error) {
       reject(error);

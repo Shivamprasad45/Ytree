@@ -10,6 +10,10 @@ const treeSchema = new mongoose.Schema({
   region: { type: String, required: true },
   imageURL: { type: String, required: true },
   prise: { type: Number },
+  seoTitle: { type: String, required: true },
+  seoDescription: { type: String, required: true },
+  growthTips: { type: String, required: true },
+  seoKeywords: [{ type: String, required: true }],
 });
 
 const Tree = mongoose.models.Tree || mongoose.model("Tree", treeSchema);

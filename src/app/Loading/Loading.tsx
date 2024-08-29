@@ -13,7 +13,7 @@ const Loading = () => {
         repeat: Infinity,
         ease: "linear",
       }}
-      className="flex justify-center items-center h-screen"
+      className="flex justify-center  items-center h-screen"
     >
       <Loader />
     </motion.div>

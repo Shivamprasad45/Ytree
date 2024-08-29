@@ -12,6 +12,7 @@ import {
 import { Enter_Plant_coords } from "../../../../type";
 import { useSave_plants_coordsMutation } from "@/app/Featuers/TreeOrder/TreeOrderServices";
 import PushNotifications from "@/app/lib/PushNoti";
+import { toast } from "sonner";
 
 const Map = dynamic(() => import("./Map"), { ssr: false });
 
@@ -69,8 +70,13 @@ const Logtrees = () => {
 
   const Tree_coords_Save = () => {
     try {
-      Save_coords(Save_plant_coords);
+      if (Notification?.endpoint) {
+        Save_coords(Save_plant_coords);
+      } else {
+        toast.error("Please allow notifications");
+      }
     } catch (error) {
+      toast("Please allow notifications");
       console.log("Fail to save coords", error);
     }
   };

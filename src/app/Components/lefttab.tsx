@@ -78,7 +78,7 @@ const Lefttab = () => {
           <Image
             width={100}
             height={100}
-            src={session?.user.image || "/default-avatar.png"}
+            src={session?.user.image || "/wave.png"}
             className="rounded-full w-12 h-12 hover:border-2 border-2 border-black"
             alt="profile picture"
           />
