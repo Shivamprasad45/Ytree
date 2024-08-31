@@ -15,7 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ).then((res) => res.json());
 
   const All_Tree_Details = All_Tree.map((tree) => ({
-    url: `${process.env.URL}/api/Tree/TreeDetails?id=${tree.id}`,
+    url: `http://localhost:3000/api/Tree/TreeDetails?id=${tree.id}`,
     lastModified: new Date().toISOString(),
   }));
 

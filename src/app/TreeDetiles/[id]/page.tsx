@@ -12,7 +12,7 @@ export async function generateMetadata({
   // Fetch data here
   console.log(params.id, "GET");
   const response = await fetch(
-    `http://localhost:3000/api/Tree/TreeDetails?id=${params.id}`
+    `${process.env.URL}/api/Tree/TreeDetails?id=${params.id}`
   );
   const PlantDetails: TreeInfo = await response.json();
   if (PlantDetails === undefined) {
@@ -24,7 +24,7 @@ export async function generateMetadata({
     description: PlantDetails.seoDescription,
     openGraph: {
       type: "website",
-      url: `http://localhost:3000/api/Tree/TreeDetails?id=${params.id}`,
+      url: `${process.env.URL}/api/Tree/TreeDetails?id=${params.id}`,
       title: PlantDetails.seoTitle,
       description: PlantDetails.seoDescription,
       locale: "en_US",
@@ -43,7 +43,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
   // Fetch data here
 
   const response = await fetch(
-    `http://localhost:3000/api/Tree/TreeDetails?id=${params.id}`
+    `${process.env.URL}/api/Tree/TreeDetails?id=${params.id}`
   );
   const PlantDetails = await response.json();
 
