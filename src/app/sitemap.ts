@@ -11,11 +11,11 @@ import { TreeInfo } from "../../type";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const All_Tree: TreeInfo[] = await fetch(
-    `http://localhost:3000/api/Tree/AllTree`
+    `${process.env.URL}/api/Tree/AllTree`
   ).then((res) => res.json());
 
   const All_Tree_Details = All_Tree.map((tree) => ({
-    url: `http://localhost:3000/api/Tree/TreeDetails?id=${tree.id}`,
+    url: `${process.env.URL}/api/Tree/TreeDetails?id=${tree.id}`,
     lastModified: new Date().toISOString(),
   }));
 
