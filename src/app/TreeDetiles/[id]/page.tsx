@@ -10,7 +10,7 @@ export async function generateMetadata({
   params: { id: string };
 }): Promise<Metadata | undefined> {
   // Fetch data here
-  console.log(params.id, "GET");
+
   const response = await fetch(
     `${process.env.URL}/api/Tree/TreeDetails?id=${params.id}`
   );
