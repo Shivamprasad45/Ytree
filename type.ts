@@ -41,7 +41,7 @@ export interface TreeInfo {
   region: string;
   imageURL: string;
   id: string;
-  prise: number;
+  price: number;
   growthTips: string;
   seoTitle: string;
   seoDescription: string;

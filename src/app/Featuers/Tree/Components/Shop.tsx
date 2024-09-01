@@ -88,7 +88,7 @@ const Shop = () => {
                         </p>
                       </div>
                       <p className="text-sm font-medium pl-2 text-gray-300 pt-6">
-                        ₹{product.prise}
+                        ₹{product.price}
                       </p>
                     </div>
                     <Button className="flex items-center text-center justify-center mb-0 space-x-2 mt-4">

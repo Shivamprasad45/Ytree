@@ -9,12 +9,11 @@ export const dynamic = "force-dynamic";
 
 import { toast } from "sonner";
 import { useAddCartMutation } from "@/app/Featuers/Treecart/TreeServicesAPI";
-import { useGetTreeDetailsQuery } from "@/app/Featuers/Tree/TreeServices";
+
 import Map from "@/app/Components/Mapregion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import Loading from "@/app/Loading/Loading";
 import { useSession } from "next-auth/react";
 import { TreeCart, TreeInfo } from "../../../type";
 
@@ -46,7 +45,7 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
           commonName: PlantDetails?.commonName || "",
           scientificName: PlantDetails?.scientificName || "",
           description: PlantDetails?.description || "",
-          price: PlantDetails?.prise || 45,
+          price: PlantDetails?.price || 45,
           imageURL: PlantDetails?.imageURL || "",
 
           region: PlantDetails?.region || "",

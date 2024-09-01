@@ -143,7 +143,7 @@ const Homes = () => {
                             </div>
                             <div className="Depth7Frame1 w-56 h-5 flex-col justify-start items-start flex">
                               <div className="15 self-stretch text-neutral-500 text-sm font-normal font-['Plus Jakarta Sans'] leading-tight">
-                                ${artwork.prise}
+                                ${artwork.price}
                               </div>
                             </div>
                           </div>
