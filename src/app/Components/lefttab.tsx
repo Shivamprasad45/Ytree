@@ -38,7 +38,7 @@ export const menuItems: menuItem[] = [
     id: 3,
     icon: <ContactRoundIcon size={20} />,
     label: "Contact us",
-    path: "/Tree/Shop",
+    path: "/Contact",
   },
 
   {

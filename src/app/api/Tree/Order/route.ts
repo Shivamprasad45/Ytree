@@ -12,7 +12,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const data = await req.json();
 
     // Validate the presence of User_Id
-
+    console.log(data.plants[0].UserId, "User Id");
     const treeData = await Order.insertMany(data);
     await cart.deleteMany({
       UserId: data.plants[0].UserId,

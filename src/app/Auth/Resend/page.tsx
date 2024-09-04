@@ -35,7 +35,7 @@ const Resend = () => {
             <CardFooter className="justify-between">
               <Link href="/">Skip</Link>
               <Button>
-                <Link href="/Auth/Login">Login</Link>
+                <Link href="/login">Login</Link>
               </Button>
             </CardFooter>
           </Card>

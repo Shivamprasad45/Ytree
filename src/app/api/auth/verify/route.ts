@@ -10,27 +10,28 @@ DbConnect();
 export async function GET(req: NextRequest) {
   try {
     const token = req.nextUrl.searchParams.get("token");
+
     if (!token) {
       return NextResponse.json(
         { message: "Token is required" },
         { status: 400 }
       );
     }
-
+    console.log(token, "djdgj");
     // Find user by token and check if token is still valid
     const user = await User.findOne({
-      verifyToken: token,
+      verificationToken: token,
     });
-
+    console.log(user, "sdgdg");
     if (!user) {
       return NextResponse.json(
-        { message: "Invalid or expired token" },
+        { message: "Invalid or expired token ssf" },
         { status: 400 }
       );
     }
 
     // Update user's verification status
-    user.isVerfied = true;
+    user.verified = true;
     user.verificationToken = undefined;
 
     await user.save();

@@ -11,6 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import {
+  EarthIcon,
   EarthLockIcon,
   LucideMenu,
   ShoppingBasket,
@@ -21,7 +22,7 @@ import { ModeToggle } from "./Togglemode";
 import { Badge } from "@/components/ui/badge";
 import { menuItems } from "./lefttab";
 import { usePathname } from "next/navigation";
-import { cartDataSelector } from "../Featuers/Treecart/TreeSliec";
+
 import { useSelector } from "react-redux";
 import ConnectionStatus from "../lib/Connection";
 import Image from "next/image";
@@ -51,7 +52,7 @@ const Navbar = () => {
             <Image
               height={300}
               width={400}
-              alt="https://i.postimg.cc/cHCpYFRM/plant2.png"
+              alt="https://i.postimg.cc"
               src="https://i.postimg.cc/cHCpYFRM/plant2.png"
               className="w-10 h-8 "
             />
@@ -113,6 +114,15 @@ const Navbar = () => {
               <SheetContent>
                 <SheetHeader>
                   <SheetTitle>Menu</SheetTitle>
+                  <div className="">
+                    <Link href="/Tree/Global">
+                      {" "}
+                      <EarthIcon />{" "}
+                    </Link>
+                  </div>
+                  <div className="">
+                    <Link href="/About"> About</Link>
+                  </div>
                   <ul className=" pt-4 grid  ">
                     {menuItems.map((item) => (
                       <Link key={item.id} href={item.path}>

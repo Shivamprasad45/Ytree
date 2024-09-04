@@ -1,6 +1,6 @@
 // services/authApi.ts
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { TreeInfo } from "../../../../type";
+import { IPlantProfile, TreeInfo } from "../../../../type";
 
 // Define a service using a base URL and expected endpoints
 export const TreeApi = createApi({
@@ -15,9 +15,20 @@ export const TreeApi = createApi({
         url: `/Tree/TreeDetails?id=${id}`,
       }),
     }),
+    getlog_tree: builder.mutation<any, any>({
+      query: (LogInfo) => ({
+        url: `/Tree/Logtree`,
+        body: LogInfo,
+        method: "POST",
+      }),
+    }),
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetTreeInfoQuery, useGetTreeDetailsQuery } = TreeApi;
+export const {
+  useGetTreeInfoQuery,
+  useGetTreeDetailsQuery,
+  useGetlog_treeMutation,
+} = TreeApi;

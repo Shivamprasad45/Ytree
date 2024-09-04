@@ -8,13 +8,13 @@ import { useSession } from "next-auth/react";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { toast } from "sonner";
 
 const Login = () => {
   const route = useRouter();
   const { data: session, status } = useSession();
-
+  const [show_Resedmail, setshow_resedmail] = useState<boolean>(false);
   if (session?.user) {
     route.push("/");
   }
@@ -39,6 +39,14 @@ const Login = () => {
             });
             route.refresh();
           } else {
+            if (typeof err === "string") {
+              if (
+                err ===
+                "Your account is not verified ,Please check your mail in spam."
+              ) {
+                setshow_resedmail(true);
+              }
+            }
             toast.error(String(err), {
               id: toastId,
             });
@@ -66,10 +74,16 @@ const Login = () => {
         <button className="bg-gradient-to-br relative group/btn  bg-primary dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]">
           Login &rarr;
         </button>
-
-        <p className="text-right text-neutral-600 text-sm max-w-sm mt-4 dark:text-neutral-300">
-          Dont have account? <Link href="/Signup">Register</Link>
-        </p>
+        <div className="flex justify-between">
+          {show_Resedmail && (
+            <p className="text-right text-neutral-600 text-sm max-w-sm mt-4 dark:text-neutral-300">
+              <Link href="/Auth/Resend">Resend mail</Link>
+            </p>
+          )}
+          <p className="text-right text-neutral-600 text-sm max-w-sm mt-4 dark:text-neutral-300">
+            Dont have account? <Link href="/Signup">Register</Link>
+          </p>
+        </div>
 
         <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
       </form>

@@ -179,7 +179,7 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
                       Water
                     </h2>
                     <p className="] text-sm font-normal leading-normal">
-                      Water when top 1-2 inches of soil is dry
+                      {PlantDetails.benefits[0]}
                     </p>
                   </div>
                 </div>
@@ -205,7 +205,7 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
                       Humidity
                     </h2>
                     <p className=" text-sm font-normal leading-normal">
-                      Prefers high humidity
+                      {PlantDetails.growthTips}
                     </p>
                   </div>
                 </div>

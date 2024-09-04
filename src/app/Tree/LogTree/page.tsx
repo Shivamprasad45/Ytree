@@ -6,41 +6,58 @@ import { useSelector } from "react-redux";
 import {
   Allow_Notification_Endpoints_Selector,
   Coords_Selector,
-  MyTreesSelector,
 } from "@/app/Featuers/TreeOrder/TreeOrderSlice";
 
 import { Enter_Plant_coords } from "../../../../type";
 import { useSave_plants_coordsMutation } from "@/app/Featuers/TreeOrder/TreeOrderServices";
 import PushNotifications from "@/app/lib/PushNoti";
 import { toast } from "sonner";
+import { useGetlog_treeMutation } from "@/app/Featuers/Tree/TreeServices";
 
 const Map = dynamic(() => import("./Map"), { ssr: false });
 
 const Logtrees = () => {
-  const [_ID, set_ID] = useState<string>("");
-  const [Plaint_id, setPlaint_id] = useState<string>("");
-  const [User_id, setUser_id] = useState<string>("");
+  const [Iplant, { data: About_Mytree, isLoading }] = useGetlog_treeMutation();
+
   const Searchparams = useSearchParams();
 
+  //Fetch the plant information from the   database
   useEffect(() => {
-    const _id = Searchparams.get("id");
-    const Plaint_id = Searchparams.get("Plaintid");
-    const User_id = Searchparams.get("userid");
+    const fetchData = async () => {
+      const _id = Searchparams.get("id");
+      const Plaint_id = Searchparams.get("Plaintid");
+      const User_id = Searchparams.get("userid");
 
-    if (_id && Plaint_id && User_id) {
-      set_ID(_id);
-      setPlaint_id(Plaint_id);
-      setUser_id(User_id);
-    }
+      if (_id && Plaint_id && User_id) {
+        // Wait for state to be updated before calling Fetch_user
+        await Fetch_user({ _ID: _id, Plaint_id: Plaint_id, User_id: User_id });
+      }
+    };
+
+    fetchData();
   }, [Searchparams]);
 
-  const trees = useSelector(MyTreesSelector);
-  const Notification = useSelector(Allow_Notification_Endpoints_Selector);
+  async function Fetch_user({
+    _ID,
+    Plaint_id,
+    User_id,
+  }: {
+    _ID: string;
+    User_id: string;
+    Plaint_id: string;
+  }) {
+    const user = { _ID, Plaint_id, User_id };
+    console.log(user, "User");
 
-  const About_Mytree = trees?.find(
-    (item) =>
-      item._id === _ID && item.Plaintid === Plaint_id && item.UserId === User_id
-  );
+    try {
+      await Iplant(user);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // const trees = useSelector(MyTreesSelector);
+  const Notification = useSelector(Allow_Notification_Endpoints_Selector);
 
   const Plants_CurrentLocations = useSelector(Coords_Selector);
 

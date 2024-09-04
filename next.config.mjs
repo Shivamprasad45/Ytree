@@ -30,7 +30,8 @@ const nextConfig = {
       "cdn.usegalileo.ai",
       "via.placeholder.com",
       "i.postimg.cc",
-      "cdn.tuk.dev"
+      "cdn.tuk.dev",
+      "i.ibb.co"
     ],
   },
   experimental: {

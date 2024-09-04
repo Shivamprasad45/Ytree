@@ -14,15 +14,15 @@ export async function POST(req: NextRequest) {
 
     // Parse the JSON body
     const { ResendEmail } = await req.json();
-
+    console.log(ResendEmail, "sfsfk");
     // Ensure ResendEmail is a string
     if (typeof ResendEmail !== "string") {
       return NextResponse.json({ error: "Invalid email format" });
     }
 
     // Query the database with the extracted email
-    const user = await User.findOne({ Email: ResendEmail });
-
+    const user = await User.findOne({ email: ResendEmail });
+    console.log(user);
     if (!user) {
       return NextResponse.json({ error: "User not found" });
     }
@@ -30,7 +30,8 @@ export async function POST(req: NextRequest) {
     if (user.isVerfied) {
       return NextResponse.json({ error: "you are already verified" });
     }
-    await Mail({ Email: user.Email, Emailtype: "VERIFY", UserId: user._id });
+
+    await Mail({ Email: user.email, Emailtype: "VERIFY", UserId: user._id });
 
     return NextResponse.json({ email: ResendEmail });
   } catch (error) {

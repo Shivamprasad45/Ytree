@@ -40,28 +40,35 @@ const Homes = () => {
     <>
       <MaxWidthRappers className="xl:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md mx-3">
         <header className="p-5 md:p-8">
-          <section className=" ">
-            <div className="Image  relative ">
-              <div className="items-start  flex flex-col  absolute bottom-6  px-6 md:px-12 text-white ">
-                <div className="">
-                  <span className="scroll-m-20  pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-                    Plant trees, save the planet
-                  </span>
-                </div>
-                <div className="">
-                  <span className="text-sm  items-start flex flex-col text-start">
-                    The easiest way to fight climate change is to plant trees.
-                    And we make it easy for you to do just that.
-                  </span>
-                </div>
-                <div className="mt-4">
-                  <Button className="">
-                    <Link href="/Tree/Shop">Shop plant</Link>
-                  </Button>
-                </div>
+          <section className="relative w-[100vw]">
+            <Image
+              src="https://i.ibb.co/gRj1LQq/Firefly-Beautiful-cozy-fantasy-stone-cottage-in-a-spring-forest-aside-a-cobblestone-path-and-a-babbl.jpg"
+              width={200}
+              height={200}
+              alt="dee"
+              className="md:w-[70vw] h-[40vh] sm:w-[100vw] w-[100vw]"
+              loading="eager"
+            />
+            <div className="absolute bottom-6 left-0 right-0 px-6 md:px-12 text-white flex flex-col items-start">
+              <div>
+                <span className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+                  Plant trees, save the planet
+                </span>
+              </div>
+              <div>
+                <p className="text-sm flex flex-wrap">
+                  The easiest way to fight climate change is to plant trees. And
+                  we make it easy for you to do just that.
+                </p>
+              </div>
+              <div className="mt-4">
+                <Button>
+                  <Link href="/Tree/Shop">Shop plant</Link>
+                </Button>
               </div>
             </div>
           </section>
+
           {/* //Why trees */}
 
           <section className="my-10 md:my-14">

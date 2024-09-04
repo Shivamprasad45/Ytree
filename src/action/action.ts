@@ -6,6 +6,8 @@ import DbConnect from "@/Utils/mongooesConnect";
 import { hash } from "bcryptjs";
 import { CredentialsSignin } from "next-auth";
 import { redirect } from "next/navigation";
+import { ContactFormData } from "../../type";
+import ContactForm from "@/Models/Contact";
 
 const login = async ({
   email,
@@ -63,5 +65,18 @@ const regester = async (formData: FormData) => {
     return someError.cause;
   }
 };
-
-export { regester, login };
+const Save_cot_user = async ({ email, name, message }: ContactFormData) => {
+  try {
+    await DbConnect();
+    const User_cont = {
+      email,
+      name,
+      message,
+    };
+    await ContactForm.create(User_cont);
+  } catch (error) {
+    const someError = error as CredentialsSignin;
+    return someError.cause;
+  }
+};
+export { regester, login, Save_cot_user };

@@ -169,3 +169,15 @@ export interface CustomSubscription {
     auth: string;
   };
 }
+
+export interface ContactFormData {
+  name: string;
+  email: string;
+  message: string;
+}
+
+// Define the TypeScript type for form submission response
+export interface ContactFormResponse {
+  success: boolean;
+  message: string;
+}

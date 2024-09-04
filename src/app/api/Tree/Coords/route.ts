@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
         age: Date.now(),
       }
     );
-    console.log(dtat, "clfafsgagh");
+
     const Coords = await Plants_coordinates.insertMany(Plant_coord_data);
 
     if (!Coords) {

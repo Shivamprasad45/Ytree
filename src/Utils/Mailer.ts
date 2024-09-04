@@ -1,3 +1,4 @@
+import { User } from "@/Models/SignupModel";
 import nodemailer from "nodemailer";
 
 // Define your SMTP credentials in environment variables
@@ -27,9 +28,9 @@ export async function Mail({
   UserId: string;
 }) {
   const hashToken = UserId;
-
+  console.log(Email, Emailtype, UserId, "hashToken");
   // Update the user with the appropriate token
-
+  const user = await User.findById(hashToken);
   const emailContent = `
    <section style="max-width: 640px; padding: 24px; margin: 0 auto; background-color: white;">
     <header>
@@ -55,13 +56,13 @@ export async function Mail({
         <p style="margin-top: 16px; line-height: 1.75; color: #4B5563;">
             This code will only be valid for the next 60 minutes. If the code does not work, you can use this login verification link:
         </p>
-        <a href="https://greenfatuer.vercel.app/api/auth/verify?token=${hashToken}">
+        <a href="${process.env.URL}/api/auth/verify?token=${user.verificationToken}">
             <button style="padding: 8px 24px; margin-top: 24px; font-size: 14px; font-weight: 500; text-transform: capitalize; color: white; background-color: #2563EB; border-radius: 8px; border: none; cursor: pointer;">
                 Verify email
             </button>
         </a>`
             : `
-        <a href="https://greenfatuer.vercel.app/api/auth/reset?token=${hashToken}">
+        <a href="${process.env.URL}/api/auth/reset?token=${user.verificationToken}">
             <button style="padding: 8px 24px; margin-top: 24px; font-size: 14px; font-weight: 500; text-transform: capitalize; color: white; background-color: #2563EB; border-radius: 8px; border: none; cursor: pointer;">
                 Reset Password
             </button>

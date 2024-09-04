@@ -24,8 +24,18 @@ import {
 import { Plant_order } from "../../../../../type";
 
 import { UserSelector } from "../../Auth/AuthSlice";
-import { useRouter } from "next/navigation";
+
 import { useGetCartItemByIdQuery } from "../../Treecart/TreeServicesAPI";
+
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import Payment from "@/app/payment/page";
 
 const formSchema = z.object({
   firstName: z.string().min(1, {
@@ -55,8 +65,6 @@ const formSchema = z.object({
 });
 
 function Checkout() {
-  const route = useRouter();
-
   const form = useForm({
     resolver: zodResolver(formSchema),
   });
@@ -64,7 +72,7 @@ function Checkout() {
   const { data: cartdata, isLoading: isCartLoading } = useGetCartItemByIdQuery(
     user?._id!
   );
-  // const cartdata = useSelector(cartdataSelector);
+  //  const cartdata = useSelector(cartdataSelector);
 
   const Total_Cart_price =
     cartdata &&
@@ -81,7 +89,6 @@ function Checkout() {
       Orderid: "",
     };
     dispatch(Plant_Order_before(Plant_order_data));
-    route.push("/payment");
   };
 
   return (
@@ -303,7 +310,23 @@ function Checkout() {
                     type="submit"
                     className="rounded-md px-6 py-3 w-full text-sm tracking-wide bg-blue-600 hover:bg-blue-700 text-white"
                   >
-                    Complete Purchase
+                    {/* //Drawer */}
+                    <Drawer>
+                      <DrawerTrigger asChild>
+                        <Button>Complete Purchase</Button>
+                      </DrawerTrigger>
+                      <DrawerContent>
+                        <div className="mx-auto w-full max-w-sm h-64">
+                          <DrawerHeader>
+                            <DrawerTitle>Pay now</DrawerTitle>
+                            <DrawerDescription>
+                              Please make a payment to complete your order.
+                            </DrawerDescription>
+                          </DrawerHeader>
+                          <Payment />
+                        </div>
+                      </DrawerContent>
+                    </Drawer>
                   </Button>
                 </div>
               </div>

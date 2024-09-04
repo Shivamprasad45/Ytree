@@ -48,7 +48,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           if (user.verified === false) {
             throw new CredentialsSignin({
               cause:
-                "Your account is not verified ,Please check your mail in spam  .",
+                "Your account is not verified ,Please check your mail in spam.",
             });
           }
 
