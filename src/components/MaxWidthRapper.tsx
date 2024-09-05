@@ -8,7 +8,11 @@ const MaxWidthRappers = ({
   children: React.ReactNode;
   className?: string;
 }) => {
-  return <div className={cn("mx-auto  w-full  ", className)}>{children}</div>;
+  return (
+    <div className={cn("mx-auto  w-full  overflow-hidden ", className)}>
+      {children}
+    </div>
+  );
 };
 
 export default MaxWidthRappers;

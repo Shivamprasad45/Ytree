@@ -49,6 +49,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.51.4",
     "react-leaflet": "^4.2.1",
+    "react-leaflet-markercluster": "^2.0.0",
     "react-redux": "^9.1.2",
     "redux": "^5.0.1",
     "shortid": "^2.2.16",

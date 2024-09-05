@@ -313,7 +313,9 @@ function Checkout() {
                     {/* //Drawer */}
                     <Drawer>
                       <DrawerTrigger asChild>
-                        <Button>Complete Purchase</Button>
+                        <Button className="rounded-md px-6 py-3 w-full text-sm tracking-wide bg-blue-600 hover:bg-blue-700 text-white">
+                          Complete Purchase
+                        </Button>
                       </DrawerTrigger>
                       <DrawerContent>
                         <div className="mx-auto w-full max-w-sm h-64">

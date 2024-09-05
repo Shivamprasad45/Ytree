@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export async function middleware(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
   // Set CORS headers to allow all origins
@@ -27,12 +27,14 @@ export async function middleware(request: NextRequest) {
       },
     });
   }
+  // const data = await getSession();
 
+  // console.log(data, "response");
   const path = request.nextUrl.pathname;
   const isPublic =
     path === "/login" || path === "/Signup" || path === "/Auth/Verify-succes";
 
-  const token = request.cookies.get("token")?.value || "";
+  const token = request.cookies.get("authjs.session-token")?.value || "";
   console.log(token, "Token in Middelwear");
   if (token) {
     // If the token is present, allow access to the home page or other private routes
@@ -45,7 +47,7 @@ export async function middleware(request: NextRequest) {
 
   if (!isPublic && !token) {
     // If the path is not public and no token is found, redirect to the signup page
-    return NextResponse.redirect(new URL("/Auth/Signup", request.url));
+    return NextResponse.redirect(new URL("/Signup", request.url));
   }
 
   // Allow the request to proceed for public paths
@@ -54,5 +56,5 @@ export async function middleware(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/Auth/Login", "/Auth/Signup", "/Auth/Verify-succes"],
+  matcher: ["/login", "/Signup", "/Auth/Verify-succes"],
 };

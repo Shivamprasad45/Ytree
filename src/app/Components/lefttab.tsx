@@ -18,7 +18,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo, UserSelector } from "../Featuers/Auth/AuthSlice";
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 
 export const menuItems: menuItem[] = [
   { id: 1, icon: <TreePalm size={20} />, label: "Trees", path: "/Tree/Shop" },
@@ -54,18 +54,24 @@ const Lefttab = () => {
   const { data: session, status } = useSession();
   const user = useSelector(UserSelector);
   const route = usePathname();
-
+  console.log(session, status, "selected");
   useEffect(() => {
-    if (status === "authenticated" && session?.user) {
-      dispatch(
-        setUserInfo({
-          _id: session.user.id!,
-          email: session.user.email!,
-          Username: session.user.name!,
-        })
-      );
+    const fetchSession = async () => {
+      const session = await getSession(); // Fetch session immediately
+      if (session?.user) {
+        dispatch(
+          setUserInfo({
+            _id: session.user.id!,
+            email: session.user.email!,
+            Username: session.user.name!,
+          })
+        );
+      }
+    };
+    if (status === "authenticated") {
+      fetchSession();
     }
-  }, [session, status, dispatch]);
+  }, [status, dispatch]);
 
   if (["/Signup", "/login", "/Resend"].includes(route)) {
     return null; // No sidebar on these routes

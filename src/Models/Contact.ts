@@ -33,9 +33,8 @@ const ContactFormSchema: Schema = new Schema(
 );
 
 // Create the Mongoose model
-const ContactForm = mongoose.model<IContactForm>(
-  "ContactForm",
-  ContactFormSchema
-);
+const ContactForm =
+  mongoose.models.ContactForm ||
+  mongoose.model<IContactForm>("ContactForm", ContactFormSchema);
 
 export default ContactForm;

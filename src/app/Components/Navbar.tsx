@@ -16,6 +16,8 @@ import {
   LucideMenu,
   ShoppingBasket,
   TreesIcon,
+  User2Icon,
+  UserCheck,
   UserX2Icon,
 } from "lucide-react";
 import { ModeToggle } from "./Togglemode";
@@ -104,7 +106,8 @@ const Navbar = () => {
             <Link href="/Tree/Cart">
               <ShoppingBasket className="hover:text-gray-400" />
             </Link>
-            {user?.email === null && <UserX2Icon />}
+            <Link href="/login">{!user?.email && <UserX2Icon />}</Link>
+            <div>{user?.email && <UserCheck />}</div>
 
             <Sheet>
               <SheetTrigger>
