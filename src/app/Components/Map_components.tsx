@@ -1,9 +1,14 @@
 "use client";
+
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useSession } from "next-auth/react";
-import { All_Users, Coordinate } from "../../../type";
+import {
+  useGetALL_coordsQuery,
+  useGetAll_usersQuery,
+} from "../Featuers/Global/GlobeServices";
+// Adjust the import path if necessary
 
 // Custom Icons
 const IconOne = new L.Icon({
@@ -27,24 +32,28 @@ const IconTwo = new L.Icon({
   shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
 });
 
-interface MapComponentProps {
-  All_coords: Coordinate[];
-  All_users: All_Users[];
-}
-
-const MapComponent: React.FC<MapComponentProps> = ({
-  All_coords,
-  All_users,
-}) => {
+const MapComponent: React.FC = () => {
   const { data: session } = useSession();
+  const {
+    data: coords,
+    isLoading: coordsLoading,
+    isError: coordsError,
+  } = useGetALL_coordsQuery();
+  const {
+    data: users,
+    isLoading: usersLoading,
+    isError: usersError,
+  } = useGetAll_usersQuery();
 
-  if (All_coords.length === 0) return <div>Loading...</div>; // Loading state
+  if (coordsLoading || usersLoading) return <div>Loading...</div>;
+  if (coordsError) return <div>Error loading coordinates.</div>;
+  if (usersError) return <div>Error loading users.</div>;
 
   return (
     <MapContainer
       center={
-        All_coords.length > 0
-          ? ([All_coords[0].late, All_coords[0].long] as [number, number])
+        coords && coords.length > 0
+          ? ([coords[0].late, coords[0].long] as [number, number])
           : [0, 0]
       }
       zoom={13}
@@ -54,19 +63,31 @@ const MapComponent: React.FC<MapComponentProps> = ({
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-      {All_coords.map((coord, index) => (
-        <Marker
-          key={index}
-          position={[coord.late, coord.long]}
-          icon={coord.UserId === session?.user?.id ? IconTwo : IconOne}
-        >
-          <Popup>
-            <p>{coord.Plant_Addresses}</p>
-            <p>{coord.commonName}</p>
-            {All_users.find((user) => user._id === coord.UserId)?.firstName}
-          </Popup>
-        </Marker>
-      ))}
+      {coords?.map((coord, index) => {
+        const userName =
+          users?.find((user) => user._id === coord.UserId)?.firstName ||
+          "Unknown User";
+
+        return (
+          <Marker
+            key={index}
+            position={[coord.late, coord.long]}
+            icon={coord.UserId === session?.user?.id ? IconTwo : IconOne}
+          >
+            <Popup>
+              <p>
+                <strong>Address:</strong> {coord.Plant_Addresses}
+              </p>
+              <p>
+                <strong>Plant:</strong> {coord.commonName}
+              </p>
+              <p>
+                <strong>User:</strong> {userName}
+              </p>
+            </Popup>
+          </Marker>
+        );
+      })}
     </MapContainer>
   );
 };

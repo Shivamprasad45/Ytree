@@ -1,16 +1,20 @@
-"use server";
+"use client";
+
+import dynamic from "next/dynamic";
 import React from "react";
-import MapComponent from "@/app/Components/Map_components";
-import { All_Users, Coordinate } from "../../../../type";
-import { fetchCoords } from "@/app/lib/getall";
-// Move fetchCoords to a helper file
 
-export default async function Page() {
-  // Fetch the data using the helper function
-  const {
-    coordsData,
-    usersData,
-  }: { coordsData: Coordinate[]; usersData: All_Users[] } = await fetchCoords();
+// Dynamically import the Map component
+const Map = dynamic(() => import("@/app/Components/Map_components"), {
+  ssr: false, // This disables server-side rendering for this component
+  loading: () => <p>Loading map...</p>, // Optional: display a loading message or component
+});
 
-  return <MapComponent All_coords={coordsData} All_users={usersData} />;
-}
+const Page: React.FC = () => {
+  return (
+    <div>
+      <Map />
+    </div>
+  );
+};
+
+export default Page;
