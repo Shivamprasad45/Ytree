@@ -3,9 +3,14 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSession } from "next-auth/react";
 import MaxWidthRappers from "@/components/MaxWidthRapper";
+
+import {
+  useGetALL_coordsQuery,
+  useGetAll_usersQuery,
+} from "../Featuers/Global/GlobeServices";
 
 // Extend L.Icon.Default to customize the icon without TypeScript errors
 const IconOne = new L.Icon({
@@ -29,87 +34,61 @@ const IconTwo = new L.Icon({
   shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
 });
 
-type Coordinate = {
-  late: number;
-  long: number;
-  Plant_Addresses: string;
-  UserId: string;
-  commonName: string;
-};
-
-type All_Users = {
-  _id: string;
-  firstName: string;
-};
-interface MapProps {
-  coordinates: Coordinate[];
-  All: All_Users[]; // Include the All_Users array in the props
-}
-
 const MapComponent = () => {
-  const [All_coords, setAll_coords] = useState<Coordinate[]>([]);
-  const [All_users, setAll_users] = useState<All_Users[]>([]);
-
-  useEffect(() => {
-    async function Fetch_coords() {
-      try {
-        const coordsResponse = await fetch(
-          `${process.env.URL}/api/Tree/All_coords`
-        );
-        const coordsData = await coordsResponse.json();
-
-        const usersResponse = await fetch(
-          `${process.env.URL}/api/Tree/All_users`
-        );
-        const usersData = await usersResponse.json();
-
-        setAll_coords(coordsData);
-        setAll_users(usersData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+  const { data: All_coords, isLoading: coordsLoading } = useGetALL_coordsQuery(
+    undefined,
+    {
+      refetchOnMountOrArgChange: true,
     }
+  );
 
-    Fetch_coords();
-  }, []);
+  const { data: All_users, isLoading: usersLoading } = useGetAll_usersQuery(
+    undefined,
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  );
 
   const { data: session } = useSession();
 
-  if (All_coords.length === 0) return <div>Loading...</div>; // Loading state
+  if (coordsLoading || usersLoading) return <div>Loading...</div>; // Loading state
 
   return (
     <MaxWidthRappers className="mx-auto">
       <div className="p-3 text-2xl font-semibold">Tree Locations</div>
-      <MapContainer
-        center={[All_coords[0].late, All_coords[0].long]} // Ensure you handle cases where coordinates array is empty
-        zoom={13}
-        style={{ height: "500px", width: "100%" }}
-      >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        />
-        {All_coords.map((coord, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: index * 0.2 }}
-          >
-            <Marker
-              position={[coord.late, coord.long]}
-              icon={coord.UserId === session?.user?.id ? IconTwo : IconOne}
+      {All_coords && All_coords.length > 0 && (
+        <MapContainer
+          center={[All_coords[0].late, All_coords[0].long]}
+          zoom={13}
+          style={{ height: "500px", width: "100%" }}
+        >
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          />
+          {All_coords.map((coord, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: index * 0.2 }}
             >
-              <Popup>
-                <p>{coord.Plant_Addresses}</p>
-                <p>{coord.commonName}</p>
-
-                {All_users.find((all) => all._id === coord.UserId)?.firstName}
-              </Popup>
-            </Marker>
-          </motion.div>
-        ))}
-      </MapContainer>
+              <Marker
+                position={[coord.late, coord.long]}
+                icon={coord.UserId === session?.user?.id ? IconTwo : IconOne}
+              >
+                <Popup>
+                  <p>{coord.Plant_Addresses}</p>
+                  <p>{coord.commonName}</p>
+                  {All_users &&
+                    All_users.find((user) => user._id === coord.UserId)
+                      ?.firstName}
+                </Popup>
+              </Marker>
+            </motion.div>
+          ))}
+        </MapContainer>
+      )}
     </MaxWidthRappers>
   );
 };

@@ -181,3 +181,16 @@ export interface ContactFormResponse {
   success: boolean;
   message: string;
 }
+
+export interface Coordinate {
+  late: number;
+  long: number;
+  Plant_Addresses: string;
+  UserId: string;
+  commonName: string;
+}
+
+export interface All_Users {
+  _id: string;
+  firstName: string;
+}

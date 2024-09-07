@@ -1,3 +1,5 @@
+/* This code snippet is setting up a Redux store using Redux Toolkit in a TypeScript environment.
+Here's a breakdown of what each part of the code is doing: */
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../Featuers/Auth/AuthSlice"; // Adjust the import path as necessary
 import TreeSlice from "../Featuers/Tree/TreeSlice";
@@ -8,6 +10,7 @@ import { AuthApi } from "../Featuers/Auth/AuthAPIS";
 import { TreeApi } from "../Featuers/Tree/TreeServices";
 import { TreeOrder_API } from "../Featuers/TreeOrder/TreeOrderServices";
 import TreeOrderSlice from "../Featuers/TreeOrder/TreeOrderSlice";
+import { GlobelApi as GlobeApi } from "../Featuers/Global/GlobeServices";
 
 // Adjust the import path as necessary
 
@@ -21,6 +24,7 @@ export const store = configureStore({
     [CartApi.reducerPath]: CartApi.reducer,
     [TreeApi.reducerPath]: TreeApi.reducer,
     [AuthApi.reducerPath]: AuthApi.reducer,
+    [GlobeApi.reducerPath]: GlobeApi.reducer,
     [TreeOrder_API.reducerPath]: TreeOrder_API.reducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -28,7 +32,9 @@ export const store = configureStore({
       CartApi.middleware,
       AuthApi.middleware,
       TreeApi.middleware,
-      TreeOrder_API.middleware
+      TreeOrder_API.middleware,
+      GlobeApi.middleware
+      // Add any other middleware you want to use
     ),
 });
 // see `setupListeners` docs - takes an optional callback as the 2nd arg for customization
