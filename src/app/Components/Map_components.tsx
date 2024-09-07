@@ -38,17 +38,21 @@ const MapComponent = () => {
     async function Fetch_coords() {
       try {
         const coordsResponse = await fetch(
-          `https://ytree.vercel.app/api/Tree/All_coords`,
-          { cache: "no-store" }
+          "https://ytree.vercel.app/api/Tree/All_coords",
+          {
+            cache: "no-cache",
+          }
         );
         const coordsData = await coordsResponse.json();
 
         const usersResponse = await fetch(
-          `https://ytree.vercel.app/api/Tree/All_users`,
-          { cache: "no-store" }
+          "https://ytree.vercel.app/api/Tree/All_users",
+          {
+            cache: "no-cache",
+          }
         );
         const usersData = await usersResponse.json();
-
+        console.log(coordsData, "users");
         setAll_coords(coordsData);
         setAll_users(usersData);
       } catch (error) {

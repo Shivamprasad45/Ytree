@@ -19,6 +19,16 @@ const nextConfig = {
           },
         ],
       },
+      {
+        // specific route for tree global
+        source: "/Tree/Global",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-store",
+          },
+        ],
+      },
     ];
   },
   images: {
@@ -31,7 +41,7 @@ const nextConfig = {
       "via.placeholder.com",
       "i.postimg.cc",
       "cdn.tuk.dev",
-      "i.ibb.co"
+      "i.ibb.co",
     ],
   },
   experimental: {
