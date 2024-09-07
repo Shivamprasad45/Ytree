@@ -2,8 +2,6 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { motion } from "framer-motion";
-import React from "react";
 import { useSession } from "next-auth/react";
 import { All_Users, Coordinate } from "../../../type";
 
@@ -41,7 +39,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
   const { data: session } = useSession();
 
   if (All_coords.length === 0) return <div>Loading...</div>; // Loading state
-  console.log(All_coords.length, All_users, "users");
+
   return (
     <MapContainer
       center={
@@ -57,23 +55,17 @@ const MapComponent: React.FC<MapComponentProps> = ({
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
       {All_coords.map((coord, index) => (
-        <motion.div
+        <Marker
           key={index}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: index * 0.2 }}
+          position={[coord.late, coord.long]}
+          icon={coord.UserId === session?.user?.id ? IconTwo : IconOne}
         >
-          <Marker
-            position={[coord.late, coord.long]}
-            icon={coord.UserId === session?.user?.id ? IconTwo : IconOne}
-          >
-            <Popup>
-              <p>{coord.Plant_Addresses}</p>
-              <p>{coord.commonName}</p>
-              {All_users.find((all) => all._id === coord.UserId)?.firstName}
-            </Popup>
-          </Marker>
-        </motion.div>
+          <Popup>
+            <p>{coord.Plant_Addresses}</p>
+            <p>{coord.commonName}</p>
+            {All_users.find((user) => user._id === coord.UserId)?.firstName}
+          </Popup>
+        </Marker>
       ))}
     </MapContainer>
   );
