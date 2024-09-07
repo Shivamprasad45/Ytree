@@ -48,7 +48,7 @@ const MapComponent: React.FC = () => {
   if (coordsLoading || usersLoading) return <div>Loading...</div>;
   if (coordsError) return <div>Error loading coordinates.</div>;
   if (usersError) return <div>Error loading users.</div>;
-
+  console.log(coords?.length, "Loading coordinates");
   return (
     <MapContainer
       center={
