@@ -38,14 +38,14 @@ const Homes = () => {
   return (
     <>
       <MaxWidthRappers className="xl:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md  mx-auto       ">
-        <header className="   ">
+        <header className=" p-4  ">
           <section className="relative w-[100vw] pr-6 overflow-hidden">
             <Image
               src="https://i.ibb.co/gRj1LQq/Firefly-Beautiful-cozy-fantasy-stone-cottage-in-a-spring-forest-aside-a-cobblestone-path-and-a-babbl.jpg"
               width={200}
               height={200}
               alt="dee"
-              className="md:w-[70vw] h-[30vh] sm:w-[100vw] w-[90vw] md:h-[30vh]"
+              className="md:w-[70vw] h-[30vh] sm:w-[100vw] w-[100vw] md:h-[30vh]"
               loading="eager"
             />
             <div className="absolute bottom-6 left-0 right-0 px-6 md:px-12 text-white flex flex-col items-start pr-4">

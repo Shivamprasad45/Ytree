@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSession } from "next-auth/react";
 import { All_Users, Coordinate } from "../../../type";
 
@@ -29,50 +29,25 @@ const IconTwo = new L.Icon({
   shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
 });
 
-const MapComponent = () => {
-  const [All_coords, setAll_coords] = useState<Coordinate[]>([]);
-  const [All_users, setAll_users] = useState<All_Users[]>([]);
+interface MapComponentProps {
+  All_coords: Coordinate[];
+  All_users: All_Users[];
+}
+
+const MapComponent: React.FC<MapComponentProps> = ({
+  All_coords,
+  All_users,
+}) => {
   const { data: session } = useSession();
 
-  useEffect(() => {
-    async function Fetch_coords() {
-      try {
-        const coordsResponse = await fetch(
-          "https://ytree.vercel.app/api/Tree/All_coords",
-          {
-            cache: "no-cache",
-          }
-        );
-        const coordsData = await coordsResponse.json();
-
-        const usersResponse = await fetch(
-          "https://ytree.vercel.app/api/Tree/All_users",
-          {
-            cache: "no-cache",
-          }
-        );
-        const usersData = await usersResponse.json();
-        console.log(coordsData, "users");
-        setAll_coords(coordsData);
-        setAll_users(usersData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
-
-    Fetch_coords();
-  }, [session]); // Added session as dependency
-
   if (All_coords.length === 0) return <div>Loading...</div>; // Loading state
-
-  const defaultCenter = [51.505, -0.09]; // Default center in case coords are empty
-
+  console.log(All_coords.length, All_users, "users");
   return (
     <MapContainer
       center={
         All_coords.length > 0
-          ? ([All_coords[0].late, All_coords[0].long] as [number, number]) // Cast as a tuple
-          : [0, 0] // Fallback center in case All_coords is empty
+          ? ([All_coords[0].late, All_coords[0].long] as [number, number])
+          : [0, 0]
       }
       zoom={13}
       style={{ height: "500px", width: "100%" }}
