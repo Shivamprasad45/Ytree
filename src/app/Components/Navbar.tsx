@@ -44,9 +44,10 @@ const Navbar = () => {
   if (["/Signup", "/login", "/Resend"].includes(route)) {
     return null; // No sidebar on these routes
   }
-  const Total_cart_item = cartdata?.reduce((a, b) => a + b.quantity, 0);
+  const Total_cart_item =
+    cartdata && cartdata?.reduce((a, b) => a + b.quantity, 0);
   return (
-    <nav className="max-w-screen-2xl px-3 md:px-8 font-semibold flex items-center  justify-between py-3  md:py-4 border-b mb-2">
+    <nav className=" px-3 md:px-8 font-semibold flex items-center  justify-between py-3  md:py-4 border-b mb-2">
       <ConnectionStatus />
       <Link href={"/"}>
         <div className="flex items-center justify-center space-x-2 text-sm md:text-lg">

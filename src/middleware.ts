@@ -27,26 +27,13 @@ export function middleware(request: NextRequest) {
       },
     });
   }
-  // const data = await getSession();
-
-  // console.log(data, "response");
   const path = request.nextUrl.pathname;
-  const isPublic =
+  const ispublic =
     path === "/login" || path === "/Signup" || path === "/Auth/Verify-succes";
 
   const token = request.cookies.get("authjs.session-token")?.value || "";
-  console.log(token, "Token in Middelwear");
-  if (token) {
-    // If the token is present, allow access to the home page or other private routes
-    if (path === "/" || !isPublic) {
-      return response;
-    }
-    // If the token is present but the path is public, rewrite to the home page
-    return NextResponse.redirect(new URL("/", request.url));
-  }
 
-  if (!isPublic && !token) {
-    // If the path is not public and no token is found, redirect to the signup page
+  if (!ispublic && !token) {
     return NextResponse.redirect(new URL("/Signup", request.url));
   }
 

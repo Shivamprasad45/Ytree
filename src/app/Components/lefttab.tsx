@@ -19,6 +19,7 @@ import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo, UserSelector } from "../Featuers/Auth/AuthSlice";
 import { getSession, useSession } from "next-auth/react";
+import Check_data from "@/action/Check";
 
 export const menuItems: menuItem[] = [
   { id: 1, icon: <TreePalm size={20} />, label: "Trees", path: "/Tree/Shop" },
@@ -54,24 +55,30 @@ const Lefttab = () => {
   const { data: session, status } = useSession();
   const user = useSelector(UserSelector);
   const route = usePathname();
-  console.log(session, status, "selected");
+  console.log(session?.user.email);
+
+  // const fetchSession = async () => {
+  //   const data = await getSession();
+  //   if (data?.user) {
+  //     dispatch(
+  //       setUserInfo({
+  //         _id: data.user.id,
+  //         email: data.user.email!,
+  //         Username: data.user.name!,
+  //       })
+  //     );
+  //   }
+  // };
+
   useEffect(() => {
-    const fetchSession = async () => {
-      const session = await getSession(); // Fetch session immediately
-      if (session?.user) {
-        dispatch(
-          setUserInfo({
-            _id: session.user.id!,
-            email: session.user.email!,
-            Username: session.user.name!,
-          })
-        );
-      }
-    };
-    if (status === "authenticated") {
-      fetchSession();
-    }
-  }, [status, dispatch]);
+    dispatch(
+      setUserInfo({
+        _id: session?.user.id!,
+        email: session?.user.email!,
+        Username: session?.user.name!,
+      })
+    );
+  }, [session, status]);
 
   if (["/Signup", "/login", "/Resend"].includes(route)) {
     return null; // No sidebar on these routes

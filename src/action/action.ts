@@ -9,16 +9,6 @@ import { redirect } from "next/navigation";
 import { ContactFormData } from "../../type";
 import ContactForm from "@/Models/Contact";
 
-/**
- * The `login` function in TypeScript handles user authentication by signing in with provided
- * credentials and redirecting upon success or handling errors.
- * @param  - The `login` function takes an object as a parameter with two properties: `email` of type
- * string and `password` of type string. These parameters are used to call the `signIn` function with
- * the provided email and password for authentication. If an error occurs during the sign-in process,
- * the
- * @returns The `cause` property of the `CredentialsSignin` error is being returned in case of an
- * error.
- */
 const login = async ({
   email,
   password,
@@ -35,10 +25,12 @@ const login = async ({
     });
 
     // Manually redirect on successful login
-    redirect("/");
+    if (result.success) {
+      redirect("/");
+    }
   } catch (error) {
-    console.error("Login error:", error);
-    return (error as Error).message;
+    const someError = error as CredentialsSignin;
+    return someError.cause;
   }
 };
 
