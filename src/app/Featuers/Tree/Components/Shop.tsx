@@ -12,9 +12,10 @@ import Image from "next/image";
 import Loading from "@/app/Loading/Loading";
 import { useSelector } from "react-redux";
 import { UserSelector } from "../../Auth/AuthSlice";
-import { Truck } from "lucide-react";
+import { Heart, Star, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
+import { Card } from "@/components/ui/card";
 
 const fetchTreeInfo = async () => {
   const response = await axios.get("/api/Tree/AllTree");
@@ -53,7 +54,65 @@ const Shop = () => {
       <MaxWidthRappers>
         <div className="font-sans px-4 py-8">
           <div className="">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 ">
+            <main className="container mx-auto px-4 py-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {feature.map((product: TreeInfo) => (
+                  <Card
+                    key={product._id}
+                    className="overflow-hidden hover:shadow-lg transition-shadow duration-300"
+                  >
+                    <div className="relative">
+                      <img
+                        src="/placeholder.svg?height=300&width=300"
+                        alt="Plant"
+                        className="w-full h-64 object-cover"
+                      />
+                      <Button
+                        variant="secondary"
+                        className="absolute top-2 right-2 p-2 rounded-full"
+                      >
+                        <Heart size={20} />
+                      </Button>
+                    </div>
+                    <div className="p-4">
+                      <h3 className="text-lg font-semibold mb-1">
+                        {product.commonName}
+                      </h3>
+                      <p className="text-sm text-gray-600 mb-2">
+                        {product.scientificName}
+                      </p>
+                      <div className="flex items-center mb-2">
+                        <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">
+                          {product.benefits[0]}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xl font-bold">
+                          {product.price}
+                        </span>
+                        <Button variant="default">Add to Cart</Button>
+                      </div>
+                      <div className="mt-2 flex items-center">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            size={16}
+                            className={
+                              i < 4 ? "text-yellow-400" : "text-gray-300"
+                            }
+                          />
+                        ))}
+                        <span className="ml-1 text-sm text-gray-600">
+                          (42 reviews)
+                        </span>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </main>
+
+            {/* <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 ">
               {feature &&
                 feature.map((product: TreeInfo) => (
                   <div
@@ -99,7 +158,7 @@ const Shop = () => {
                     </Button>
                   </div>
                 ))}
-            </div>
+            </div> */}
           </div>
         </div>
         <Paginations />

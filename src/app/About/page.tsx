@@ -196,15 +196,6 @@ const AboutPage = () => {
           </div>
         </motion.section>
       </main>
-
-      <footer className="bg-gray-800 text-white p-6">
-        <div className="container mx-auto text-center">
-          <p>
-            &copy; {new Date().getFullYear()} Your Site Name. All rights
-            reserved.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 };

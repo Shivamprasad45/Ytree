@@ -8,6 +8,7 @@ import MaxWidthRappers from "@/components/MaxWidthRapper";
 
 import Lefttab from "./Components/lefttab";
 import Navbar from "./Components/Navbar";
+import Footer from "./Components/Footer";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -66,6 +67,7 @@ export default function RootLayout({
                 {/* Middle */}
                 <div className="flex-grow md:ml-56">{children}</div>
               </main>
+              <Footer />
             </div>
           </MaxWidthRappers>
         </Providers>

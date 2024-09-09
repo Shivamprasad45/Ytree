@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import L from "leaflet";
+import "leaflet.markercluster"; // Import marker cluster plugin
 import { useSession } from "next-auth/react";
 import {
   useGetALL_coordsMutation,
@@ -40,6 +42,7 @@ const MapComponent: React.FC = () => {
   const [usersLoading, setUsersLoading] = useState(true);
   const [coordsError, setCoordsError] = useState<string | null>(null);
   const [usersError, setUsersError] = useState<string | null>(null);
+  const mapRef = useRef<L.Map | null>(null);
 
   const [getALL_coords] = useGetALL_coordsMutation();
   const [getAll_users] = useGetAll_usersMutation();
@@ -49,7 +52,6 @@ const MapComponent: React.FC = () => {
       try {
         setCoordsLoading(true);
         const coordsData = await getALL_coords().unwrap();
-        console.log(coordsData, "coords");
         setCoords(coordsData);
         setCoordsLoading(false);
       } catch (error) {
@@ -71,6 +73,35 @@ const MapComponent: React.FC = () => {
     fetchData();
   }, [getALL_coords, getAll_users]);
 
+  useEffect(() => {
+    if (coords.length > 0 && mapRef.current) {
+      const map = mapRef.current;
+      const markers = L.markerClusterGroup(); // Correct constructor
+
+      coords.forEach((coord) => {
+        const userName =
+          users.find((user) => user._id === coord.UserId)?.firstName ||
+          "Unknown User";
+
+        const marker = L.marker([coord.late, coord.long], {
+          icon: coord.UserId === session?.user?.id ? IconTwo : IconOne,
+        }).bindPopup(`
+          <p><strong>Address:</strong> ${coord.Plant_Addresses}</p>
+          <p><strong>Plant:</strong> ${coord.commonName}</p>
+          <p><strong>User:</strong> ${userName}</p>
+        `);
+
+        markers.addLayer(marker);
+      });
+
+      map.addLayer(markers);
+
+      return () => {
+        map.removeLayer(markers);
+      };
+    }
+  }, [coords, users, session]);
+
   if (coordsLoading || usersLoading) return <div>Loading...</div>;
   if (coordsError) return <div>{coordsError}</div>;
   if (usersError) return <div>{usersError}</div>;
@@ -84,36 +115,12 @@ const MapComponent: React.FC = () => {
       }
       zoom={13}
       style={{ height: "500px", width: "100%" }}
+      ref={mapRef} // Use ref here
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-      {coords.map((coord, index) => {
-        const userName =
-          users.find((user) => user._id === coord.UserId)?.firstName ||
-          "Unknown User";
-
-        return (
-          <Marker
-            key={coord._id} // Use a unique key if available, e.g., coord._id
-            position={[coord.late, coord.long]}
-            icon={coord.UserId === session?.user?.id ? IconTwo : IconOne}
-          >
-            <Popup>
-              <p>
-                <strong>Address:</strong> {coord.Plant_Addresses}
-              </p>
-              <p>
-                <strong>Plant:</strong> {coord.commonName}
-              </p>
-              <p>
-                <strong>User:</strong> {userName}
-              </p>
-            </Popup>
-          </Marker>
-        );
-      })}
     </MapContainer>
   );
 };
