@@ -1,9 +1,8 @@
 "use client";
 import {
-  BotMessageSquare,
   ContactRoundIcon,
+  Globe,
   ListTree,
-  LogOut,
   MessageCircleCodeIcon,
   TreePalm,
   TreesIcon,
@@ -18,8 +17,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo, UserSelector } from "../Featuers/Auth/AuthSlice";
-import { getSession, useSession } from "next-auth/react";
-import Check_data from "@/action/Check";
+import { useSession } from "next-auth/react";
 
 export const menuItems: menuItem[] = [
   { id: 1, icon: <TreePalm size={20} />, label: "Trees", path: "/Tree/Shop" },
@@ -48,6 +46,12 @@ export const menuItems: menuItem[] = [
     label: "Mytree",
     path: "/Tree/Mytrees",
   },
+  {
+    id: 7,
+    icon: <Globe size={20} />,
+    label: "Tree Locations",
+    path: "/Tree/Global",
+  },
 ];
 
 const Lefttab = () => {
@@ -56,19 +60,6 @@ const Lefttab = () => {
   const user = useSelector(UserSelector);
   const route = usePathname();
   console.log(session?.user.email);
-
-  // const fetchSession = async () => {
-  //   const data = await getSession();
-  //   if (data?.user) {
-  //     dispatch(
-  //       setUserInfo({
-  //         _id: data.user.id,
-  //         email: data.user.email!,
-  //         Username: data.user.name!,
-  //       })
-  //     );
-  //   }
-  // };
 
   useEffect(() => {
     dispatch(

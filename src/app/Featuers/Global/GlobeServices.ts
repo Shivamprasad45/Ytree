@@ -8,19 +8,25 @@ export const GlobelApi = createApi({
   reducerPath: "Globel",
   baseQuery: fetchBaseQuery({ baseUrl: "/api/Tree" }),
   endpoints: (builder) => ({
-    getALL_coords: builder.query<Coordinate[], void>({
-      query: () => `/All_coords`,
-      providesTags: ["Coords"], // "Coords" tag used here
+    getALL_coords: builder.mutation<Coordinate[], void>({
+      query: () => ({
+        url: `/All_coords`,
+        method: "POST",
+        body: JSON.stringify({}), // send an empty body
+        headers: { "Content-Type": "application/json" }, // set headers for request
+      }),
+      invalidatesTags: ["Coords"], // "Coords" tag used here
     }),
-
-    getAll_users: builder.query<All_Users[], void>({
+    getAll_users: builder.mutation<All_Users[], void>({
       query: () => ({
         url: `/All_users`,
+        method: "POST",
+        body: "1",
       }),
-      providesTags: ["Data"],
+      invalidatesTags: ["Coords"],
     }),
   }),
 });
 
 // Export hooks for usage in functional components
-export const { useGetALL_coordsQuery, useGetAll_usersQuery } = GlobelApi;
+export const { useGetALL_coordsMutation, useGetAll_usersMutation } = GlobelApi;

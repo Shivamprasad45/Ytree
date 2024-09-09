@@ -2,7 +2,7 @@ import { User } from "@/Models/SignupModel";
 import DbConnect from "@/Utils/mongooesConnect";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
     await DbConnect();
 
