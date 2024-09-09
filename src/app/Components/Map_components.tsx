@@ -100,7 +100,7 @@ const MapComponent: React.FC = () => {
         map.removeLayer(markers);
       };
     }
-  }, [coords, users, session]);
+  }, [coords, users, session, getALL_coords, getAll_users]);
 
   if (coordsLoading || usersLoading) return <div>Loading...</div>;
   if (coordsError) return <div>{coordsError}</div>;
