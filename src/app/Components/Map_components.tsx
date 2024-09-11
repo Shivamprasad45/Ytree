@@ -20,15 +20,15 @@ const IconUser = new L.Icon({
   iconSize: [32, 32],
   iconAnchor: [16, 32],
   popupAnchor: [0, -32],
-  shadowUrl: "/Map_icon/marker-shadow.png",
+  shadowUrl: "/Map_icon/marker-shadow.webp",
 });
 
 const IconWinner = new L.Icon({
-  iconUrl: "/Map_icon/winner.png",
+  iconUrl: "/Map_icon/winner.webp",
   iconSize: [32, 32],
   iconAnchor: [16, 32],
   popupAnchor: [0, -32],
-  shadowUrl: "/Map_icon/marker-shadow.png",
+  shadowUrl: "/Map_icon/marker-shadow.webp",
 });
 
 const IconOther = new L.Icon({
@@ -36,7 +36,7 @@ const IconOther = new L.Icon({
   iconSize: [32, 32],
   iconAnchor: [16, 32],
   popupAnchor: [0, -32],
-  shadowUrl: "/Map_icon/marker-shadow.png",
+  shadowUrl: "/Map_icon/marker-shadow.webp",
 });
 
 export default function EnhancedMapComponent() {
