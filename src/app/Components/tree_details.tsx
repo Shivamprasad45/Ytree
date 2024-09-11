@@ -16,15 +16,11 @@ import { useRouter } from "next/navigation";
 
 import { useSession } from "next-auth/react";
 import { TreeCart, TreeInfo } from "../../../type";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { Droplet, Leaf, MapPin, Sun } from "lucide-react";
 
 const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
-  //   const {
-  //     data: PlantDetails,
-  //     isFetching,
-  //     isError,
-  //     isLoading: isTreeDetailsLoading,
-  //   } = useGetTreeDetailsQuery(params.id);
-
   const { data: user, status } = useSession();
   //For redirect to Login or signup
   const route = useRouter();
@@ -65,7 +61,7 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
 
   return (
     <div className=" flex flex-row">
-      <div className="relative flex size-full min-h-screen flex-col  group/design-root overflow-x-hidden">
+      {/* <div className="relative flex size-full min-h-screen flex-col  group/design-root overflow-x-hidden">
         <div className="layout-container flex h-full grow flex-col">
           <div className="px-40 flex flex-1 justify-center py-5">
             <div className="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 md:max-w-[960px] flex-1">
@@ -98,11 +94,11 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
                   {/* <p className="] text-sm font-normal leading-normal">
                     Light
                   </p> */}
-                  <p className=" text-sm font-normal leading-normal">
+      {/* <p className=" text-sm font-normal leading-normal">
                     {PlantDetails?.growthRequirements}
                   </p>
-                </div>
-                {/* <div className="flex flex-col gap-1 border-t border-solid border-t-[#D5D6DD] py-4 pl-2">
+                </div> */}
+      {/* <div className="flex flex-col gap-1 border-t border-solid border-t-[#D5D6DD] py-4 pl-2">
                   <p className="] text-sm font-normal leading-normal">
                     Water
                   </p>
@@ -110,7 +106,7 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
                     Water when top 1-2 inches of soil is dry
                   </p>
                 </div> */}
-                {/* <div className="flex flex-col gap-1 border-t border-solid border-t-[#D5D6DD] py-4 pr-2">
+      {/* <div className="flex flex-col gap-1 border-t border-solid border-t-[#D5D6DD] py-4 pr-2">
                   <p className="] text-sm font-normal leading-normal">
                     Humidity
                   </p>
@@ -118,7 +114,7 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
                     Prefers high humidity
                   </p>
                 </div> */}
-                {/* <div className="flex flex-col gap-1 border-t border-solid border-t-[#D5D6DD] py-4 pl-2">
+      {/* <div className="flex flex-col gap-1 border-t border-solid border-t-[#D5D6DD] py-4 pl-2">
                   <p className="] text-sm font-normal leading-normal">
                     Temperature
                   </p>
@@ -126,7 +122,7 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
                     65-75°F (18-24°C)
                   </p>
                 </div> */}
-              </div>
+      {/* </div>
               <h3 className=" text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">
                 Benefits
               </h3>
@@ -137,8 +133,8 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
                     data-icon="Sun"
                     data-size="24px"
                     data-weight="regular"
-                  >
-                    <svg
+                  > */}
+      {/* <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="24px"
                       height="24px"
@@ -257,6 +253,86 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div> */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid md:grid-cols-2 gap-8">
+          <div>
+            <img
+              src={
+                "https://cdn.usegalileo.ai/stability/64c93ee4-25fc-4c96-936f-f479b3a31c60.png"
+              }
+              alt={PlantDetails.commonName}
+              className="w-full h-auto rounded-lg shadow-lg"
+            />
+          </div>
+          <div>
+            <h1 className="text-3xl font-bold mb-2">
+              {PlantDetails.commonName}
+            </h1>
+            <p className="text-xl text-muted-foreground mb-4">
+              {PlantDetails.scientificName}
+            </p>
+            <Badge className="mb-4">Native to {PlantDetails.region}</Badge>
+            <p className="text-lg mb-4">{PlantDetails.description}</p>
+            <div className="flex items-center justify-between mb-6">
+              <span className="text-2xl font-bold">
+                ₹{PlantDetails.price.toFixed(2)}
+              </span>
+              <div className="flex flex-1 gap-3 flex-wrap px-4 py-3 justify-end">
+                <Button onClick={() => Addtocart()}>
+                  <span>Add to cart</span>
+                </Button>
+                <Button className="">
+                  <span className="truncate">
+                    <Link href="/Tree/Shop"> Back to Plants</Link>
+                  </span>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-12 grid md:grid-cols-2 gap-8">
+          <Card className="p-6">
+            <h2 className="text-2xl font-semibold mb-4">Growth Requirements</h2>
+            <p>{PlantDetails.growthRequirements}</p>
+            <div className="mt-4 flex space-x-4">
+              <div className="flex items-center">
+                <Sun className="mr-2 h-5 w-5 text-yellow-500" />
+                <span>Full Sun</span>
+              </div>
+              <div className="flex items-center">
+                <Droplet className="mr-2 h-5 w-5 text-blue-500" />
+                <span>Regular Watering</span>
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-6">
+            <h2 className="text-2xl font-semibold mb-4">Growth Tips</h2>
+            <p>{PlantDetails.growthTips}</p>
+          </Card>
+        </div>
+
+        <div className="mt-12">
+          <h2 className="text-2xl font-semibold mb-4">Benefits</h2>
+          <ul className="grid md:grid-cols-2 gap-4">
+            {PlantDetails.benefits.map((benefit, index) => (
+              <li key={index} className="flex items-start">
+                <Leaf className="mr-2 h-5 w-5 text-green-500 flex-shrink-0 mt-1" />
+                <span>{benefit}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mt-12">
+          <h2 className="text-2xl font-semibold mb-4">Native Region</h2>
+          <div className="flex items-center">
+            <MapPin className="mr-2 h-5 w-5 text-red-500" />
+            <span>{PlantDetails.region}</span>
           </div>
         </div>
       </div>

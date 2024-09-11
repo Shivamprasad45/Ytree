@@ -19,6 +19,7 @@ import { useGetTreeInfoQuery } from "../Featuers/Tree/TreeServices";
 
 import Loading from "../Loading/Loading";
 import Image from "next/image";
+import { Droplets, ShoppingBag, Sun, Wind } from "lucide-react";
 
 const Homes = () => {
   const { data: feature, isLoading, isError } = useGetTreeInfoQuery();
@@ -39,31 +40,35 @@ const Homes = () => {
     <>
       <MaxWidthRappers className="xl:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md  mx-auto       ">
         <header className=" p-4  ">
-          <section className="relative w-[100vw] pr-6 overflow-hidden">
-            <Image
-              src="https://i.ibb.co/gRj1LQq/Firefly-Beautiful-cozy-fantasy-stone-cottage-in-a-spring-forest-aside-a-cobblestone-path-and-a-babbl.jpg"
-              width={200}
-              height={200}
-              alt="dee"
-              className="md:w-[70vw] h-[30vh] sm:w-[100vw] w-[100vw] md:h-[30vh]"
-              loading="eager"
-            />
-            <div className="absolute bottom-6 left-0 right-0 px-6 md:px-12 text-white flex flex-col items-start pr-4">
-              <div>
-                <span className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-                  Plant trees, save the planet
-                </span>
-              </div>
-              <div>
-                <p className="text-sm flex flex-wrap">
-                  The easiest way to fight climate change is to plant trees. And
-                  we make it easy for you to do just that.
-                </p>
-              </div>
-              <div className="mt-4">
-                <Button>
-                  <Link href="/Tree/Shop">Shop plant</Link>
-                </Button>
+          <section
+            className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-cover bg-center"
+            style={{
+              backgroundImage:
+                'url("https://i.ibb.co/gRj1LQq/Firefly-Beautiful-cozy-fantasy-stone-cottage-in-a-spring-forest-aside-a-cobblestone-path-and-a-babbl.jpg")',
+            }}
+          >
+            <div className="container px-4 md:px-6">
+              <div className="flex flex-col items-center space-y-4 text-center text-white">
+                <div className="space-y-2">
+                  <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
+                    Grow Your Own Forest
+                  </h1>
+                  <p className="mx-auto max-w-[700px] text-gray-200 md:text-xl">
+                    Transform your landscape with our wide selection of
+                    high-quality trees.
+                  </p>
+                </div>
+                <div className="space-x-4">
+                  <Button className="bg-green-600 hover:bg-green-700 text-white">
+                    Shop Now
+                  </Button>
+                  <Button
+                    variant="link"
+                    className=" border-white hover:bg-white hover:text-green-800"
+                  >
+                    Learn More
+                  </Button>
+                </div>
               </div>
             </div>
           </section>
@@ -173,7 +178,51 @@ const Homes = () => {
                 </Button>
               </div>
             </div>
-
+            <section className="w-full py-12 md:py-24 lg:py-32 bg-white">
+              <div className="container px-4 md:px-6">
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8">
+                  Benefits of Planting Trees
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+                  <div className="flex flex-col items-center text-center">
+                    <Wind className="h-12 w-12 mb-4 text-green-600" />
+                    <h3 className="text-xl font-bold mb-2">
+                      Improve Air Quality
+                    </h3>
+                    <p className="text-gray-500">
+                      Trees absorb pollutants and release clean oxygen into the
+                      atmosphere.
+                    </p>
+                  </div>
+                  <div className="flex flex-col items-center text-center">
+                    <Droplets className="h-12 w-12 mb-4 text-green-600" />
+                    <h3 className="text-xl font-bold mb-2">Conserve Water</h3>
+                    <p className="text-gray-500">
+                      Trees reduce runoff by breaking rainfall and allowing
+                      water absorption.
+                    </p>
+                  </div>
+                  <div className="flex flex-col items-center text-center">
+                    <Sun className="h-12 w-12 mb-4 text-green-600" />
+                    <h3 className="text-xl font-bold mb-2">Energy Savings</h3>
+                    <p className="text-gray-500">
+                      Strategically placed trees can cut your cooling costs
+                      significantly.
+                    </p>
+                  </div>
+                  <div className="flex flex-col items-center text-center">
+                    <ShoppingBag className="h-12 w-12 mb-4 text-green-600" />
+                    <h3 className="text-xl font-bold mb-2">
+                      Increase Property Value
+                    </h3>
+                    <p className="text-gray-500">
+                      Well-maintained trees can add up to 15% to your property
+                      value.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
             {/* //Why chose green feature */}
             <div className="flex flex-col">
               <div className="">

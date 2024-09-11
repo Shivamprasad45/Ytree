@@ -88,6 +88,14 @@ const Logtrees = () => {
   const Tree_coords_Save = () => {
     try {
       if (Notification?.endpoint) {
+        if (
+          !Plants_CurrentLocations?.late &&
+          !Plants_CurrentLocations?.long &&
+          !Plants_CurrentLocations?.Address
+        ) {
+          toast.error("Use Allow your current location");
+        }
+
         Save_coords(Save_plant_coords);
       } else {
         toast.error("Please allow notifications");

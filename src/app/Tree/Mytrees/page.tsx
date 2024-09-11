@@ -11,6 +11,15 @@ import { useGetMyTreeInfoBy_idQuery } from "@/app/Featuers/TreeOrder/TreeOrderSe
 import { useSelector } from "react-redux";
 import { UserSelector } from "@/app/Featuers/Auth/AuthSlice";
 import Loading from "@/app/Loading/Loading";
+import {
+  CardFooter,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { CalendarIcon, MapPinIcon, TreesIcon } from "lucide-react";
 
 const Page = () => {
   const user = useSelector(UserSelector);
@@ -50,88 +59,73 @@ const Page = () => {
   return (
     <div>
       <MaxWidthRappers className="mt-3">
-        <main className="flex flex-col md:flex-row justify-between overflow-hidden relative md:justify-start w-full h-[100vh]">
-          {/* Left Sidebar */}
-          {/* Main Content */}
-          <div className="flex-1 p-4">
-            {/* Profile Image for small screens */}
-
-            {/* Your Trees Section */}
-            <div className="pl-6">
-              <div className="flex flex-col justify-start items-start mb-6">
-                <div className="text-black text-4xl font-bold font-['Inria Sans'] leading-none">
-                  Your trees
-                </div>
-                <div className="text-neutral-400 text-xl font-normal font-['Inria Sans'] leading-normal">
-                  Let’s see how your trees are doing
-                </div>
-              </div>
-              <div className="mt-6">
-                <ScrollArea className="w-full md:w-[70vw] whitespace-nowrap rounded-md">
-                  <div className="flex w-max space-x-4 p-4">
-                    {feature &&
-                      feature.map((artwork: IPlantProfile) => (
-                        <div
-                          key={artwork._id}
-                          className={`w-32 h-60 flex flex-col justify-center items-start gap-2.5   `}
-                        >
-                          <Link
-                            href={
-                              artwork.status === 3
-                                ? `/Tree/Aboutmytree/${artwork.findtree_id}`
-                                : "/Tree/Mytrees"
-                            }
-                          >
-                            <img
-                              className={`w-32 h-32 rounded-lg  ${
-                                artwork.status === 3 ? "border-2" : ""
-                              }`}
-                              src="https://images.unsplash.com/photo-1454425064867-5ba516caf601?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8cGxhbnR8fHx8fHwxNzE3NTgzMDI3&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080"
-                              alt="Plant"
-                            />
-                            <div className="flex flex-col justify-center items-start gap-0.5">
-                              <div className="text-black text-xl font-bold font-['Inria_Sans'] leading-normal">
-                                {artwork.name.slice(0, 10)}
+        <div className="container mx-auto p-4">
+          <h1 className="text-3xl font-bold mb-6">My Trees</h1>
+          <ScrollArea className="h-[calc(100vh-150px)]">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {feature &&
+                feature.map((tree: IPlantProfile) => (
+                  <Card key={tree._id} className="flex flex-col">
+                    <Link href={`/Tree/Aboutmytree/${tree.findtree_id}`}>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <TreesIcon className="h-5 w-5" />
+                          {tree.name}
+                        </CardTitle>
+                        <CardDescription className="flex items-center gap-2">
+                          <MapPinIcon className="h-4 w-4" />
+                          {tree.findtree_id}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="flex-grow">
+                        <img
+                          src={`https://images.unsplash.com/photo-1454425064867-5ba516caf601?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8cGxhbnR8fHx8fHwxNzE3NTgzMDI3&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080`}
+                          alt={`${tree.name} tree`}
+                          className="w-full h-32 object-cover rounded-md"
+                        />
+                      </CardContent>
+                      <CardFooter className="flex justify-between items-center">
+                        <div className="flex items-center gap-2">
+                          <CalendarIcon className="h-4 w-4" />
+                          <span className="text-sm text-muted-foreground">
+                            {tree.status === 3 && (
+                              <div className="text-neutral-400 text-sm font-bold font-['Inria_Sans'] leading-none">
+                                {getDaysOld(tree.age).toLocaleString()} days old
                               </div>
-                              {artwork.status === 0 && (
-                                <div>
-                                  <Badge>Pending</Badge>
-                                </div>
-                              )}
-                              {artwork.status === 1 && (
-                                <div>
-                                  <Badge>Shipping</Badge>
-                                </div>
-                              )}
-
-                              {artwork.status === 2 && (
-                                <div>
-                                  <Button>
-                                    <Link
-                                      href={`/Tree/LogTree?id=${artwork._id}&Plaintid=${artwork.Plaintid}&userid=${artwork.UserId}`}
-                                    >
-                                      Planted
-                                    </Link>
-                                  </Button>
-                                </div>
-                              )}
-                              {artwork.status === 3 && (
-                                <div className="text-neutral-400 text-sm font-bold font-['Inria_Sans'] leading-none">
-                                  {getDaysOld(artwork.age).toLocaleString()}{" "}
-                                  days old
-                                </div>
-                              )}
-                            </div>
-                          </Link>
+                            )}
+                          </span>
                         </div>
-                      ))}
-                  </div>
-                  <ScrollBar orientation="horizontal" />
-                </ScrollArea>
-              </div>
+                        <Badge variant="secondary">
+                          {tree.status === 0 && (
+                            <div>
+                              <Badge>Pending</Badge>
+                            </div>
+                          )}
+                          {tree.status === 1 && (
+                            <div>
+                              <Badge>Shipping</Badge>
+                            </div>
+                          )}
+
+                          {tree.status === 2 && (
+                            <div>
+                              <Button>
+                                <Link
+                                  href={`/Tree/LogTree?id=${tree._id}&Plaintid=${tree.Plaintid}&userid=${tree.UserId}`}
+                                >
+                                  Planted
+                                </Link>
+                              </Button>
+                            </div>
+                          )}
+                        </Badge>
+                      </CardFooter>
+                    </Link>
+                  </Card>
+                ))}
             </div>
-          </div>
-        </main>
+          </ScrollArea>
+        </div>
       </MaxWidthRappers>
     </div>
   );
