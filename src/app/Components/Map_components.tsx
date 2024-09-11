@@ -16,29 +16,27 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const IconUser = new L.Icon({
-  iconUrl:
-    "https://img.icons8.com/?size=100&id=6ozQ6RVpK3sa&format=png&color=000000",
+  iconUrl: "/Map_icon/your.png",
   iconSize: [32, 32],
   iconAnchor: [16, 32],
   popupAnchor: [0, -32],
-  shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
+  shadowUrl: "/Map_icon/marker-shadow.png",
 });
 
 const IconWinner = new L.Icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/4778/4778362.png",
+  iconUrl: "/Map_icon/winner.png",
   iconSize: [32, 32],
   iconAnchor: [16, 32],
   popupAnchor: [0, -32],
-  shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
+  shadowUrl: "/Map_icon/marker-shadow.png",
 });
 
 const IconOther = new L.Icon({
-  iconUrl:
-    "https://cdn.pixabay.com/photo/2014/12/22/00/07/tree-576847_1280.png",
+  iconUrl: "/Map_icon/Alltree.webp",
   iconSize: [32, 32],
   iconAnchor: [16, 32],
   popupAnchor: [0, -32],
-  shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
+  shadowUrl: "/Map_icon/marker-shadow.png",
 });
 
 export default function EnhancedMapComponent() {
