@@ -120,7 +120,7 @@ export default function EnhancedMapComponent() {
         map.removeLayer(markers);
       };
     }
-  }, [coords, users, session, winner]);
+  }, [coords, users, session, winner, getALL_coords, getAll_users]);
 
   if (isLoading) {
     return (
