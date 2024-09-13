@@ -161,7 +161,7 @@ export default function EnhancedMapComponent() {
       <div className="text-center p-2">
         <WinnerAnnouncement
           winner={{
-            firstName: leaderboard[0].firstName + " " + leaderboard[1].lastName,
+            firstName: leaderboard[0].firstName + " " + leaderboard[0].lastName,
             treeCount: leaderboard[0].treeCount!,
           }}
         />
