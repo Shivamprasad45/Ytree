@@ -1,265 +1,194 @@
 "use client";
-import Link from "next/link";
-import React, { useState } from "react";
 
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { useSelector } from "react-redux";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
-import { CalendarIcon, Minus, Plus } from "lucide-react";
 import {
   useGetCartItemByIdQuery,
   useRemoveCartMutation,
 } from "../TreeServicesAPI";
-import { Button } from "@/components/ui/button";
 import { UserSelector } from "../../Auth/AuthSlice";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Loader2, Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
+import { toast } from "@/components/ui/use-toast";
 
-import Image from "next/image";
-import Loading from "@/app/Loading/Loading";
-
-const CartPlant = () => {
-  const [Id, setId] = useState<string>("");
-  //User id fetch
-
+export default function CartPage() {
+  const [updatingItemId, setUpdatingItemId] = useState<string | null>(null);
   const user = useSelector(UserSelector);
-
-  const { data: cartdata, isLoading: isCartLoading } = useGetCartItemByIdQuery(
+  const { data: cartData, isLoading: isCartLoading } = useGetCartItemByIdQuery(
     user?._id!
   );
-  const Total_Cart_price =
-    cartdata &&
-    cartdata?.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const [removeCartItem, { isLoading: isRemoving }] = useRemoveCartMutation();
 
-  const [Cart_Remove, { isLoading }] = useRemoveCartMutation();
-  if (isCartLoading) {
-    return (
-      <div>
-        <Loading />
-      </div>
-    );
-  }
-  const Update_cart_plants = async (
+  const totalCartPrice =
+    cartData?.reduce((acc, item) => acc + item.price * item.quantity, 0) || 0;
+
+  const handleUpdateCart = async (
     id: string,
-    UserId: string,
-    Symbol: string
+    userId: string,
+    action: "Plus" | "Minus" | "Remove"
   ) => {
+    setUpdatingItemId(id);
     try {
-      await Cart_Remove({ _id: id, UserId: UserId, Symbol: Symbol });
-      setId(id);
-    } catch {
-      console.log("Update error");
+      await removeCartItem({ _id: id, UserId: userId, Symbol: action });
+      toast({
+        title: "Cart updated",
+        description: `Item ${
+          action === "Remove" ? "removed from" : "updated in"
+        } cart successfully.`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update cart. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setUpdatingItemId(null);
     }
   };
 
+  if (isCartLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader2 className="w-8 h-8 animate-spin" />
+      </div>
+    );
+  }
+
   return (
-    <div>
-      <div>
-        <div
-          className="w-full h-full max-w-screen-lg ml-6  bg-opacity-90 top-20 overflow-y-auto overflow-x-hidden fixed sticky-0"
-          id="chec-div"
-        >
-          <div
-            className="w-full absolute z-10 right-0 h-full overflow-x-hidden transform translate-x-0 transition ease-in-out duration-700"
-            id="checkout"
-          >
-            <div
-              className="flex md:flex-row flex-col justify-end mb-5"
-              id="cart"
-            >
-              <div
-                className="lg:w-1/2 w-full md:pl-10 pl-4 pr-10 md:pr-4 md:py-12 py-8  overflow-y-auto overflow-x-hidden h-screen"
-                id="scroll"
-              >
-                <Link href="/">
-                  <div className="flex items-center text-gray-500 hover:text-gray-600 cursor-pointer">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="icon icon-tabler icon-tabler-chevron-left"
-                      width={16}
-                      height={16}
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <polyline points="15 6 9 12 15 18" />
-                    </svg>
-                    <p className="text-sm pl-2 leading-none">Back</p>
-                  </div>
-                </Link>
-                <p className="text-5xl font-black leading-10 text-gray-800 pt-3">
-                  Bag
-                </p>
-                {cartdata?.length === 0 && (
-                  <div className="md:flex items-center mt-14 py-8 border-t  ">
-                    <p className="text-3xl font-black leading-10 underline">
-                      {" "}
-                      <Link href="/Tree/Shop">Add plants in Cart</Link>
-                    </p>
-                  </div>
-                )}
-                {cartdata?.map((item) => (
+    <div className="container mx-auto px-4 py-8  max-w-6xl">
+      <h1 className="text-3xl font-bold mb-8">Your Cart</h1>
+      {cartData && cartData.length > 0 ? (
+        <div className="flex flex-col lg:flex-row gap-8">
+          <Card className="lg:w-2/3">
+            <CardHeader>
+              <CardTitle>Cart Items</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ScrollArea className="h-[calc(100vh-300px)]">
+                {cartData.map((item) => (
                   <div
                     key={item.Plant_id}
-                    className="md:flex items-center mt-14 py-8 border-t border-gray-200"
+                    className="flex items-center gap-4 py-4"
                   >
-                    <div className="w-1/4">
+                    <div className="w-24 h-24 relative">
                       <Image
-                        src="https://cdn.tuk.dev/assets/templates/e-commerce-kit/bestSeller3.png"
-                        alt="hhh"
-                        width={300}
-                        height={300}
-                        className="w-full h-full object-center object-cover"
+                        src={""}
+                        alt={item.commonName}
+                        layout="fill"
+                        objectFit="cover"
+                        className="rounded-md"
                       />
                     </div>
-                    <div className="md:pl-3 md:w-3/4">
-                      <p className="text-xs leading-3 md:pt-0 pt-4">RF293</p>
-                      <div className="flex items-center justify-between w-full pt-1">
-                        <p className="text-base font-black leading-none ">
-                          {item.commonName}
-                        </p>
-                        <div className="flex space-x-2">
-                          <Button
-                            disabled={isLoading}
-                            className="cursor-pointer"
-                            onClick={() =>
-                              Update_cart_plants(
-                                item.Plant_id,
-                                item.UserId,
-                                "Plus"
-                              )
-                            }
-                          >
-                            <span>
-                              <Plus />
-                            </span>
-                          </Button>
-                          <div className="">
-                            <span>{item.quantity}</span>
-                          </div>
-                          <Button
-                            size={"icon"}
-                            disabled={isLoading || item.quantity === 1}
-                            className="cursor-pointer"
-                            onClick={() =>
-                              Update_cart_plants(
-                                item.Plant_id,
-                                item.UserId,
-                                "Minus"
-                              )
-                            }
-                          >
-                            {" "}
-                            <span>
-                              <Minus />
-                            </span>
-                          </Button>
-                        </div>
-                      </div>
-                      <p className="text-xs leading-3  pt-2">
-                        scientificName: {item.scientificName}
+                    <div className="flex-grow">
+                      <h3 className="font-semibold">{item.commonName}</h3>
+                      <p className="text-sm text-gray-500">
+                        {item.scientificName}
                       </p>
-                      <p className="text-xs leading-3  py-4">
-                        region: {item.region}
+                      <p className="text-sm text-gray-500">
+                        Region: {item.region}
                       </p>
-                      <p className="w-96 text-xs leading-3 ">{item.quantity}</p>
-                      <div className="flex items-center justify-between pt-5 pr-6">
-                        <div className="flex items-center">
-                          <HoverCard>
-                            <HoverCardTrigger asChild>
-                              <p className="text-xs leading-3 underline  cursor-pointer">
-                                About more
-                              </p>
-                            </HoverCardTrigger>
-                            <HoverCardContent className="w-80">
-                              <div className="flex justify-between space-x-4">
-                                <div className="space-y-1">
-                                  <h4 className="text-sm font-semibold">
-                                    @nextjs
-                                  </h4>
-                                  <p className="text-sm">
-                                    The React Framework – created and maintained
-                                    by @vercel.
-                                  </p>
-                                  <div className="flex items-center pt-2">
-                                    <CalendarIcon className="mr-2 h-4 w-4 opacity-70" />{" "}
-                                    <span className="text-xs text-muted-foreground">
-                                      Joined December 2021
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </HoverCardContent>
-                          </HoverCard>
-
-                          <p
-                            className="text-xs leading-3 underline text-red-500 pl-5 cursor-pointer"
-                            onClick={() =>
-                              Update_cart_plants(
-                                item.Plant_id,
-                                item.UserId,
-                                "Remove"
-                              )
-                            }
-                          >
-                            {Id === item._id && isLoading
-                              ? "...Removing"
-                              : "Remove"}
-                          </p>
-                        </div>
-                        <p className="text-base font-black leading-none ">
-                          {item.price * item.quantity}
-                        </p>
-                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        disabled={
+                          updatingItemId === item.Plant_id ||
+                          item.quantity === 1
+                        }
+                        onClick={() =>
+                          handleUpdateCart(item.Plant_id, item.UserId, "Minus")
+                        }
+                      >
+                        <Minus className="h-4 w-4" />
+                      </Button>
+                      <span className="w-8 text-center">{item.quantity}</span>
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        disabled={updatingItemId === item.Plant_id}
+                        onClick={() =>
+                          handleUpdateCart(item.Plant_id, item.UserId, "Plus")
+                        }
+                      >
+                        <Plus className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-semibold">
+                        ${(item.price * item.quantity).toFixed(2)}
+                      </p>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="text-red-500 hover:text-red-700"
+                        disabled={updatingItemId === item.Plant_id}
+                        onClick={() =>
+                          handleUpdateCart(item.Plant_id, item.UserId, "Remove")
+                        }
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
                     </div>
                   </div>
                 ))}
-              </div>
-              <div className="xl:w-1/2 md:w-1/3  w-full bg-gray-100 h-full">
-                <div className="flex flex-col md:h-screen px-14 py-20 justify-between overflow-y-auto">
-                  <div>
-                    <p className="text-4xl font-black leading-9 text-gray-800">
-                      Summary
-                    </p>
-                    <div className="flex items-center justify-between pt-16">
-                      <p className="text-base leading-none text-gray-800">
-                        Subtotal
-                      </p>
-                      <p className="text-base leading-none text-gray-800">
-                        {cartdata && Total_Cart_price}
-                      </p>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex items-center pb-6 justify-between lg:pt-5 pt-20">
-                      <p className="text-2xl leading-normal text-gray-800">
-                        Total
-                      </p>
-                      <p className="text-2xl font-bold leading-normal text-right text-gray-800">
-                        {Total_Cart_price}
-                      </p>
-                    </div>
-                    {cartdata?.length !== 0 && user !== null ? (
-                      <Button className="text-base leading-none w-full py-5 bg-gray-800 border-gray-800 border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 text-white">
-                        <Link href="/Tree/Checkout">Checkout</Link>
-                      </Button>
-                    ) : (
-                      ""
-                    )}
-                  </div>
+              </ScrollArea>
+            </CardContent>
+          </Card>
+          <Card className="lg:w-1/3">
+            <CardHeader>
+              <CardTitle>Order Summary</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex justify-between">
+                  <span>Subtotal</span>
+                  <span>${totalCartPrice.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Shipping</span>
+                  <span>Free</span>
+                </div>
+                <Separator />
+                <div className="flex justify-between font-semibold">
+                  <span>Total</span>
+                  <span>${totalCartPrice.toFixed(2)}</span>
                 </div>
               </div>
-            </div>
-          </div>
+            </CardContent>
+            <CardFooter>
+              <Button className="w-full" asChild>
+                <Link href="/Tree/Checkout">Proceed to Checkout</Link>
+              </Button>
+            </CardFooter>
+          </Card>
         </div>
-      </div>
+      ) : (
+        <Card>
+          <CardContent className="flex flex-col items-center justify-center py-12">
+            <ShoppingCart className="w-16 h-16 text-gray-400 mb-4" />
+            <h2 className="text-2xl font-semibold mb-2">Your cart is empty</h2>
+            <p className="text-gray-500 mb-4">
+              Add some plants to your cart and start shopping!
+            </p>
+            <Button asChild>
+              <Link href="/Tree/Shop">Continue Shopping</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
-};
-
-export default CartPlant;
+}

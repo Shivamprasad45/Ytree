@@ -1,5 +1,6 @@
-"use client";
+"use server";
 
+import MaxWidthRappers from "@/components/MaxWidthRapper";
 import dynamic from "next/dynamic";
 import React from "react";
 
@@ -11,9 +12,9 @@ const Map = dynamic(() => import("@/app/Components/Map_components"), {
 
 const Page: React.FC = () => {
   return (
-    <div>
+    <MaxWidthRappers className="mx-auto  max-w-4xl">
       <Map />
-    </div>
+    </MaxWidthRappers>
   );
 };
 

@@ -9,7 +9,7 @@ const MaxWidthRappers = ({
   className?: string;
 }) => {
   return (
-    <div className={cn("mx-auto  w-full  overflow-hidden ", className)}>
+    <div className={cn("mx-auto    overflow-hidden ", className)}>
       {children}
     </div>
   );

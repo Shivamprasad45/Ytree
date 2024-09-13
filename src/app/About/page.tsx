@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const AboutPage = () => {
   return (
-    <div className=" text-gray-900 min-h-screen flex flex-col">
+    <div className=" text-gray-900 min-h-screen flex flex-col max-w-6xl m-auto">
       <header className="p-6 bg-white shadow-sm">
         <div className="container mx-auto">
           <h1 className="text-4xl font-bold">About Us</h1>

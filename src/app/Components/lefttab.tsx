@@ -1,4 +1,5 @@
 "use client";
+
 import {
   ContactRoundIcon,
   Globe,
@@ -8,25 +9,20 @@ import {
   TreesIcon,
   UserX2Icon,
 } from "lucide-react";
-
 import Image from "next/image";
-import React, { useEffect } from "react";
-import { menuItem } from "../../../type";
 import Link from "next/link";
-
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo, UserSelector } from "../Featuers/Auth/AuthSlice";
-import { useSession } from "next-auth/react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
-export const menuItems: menuItem[] = [
+export const menuItems = [
   { id: 1, icon: <TreePalm size={20} />, label: "Trees", path: "/Tree/Shop" },
-  {
-    id: 6,
-    icon: <TreesIcon size={20} />,
-    label: "Cart",
-    path: "/Tree/Cart",
-  },
+  { id: 6, icon: <TreesIcon size={20} />, label: "Cart", path: "/Tree/Cart" },
   {
     id: 2,
     icon: <MessageCircleCodeIcon size={20} />,
@@ -39,7 +35,6 @@ export const menuItems: menuItem[] = [
     label: "Contact us",
     path: "/Contact",
   },
-
   {
     id: 5,
     icon: <ListTree size={20} />,
@@ -54,66 +49,77 @@ export const menuItems: menuItem[] = [
   },
 ];
 
-const Lefttab = () => {
+export default function Lefttab() {
   const dispatch = useDispatch();
   const { data: session, status } = useSession();
   const user = useSelector(UserSelector);
   const route = usePathname();
-  console.log(session?.user.email);
 
   useEffect(() => {
-    dispatch(
-      setUserInfo({
-        _id: session?.user.id!,
-        email: session?.user.email!,
-        Username: session?.user.name!,
-      })
-    );
-  }, [session, status]);
+    if (session?.user) {
+      dispatch(
+        setUserInfo({
+          _id: session.user.id!,
+          email: session.user.email!,
+          Username: session.user.name!,
+        })
+      );
+    }
+  }, [session, status, dispatch]);
 
   if (["/Signup", "/login", "/Resend"].includes(route)) {
-    return null; // No sidebar on these routes
+    return null;
   }
 
   return (
-    <div className="flex flex-col px-2 border-r h-full">
-      {user?.Username ? (
-        <div className="flex items-center font-semibold gap-12 justify-start min-w-40 mb-6 pl-2">
-          <Image
-            width={100}
-            height={100}
-            src={session?.user.image || "/wave.png"}
-            className="rounded-full w-12 h-12 hover:border-2 border-2 border-black"
-            alt="profile picture"
-          />
-          <span className="text-lg">
-            {user.Username ? user.Username.slice(0, 8) : "not found"}
-          </span>
-        </div>
-      ) : (
-        <Link
-          className="flex items-center  gap-12 justify-start min-w-40 mb-6 pl-4 underline text-blue-500"
-          href="/login"
-        >
-          <UserX2Icon />
-        </Link>
-      )}
-      <div className="flex flex-col gap-3 items-start mt-10 bg-scroll">
-        {menuItems.map((item) => (
-          <Link key={item.id} href={item.path}>
-            <p
-              className={`flex space-x-16 ${
-                item.id === 6 ? "hidden" : ""
-              }  items-center min-w-40 hover:text-blue-500 hover:bg-gray-100 cursor-pointer p-2 rounded`}
-            >
-              {item.icon}
-              <span className="">{item.label}</span>
-            </p>
+    <div className="flex flex-col h-full border-r bg-background">
+      <div className="pt-6 pr-3 pl-3 pb-3">
+        {user?.Username ? (
+          <div className="flex items-center space-x-4">
+            <Avatar className="w-10 h-10">
+              <AvatarImage
+                src={session?.user.image || "/wave.png"}
+                alt="Profile picture"
+              />
+              <AvatarFallback>
+                {user.Username.slice(0, 2).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            <div className="space-y-1">
+              <h2 className="text-sm font-semibold">
+                {user.Username.slice(0, 8)}
+              </h2>
+              <p className="text-xs text-muted-foreground">
+                {user.email.slice(0, 10)}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <Link href="/login">
+            <Button variant="outline" className="w-full">
+              <UserX2Icon className="mr-2 h-4 w-4" />
+              Sign In
+            </Button>
           </Link>
-        ))}
+        )}
       </div>
+      <ScrollArea className="flex-1 px-2">
+        <div className="space-y-1">
+          {menuItems.map((item) => (
+            <Link key={item.id} href={item.path}>
+              <Button
+                variant="ghost"
+                className={`w-full justify-start ${
+                  item.id === 6 ? "hidden" : ""
+                }`}
+              >
+                {item.icon}
+                <span className="ml-3">{item.label}</span>
+              </Button>
+            </Link>
+          ))}
+        </div>
+      </ScrollArea>
     </div>
   );
-};
-
-export default Lefttab;
+}

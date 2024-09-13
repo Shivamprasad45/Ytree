@@ -19,8 +19,8 @@ const Page = ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <MaxWidthRappers>
-      <div className="flex flex-col md:flex-row justify-between overflow-hidden relative md:justify-start items-start min-h-screen py-2">
+    <MaxWidthRappers className="">
+      <div className="flex flex-col md:flex-row justify-between overflow-hidden relative md:justify-start items-start min-h-screen py-2 ">
         {/* Left */}
 
         <div className="w-full max-w-2xl ml-8">

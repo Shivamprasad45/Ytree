@@ -13,6 +13,8 @@ import { useSave_plants_coordsMutation } from "@/app/Featuers/TreeOrder/TreeOrde
 import PushNotifications from "@/app/lib/PushNoti";
 import { toast } from "sonner";
 import { useGetlog_treeMutation } from "@/app/Featuers/Tree/TreeServices";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
 const Map = dynamic(() => import("./Map"), { ssr: false });
 
@@ -117,53 +119,49 @@ const Logtrees = () => {
   return (
     <Suspense>
       <PushNotifications />
-      <div className="relative flex size-full min-h-screen flex-col group/design-root overflow-x-hidden">
-        <div className="layout-container flex h-full grow flex-col">
-          <div className="px-40 flex flex-1 justify-center py-5">
-            <div className="layout-content-container flex flex-col w-[512px] py-5 max-w-[960px] flex-1">
-              <div className="flex flex-wrap justify-between gap-3 p-4">
-                <p className="text-[#111811] tracking-light text-[32px] font-bold leading-tight min-w-72">
-                  Log Plant Location
+      <div className="max-w-md mx-auto p-4 bg-gray-50 ">
+        <Card className="mb-4 overflow-hidden">
+          <CardContent className="p-0">
+            <div className="relative h-48 bg-green-100">
+              <img
+                src="https://images.unsplash.com/photo-1454425064867-5ba516caf601?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8cGxhbnR8fHx8fHwxNzE3NTgzMDI3&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080"
+                alt="Teak Tree"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-white bg-opacity-75 p-4">
+                <h1 className="text-2xl font-bold text-green-800">Teak Tree</h1>
+                <p className="text-sm text-gray-600">
+                  {new Date().toLocaleString()}
                 </p>
               </div>
-              <h3 className="text-[#111811] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">
-                Plant Information
-              </h3>
-              <div className="flex items-center gap-4 bg-[#f9fbf9] px-4 min-h-[72px] py-2">
-                <img
-                  className="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
-                  src={About_Mytree?.imageUrl || ""}
-                  alt="Plant"
-                />
-                <div className="flex flex-col justify-center">
-                  <p className="text-[#111811] text-base font-medium leading-normal line-clamp-1">
-                    {About_Mytree?.name}
-                  </p>
-                  <p className="text-[#608562] text-sm font-normal leading-normal line-clamp-2">
-                    {About_Mytree?.age?.toString()}
-                  </p>
-                </div>
-              </div>
-              <h3 className="text-[#111811] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">
-                Location
-              </h3>
-              <div className="">
-                <Map />
-              </div>
-              <div className="flex max-w-[480px] flex-1 flex-wrap items-end gap-4 px-4 py-3"></div>
-              <div className="flex max-w-[480px] flex-1 flex-wrap items-end gap-4 px-4 py-3"></div>
-              <div className="flex px-4 py-3">
-                <button
-                  className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 flex-1 bg-[#4cae4f] text-[#111811] text-sm font-bold leading-normal tracking-[0.015em]"
-                  onClick={Tree_coords_Save}
-                >
-                  <span className="truncate">
-                    {isLoading_coords ? "....Saving" : "Save"}
-                  </span>
-                </button>
-              </div>
             </div>
-          </div>
+          </CardContent>
+        </Card>
+
+        <Card className="mb-4">
+          <CardContent className="p-0">
+            <div className="pb-7 h-64 ">
+              {/* This would be replaced with an actual map component */}
+              <Map />
+              {/* <div className="absolute  left-4 right-8 bg-white rounded-lg shadow max-w-sm justify-center">
+                <p className="text-sm font-medium text-gray-700 text-center">
+                  Lat: {Plants_CurrentLocations?.late}, Lon:{" "}
+                  {Plants_CurrentLocations?.late}
+                </p>
+                <p className="text-xs text-gray-500">
+                  {Plants_CurrentLocations?.Address}
+                </p>
+              </div> */}
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="flex space-x-4">
+          <Button onClick={Tree_coords_Save} className="flex-1  text-white">
+            <h1 className="truncate">
+              {isLoading_coords ? "....Saving" : "Save"}
+            </h1>
+          </Button>
         </div>
       </div>
     </Suspense>

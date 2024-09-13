@@ -65,7 +65,11 @@ export default function RootLayout({
                 </div>
 
                 {/* Middle */}
-                <div className="flex-grow md:ml-56">{children}</div>
+                <div className="flex-grow md:ml-56">
+                  <MaxWidthRappers className="mx-auto">
+                    {children}
+                  </MaxWidthRappers>
+                </div>
               </main>
               <div className="pt-4">
                 <Footer />

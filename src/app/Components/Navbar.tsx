@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-
 import Link from "next/link";
 import {
   Sheet,
@@ -11,6 +10,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import {
+  AlignHorizontalDistributeCenterIcon,
   EarthIcon,
   EarthLockIcon,
   LucideMenu,
@@ -24,7 +24,6 @@ import { ModeToggle } from "./Togglemode";
 import { Badge } from "@/components/ui/badge";
 import { menuItems } from "./lefttab";
 import { usePathname } from "next/navigation";
-
 import { useSelector } from "react-redux";
 import ConnectionStatus from "../lib/Connection";
 import Image from "next/image";
@@ -46,102 +45,102 @@ const Navbar = () => {
   }
   const Total_cart_item =
     cartdata && cartdata?.reduce((a, b) => a + b.quantity, 0);
-  return (
-    <nav className=" px-3 md:px-8 font-semibold flex items-center  justify-between py-3  md:py-4 border-b mb-2">
-      <ConnectionStatus />
-      <Link href={"/"}>
-        <div className="flex items-center justify-center space-x-2 text-sm md:text-lg">
-          <span>
-            <Image
-              height={300}
-              width={400}
-              alt="https://i.postimg.cc"
-              src="https://i.postimg.cc/cHCpYFRM/plant2.png"
-              className="w-10 h-8 "
-            />
-          </span>
-          <div className="text-container">
-            <span className="letter">Y</span>
-            <span className="letter">p</span>
-            <span className="letter">l</span>
-            <span className="letter">a</span>
-            <span className="letter">n</span>
-            <span className="letter">t</span>
-          </div>
-        </div>
-      </Link>
-      <div className="flex space-x-32 items-center justify-center ">
-        <div className=" hidden md:inline  ">
-          <div className="justify-center items-center space-x-10 flex ">
-            <span className="cursor-auto">
-              <Link href="/About">About</Link>
-            </span>
 
-            <Link className="flex space-x-2" href="/Tree/Cart">
+  return (
+    <nav className="border-b mb-2 bg-background">
+      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+        <ConnectionStatus />
+        <Link href={"/"} className="flex items-center space-x-2">
+          <Image
+            height={300}
+            width={400}
+            alt="Yplant Logo"
+            src="https://i.postimg.cc/cHCpYFRM/plant2.png"
+            className="w-10 h-8"
+          />
+          <div className="text-container text-sm md:text-lg font-semibold">
+            <span className="letter text-primary">Y</span>
+            <span className="letter">plant</span>
+          </div>
+        </Link>
+        <div className="flex items-center space-x-4 md:space-x-8">
+          <div className="hidden md:flex items-center space-x-8">
+            <Link
+              href="/About"
+              className="hover:text-primary transition-colors"
+            >
+              About
+            </Link>
+            <Link
+              href="/Tree/Cart"
+              className="flex items-center space-x-2 hover:text-primary transition-colors"
+            >
               <span className="relative">
-                <Badge className="absolute bottom-4">{Total_cart_item}</Badge>
-                <TreesIcon />
+                <Badge variant="secondary" className="absolute -top-4 -right-2">
+                  {Total_cart_item}
+                </Badge>
+                <TreesIcon className="w-5 h-5" />
               </span>
-              <span className="">Cart</span>
+              <span>Cart</span>
             </Link>
             {user?.email ? (
-              <div className="">
-                <Button onClick={() => signOut()}>Logout</Button>
-              </div>
+              <Button onClick={() => signOut()}>Logout</Button>
             ) : (
-              <div className="">
-                <Link href="/login">
-                  <Button>Sigin</Button>
-                </Link>
-              </div>
+              <Button asChild>
+                <Link href="/login">Sign In</Link>
+              </Button>
             )}
           </div>
-        </div>
-
-        <div className="space-x-2 flex items-center   ">
           <ModeToggle />
-          <div className="flex space-x-2 items-center md:hidden">
+          <div className="flex items-center space-x-4 md:hidden">
             <Link href="/Tree/Mytrees">
-              <EarthLockIcon className="hover:text-gray-400" />
+              <EarthLockIcon className="w-5 h-5 hover:text-primary transition-colors" />
             </Link>
             <Link href="/Tree/Cart">
-              <ShoppingBasket className="hover:text-gray-400" />
+              <ShoppingBasket className="w-5 h-5 hover:text-primary transition-colors" />
             </Link>
-            <Link href="/login">{!user?.email && <UserX2Icon />}</Link>
-            <div>{user?.email && <UserCheck />}</div>
-
+            {!user?.email ? (
+              <Link href="/login">
+                <UserX2Icon className="w-5 h-5 hover:text-primary transition-colors" />
+              </Link>
+            ) : (
+              <UserCheck className="w-5 h-5" />
+            )}
             <Sheet>
-              <SheetTrigger>
-                {" "}
-                <LucideMenu />
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <LucideMenu className="w-5 h-5" />
+                  <span className="sr-only">Open menu</span>
+                </Button>
               </SheetTrigger>
               <SheetContent>
                 <SheetHeader>
                   <SheetTitle>Menu</SheetTitle>
-                  <div className="">
-                    <Link href="/Tree/Global">
-                      {" "}
-                      <EarthIcon />{" "}
-                    </Link>
-                  </div>
-                  <div className="">
-                    <Link href="/About"> About</Link>
-                  </div>
-                  <ul className=" pt-4 grid  ">
-                    {menuItems.map((item) => (
-                      <Link key={item.id} href={item.path}>
-                        <p
-                          className={`flex space-x-16 ${
-                            item.id === 6 ? "hidden" : ""
-                          }  items-center min-w-40 hover:text-blue-500 hover:bg-gray-100 cursor-pointer p-2 rounded`}
-                        >
-                          {item.icon}
-                          <span className="">{item.label}</span>
-                        </p>
-                      </Link>
-                    ))}
-                  </ul>
                 </SheetHeader>
+                <div className="mt-4 space-y-4">
+                  <Link
+                    href="/About"
+                    className="hover:text-primary transition-colors"
+                  >
+                    About
+                  </Link>
+                  <ul className="space-y-2">
+                    {menuItems.map(
+                      (item) =>
+                        item.id !== 6 && (
+                          <li key={item.id}>
+                            <Link
+                              href={item.path}
+                              className="flex items-center space-x-2 hover:text-primary transition-colors"
+                            >
+                              {item.icon}
+                              <span>{item.label}</span>
+                            </Link>
+                          </li>
+                        )
+                    )}
+                  </ul>
+                </div>
               </SheetContent>
             </Sheet>
           </div>

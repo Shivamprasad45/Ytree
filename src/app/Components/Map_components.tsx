@@ -14,6 +14,7 @@ import {
 import { Loader2 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import MaxWidthRappers from "@/components/MaxWidthRapper";
 
 const IconUser = new L.Icon({
   iconUrl: "/Map_icon/your.png",
@@ -140,65 +141,69 @@ export default function EnhancedMapComponent() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div className="md:col-span-2">
-        <MapContainer
-          center={coords.length > 0 ? [coords[0].late, coords[0].long] : [0, 0]}
-          zoom={13}
-          style={{ height: "500px", width: "100%" }}
-          ref={mapRef}
-        >
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          />
-        </MapContainer>
-        <div className="mt-4 flex justify-around">
-          <div className="flex items-center">
-            <img
-              src={IconUser.options.iconUrl}
-              alt="Your Trees"
-              className="w-6 h-6 mr-2"
+    <MaxWidthRappers className="mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="md:col-span-2">
+          <MapContainer
+            center={
+              coords.length > 0 ? [coords[0].late, coords[0].long] : [0, 0]
+            }
+            zoom={13}
+            style={{ height: "500px", width: "100%" }}
+            ref={mapRef}
+          >
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
-            <span>Your Trees</span>
-          </div>
-          <div className="flex items-center">
-            <img
-              src={IconWinner.options.iconUrl}
-              alt="Winner's Trees"
-              className="w-6 h-6 mr-2"
-            />
-            <span>Winner s Trees</span>
-          </div>
-          <div className="flex items-center">
-            <img
-              src={IconOther.options.iconUrl}
-              alt="Other Trees"
-              className="w-6 h-6 mr-2"
-            />
-            <span>Other Trees</span>
+          </MapContainer>
+          <div className="mt-4 flex justify-around">
+            <div className="flex items-center">
+              <img
+                src={IconUser.options.iconUrl}
+                alt="Your Trees"
+                className="w-6 h-6 mr-2"
+              />
+              <span>Your Trees</span>
+            </div>
+            <div className="flex items-center">
+              <img
+                src={IconWinner.options.iconUrl}
+                alt="Winner's Trees"
+                className="w-6 h-6 mr-2"
+              />
+              <span>Winner s Trees</span>
+            </div>
+            <div className="flex items-center">
+              <img
+                src={IconOther.options.iconUrl}
+                alt="Other Trees"
+                className="w-6 h-6 mr-2"
+              />
+              <span>Other Trees</span>
+            </div>
           </div>
         </div>
+        <div>
+          <Card>
+            <CardHeader>
+              <CardTitle>Leaderboard</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul>
+                {leaderboard.map((user, index) => (
+                  <li key={user._id} className="mb-2">
+                    <span className="font-bold">{index + 1}.</span>{" "}
+                    {user.firstName} - {user.treeCount} trees
+                    {user._id === session?.user?.id && " (You)"}
+                    {index === 0 && " 🏆"}
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
       </div>
-      <div>
-        <Card>
-          <CardHeader>
-            <CardTitle>Leaderboard</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ul>
-              {leaderboard.map((user, index) => (
-                <li key={user._id} className="mb-2">
-                  <span className="font-bold">{index + 1}.</span>{" "}
-                  {user.firstName} - {user.treeCount} trees
-                  {user._id === session?.user?.id && " (You)"}
-                  {index === 0 && " 🏆"}
-                </li>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+    </MaxWidthRappers>
   );
 }

@@ -11,13 +11,11 @@ import { Use_current_location } from "@/app/Featuers/TreeOrder/TreeOrderSlice";
 
 // Create a custom icon
 const customIcon = new L.Icon({
-  iconUrl:
-    "https://img.icons8.com/?size=100&id=6ozQ6RVpK3sa&format=png&color=000000",
+  iconUrl: "/Map_icon/pin.webp",
   iconSize: [25, 41], // Size of the icon
   iconAnchor: [12, 41], // Point of the icon which will correspond to marker's location
   popupAnchor: [1, -34], // Point from which the popup should open relative to the iconAnchor
-  shadowUrl:
-    "https://t3.ftcdn.net/jpg/02/19/36/90/360_F_219369048_1MQ8eZynFltpjKqzbm6bHMa4k2FfU0AM.jpg",
+  shadowUrl: "/Map_icon/marker-shadow.webp",
   shadowSize: [41, 41], // Size of the shadow
   shadowAnchor: [20, 20], // Point of the shadow
 });
@@ -39,14 +37,13 @@ const Map: React.FC = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
-          console.log(position.coords.latitude, "lat");
-          console.log(position.coords.longitude, "lon");
           const coords: [number, number] = [
             position.coords.latitude,
             position.coords.longitude,
           ];
           console.log(coords[0], "long");
           console.log(coords[1], "late");
+          console.log(coords, "coords");
           setCurrentLocation(coords);
 
           // Fetch area information for the current location
@@ -76,14 +73,12 @@ const Map: React.FC = () => {
     }
   };
 
-  console.log(currentLocation, currentLocationInfo, "All Inflammation");
-
   return (
     <div>
       <MapContainer
         center={[51.505, -0.09]}
         zoom={13}
-        style={{ height: "400px", width: "100%" }}
+        style={{ height: "200px", width: "100%" }}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -104,7 +99,10 @@ const Map: React.FC = () => {
           </>
         )}
       </MapContainer>
-      <div className="pt-6">
+
+      {/* Button to use current location */}
+
+      <div className="pt-3 pl-32 ">
         <Button onClick={handleMapClick}>Use current location</Button>
       </div>
     </div>
