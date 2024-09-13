@@ -1,103 +1,59 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { useEffect, useState } from "react";
+import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import L from "leaflet";
 import "leaflet.markercluster";
 import { useSession } from "next-auth/react";
+import { Loader2, Trophy, Trees, User as UserIcon } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   useGetALL_coordsMutation,
   useGetAll_usersMutation,
-} from "@/app/Featuers/Global/GlobeServices";
-import { Loader2 } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import MaxWidthRappers from "@/components/MaxWidthRapper";
+} from "../Featuers/Global/GlobeServices";
+import { Coordinate, All_Users } from "../../../type";
+import WinnerAnnouncement from "./Winner";
 
-const IconUser = new L.Icon({
-  iconUrl: "/Map_icon/your.png",
-  iconSize: [32, 32],
-  iconAnchor: [16, 32],
-  popupAnchor: [0, -32],
-  shadowUrl: "/Map_icon/marker-shadow.webp",
-});
+// Create icon function
+const createIcon = (iconUrl: string) =>
+  new L.Icon({
+    iconUrl,
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32],
+    shadowUrl: "/Map_icon/marker-shadow.webp",
+  });
 
-const IconWinner = new L.Icon({
-  iconUrl: "/Map_icon/winner.webp",
-  iconSize: [32, 32],
-  iconAnchor: [16, 32],
-  popupAnchor: [0, -32],
-  shadowUrl: "/Map_icon/marker-shadow.webp",
-});
+const IconUser = createIcon("/Map_icon/your.png");
+const IconWinner = createIcon("/Map_icon/winner.webp");
+const IconOther = createIcon("/Map_icon/Alltree.webp");
 
-const IconOther = new L.Icon({
-  iconUrl: "/Map_icon/Alltree.webp",
-  iconSize: [32, 32],
-  iconAnchor: [16, 32],
-  popupAnchor: [0, -32],
-  shadowUrl: "/Map_icon/marker-shadow.webp",
-});
-
-export default function EnhancedMapComponent() {
-  const { data: session } = useSession();
-  const [coords, setCoords] = useState<any[]>([]);
-  const [users, setUsers] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const mapRef = useRef<L.Map | null>(null);
-  const [leaderboard, setLeaderboard] = useState<any[]>([]);
-  const [winner, setWinner] = useState<string | null>(null);
-
-  const [getALL_coords] = useGetALL_coordsMutation();
-  const [getAll_users] = useGetAll_usersMutation();
+// MapUpdater component
+function MapUpdater({
+  coords,
+  users,
+  session,
+  winner,
+}: {
+  coords: Coordinate[];
+  users: All_Users[];
+  session: any;
+  winner: string | null;
+}) {
+  const map = useMap();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const [coordsData, usersData] = await Promise.all([
-          getALL_coords().unwrap(),
-          getAll_users().unwrap(),
-        ]);
-        setCoords(coordsData);
-        setUsers(usersData);
-
-        // Calculate leaderboard
-        const userTrees = coordsData.reduce((acc: any, coord: any) => {
-          acc[coord.UserId] = (acc[coord.UserId] || 0) + 1;
-          return acc;
-        }, {});
-
-        const leaderboardData = usersData
-          .map((user: any) => ({
-            ...user,
-            treeCount: userTrees[user._id] || 0,
-          }))
-          .sort((a: any, b: any) => b.treeCount - a.treeCount);
-
-        setLeaderboard(leaderboardData.slice(0, 5));
-        setWinner(leaderboardData[0]?._id || null);
-      } catch (error) {
-        setError("Error loading data. Please try again later.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [getALL_coords, getAll_users]);
-
-  useEffect(() => {
-    if (coords.length > 0 && mapRef.current) {
-      const map = mapRef.current;
+    if (coords.length > 0) {
       const markers = L.markerClusterGroup();
 
       coords.forEach((coord) => {
-        const userName =
-          users.find((user) => user._id === coord.UserId)?.firstName ||
-          "Unknown User";
+        const userName = users.find((user) => user._id === coord.UserId);
+        ("Unknown User");
         let icon = IconOther;
 
         if (coord.UserId === session?.user?.id) {
@@ -109,19 +65,79 @@ export default function EnhancedMapComponent() {
         const marker = L.marker([coord.late, coord.long], { icon }).bindPopup(`
           <p><strong>Address:</strong> ${coord.Plant_Addresses}</p>
           <p><strong>Plant:</strong> ${coord.commonName}</p>
-          <p><strong>User:</strong> ${userName}</p>
+          <p><strong>Conservationist : </strong>${
+            userName
+              ? `${userName?.firstName} ${userName?.lastName}`
+              : "  Unknown "
+          } </p>
         `);
 
         markers.addLayer(marker);
       });
 
       map.addLayer(markers);
+      map.fitBounds(markers.getBounds());
 
       return () => {
         map.removeLayer(markers);
       };
     }
-  }, [coords, users, session, winner, getALL_coords, getAll_users]);
+  }, [coords, users, session, winner, map]);
+
+  return null;
+}
+
+export default function EnhancedMapComponent() {
+  const { data: session } = useSession();
+  const [coords, setCoords] = useState<Coordinate[]>([]);
+  const [users, setUsers] = useState<All_Users[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [leaderboard, setLeaderboard] = useState<All_Users[]>([]);
+  const [winner, setWinner] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState("map");
+
+  const [getAllCoords] = useGetALL_coordsMutation();
+  const [getAllUsers] = useGetAll_usersMutation();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const [coordsData, usersData] = await Promise.all([
+          getAllCoords().unwrap(),
+          getAllUsers().unwrap(),
+        ]);
+        setCoords(coordsData);
+        setUsers(usersData);
+
+        const userTrees = coordsData.reduce(
+          (acc: Record<string, number>, coord: Coordinate) => {
+            acc[coord.UserId] = (acc[coord.UserId] || 0) + 1;
+            return acc;
+          },
+          {}
+        );
+
+        const leaderboardData = usersData
+          .map((user: All_Users) => ({
+            ...user,
+            treeCount: userTrees[user._id] || 0,
+          }))
+          .sort((a, b) => b.treeCount - a.treeCount);
+
+        setLeaderboard(leaderboardData.slice(0, 5));
+        setWinner(leaderboardData[0]?._id || null);
+      } catch (error) {
+        setError("Error loading data. Please try again later.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [getAllCoords, getAllUsers]);
+  // Animations
 
   if (isLoading) {
     return (
@@ -141,69 +157,86 @@ export default function EnhancedMapComponent() {
   }
 
   return (
-    <MaxWidthRappers className="mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="md:col-span-2">
-          <MapContainer
-            center={
-              coords.length > 0 ? [coords[0].late, coords[0].long] : [0, 0]
-            }
-            zoom={13}
-            style={{ height: "500px", width: "100%" }}
-            ref={mapRef}
-          >
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-          </MapContainer>
+    <div className="container mx-auto p-4">
+      <div className="text-center p-2">
+        <WinnerAnnouncement
+          winner={{
+            firstName: leaderboard[0].firstName + " " + leaderboard[1].lastName,
+            treeCount: leaderboard[0].treeCount!,
+          }}
+        />
+      </div>
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="map">Map</TabsTrigger>
+          <TabsTrigger value="leaderboard">Leaderboard</TabsTrigger>
+        </TabsList>
+        <TabsContent value="map" className="mt-4">
+          <Card>
+            <CardContent className="p-0">
+              <MapContainer
+                center={[0, 0]}
+                zoom={2}
+                style={{ height: "500px", width: "100%" }}
+              >
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                />
+                <MapUpdater
+                  coords={coords}
+                  users={users}
+                  session={session}
+                  winner={winner}
+                />
+              </MapContainer>
+            </CardContent>
+          </Card>
           <div className="mt-4 flex justify-around">
-            <div className="flex items-center">
-              <img
-                src={IconUser.options.iconUrl}
-                alt="Your Trees"
-                className="w-6 h-6 mr-2"
-              />
+            <Button variant="outline" className="flex items-center gap-2">
+              <img src={"/Map_icon/your.png"} width={20} height={10} />
               <span>Your Trees</span>
-            </div>
-            <div className="flex items-center">
-              <img
-                src={IconWinner.options.iconUrl}
-                alt="Winner's Trees"
-                className="w-6 h-6 mr-2"
-              />
-              <span>Winner s Trees</span>
-            </div>
-            <div className="flex items-center">
-              <img
-                src={IconOther.options.iconUrl}
-                alt="Other Trees"
-                className="w-6 h-6 mr-2"
-              />
+            </Button>
+            <Button variant="outline" className="flex items-center gap-2">
+              <img src={"/Map_icon/Alltree.webp"} width={20} height={10} />
+              <span>Winner Trees</span>
+            </Button>
+            <Button variant="outline" className="flex items-center gap-2">
+              <img src={"/Map_icon/winner.webp"} width={20} height={10} />
               <span>Other Trees</span>
-            </div>
+            </Button>
           </div>
-        </div>
-        <div>
+        </TabsContent>
+        <TabsContent value="leaderboard" className="mt-4">
           <Card>
             <CardHeader>
               <CardTitle>Leaderboard</CardTitle>
             </CardHeader>
             <CardContent>
-              <ul>
+              <ul className="space-y-2">
                 {leaderboard.map((user, index) => (
-                  <li key={user._id} className="mb-2">
-                    <span className="font-bold">{index + 1}.</span>{" "}
-                    {user.firstName} - {user.treeCount} trees
-                    {user._id === session?.user?.id && " (You)"}
-                    {index === 0 && " 🏆"}
+                  <li
+                    key={user._id}
+                    className="flex items-center justify-between p-2 bg-secondary rounded-md"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold">{index + 1}.</span>
+                      <span>{user.firstName}</span>
+                      {user._id === session?.user?.id && (
+                        <UserIcon className="w-4 h-4" />
+                      )}
+                      {index === 0 && (
+                        <Trophy className="w-4 h-4 text-yellow-500" />
+                      )}
+                    </div>
+                    <span>{user.treeCount} trees</span>
                   </li>
                 ))}
               </ul>
             </CardContent>
           </Card>
-        </div>
-      </div>
-    </MaxWidthRappers>
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 }

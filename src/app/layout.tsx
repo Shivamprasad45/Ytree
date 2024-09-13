@@ -47,12 +47,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
-        )}
-      >
+      <body className={cn("min-h-screen font-sans antialiased")}>
         <Providers>
           <Toaster />
           <MaxWidthRappers>
@@ -65,7 +60,7 @@ export default function RootLayout({
                 </div>
 
                 {/* Middle */}
-                <div className="flex-grow md:ml-56">
+                <div className="flex-grow md:ml-64">
                   <MaxWidthRappers className="mx-auto">
                     {children}
                   </MaxWidthRappers>

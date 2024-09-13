@@ -193,4 +193,6 @@ export interface Coordinate {
 export interface All_Users {
   _id: string;
   firstName: string;
+  treeCount?: number;
+  lastName: string;
 }

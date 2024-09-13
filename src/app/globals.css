@@ -5,55 +5,55 @@
  
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 133, 99%, 37%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
+    --background: 60 10% 98%;
+    --foreground: 120 15% 15%;
+    --card: 60 10% 96%;
+    --card-foreground: 120 15% 15%;
+    --popover: 60 10% 96%;
+    --popover-foreground: 120 15% 15%;
+    --primary: 142 76% 36%;
+    --primary-foreground: 355 100% 97%;
+    --secondary: 80 25% 85%;
+    --secondary-foreground: 120 15% 15%;
+    --muted: 80 25% 90%;
+    --muted-foreground: 120 10% 40%;
+    --accent: 142 76% 36%;
+    --accent-foreground: 355 100% 97%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 355 100% 97%;
+    --border: 120 15% 85%;
+    --input: 120 15% 85%;
+    --ring: 142 76% 36%;
     --radius: 0.5rem;
   }
-
+  
   .dark {
-    --background: 240 10% 8%; /* Slightly lighter background for better contrast */
-    --foreground: 0 0% 98%; /* Keep the foreground text bright */
-    --card: 240 10% 10%; /* A touch lighter for card backgrounds */
-    --card-foreground: 0 0% 98%; 
-    --popover: 240 10% 10%; 
-    --popover-foreground: 0 0% 98%;
-    --primary: 210 90% 60%; /* Bright cyan for primary buttons */
-    --primary-foreground: 0 0% 10%; /* Dark text on primary buttons */
-    --secondary: 210 15% 25%; /* Muted blue-gray for secondary elements */
-    --secondary-foreground: 0 0% 98%; 
-    --muted: 210 15% 25%; 
-    --muted-foreground: 210 15% 75%; /* Softer gray for muted foregrounds */
-    --accent: 280 70% 50%; /* Vibrant purple for accent elements */
-    --accent-foreground: 0 0% 98%; 
-    --destructive: 0 75% 40%; /* Rich red for destructive actions */
-    --destructive-foreground: 0 0% 98%; 
-    --border: 240 10% 20%; /* Darker border for better definition */
-    --input: 240 10% 20%; 
-    --ring: 220 80% 70%; /* Bright blue ring for focus states */
-    --chart-1: 220 70% 50%; 
-    --chart-2: 160 60% 45%; 
-    --chart-3: 30 80% 55%; 
-    --chart-4: 280 65% 60%; 
+    --background: 120 15% 10%;
+    --foreground: 60 10% 98%;
+    --card: 120 15% 12%;
+    --card-foreground: 60 10% 98%;
+    --popover: 120 15% 12%;
+    --popover-foreground: 60 10% 98%;
+    --primary: 142 76% 36%;
+    --primary-foreground: 355 100% 97%;
+    --secondary: 80 25% 25%;
+    --secondary-foreground: 60 10% 98%;
+    --muted: 80 25% 25%;
+    --muted-foreground: 80 25% 75%;
+    --accent: 142 76% 36%;
+    --accent-foreground: 355 100% 97%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 355 100% 97%;
+    --border: 120 15% 20%;
+    --input: 120 15% 20%;
+    --ring: 142 76% 36%;
+    --chart-1: 142 76% 46%;
+    --chart-2: 80 70% 50%;
+    --chart-3: 39 80% 55%;
+    --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
     --radius: 0.5rem;
-}
+  }
 
 }
 .Image {
