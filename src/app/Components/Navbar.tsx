@@ -10,13 +10,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import {
-  AlignHorizontalDistributeCenterIcon,
-  EarthIcon,
   EarthLockIcon,
   LucideMenu,
   ShoppingBasket,
   TreesIcon,
-  User2Icon,
   UserCheck,
   UserX2Icon,
 } from "lucide-react";
@@ -59,8 +56,8 @@ const Navbar = () => {
             className="w-14 h-12"
           />
           <div className="text-container text-sm md:text-lg font-semibold">
-            <span className="letter text-primary">Prithvi</span>
-            <span className="letter">Pulse</span>
+            <span className="letter text-primary">Vana</span>
+            <span className="letter">Grow</span>
           </div>
         </Link>
         <div className="flex items-center space-x-4 md:space-x-8">
