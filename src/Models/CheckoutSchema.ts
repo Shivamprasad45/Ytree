@@ -26,5 +26,4 @@ const plantOrderSchema = new Schema({
 });
 const Order =
   mongoose.models.Order || mongoose.model("Order", plantOrderSchema);
-
 export default Order;

@@ -47,20 +47,20 @@ const Navbar = () => {
     cartdata && cartdata?.reduce((a, b) => a + b.quantity, 0);
 
   return (
-    <nav className="border-b mb-2 bg-background">
-      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+    <nav className="sticky top-0 z-50 border-b mb-2 bg-background">
+      <div className="container mx-auto px-4 py-1 flex items-center justify-between">
         <ConnectionStatus />
-        <Link href={"/"} className="flex items-center space-x-2">
+        <Link href={"/"} className="flex items-center space-x-2 justify-center">
           <Image
             height={300}
             width={400}
             alt="Yplant Logo"
-            src="https://i.postimg.cc/cHCpYFRM/plant2.png"
-            className="w-10 h-8"
+            src="/logo.png"
+            className="w-14 h-12"
           />
           <div className="text-container text-sm md:text-lg font-semibold">
-            <span className="letter text-primary">Y</span>
-            <span className="letter">plant</span>
+            <span className="letter text-primary">Prithvi</span>
+            <span className="letter">Pulse</span>
           </div>
         </Link>
         <div className="flex items-center space-x-4 md:space-x-8">

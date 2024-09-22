@@ -28,7 +28,7 @@ const PushNotifications: React.FC = () => {
               await registration.pushManager.subscribe({
                 userVisibleOnly: true,
                 applicationServerKey:
-                  "BBPuBPUtiQ9XMcGyj_fAuupMTl_-pishcrf2Sk6HVLyQ8E3aJhvDNeiLznsSmmxT-BK52HT-hxLJqzdij23dxuk",
+                  "BIkDA8BOVfqvVC8PgqDLP-5fOvYXctaG9uW8Un8tTlxtxAHgzzIF7gQcS981FM4odeHI0e7PhAftH16SyqtkEKY",
               });
             console.log(subscription, "Subscription");
 

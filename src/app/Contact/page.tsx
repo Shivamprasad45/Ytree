@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, Mail, Phone } from "lucide-react";
 import MaxWidthRappers from "@/components/MaxWidthRapper";
+import Head from "next/head";
 
 // Mocking the Save_cot_user function
 const Save_cot_user = async ({
@@ -22,9 +23,8 @@ const Save_cot_user = async ({
   name: string;
   message: string;
 }) => {
-  // Simulating an API call
   await new Promise((resolve) => setTimeout(resolve, 1000));
-  return null; // Simulating successful save
+  return null;
 };
 
 export default function ContactPage() {
@@ -49,7 +49,7 @@ export default function ContactPage() {
         toast.error(String(err));
       } else {
         toast.success("Message sent successfully!");
-        setFormStep(1); // Move to thank you step
+        setFormStep(1);
       }
     } catch (error) {
       toast.error("An error occurred. Please try again.");
@@ -69,17 +69,44 @@ export default function ContactPage() {
 
   return (
     <MaxWidthRappers>
-      <div className="min-h-screen max-w-4xl m-auto  bg-gradient-to-br from-blue-100 to-purple-100 flex flex-col">
+      <Head>
+        {/* Open Graph Meta Tags */}
+        <meta property="og:title" content="Contact Us - Ytree" />
+        <meta
+          property="og:description"
+          content="Get in touch with us for any queries or support. We are here to help you."
+        />
+        <meta
+          property="og:image"
+          content="https://yourwebsite.com/contact-us-image.jpg"
+        />
+        <meta property="og:url" content="https://yourwebsite.com/contact" />
+        <meta property="og:type" content="website" />
+
+        {/* Twitter Card Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Contact Us - Ytree" />
+        <meta
+          name="twitter:description"
+          content="Get in touch with us for any queries or support. We are here to help you."
+        />
+        <meta
+          name="twitter:image"
+          content="https://yourwebsite.com/contact-us-image.jpg"
+        />
+      </Head>
+
+      <div className="min-h-screen max-w-4xl m-auto bg-gradient-to-br from-background to-muted flex flex-col">
         <motion.header
-          className="p-6 bg-white shadow-md"
+          className="p-6 bg-card shadow-md"
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
           <div className="container mx-auto">
-            <h1 className="text-4xl font-bold text-blue-600">Get in Touch</h1>
-            <p className="mt-2 text-lg text-gray-600">
-              We have here to help and answer any question you might have
+            <h1 className="text-4xl font-bold text-primary">Get in Touch</h1>
+            <p className="mt-2 text-lg text-muted-foreground">
+              We are here to help and answer any question you might have
             </p>
           </div>
         </motion.header>
@@ -87,13 +114,13 @@ export default function ContactPage() {
         <main className="container mx-auto p-6 flex-grow flex items-center justify-center">
           <div className="w-full max-w-4xl">
             <motion.div
-              className="bg-white rounded-xl shadow-2xl overflow-hidden"
+              className="bg-card rounded-xl shadow-2xl overflow-hidden"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
             >
               <div className="flex flex-col md:flex-row">
-                <div className="md:w-1/2 bg-blue-600 p-8 text-white">
+                <div className="md:w-1/2 bg-primary p-8 text-primary-foreground">
                   <motion.h2
                     className="text-3xl font-bold mb-6"
                     initial={{ opacity: 0, y: 20 }}
@@ -208,7 +235,7 @@ export default function ContactPage() {
                         >
                           <Button
                             type="submit"
-                            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                            className="w-full"
                             disabled={isSubmitting}
                           >
                             {isSubmitting ? "Sending..." : "Send Message"}
@@ -223,17 +250,14 @@ export default function ContactPage() {
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.5 }}
                       >
-                        <h2 className="text-3xl font-bold text-green-600 mb-4">
+                        <h2 className="text-3xl font-bold text-primary mb-4">
                           Thank You!
                         </h2>
-                        <p className="text-lg text-gray-600 mb-8">
+                        <p className="text-lg text-muted-foreground mb-8">
                           We have received your message and will get back to you
                           soon.
                         </p>
-                        <Button
-                          onClick={() => setFormStep(0)}
-                          className="bg-blue-600 hover:bg-blue-700 text-white"
-                        >
+                        <Button onClick={() => setFormStep(0)}>
                           Send Another Message
                         </Button>
                       </motion.div>
@@ -251,7 +275,7 @@ export default function ContactPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          <h2 className="text-3xl font-bold mb-6 text-center text-blue-600">
+          <h2 className="text-3xl font-bold mb-6 text-center text-primary">
             Our Location
           </h2>
           <Card>
@@ -266,7 +290,7 @@ export default function ContactPage() {
                 />
               </div>
               <div className="p-6">
-                <p className="text-lg leading-7 text-gray-600 text-center">
+                <p className="text-lg leading-7 text-muted-foreground text-center">
                   Visit us at our main office located in the heart of the city.
                   We are easily accessible and always ready to welcome you.
                 </p>

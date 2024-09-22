@@ -46,7 +46,6 @@ const Page = async ({ params }: { params: { id: string } }) => {
     `${process.env.URL}/api/Tree/TreeDetails?id=${params.id}`
   );
   const PlantDetails = await response.json();
-
   return <Tree_details PlantDetails={PlantDetails} />;
 };
 

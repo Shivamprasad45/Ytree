@@ -28,6 +28,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: "/About",
       lastModified: new Date().toISOString(),
     },
+
+    {
+      url: "/login",
+      lastModified: new Date().toISOString(),
+    },
+    {
+      url: "/Signup",
+      lastModified: new Date().toISOString(),
+    },
+    {
+      url: "/Tree/Global",
+      lastModified: new Date().toISOString(),
+    },
+    {
+      url: "/Tree/Shop",
+      lastModified: new Date().toISOString(),
+    },
+    {
+      url: "/Tree/Mytree",
+      lastModified: new Date().toISOString(),
+    },
     ...All_Tree_Details,
   ];
 }
