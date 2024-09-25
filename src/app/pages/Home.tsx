@@ -46,6 +46,10 @@ const Homes = () => {
           content="Buy plants and grow your green space with Vanagrow. Quality plants and easy delivery."
         />
         <meta
+          name="google-site-verification"
+          content="OgN_kU5t5T7McvmUMQ_H1Vp_VWcUc-2UiqB0JStigKM"
+        />
+        <meta
           name="keywords"
           content="plants, buy plants, online plant shop, garden"
         />
