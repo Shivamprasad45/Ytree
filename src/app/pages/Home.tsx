@@ -20,6 +20,7 @@ import { useGetTreeInfoQuery } from "../Featuers/Tree/TreeServices";
 import Loading from "../Loading/Loading";
 import Image from "next/image";
 import { Droplets, ShoppingBag, Sun, Wind } from "lucide-react";
+import Head from "next/head";
 
 const Homes = () => {
   const { data: feature, isLoading, isError } = useGetTreeInfoQuery();
@@ -38,6 +39,22 @@ const Homes = () => {
 
   return (
     <>
+      <Head>
+        <title>Vanagrow - Grow Your Green Space</title>
+        <meta
+          name="description"
+          content="Buy plants and grow your green space with Vanagrow. Quality plants and easy delivery."
+        />
+        <meta
+          name="keywords"
+          content="plants, buy plants, online plant shop, garden"
+        />
+        <meta property="og:title" content="Vanagrow - Plant Shop" />
+        <meta
+          property="og:description"
+          content="Discover a variety of plants at Vanagrow and get them delivered to your home."
+        />
+      </Head>
       <MaxWidthRappers className="xl:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md  mx-auto       ">
         <header className=" p-4  ">
           <section
