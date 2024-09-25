@@ -16,26 +16,26 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ytree.vercel.app/"),
+  metadataBase: new URL("https://vanagrow.com/"),
   title: {
-    default: "Yplant - Y trees now you can buy",
-    template: "%s | Y trees now you can buy",
+    default: "vanagrow -  trees now you can buy",
+    template: "%s | vanagrow  now you can buy",
   },
   description: "A site to buy Plants",
   openGraph: {
     title: "Yplants ",
     description: "A site to buy Plants",
-    url: "https://ytree.vercel.app/",
+    url: "https://vanagrow.com/",
 
     type: "website",
     images: [
       {
-        url: "https://yplants.com/logo.png",
+        url: "https://vanagrow.com/",
         width: 1200,
         height: 630,
       },
     ],
-    siteName: "Yplants",
+    siteName: "vanagrow",
     locale: "en_US",
   },
 };

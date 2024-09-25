@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: "/payment",
     },
-    sitemap: `https://ytree.vercel.app/sitemap.xml`,
+    sitemap: `https://vanagrow.com/sitemap.xml`,
   };
 }
