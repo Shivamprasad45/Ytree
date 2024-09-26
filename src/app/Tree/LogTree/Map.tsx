@@ -30,7 +30,7 @@ const Map: React.FC = () => {
   const dispatch = useDispatch();
   const [currentLocation, setCurrentLocation] = useState<
     [number, number] | null
-  >(null);
+  >([23, 45]);
   const [currentLocationInfo, setCurrentLocationInfo] = useState<string>("");
 
   const handleMapClick = () => {

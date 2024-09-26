@@ -32,9 +32,13 @@ export function middleware(request: NextRequest) {
     path === "/login" || path === "/Signup" || path === "/Auth/Verify-succes";
 
   const token = request.cookies.get("authjs.session-token")?.value || "";
-
-  if (!ispublic && !token) {
-    return NextResponse.redirect(new URL("/Signup", request.url));
+  console.log(token, "authjs.session-token");
+  // if (!ispublic && !token) {
+  //   return NextResponse.redirect(new URL("/Signup", request.url));
+  // }
+  console.log("ok");
+  if (ispublic && token) {
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   // Allow the request to proceed for public paths
@@ -43,5 +47,5 @@ export function middleware(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/login", "/Signup", "/Auth/Verify-succes"],
+  matcher: ["/login", "/Signup", "/Auth/Verify-succes", "/"],
 };

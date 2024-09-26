@@ -79,4 +79,14 @@ const Save_cot_user = async ({ email, name, message }: ContactFormData) => {
     return someError.cause;
   }
 };
-export { regester, login, Save_cot_user };
+
+const Google_user = async () => {
+  try {
+    await DbConnect();
+    await signIn("google");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { regester, login, Save_cot_user, Google_user };

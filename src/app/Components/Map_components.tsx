@@ -18,6 +18,8 @@ import {
 } from "../Featuers/Global/GlobeServices";
 import { Coordinate, All_Users } from "../../../type";
 import WinnerAnnouncement from "./Winner";
+import { toast } from "sonner";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 // Create icon function
 const createIcon = (iconUrl: string) =>
@@ -87,6 +89,11 @@ function MapUpdater({
   return null;
 }
 
+const MapViewUpdater = ({ coords }: { coords: [number, number] }) => {
+  const map = useMap();
+  map.setView(coords, 30);
+  return null;
+};
 export default function EnhancedMapComponent() {
   const { data: session } = useSession();
   const [coords, setCoords] = useState<Coordinate[]>([]);
@@ -99,6 +106,23 @@ export default function EnhancedMapComponent() {
 
   const [getAllCoords] = useGetALL_coordsMutation();
   const [getAllUsers] = useGetAll_usersMutation();
+  const [currentLocation, setCurrentLocation] = useState<Coordinate[] | null>(
+    null
+  );
+  const [userTreecurrentLocation, setUserTreeCurrentLocation] = useState<
+    [number, number] | null
+  >(null);
+
+  // /Useffect the current location
+
+  const UserTree = ({ long, late }: { long: number; late: number }) => {
+    if (session && long && late) {
+      // Set the state as an array [long, late]
+
+      console.log(long, late, "set  HOME");
+      setUserTreeCurrentLocation([long, late]);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -138,7 +162,21 @@ export default function EnhancedMapComponent() {
     fetchData();
   }, [getAllCoords, getAllUsers]);
   // Animations
+  useEffect(() => {
+    console.log(coords, "current");
+    if (session) {
+      const User_Tree_coords = coords.filter(
+        (user) => user.UserId === session?.user.id
+      );
 
+      if (User_Tree_coords) {
+        setCurrentLocation(User_Tree_coords);
+      } else {
+        toast.warning("Please plant a tree");
+      }
+      console.log(User_Tree_coords, "selected");
+    }
+  }, [coords]);
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-[500px]">
@@ -189,23 +227,59 @@ export default function EnhancedMapComponent() {
                   session={session}
                   winner={winner}
                 />
+                <MapViewUpdater
+                  coords={[
+                    userTreecurrentLocation
+                      ? userTreecurrentLocation[1]
+                      : 26.0204409,
+                    userTreecurrentLocation
+                      ? userTreecurrentLocation[0]
+                      : 83.9037192,
+                  ]}
+                />
               </MapContainer>
             </CardContent>
           </Card>
-          <div className="mt-4 flex justify-around">
-            <Button variant="outline" className="flex items-center gap-2">
-              <img src={"/Map_icon/your.png"} width={20} height={10} />
-              <span>Your Trees</span>
-            </Button>
-            <Button variant="outline" className="flex items-center gap-2">
-              <img src={"/Map_icon/Alltree.webp"} width={20} height={10} />
-              <span>Winner Trees</span>
-            </Button>
-            <Button variant="outline" className="flex items-center gap-2">
-              <img src={"/Map_icon/winner.webp"} width={20} height={10} />
-              <span>Other Trees</span>
-            </Button>
-          </div>
+          <ScrollArea className="w-full whitespace-nowrap rounded-md border">
+            <div className="flex space-x-4 p-4">
+              {currentLocation?.map((item) => (
+                <Button
+                  key={item.UserId}
+                  variant="outline"
+                  className="flex-shrink-0 items-center gap-2"
+                  onClick={() => UserTree({ late: item.late, long: item.long })}
+                >
+                  <img src="/Map_icon/your.png" width={20} height={10} alt="" />
+                  <span>{item.commonName}</span>
+                </Button>
+              ))}
+              <Button
+                variant="outline"
+                className="flex-shrink-0 items-center gap-2"
+              >
+                <img
+                  src="/Map_icon/Alltree.webp"
+                  width={20}
+                  height={10}
+                  alt=""
+                />
+                <span>Winner Trees</span>
+              </Button>
+              <Button
+                variant="outline"
+                className="flex-shrink-0 items-center gap-2"
+              >
+                <img
+                  src="/Map_icon/winner.webp"
+                  width={20}
+                  height={10}
+                  alt=""
+                />
+                <span>Other Trees</span>
+              </Button>
+            </div>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
         </TabsContent>
         <TabsContent value="leaderboard" className="mt-4">
           <Card>

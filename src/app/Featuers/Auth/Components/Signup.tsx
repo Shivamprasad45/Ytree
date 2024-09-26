@@ -1,11 +1,13 @@
 "use client";
 
-import { regester } from "@/action/action";
+import { Google_user, regester } from "@/action/action";
+
 import MaxWidthRappers from "@/components/MaxWidthRapper";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
@@ -14,6 +16,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 export default function Register() {
+  console.log(process.env.URL!, "URL");
   const router = useRouter();
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(false);
@@ -42,16 +45,16 @@ export default function Register() {
   return (
     <>
       <Head>
-        <title>Register | Yplant</title>
+        <title>Register | vanagrow</title>
         <meta
           name="description"
           content="Create your Yplant account to access personalized features and content."
         />
         <meta
           name="keywords"
-          content="register, sign up, create account, Yplant"
+          content="register, sign up, create account, vanagrow"
         />
-        <meta property="og:title" content="Register | Yplant" />
+        <meta property="og:title" content="Register | vanagrow" />
         <meta
           property="og:description"
           content="Create your Yplant account to access personalized features and content."
@@ -65,7 +68,7 @@ export default function Register() {
           <div className="w-full max-w-md space-y-8">
             <div>
               <h1 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-                Create your Yplant account
+                Create your vanagrow account
               </h1>
               <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
                 Please provide all the necessary information
@@ -151,10 +154,12 @@ export default function Register() {
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-3">
-                <Button variant="outline" className="w-full">
-                  {/* <FaGoogle className="mr-2 h-4 w-4" /> */}
-                  Google
-                </Button>
+                <form action={Google_user}>
+                  <Button variant="outline" className="w-full">
+                    {/* <FaGoogle className="mr-2 h-4 w-4" /> */}
+                    Google
+                  </Button>
+                </form>
                 <Button variant="outline" className="w-full">
                   {/* <FaFacebook className="mr-2 h-4 w-4" /> */}
                   Facebook

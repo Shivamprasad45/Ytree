@@ -102,6 +102,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         try {
           const { email, name, image, id } = user;
           await DbConnect();
+          console.log(email, name, image, "Account", account);
           const alreadyUser = await User.findOne({ email });
 
           if (!alreadyUser) {
