@@ -1,13 +1,24 @@
 "use client";
 
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, Star } from "lucide-react";
+import { Heart, Search, Star } from "lucide-react";
 import { useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Pagination } from "@/components/ui/pagination";
 
 import Loading from "@/app/Loading/Loading";
 import { UserSelector } from "../../Auth/AuthSlice";
@@ -21,6 +32,12 @@ const fetchTreeInfo = async () => {
 
 export default function Shop() {
   const user = useSelector(UserSelector);
+  const [search, setSearch] = useState("");
+  const [priceRange, setPriceRange] = useState([0, 500]);
+  const [sortBy, setSortBy] = useState("price-asc");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 8;
+
   const {
     data: feature,
     isLoading,
@@ -46,12 +63,74 @@ export default function Shop() {
     );
   }
 
+  const filteredAndSortedTrees = feature
+    .filter(
+      (tree: TreeInfo) =>
+        tree.commonName.toLowerCase().includes(search.toLowerCase()) &&
+        tree.price >= priceRange[0] &&
+        tree.price <= priceRange[1]
+    )
+    .sort((a: TreeInfo, b: TreeInfo) => {
+      if (sortBy === "price-asc") return a.price - b.price;
+      if (sortBy === "price-desc") return b.price - a.price;
+      if (sortBy === "name-asc")
+        return a.commonName.localeCompare(b.commonName);
+      if (sortBy === "name-desc")
+        return b.commonName.localeCompare(a.commonName);
+      return 0;
+    });
+
+  const totalPages = Math.ceil(filteredAndSortedTrees.length / itemsPerPage);
+  const paginatedTrees = filteredAndSortedTrees.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
     <MaxWidthRappers>
-      <div className="py-8 px-4 sm:px-6 lg:px-8 m-auto  max-w-6xl">
+      <div className="py-8 px-4 sm:px-6 lg:px-8 m-auto max-w-6xl">
         <h1 className="text-3xl font-bold mb-6 text-center">Shop Trees</h1>
+
+        <div className="mb-6 flex flex-col sm:flex-row gap-4">
+          <div className="flex-1">
+            <Input
+              type="text"
+              placeholder="Search trees..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full"
+            />
+          </div>
+          <div className="flex-1">
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger>
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="price-asc">Price: Low to High</SelectItem>
+                <SelectItem value="price-desc">Price: High to Low</SelectItem>
+                <SelectItem value="name-asc">Name: A to Z</SelectItem>
+                <SelectItem value="name-desc">Name: Z to A</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-sm font-medium mb-2">
+            Price Range: ${priceRange[0]} - ${priceRange[1]}
+          </label>
+          <Slider
+            min={0}
+            max={500}
+            step={10}
+            value={priceRange}
+            onValueChange={setPriceRange}
+          />
+        </div>
+
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          {feature.map((product: TreeInfo) => (
+          {paginatedTrees.map((product: TreeInfo) => (
             <Card
               key={product._id}
               className="overflow-hidden hover:shadow-lg transition-shadow duration-300"
@@ -114,6 +193,14 @@ export default function Shop() {
             </Card>
           ))}
         </div>
+
+        {/* <div className="mt-8 flex justify-center   mb-32">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </div> */}
       </div>
     </MaxWidthRappers>
   );

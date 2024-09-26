@@ -1,11 +1,9 @@
 "use client";
+
 import MaxWidthRappers from "@/components/MaxWidthRapper";
 import React, { useEffect, useState } from "react";
-
 import { Button } from "@/components/ui/button";
-
 import { TreeInfo } from "../../../type";
-
 import {
   Accordion,
   AccordionContent,
@@ -13,14 +11,13 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import Link from "next/link";
-
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useGetTreeInfoQuery } from "../Featuers/Tree/TreeServices";
-
 import Loading from "../Loading/Loading";
 import Image from "next/image";
 import { Droplets, ShoppingBag, Sun, Wind } from "lucide-react";
 import Head from "next/head";
+import { motion } from "framer-motion";
 
 const Homes = () => {
   const { data: feature, isLoading, isError } = useGetTreeInfoQuery();
@@ -59,18 +56,27 @@ const Homes = () => {
           content="Discover a variety of plants at Vanagrow and get them delivered to your home."
         />
       </Head>
-      <MaxWidthRappers className="xl:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md  mx-auto       ">
-        <header className=" p-4  ">
-          <section
-            className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-cover bg-center"
+      <MaxWidthRappers className="xl:max-w-screen-lg sm:max-w-screen-sm md:max-w-screen-md mx-auto">
+        <header className="p-4">
+          <motion.section
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+            className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-cover bg-center relative overflow-hidden"
             style={{
               backgroundImage:
                 'url("https://i.ibb.co/gRj1LQq/Firefly-Beautiful-cozy-fantasy-stone-cottage-in-a-spring-forest-aside-a-cobblestone-path-and-a-babbl.jpg")',
             }}
           >
-            <div className="container px-4 md:px-6">
+            <div className="absolute inset-0 bg-black bg-opacity-50" />
+            <div className="container px-4 md:px-6 relative z-10">
               <div className="flex flex-col items-center space-y-4 text-center text-white">
-                <div className="space-y-2">
+                <motion.div
+                  initial={{ y: 50, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.2, duration: 0.8 }}
+                  className="space-y-2"
+                >
                   <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
                     Grow Your Own Forest
                   </h1>
@@ -78,176 +84,215 @@ const Homes = () => {
                     Transform your landscape with our wide selection of
                     high-quality trees.
                   </p>
-                </div>
-                <div className="space-x-4">
+                </motion.div>
+                <motion.div
+                  initial={{ y: 50, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.4, duration: 0.8 }}
+                  className="space-x-4"
+                >
                   <Button className="bg-green-600 hover:bg-green-700 text-white">
-                    Shop Now
+                    <Link href={"/Tree/Shop"}>Shop Now</Link>
                   </Button>
                   <Button
-                    variant="link"
-                    className=" border-white hover:bg-white hover:text-green-800"
+                    variant="outline"
+                    className=" border-white  text-black hover:text-white hover:bg-green-800 "
                   >
                     Learn More
                   </Button>
-                </div>
+                </motion.div>
               </div>
             </div>
-          </section>
-
-          {/* //Why trees */}
+          </motion.section>
 
           <section className="my-10 md:my-14">
-            <div className="items-start flex flex-col text-start">
+            <motion.div
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              className="items-start flex flex-col text-start"
+            >
               <h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-4xl">
-                Why plants trees?
+                Why plant trees?
               </h1>
-            </div>
-            <div className="w-full items-center flex  justify-center my-4">
-              <ScrollArea className="w-full md:w-[70vw] whitespace-nowrap rounded-md ">
+            </motion.div>
+            <div className="w-full items-center flex justify-center my-4">
+              <ScrollArea className="w-full md:w-[70vw] whitespace-nowrap rounded-md">
                 <div className="flex w-max space-x-4 p-4">
                   {feature &&
-                    feature.map((artwork: TreeInfo) => (
-                      <div
+                    feature.map((artwork: TreeInfo, index: number) => (
+                      <motion.div
                         key={artwork._id}
-                        className="Depth7Frame0 w-56 h-60 flex-col justify-start items-start gap-3 inline-flex"
+                        initial={{ opacity: 0, x: 50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1, duration: 0.5 }}
+                        className="w-56 h-60 flex-col justify-start items-start gap-3 inline-flex"
                       >
                         <Link href={`/TreeDetiles/${artwork._id}`}>
-                          <div className="Depth8Frame0 h-32 flex-col justify-start items-start flex">
+                          <div className="h-32 flex-col justify-start items-start flex">
                             <Image
                               height={200}
                               width={400}
-                              className="w-56 h-32 relative rounded-xl"
-                              src="https://via.placeholder.com/223x125"
-                              alt="img "
+                              className="w-56 h-32 relative rounded-xl object-cover"
+                              src={"https://via.placeholder.com/223x125"}
+                              alt={artwork.commonName}
                             />
                           </div>
-                          <div className="Depth8Frame1 w-56 h-24 pb-3 flex-col justify-start items-start flex">
-                            <div className="Depth9Frame0 w-56 h-6 flex-col justify-start items-start flex">
-                              <div className="CoolTheEarth self-stretch text-neutral-900 text-base font-medium font-['Plus Jakarta Sans'] leading-normal">
+                          <div className="w-56 h-24 pb-3 flex-col justify-start items-start flex">
+                            <div className="w-56 h-6 flex-col justify-start items-start flex">
+                              <div className="self-stretch text-neutral-900 text-base font-medium leading-normal">
                                 {artwork.commonName}
                               </div>
                             </div>
-                            <div className="Depth9Frame1 w-56 relative h-16 flex-col justify-start items-start flex">
-                              <div className="Tr self-stretch text-wrap   text-neutral-500 text-sm font-normal font-['Plus Jakarta Sans'] leading-tight">
-                                {artwork.description.slice(0, 120)}
+                            <div className="w-56 relative h-16 flex-col justify-start items-start flex">
+                              <div className="self-stretch text-wrap text-neutral-500 text-sm font-normal leading-tight">
+                                {artwork.description.slice(0, 120)}...
                               </div>
                             </div>
                           </div>
                         </Link>
-                      </div>
+                      </motion.div>
                     ))}
                 </div>
                 <ScrollBar orientation="horizontal" />
               </ScrollArea>
             </div>
           </section>
-          {/* //Feature tree */}
+
           <section className="my-10 md:my-14">
-            <div className="items-start flex flex-col text-start">
+            <motion.div
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              className="items-start flex flex-col text-start"
+            >
               <h1 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-                Features trees
+                Featured trees
               </h1>
-            </div>
-            <div className="w-full items-center flex  justify-center my-4">
-              <ScrollArea className="w-full md:w-[70vw] whitespace-nowrap rounded-md ">
+            </motion.div>
+            <div className="w-full items-center flex justify-center my-4">
+              <ScrollArea className="w-full md:w-[70vw] whitespace-nowrap rounded-md">
                 <div className="flex w-max space-x-4 p-4">
                   {feature &&
-                    feature.map((artwork: TreeInfo) => (
-                      <div
+                    feature.map((artwork: TreeInfo, index: number) => (
+                      <motion.div
                         key={artwork._id}
-                        className="Depth5Frame3 w-56 h-48 flex-col justify-start items-start gap-3 inline-flex"
+                        initial={{ opacity: 0, x: 50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1, duration: 0.5 }}
+                        className="w-56 h-48 flex-col justify-start items-start gap-3 inline-flex"
                       >
                         <Link href={`/TreeDetiles/${artwork._id}`}>
-                          <div className="Depth6Frame0 w-56 h-32 flex-col justify-start items-start flex">
+                          <div className="w-56 h-32 flex-col justify-start items-start flex">
                             <Image
                               height={200}
                               width={400}
-                              className="w-56 h-32 relative rounded-xl"
-                              src="https://via.placeholder.com/223x125"
-                              alt="img "
+                              className="w-56 h-32 relative rounded-xl object-cover"
+                              src={"https://via.placeholder.com/223x125"}
+                              alt={artwork.commonName}
                             />
                           </div>
-                          <div className="Depth6Frame1 w-56 h-14 pb-3 flex-col justify-start items-start flex">
-                            <div className="Depth7Frame0 w-56 h-6 flex-col justify-start items-start flex">
-                              <div className="WhiteDogwood self-stretch text-neutral-900 text-base font-medium font-['Plus Jakarta Sans'] leading-normal">
+                          <div className="w-56 h-14 pb-3 flex-col justify-start items-start flex">
+                            <div className="w-56 h-6 flex-col justify-start items-start flex">
+                              <div className="self-stretch text-neutral-900 text-base font-medium leading-normal">
                                 {artwork.commonName}
                               </div>
                             </div>
-                            <div className="Depth7Frame1 w-56 h-5 flex-col justify-start items-start flex">
-                              <div className="15 self-stretch text-neutral-500 text-sm font-normal font-['Plus Jakarta Sans'] leading-tight">
+                            <div className="w-56 h-5 flex-col justify-start items-start flex">
+                              <div className="self-stretch text-neutral-500 text-sm font-normal leading-tight">
                                 ${artwork.price}
                               </div>
                             </div>
                           </div>
                         </Link>
-                      </div>
+                      </motion.div>
                     ))}
                 </div>
                 <ScrollBar orientation="horizontal" />
               </ScrollArea>
             </div>
-            {/* //Ready to make diff */}
-            <div className="px-10 py-20 flex flex-col justify-center items-center gap-8">
+
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="px-10 py-20 flex flex-col justify-center items-center gap-8 bg-background   rounded-lg shadow-inner"
+            >
               <div className="text-center">
-                <h1 className="text-4xl font-extrabold  font-['Plus Jakarta Sans'] leading-10">
+                <h1 className="text-4xl font-extrabold font-['Plus Jakarta Sans'] leading-10 text-green-800">
                   Ready to make a difference?
                 </h1>
               </div>
               <div className="w-full flex justify-center">
-                <Button className="">
-                  <Link href="/Tree/Shop">Shop plant</Link>
+                <Button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg">
+                  <Link href="/Tree/Shop">Shop Plants</Link>
                 </Button>
               </div>
-            </div>
-            <section className="w-full py-12 md:py-24 lg:py-32 bg-white">
+            </motion.div>
+
+            <motion.section
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="w-full py-12 md:py-24 lg:py-32 bg-background"
+            >
               <div className="container px-4 md:px-6">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8">
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8 text-green-800">
                   Benefits of Planting Trees
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-                  <div className="flex flex-col items-center text-center">
-                    <Wind className="h-12 w-12 mb-4 text-green-600" />
-                    <h3 className="text-xl font-bold mb-2">
-                      Improve Air Quality
-                    </h3>
-                    <p className="text-gray-500">
-                      Trees absorb pollutants and release clean oxygen into the
-                      atmosphere.
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-center text-center">
-                    <Droplets className="h-12 w-12 mb-4 text-green-600" />
-                    <h3 className="text-xl font-bold mb-2">Conserve Water</h3>
-                    <p className="text-gray-500">
-                      Trees reduce runoff by breaking rainfall and allowing
-                      water absorption.
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-center text-center">
-                    <Sun className="h-12 w-12 mb-4 text-green-600" />
-                    <h3 className="text-xl font-bold mb-2">Energy Savings</h3>
-                    <p className="text-gray-500">
-                      Strategically placed trees can cut your cooling costs
-                      significantly.
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-center text-center">
-                    <ShoppingBag className="h-12 w-12 mb-4 text-green-600" />
-                    <h3 className="text-xl font-bold mb-2">
-                      Increase Property Value
-                    </h3>
-                    <p className="text-gray-500">
-                      Well-maintained trees can add up to 15% to your property
-                      value.
-                    </p>
-                  </div>
+                  {[
+                    {
+                      icon: Wind,
+                      title: "Improve Air Quality",
+                      description:
+                        "Trees absorb pollutants and release clean oxygen into the atmosphere.",
+                    },
+                    {
+                      icon: Droplets,
+                      title: "Conserve Water",
+                      description:
+                        "Trees reduce runoff by breaking rainfall and allowing water absorption.",
+                    },
+                    {
+                      icon: Sun,
+                      title: "Energy Savings",
+                      description:
+                        "Strategically placed trees can cut your cooling costs significantly.",
+                    },
+                    {
+                      icon: ShoppingBag,
+                      title: "Increase Property Value",
+                      description:
+                        "Well-maintained trees can add up to 15% to your property value.",
+                    },
+                  ].map((item, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 50 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1, duration: 0.5 }}
+                      className="flex flex-col items-center text-center"
+                    >
+                      <item.icon className="h-12 w-12 mb-4 text-green-600" />
+                      <h3 className="text-xl font-bold mb-2 text-green-800">
+                        {item.title}
+                      </h3>
+                      <p className="text-gray-600">{item.description}</p>
+                    </motion.div>
+                  ))}
                 </div>
               </div>
-            </section>
-            {/* //Why chose green feature */}
-            <div className="flex flex-col">
-              <div className="">
-                <span className="scroll-m-20 text-2xl font-semibold tracking-tight">
+            </motion.section>
+
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="flex flex-col bg-background p-8 rounded-lg shadow-lg"
+            >
+              <div className="mb-6">
+                <span className="scroll-m-20 text-2xl font-semibold tracking-tight text-green-800">
                   Why choose GreenFuture?
                 </span>
               </div>
@@ -283,7 +328,7 @@ const Homes = () => {
                   </AccordionItem>
                 </Accordion>
               </div>
-            </div>
+            </motion.div>
           </section>
         </header>
       </MaxWidthRappers>
