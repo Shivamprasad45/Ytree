@@ -1,6 +1,6 @@
 "use client";
 
-import { login } from "@/action/action";
+import { Google_user, login } from "@/action/action";
 import MaxWidthRappers from "@/components/MaxWidthRapper";
 
 import { Button } from "@/components/ui/button";
@@ -128,10 +128,12 @@ export default function Login() {
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-3">
-                <Button variant="outline" className="w-full">
-                  <Instagram />
-                  Google
-                </Button>
+                <form action={Google_user}>
+                  <Button variant="outline" className="w-full">
+                    Google
+                  </Button>
+                </form>
+
                 <Button variant="outline" className="w-full">
                   <Facebook />
                   Facebook

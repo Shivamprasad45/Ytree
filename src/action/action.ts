@@ -83,7 +83,8 @@ const Save_cot_user = async ({ email, name, message }: ContactFormData) => {
 const Google_user = async () => {
   try {
     await DbConnect();
-    await signIn("google");
+
+    await signIn("google", { redirectTo: "/" });
   } catch (error) {
     console.log(error);
   }

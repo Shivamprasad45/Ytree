@@ -17,6 +17,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+
+      authorization: {
+        params: {
+          prompt: "consent",
+          access: "offline",
+          response_type: "code",
+        },
+      },
     }),
 
     Credentials({
