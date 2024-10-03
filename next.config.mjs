@@ -42,6 +42,7 @@ const nextConfig = {
       "i.postimg.cc",
       "cdn.tuk.dev",
       "i.ibb.co",
+      'picsum.photos'
     ],
   },
   experimental: {

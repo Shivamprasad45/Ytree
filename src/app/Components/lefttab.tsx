@@ -9,7 +9,7 @@ import {
   TreesIcon,
   UserX2Icon,
 } from "lucide-react";
-import Image from "next/image";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -52,6 +52,7 @@ export const menuItems = [
 export default function Lefttab() {
   const dispatch = useDispatch();
   const { data: session, status } = useSession();
+
   const user = useSelector(UserSelector);
   const route = usePathname();
 
@@ -77,13 +78,13 @@ export default function Lefttab() {
         {user?.Username ? (
           <div className="flex items-center space-x-4">
             <Avatar className="w-10 h-10">
-              <AvatarImage
-                src={session?.user.image || "/wave.png"}
-                alt="Profile picture"
-              />
-              <AvatarFallback>
-                {user.Username.slice(0, 2).toUpperCase()}
-              </AvatarFallback>
+              {session?.user.image ? (
+                <AvatarImage src={session?.user.image} alt="Profile picture" />
+              ) : (
+                <AvatarFallback>
+                  {user.Username.slice(0, 2).toUpperCase()}
+                </AvatarFallback>
+              )}
             </Avatar>
             <div className="space-y-1">
               <h2 className="text-sm font-semibold">

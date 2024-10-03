@@ -1,6 +1,6 @@
 "use client";
 
-import { Google_user, regester } from "@/action/action";
+import { regester } from "@/action/action";
 
 import MaxWidthRappers from "@/components/MaxWidthRapper";
 
@@ -8,13 +8,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
+const Google_user = async () => {
+  console.log("ok");
+  try {
+    await signIn("google", { callbackUrl: "/" });
+  } catch (error) {
+    console.error("Error during Google sign-in", error);
+  }
+};
 export default function Register() {
   console.log(process.env.URL!, "URL");
   const router = useRouter();
@@ -154,15 +162,13 @@ export default function Register() {
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-3">
-                <form action={Google_user}>
-                  <Button variant="outline" className="w-full">
-                    {/* <FaGoogle className="mr-2 h-4 w-4" /> */}
-                    Google
-                  </Button>
-                </form>
-                <Button variant="outline" className="w-full">
-                  {/* <FaFacebook className="mr-2 h-4 w-4" /> */}
-                  Facebook
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={Google_user}
+                >
+                  {/* <FaGoogle className="mr-2 h-4 w-4" /> */}
+                  Google
                 </Button>
               </div>
             </div>

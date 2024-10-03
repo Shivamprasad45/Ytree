@@ -1,18 +1,28 @@
 "use client";
 
-import { Google_user, login } from "@/action/action";
-import MaxWidthRappers from "@/components/MaxWidthRapper";
+import { login } from "@/action/action";
 
+import MaxWidthRappers from "@/components/MaxWidthRapper";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Facebook, Instagram } from "lucide-react";
+import { signIn } from "next-auth/react";
+import { Facebook } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+
+const Google_user = async () => {
+  console.log("ok");
+  try {
+    await signIn("google", { callbackUrl: "/" });
+  } catch (error) {
+    console.error("Error during Google sign-in", error);
+  }
+};
 
 export default function Login() {
   const { data: session } = useSession();
@@ -23,7 +33,9 @@ export default function Login() {
     router.push("/");
   }
 
-  async function handleSubmit(formData: FormData) {
+  async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget as HTMLFormElement);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
@@ -76,7 +88,7 @@ export default function Login() {
                 Sign in to your account
               </h2>
             </div>
-            <form className="mt-8 space-y-6" action={handleSubmit}>
+            <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
               <div className="rounded-md shadow-sm -space-y-px">
                 <div>
                   <Label htmlFor="email" className="sr-only">
@@ -128,11 +140,13 @@ export default function Login() {
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-3">
-                <form action={Google_user}>
-                  <Button variant="outline" className="w-full">
-                    Google
-                  </Button>
-                </form>
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={Google_user}
+                >
+                  Google
+                </Button>
 
                 <Button variant="outline" className="w-full">
                   <Facebook />
@@ -142,7 +156,7 @@ export default function Login() {
             </div>
 
             <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-              Don not have an account?{" "}
+              Don’t have an account?{" "}
               <Link
                 href="/Signup"
                 className="font-medium text-primary hover:text-primary-dark"

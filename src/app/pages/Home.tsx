@@ -134,7 +134,9 @@ const Homes = () => {
                               height={200}
                               width={400}
                               className="w-56 h-32 relative rounded-xl object-cover"
-                              src={"https://via.placeholder.com/223x125"}
+                              src={`https://picsum.photos/id/${
+                                index + 300
+                              }/200/300`}
                               alt={artwork.commonName}
                             />
                           </div>
@@ -188,7 +190,9 @@ const Homes = () => {
                               height={200}
                               width={400}
                               className="w-56 h-32 relative rounded-xl object-cover"
-                              src={"https://via.placeholder.com/223x125"}
+                              src={`https://picsum.photos/id/${
+                                index + 500
+                              }/200/300`}
                               alt={artwork.commonName}
                             />
                           </div>

@@ -2,7 +2,6 @@ import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Github from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
-
 import { compare } from "bcryptjs";
 import DbConnect from "./Utils/mongooesConnect";
 import { User } from "./Models/SignupModel";
@@ -17,7 +16,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-
       authorization: {
         params: {
           prompt: "consent",
@@ -49,14 +47,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           if (!user || !user.password) {
             throw new CredentialsSignin({
-              cause: "User not exist",
+              cause: "User not found.",
             });
           }
 
           const isMatched = await compare(password, user.password);
 
           if (!isMatched) {
-            throw new CredentialsSignin({ cause: "Wrong password" });
+            throw new CredentialsSignin({ cause: "Incorrect password." });
           }
 
           return {
@@ -82,47 +80,69 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
   pages: {
     signIn: "/login",
-    // Redirect to the login page on error
   },
 
   callbacks: {
     async session({ session, token }) {
-      if (token?.sub && token?.role) {
-        session.user.id = token.sub as string;
-        session.user.role = token.role;
-        session.user.name = token.name as string; // Add name
-        session.user.image = token.image as string; // Add image
+      if (token?.sub) {
+        await DbConnect();
+        const dbUser = await User.findOne({ email: token.email });
+
+        if (dbUser) {
+          session.user.id = dbUser._id.toString();
+          session.user.name = `${token.name}`;
+          session.user.role = dbUser.role;
+          session.user.image = dbUser.image;
+        }
       }
       return session;
     },
+
     async jwt({ token, user }) {
+      console.log(user, "jwt");
       if (user) {
         token.sub = user.id!;
-        token.role = user.role!;
-        token.name = `${user.firstName} ${user.lastName}`; // Construct name
-        token.image = user.image; // Ensure this is set
+        token.role = user.role;
+        token.name = user.name!; // Construct name
+        token.image = user.image;
       }
+
       return token;
     },
 
-    signIn: async ({ user, account }) => {
+    async signIn({ user, account }) {
       if (account?.provider === "google") {
         try {
           const { email, name, image, id } = user;
           await DbConnect();
-          console.log(email, name, image, "Account", account);
-          const alreadyUser = await User.findOne({ email });
+          console.log(email, name, image, id, "Account");
 
-          if (!alreadyUser) {
-            await User.create({ email, name, image, authProviderId: id });
+          // Find the existing user in the database
+          const existingUser = await User.findOne({ email });
+          if (!existingUser) {
+            // If the user does not exist, create a new user
+            const newUser = await User.create({
+              email,
+              firstName: name?.trim().split(" ")[0] || "",
+              lastName: name?.trim().split(" ")[1] || "",
+              role: "user",
+              image,
+              authProviderId: id,
+            });
+            console.log(newUser, "New User");
+            return true; // Return true for successful sign-in
           }
-        } catch (error) {
-          const errorMessage = "Error while creating user";
+          console.log(existingUser, "Already exist");
 
-          throw new CredentialsSignin({ cause: errorMessage });
+          return true; // Allow sign-in
+        } catch (error) {
+          console.log(error, "error during sign-in");
+          throw new CredentialsSignin({
+            cause: "An unexpected error occurred.",
+          });
         }
       }
-      return true;
+      return true; // For other providers
     },
   },
 });

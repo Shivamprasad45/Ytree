@@ -18,10 +18,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Pagination } from "@/components/ui/pagination";
 
 import Loading from "@/app/Loading/Loading";
-import { UserSelector } from "../../Auth/AuthSlice";
+
 import { TreeInfo } from "../../../../../type";
 import MaxWidthRappers from "@/components/MaxWidthRapper";
 
@@ -31,7 +30,6 @@ const fetchTreeInfo = async () => {
 };
 
 export default function Shop() {
-  const user = useSelector(UserSelector);
   const [search, setSearch] = useState("");
   const [priceRange, setPriceRange] = useState([0, 500]);
   const [sortBy, setSortBy] = useState("price-asc");
@@ -130,7 +128,7 @@ export default function Shop() {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          {paginatedTrees.map((product: TreeInfo) => (
+          {paginatedTrees.map((product: TreeInfo, index: number) => (
             <Card
               key={product._id}
               className="overflow-hidden hover:shadow-lg transition-shadow duration-300"
@@ -141,7 +139,7 @@ export default function Shop() {
               >
                 <div className="relative">
                   <Image
-                    src="https://images.unsplash.com/photo-1454425064867-5ba516caf601?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8cGxhbnR8fHx8fHwxNzE3NTgzMDI3&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080"
+                    src={`https://picsum.photos/id/${index + 800}/200/300`}
                     alt={product.commonName}
                     width={300}
                     height={200}

@@ -1,18 +1,7 @@
 // services/authApi.ts
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {
-  Data,
-  EnterUser,
-  LoginUser,
-  User,
-  UserMessage,
-} from "../../../../type";
-import {
-  setIsCreating,
-  setLoginMessage,
-
-  setUserMessage,
-} from "./AuthSlice";
+import { EnterUser, LoginUser, User, UserMessage } from "../../../../type";
+import { setIsCreating, setLoginMessage, setUserMessage } from "./AuthSlice";
 
 // Define a service using a base URL and expected endpoints
 export const AuthApi = createApi({
@@ -40,7 +29,7 @@ export const AuthApi = createApi({
         dispatch(setIsCreating(true));
         try {
           const { data } = await queryFulfilled;
-          console.log(data ,"signup data")
+          console.log(data, "signup data");
           dispatch(setUserMessage(data));
         } catch (error) {
           console.error("Signup failed:", error);
@@ -72,12 +61,11 @@ export const AuthApi = createApi({
         url: `/Resend`,
         method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ ResendEmail: email }), // Wrap the email in an object
       }),
     }),
-    
   }),
 });
 
