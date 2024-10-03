@@ -93,8 +93,16 @@ const Navbar = () => {
             <Link href="/Tree/Mytrees">
               <EarthLockIcon className="w-5 h-5 hover:text-primary transition-colors" />
             </Link>
-            <Link href="/Tree/Cart">
-              <ShoppingBasket className="w-5 h-5 hover:text-primary transition-colors" />
+            <Link
+              href="/Tree/Cart"
+              className="flex items-center space-x-2 hover:text-primary transition-colors"
+            >
+              <span className="relative">
+                <Badge variant="secondary" className="absolute -top-4 -right-2">
+                  {Total_cart_item}
+                </Badge>
+                <TreesIcon className="w-5 h-5" />
+              </span>
             </Link>
             {!user?.email ? (
               <Link href="/login">

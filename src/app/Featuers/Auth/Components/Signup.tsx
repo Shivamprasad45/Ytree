@@ -1,30 +1,21 @@
 "use client";
 
-import { regester } from "@/action/action";
+import { useState } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import { toast } from "sonner";
+import { Sprout } from "lucide-react";
 
-import MaxWidthRappers from "@/components/MaxWidthRapper";
+import { regester } from "@/action/action";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import MaxWidthRappers from "@/components/MaxWidthRapper";
 
-import { signIn, useSession } from "next-auth/react";
-import Head from "next/head";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { toast } from "sonner";
-
-const Google_user = async () => {
-  console.log("ok");
-  try {
-    await signIn("google", { callbackUrl: "/" });
-  } catch (error) {
-    console.error("Error during Google sign-in", error);
-  }
-};
 export default function Register() {
-  console.log(process.env.URL!, "URL");
   const router = useRouter();
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(false);
@@ -32,6 +23,14 @@ export default function Register() {
   if (session?.user) {
     router.push("/");
   }
+
+  const handleGoogleSignUp = async () => {
+    try {
+      await signIn("google", { callbackUrl: "/" });
+    } catch (error) {
+      console.error("Error during Google sign-up", error);
+    }
+  };
 
   async function handleSubmit(formData: FormData) {
     setIsLoading(true);
@@ -51,140 +50,130 @@ export default function Register() {
   }
 
   return (
-    <>
-      <Head>
-        <title>Register | vanagrow</title>
-        <meta
-          name="description"
-          content="Create your Yplant account to access personalized features and content."
-        />
-        <meta
-          name="keywords"
-          content="register, sign up, create account, vanagrow"
-        />
-        <meta property="og:title" content="Register | vanagrow" />
-        <meta
-          property="og:description"
-          content="Create your Yplant account to access personalized features and content."
-        />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://yplant.com/register" />
-        <link rel="canonical" href="https://yplant.com/register" />
-      </Head>
-      <MaxWidthRappers>
-        <div className="flex items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-          <div className="w-full max-w-md space-y-8">
-            <div>
-              <h1 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-                Create your vanagrow account
-              </h1>
-              <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-                Please provide all the necessary information
-              </p>
-            </div>
-            <form className="mt-8 space-y-6" action={handleSubmit}>
-              <div className="rounded-md shadow-sm -space-y-px">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <div>
-                    <Label htmlFor="firstname" className="sr-only">
-                      First Name
-                    </Label>
-                    <Input
-                      id="firstname"
-                      name="firstname"
-                      type="text"
-                      required
-                      className="rounded-t-md sm:rounded-tr-none"
-                      placeholder="First Name"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="lastname" className="sr-only">
-                      Last Name
-                    </Label>
-                    <Input
-                      id="lastname"
-                      name="lastname"
-                      type="text"
-                      required
-                      className="sm:rounded-tr-md"
-                      placeholder="Last Name"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <Label htmlFor="email" className="sr-only">
-                    Email address
-                  </Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    className=""
-                    placeholder="Email address"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="password" className="sr-only">
-                    Password
-                  </Label>
-                  <Input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="new-password"
-                    required
-                    className="rounded-b-md"
-                    placeholder="Password"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? "Creating account..." : "Sign up"}
-                </Button>
-              </div>
-            </form>
-
-            <div className="mt-6">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300"></div>
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white dark:bg-black text-gray-500">
-                    Or continue with
-                  </span>
-                </div>
-              </div>
-
-              <div className="mt-6 grid grid-cols-2 gap-3">
-                <Button
-                  variant="outline"
-                  className="w-full"
-                  onClick={Google_user}
-                >
-                  {/* <FaGoogle className="mr-2 h-4 w-4" /> */}
-                  Google
-                </Button>
-              </div>
-            </div>
-
-            <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-              Already have an account?{" "}
-              <Link
-                href="/login"
-                className="font-medium text-primary hover:text-primary-dark"
-              >
-                Log in
-              </Link>
+    <div className="flex min-h-screen">
+      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-md space-y-8">
+          <div className="text-center">
+            <Sprout className="mx-auto h-12 w-12 text-green-600" />
+            <h1 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white">
+              Join Vanagrow
+            </h1>
+            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+              Start your green journey today
             </p>
           </div>
+          <form className="mt-8 space-y-6" action={handleSubmit}>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <Label htmlFor="firstname" className="sr-only">
+                    First Name
+                  </Label>
+                  <Input
+                    id="firstname"
+                    name="firstname"
+                    type="text"
+                    required
+                    className="rounded-md"
+                    placeholder="First Name"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="lastname" className="sr-only">
+                    Last Name
+                  </Label>
+                  <Input
+                    id="lastname"
+                    name="lastname"
+                    type="text"
+                    required
+                    className="rounded-md"
+                    placeholder="Last Name"
+                  />
+                </div>
+              </div>
+              <div>
+                <Label htmlFor="email" className="sr-only">
+                  Email address
+                </Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  className="rounded-md"
+                  placeholder="Email address"
+                />
+              </div>
+              <div>
+                <Label htmlFor="password" className="sr-only">
+                  Password
+                </Label>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  className="rounded-md"
+                  placeholder="Password"
+                />
+              </div>
+            </div>
+
+            <div>
+              <Button
+                type="submit"
+                className="w-full bg-green-600 hover:bg-green-700"
+                disabled={isLoading}
+              >
+                {isLoading ? "Creating account..." : "Sign up"}
+              </Button>
+            </div>
+          </form>
+
+          <div className="mt-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white dark:bg-black text-gray-500">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={handleGoogleSignUp}
+              >
+                <Image
+                  src="/google.svg"
+                  alt="Google"
+                  width={20}
+                  height={20}
+                  className="mr-2"
+                />
+                Google
+              </Button>
+            </div>
+          </div>
+
+          <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
+            Already have an account?{" "}
+            <Link
+              href="/login"
+              className="font-medium text-green-600 hover:text-green-500"
+            >
+              Log in
+            </Link>
+          </p>
         </div>
-      </MaxWidthRappers>
-    </>
+      </div>
+    </div>
   );
 }

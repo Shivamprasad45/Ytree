@@ -1,6 +1,12 @@
+"use client";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 const Footer = () => {
+  const route = usePathname();
+  if (["/Signup", "/login", "/Resend"].includes(route)) {
+    return null;
+  }
   return (
     <div>
       <footer className="bg-green-800 text-white py-8">

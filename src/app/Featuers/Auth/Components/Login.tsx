@@ -1,28 +1,20 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
+
+import { useState } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import { toast } from "sonner";
+import { Leaf } from "lucide-react";
 
 import { login } from "@/action/action";
 
-import MaxWidthRappers from "@/components/MaxWidthRapper";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signIn } from "next-auth/react";
-import { Facebook } from "lucide-react";
-import { useSession } from "next-auth/react";
-import Head from "next/head";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { toast } from "sonner";
-
-const Google_user = async () => {
-  console.log("ok");
-  try {
-    await signIn("google", { callbackUrl: "/" });
-  } catch (error) {
-    console.error("Error during Google sign-in", error);
-  }
-};
+import MaxWidthRappers from "@/components/MaxWidthRapper";
 
 export default function Login() {
   const { data: session } = useSession();
@@ -32,6 +24,14 @@ export default function Login() {
   if (session?.user) {
     router.push("/");
   }
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await signIn("google", { callbackUrl: "/" });
+    } catch (error) {
+      console.error("Error during Google sign-in", error);
+    }
+  };
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -63,33 +63,21 @@ export default function Login() {
   }
 
   return (
-    <>
-      <Head>
-        <title>Login | Your App Name</title>
-        <meta
-          name="description"
-          content="Log in to your account to access personalized features and content."
-        />
-        <meta name="keywords" content="login, sign in, account access" />
-        <meta property="og:title" content="Login | Yplants" />
-        <meta
-          property="og:description"
-          content="Log in to your account to access personalized features and content."
-        />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={process.env.URL} />
-        <link rel="canonical" href={`${process.env.URL}/login`} />
-      </Head>
-      <MaxWidthRappers>
-        <div className="flex items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+    <MaxWidthRappers className="">
+      <div className="flex min-h-screen ">
+        <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
           <div className="w-full max-w-md space-y-8">
-            <div>
-              <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-                Sign in to your account
+            <div className="text-center">
+              <Leaf className="mx-auto h-12 w-12 text-green-600" />
+              <h2 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white">
+                Welcome to Vanagrow
               </h2>
+              <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                Sign in to nurture your green space
+              </p>
             </div>
             <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-              <div className="rounded-md shadow-sm -space-y-px">
+              <div className="space-y-4">
                 <div>
                   <Label htmlFor="email" className="sr-only">
                     Email address
@@ -100,7 +88,7 @@ export default function Login() {
                     type="email"
                     autoComplete="email"
                     required
-                    className="rounded-t-md"
+                    className="rounded-md"
                     placeholder="Email address"
                   />
                 </div>
@@ -114,14 +102,18 @@ export default function Login() {
                     type="password"
                     autoComplete="current-password"
                     required
-                    className="rounded-b-md"
+                    className="rounded-md"
                     placeholder="Password"
                   />
                 </div>
               </div>
 
               <div>
-                <Button type="submit" className="w-full" disabled={isLoading}>
+                <Button
+                  type="submit"
+                  className="w-full bg-green-600 hover:bg-green-700"
+                  disabled={isLoading}
+                >
                   {isLoading ? "Signing in..." : "Sign in"}
                 </Button>
               </div>
@@ -139,34 +131,36 @@ export default function Login() {
                 </div>
               </div>
 
-              <div className="mt-6 grid grid-cols-2 gap-3">
+              <div className="mt-6">
                 <Button
                   variant="outline"
                   className="w-full"
-                  onClick={Google_user}
+                  onClick={handleGoogleSignIn}
                 >
+                  <Image
+                    src="/google.svg"
+                    alt="Google"
+                    width={20}
+                    height={20}
+                    className="mr-2"
+                  />
                   Google
-                </Button>
-
-                <Button variant="outline" className="w-full">
-                  <Facebook />
-                  Facebook
                 </Button>
               </div>
             </div>
 
             <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-              Don’t have an account?{" "}
+              Don't have an account?{" "}
               <Link
                 href="/Signup"
-                className="font-medium text-primary hover:text-primary-dark"
+                className="font-medium text-green-600 hover:text-green-500"
               >
                 Sign up
               </Link>
             </p>
           </div>
         </div>
-      </MaxWidthRappers>
-    </>
+      </div>
+    </MaxWidthRappers>
   );
 }

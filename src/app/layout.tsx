@@ -18,13 +18,13 @@ const fontSans = FontSans({
 export const metadata: Metadata = {
   metadataBase: new URL("https://vanagrow.com/"),
   title: {
-    default: "vanagrow -  trees now you can buy",
-    template: "%s | vanagrow  now you can buy",
+    default: "vanagrow -  Grow Your Own Forest",
+    template: "%s | vanagrow  Grow Your Own Forest",
   },
   description: "A site to buy Plants",
   openGraph: {
     title: "Yplants ",
-    description: "A site to buy Plants",
+    description: "Grow Your Own Forest",
     url: "https://vanagrow.com/",
 
     type: "website",
@@ -47,6 +47,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Add the favicon link here */}
+        <link rel="icon" href="/favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
       <body className={cn("min-h-screen font-sans antialiased")}>
         <Providers>
           <Toaster />
