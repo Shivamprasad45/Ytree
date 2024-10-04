@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     default: "vanagrow -  Grow Your Own Forest",
     template: "%s | vanagrow  Grow Your Own Forest",
   },
-  description: "A site to buy Plants",
+  description: "Grow Your Own Forest",
   openGraph: {
     title: "vanagrow ",
     description: "Grow Your Own Forest",
