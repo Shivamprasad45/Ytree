@@ -42,10 +42,7 @@ const Homes = () => {
           name="description"
           content="Buy plants and grow your green space with Vanagrow. Quality plants and easy delivery."
         />
-        <meta
-          name="google-site-verification"
-          content="OgN_kU5t5T7McvmUMQ_H1Vp_VWcUc-2UiqB0JStigKM"
-        />
+
         <meta
           name="keywords"
           content="plants, buy plants, online plant shop, garden"
@@ -64,8 +61,7 @@ const Homes = () => {
             transition={{ duration: 1 }}
             className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-cover bg-center relative overflow-hidden"
             style={{
-              backgroundImage:
-                'url("https://i.ibb.co/gRj1LQq/Firefly-Beautiful-cozy-fantasy-stone-cottage-in-a-spring-forest-aside-a-cobblestone-path-and-a-babbl.jpg")',
+              backgroundImage: 'url("/Banner/Banner.webp")',
             }}
           >
             <div className="absolute inset-0 bg-black bg-opacity-50" />
