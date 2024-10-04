@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   },
   description: "A site to buy Plants",
   openGraph: {
-    title: "Yplants ",
+    title: "vanagrow ",
     description: "Grow Your Own Forest",
     url: "https://vanagrow.com/",
 
@@ -48,10 +48,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Add the favicon link here */}
-        <link rel="icon" href="/favicon.ico" />
+        {/* Add the favicon link with specific size */}
+        <link rel="icon" href="/favicon.ico" sizes="40x40" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
+
       <body className={cn("min-h-screen font-sans antialiased")}>
         <Providers>
           <Toaster />

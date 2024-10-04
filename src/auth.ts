@@ -90,7 +90,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         if (dbUser) {
           session.user.id = dbUser._id.toString();
-          session.user.name = `${token.name}`;
+          session.user.name = `${dbUser.firstName} ${dbUser.lastName}`;
           session.user.role = dbUser.role;
           session.user.image = dbUser.image;
         }

@@ -26,11 +26,13 @@ import ConnectionStatus from "../lib/Connection";
 import Image from "next/image";
 import { UserSelector } from "../Featuers/Auth/AuthSlice";
 import { Button } from "@/components/ui/button";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useGetCartItemByIdQuery } from "../Featuers/Treecart/TreeServicesAPI";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Navbar = () => {
   const user = useSelector(UserSelector);
+  const { data: session, status } = useSession();
   const { data: cartdata, isLoading: isCartLoading } = useGetCartItemByIdQuery(
     user?._id!
   );
@@ -109,7 +111,19 @@ const Navbar = () => {
                 <UserX2Icon className="w-5 h-5 hover:text-primary transition-colors" />
               </Link>
             ) : (
-              <UserCheck className="w-5 h-5" />
+              <Avatar className="w-7 h-7">
+                {session?.user.image ? (
+                  <AvatarImage
+                    className="  "
+                    src={session?.user.image}
+                    alt="Profile picture"
+                  />
+                ) : (
+                  <AvatarFallback>
+                    {user.Username.slice(0, 2).toUpperCase()}
+                  </AvatarFallback>
+                )}
+              </Avatar>
             )}
             <Sheet>
               <SheetTrigger asChild>

@@ -18,6 +18,7 @@ const Payment = () => {
   const Cart_selector = useSelector(cartDataSelector);
   const plant_order = useSelector(Before_PlantOrder_Selector);
   const [Comformpayment] = useSave_plants_OrderMutation();
+
   const router = useRouter();
   // Total_price
   const Total_Cart_price = Cart_selector?.reduce(
@@ -79,10 +80,9 @@ const Payment = () => {
         amount: order.amount,
         currency: order.currency,
         order: order.id,
-        name: "Yplant",
+        name: "VanaGrow",
         description: "Test Transaction",
-        image:
-          "https://img.freepik.com/free-vector/colorful-bird-illustration-gradient_343694-1741.jpg?w=740&t=st=1719754745~exp=1719755345~hmac=68459300e94e40e2f7c06675764c5e72f0d06b5fda351160a6dd9ce5d48e9246",
+        image: "/logo.png",
         order_id: order.id,
         handler: async function (response: any) {
           // Validate payment at server - using webhooks is a better idea.
@@ -109,12 +109,12 @@ const Payment = () => {
         },
 
         prefill: {
-          name: "John Doe",
-          email: "john.doe@example.com",
-          contact: "9999999999",
+          name: plant_order?.User_name,
+          email: plant_order?.Addresss.email,
+          contact: plant_order?.Addresss.phone!,
         },
         theme: {
-          color: "#F37254",
+          color: "#347928",
         },
       };
 

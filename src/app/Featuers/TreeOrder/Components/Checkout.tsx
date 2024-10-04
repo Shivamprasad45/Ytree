@@ -34,15 +34,15 @@ import { useGetCartItemByIdQuery } from "../../Treecart/TreeServicesAPI";
 import Payment from "@/app/payment/page";
 
 const formSchema = z.object({
-  firstName: z.string().min(1, { message: "First name is required." }),
-  lastName: z.string().min(1, { message: "Last name is required." }),
+  firstName: z.string().min(4, { message: "First name is required." }),
+  lastName: z.string().min(4, { message: "Last name is required." }),
   email: z.string().email({ message: "Invalid email address." }),
   phone: z
     .string()
     .regex(/^\d{10}$/, { message: "Phone number must be exactly 10 digits." }),
-  address: z.string().min(1, { message: "Address line is required." }),
-  city: z.string().min(1, { message: "City is required." }),
-  state: z.string().min(1, { message: "State is required." }),
+  address: z.string().min(15, { message: "Address line is required." }),
+  city: z.string().min(5, { message: "City is required." }),
+  state: z.string().min(6, { message: "State is required." }),
   zipCode: z
     .string()
     .min(5, { message: "Zip code must be at least 5 characters." }),
