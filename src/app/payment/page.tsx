@@ -18,7 +18,7 @@ const Payment = () => {
   const Cart_selector = useSelector(cartDataSelector);
   const plant_order = useSelector(Before_PlantOrder_Selector);
   const [Comformpayment] = useSave_plants_OrderMutation();
-
+  const [Loading, setLoading] = useState(false);
   const router = useRouter();
   // Total_price
   const Total_Cart_price = Cart_selector?.reduce(
@@ -49,7 +49,7 @@ const Payment = () => {
       console.error("Razorpay SDK is not loaded.");
       return;
     }
-
+    setLoading(true);
     try {
       const response = await fetch("/api/create-order", {
         method: "POST",
@@ -86,7 +86,7 @@ const Payment = () => {
         order_id: order.id,
         handler: async function (response: any) {
           // Validate payment at server - using webhooks is a better idea.
-
+          setLoading(false);
           alert(
             `Payment successful. Razorpay payment ID: ${response.razorpay_payment_id}`
           );
@@ -132,7 +132,9 @@ const Payment = () => {
 
   return (
     <div className="w-full h-full flex items-center text-center justify-center">
-      <Button onClick={handlePayment}>Pay Now</Button>
+      <Button onClick={handlePayment}>
+        {Loading ? "....Loading" : "Pay Now"}
+      </Button>
     </div>
   );
 };
