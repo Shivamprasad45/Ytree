@@ -266,7 +266,7 @@ export default function Checkout() {
       </div>
       <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
         <DrawerContent>
-          <div className="mx-auto w-full max-w-sm h-52">
+          <div className="mx-auto w-full max-w-sm h-96">
             <DrawerHeader>
               <DrawerTitle>Pay now</DrawerTitle>
               <DrawerDescription>
