@@ -64,9 +64,7 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
         <div className="grid md:grid-cols-2 gap-8">
           <div>
             <Image
-              src={
-                "https://cdn.usegalileo.ai/stability/64c93ee4-25fc-4c96-936f-f479b3a31c60.png"
-              }
+              src={`https://picsum.photos/id/344/200/300`}
               width={300}
               height={300}
               alt={PlantDetails.commonName}
@@ -87,7 +85,7 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
                 ₹{PlantDetails.price.toFixed(2)}
               </span>
               <div className="flex flex-1 gap-3 flex-wrap px-4 py-3 justify-end">
-                <Button onClick={() => Addtocart()}>
+                <Button disabled={isAddLoading} onClick={() => Addtocart()}>
                   <span>Add to cart</span>
                 </Button>
                 <Button className="">

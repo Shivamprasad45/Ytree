@@ -200,7 +200,7 @@ const Homes = () => {
                             </div>
                             <div className="w-56 h-5 flex-col justify-start items-start flex">
                               <div className="self-stretch text-neutral-500 text-sm font-normal leading-tight">
-                                ${artwork.price}
+                                ₹{artwork.price}
                               </div>
                             </div>
                           </div>

@@ -1,4 +1,5 @@
 "use client";
+
 import React, { Suspense, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -7,23 +8,39 @@ import {
   Allow_Notification_Endpoints_Selector,
   Coords_Selector,
 } from "@/app/Featuers/TreeOrder/TreeOrderSlice";
-
 import { Enter_Plant_coords } from "../../../../type";
 import { useSave_plants_coordsMutation } from "@/app/Featuers/TreeOrder/TreeOrderServices";
 import PushNotifications from "@/app/lib/PushNoti";
 import { toast } from "sonner";
 import { useGetlog_treeMutation } from "@/app/Featuers/Tree/TreeServices";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const Map = dynamic(() => import("./Map"), { ssr: false });
+const Map = dynamic(() => import("./Map"), {
+  ssr: false,
+  loading: () => <Skeleton className="h-64 w-full" />,
+});
 
 const Logtrees = () => {
   const [Iplant, { data: About_Mytree, isLoading }] = useGetlog_treeMutation();
-
   const Searchparams = useSearchParams();
+  const Notification = useSelector(Allow_Notification_Endpoints_Selector);
+  const Plants_CurrentLocations = useSelector(Coords_Selector);
+  const route = useRouter();
+  const [isSaved, setIsSaved] = useState(false);
 
-  //Fetch the plant information from the   database
+  const [
+    Save_coords,
+    { isLoading: isLoading_coords, isSuccess: is_coord_success },
+  ] = useSave_plants_coordsMutation();
+
   useEffect(() => {
     const fetchData = async () => {
       const _id = Searchparams.get("id");
@@ -31,7 +48,6 @@ const Logtrees = () => {
       const User_id = Searchparams.get("userid");
 
       if (_id && Plaint_id && User_id) {
-        // Wait for state to be updated before calling Fetch_user
         await Fetch_user({ _ID: _id, Plaint_id: Plaint_id, User_id: User_id });
       }
     };
@@ -54,14 +70,10 @@ const Logtrees = () => {
     try {
       await Iplant(user);
     } catch (error) {
-      console.log(error);
+      console.error("Failed to fetch user data:", error);
+      toast.error("Failed to load tree data");
     }
   }
-
-  // const trees = useSelector(MyTreesSelector);
-  const Notification = useSelector(Allow_Notification_Endpoints_Selector);
-
-  const Plants_CurrentLocations = useSelector(Coords_Selector);
 
   const Save_plant_coords: Enter_Plant_coords = {
     find_id: About_Mytree?.findtree_id || "",
@@ -82,29 +94,28 @@ const Logtrees = () => {
     },
   };
 
-  const [
-    Save_coords,
-    { isLoading: isLoading_coords, isSuccess: is_coord_success },
-  ] = useSave_plants_coordsMutation();
-
-  const Tree_coords_Save = () => {
+  const Tree_coords_Save = async () => {
     try {
       if (
-        !Plants_CurrentLocations?.late &&
-        !Plants_CurrentLocations?.long &&
+        !Plants_CurrentLocations?.late ||
+        !Plants_CurrentLocations?.long ||
         !Plants_CurrentLocations?.Address
       ) {
-        toast.error("Use Allow your current location");
+        toast.error("Please allow access to your current location");
+        return;
       }
-
-      Save_coords(Save_plant_coords);
+      if (!Notification?.endpoint) {
+        toast.error("Please enable push notifications");
+        return;
+      }
+      await Save_coords(Save_plant_coords);
+      setIsSaved(true);
+      toast.success("Tree coordinates saved successfully");
     } catch (error) {
-      toast("Please allow notifications");
-      console.log("Fail to save coords", error);
+      console.error("Failed to save coordinates:", error);
+      toast.error("Failed to save tree coordinates");
     }
   };
-
-  const route = useRouter();
 
   useEffect(() => {
     if (is_coord_success) {
@@ -113,19 +124,23 @@ const Logtrees = () => {
   }, [is_coord_success, route]);
 
   return (
-    <Suspense>
+    <Suspense fallback={<div>Loading...</div>}>
       <PushNotifications />
-      <div className="max-w-md mx-auto p-4 bg-gray-50 ">
-        <Card className="mb-4 overflow-hidden">
+      <div className="max-w-md mx-auto p-4 space-y-4">
+        <Card className="overflow-hidden">
+          <CardHeader>
+            <CardTitle>{About_Mytree?.name || "Tree Details"}</CardTitle>
+          </CardHeader>
           <CardContent className="p-0">
             <div className="relative h-48 bg-green-100">
               <img
-                src="https://images.unsplash.com/photo-1454425064867-5ba516caf601?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8cGxhbnR8fHx8fHwxNzE3NTgzMDI3&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080"
-                alt="Teak Tree"
+                src={
+                  "https://images.unsplash.com/photo-1454425064867-5ba516caf601?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8cGxhbnR8fHx8fHwxNzE3NTgzMDI3&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080"
+                }
+                alt={About_Mytree?.name || "Tree"}
                 className="w-full h-full object-cover"
               />
               <div className="absolute bottom-0 left-0 right-0 bg-white bg-opacity-75 p-4">
-                <h1 className="text-2xl font-bold text-green-800">Teak Tree</h1>
                 <p className="text-sm text-gray-600">
                   {new Date().toLocaleString()}
                 </p>
@@ -134,31 +149,26 @@ const Logtrees = () => {
           </CardContent>
         </Card>
 
-        <Card className="mb-4">
+        <Card>
           <CardContent className="p-0">
-            <div className="pb-7 h-64 ">
-              {/* This would be replaced with an actual map component */}
+            <div className="h-64">
               <Map />
-              {/* <div className="absolute  left-4 right-8 bg-white rounded-lg shadow max-w-sm justify-center">
-                <p className="text-sm font-medium text-gray-700 text-center">
-                  Lat: {Plants_CurrentLocations?.late}, Lon:{" "}
-                  {Plants_CurrentLocations?.late}
-                </p>
-                <p className="text-xs text-gray-500">
-                  {Plants_CurrentLocations?.Address}
-                </p>
-              </div> */}
             </div>
           </CardContent>
+          <CardFooter>
+            <p className="text-sm text-gray-600">
+              {Plants_CurrentLocations?.Address || "Location not set"}
+            </p>
+          </CardFooter>
         </Card>
 
-        <div className="flex space-x-4">
-          <Button onClick={Tree_coords_Save} className="flex-1  text-white">
-            <h1 className="truncate">
-              {isLoading_coords ? "....Saving" : "Save"}
-            </h1>
-          </Button>
-        </div>
+        <Button
+          onClick={Tree_coords_Save}
+          className="w-full"
+          disabled={isLoading || isLoading_coords || isSaved}
+        >
+          {isLoading_coords ? "Saving..." : isSaved ? "Saved" : "Save Location"}
+        </Button>
       </div>
     </Suspense>
   );

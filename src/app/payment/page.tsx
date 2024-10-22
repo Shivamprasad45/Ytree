@@ -170,7 +170,9 @@ export default function Payment() {
           <ShoppingCart className="h-5 w-5" />
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 max-h-40 overflow-y-auto">
+        {" "}
+        {/* Add max height and overflow */}
         {Cart_selector?.map((item, index) => (
           <div key={index} className="flex justify-between items-center">
             <span>{item.commonName}</span>

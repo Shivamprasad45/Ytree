@@ -111,10 +111,10 @@ export default function Checkout() {
           <CardContent className="p-6">
             <h2 className="text-2xl font-bold mb-4">Order Summary</h2>
             <div className="space-y-4">
-              {cartdata?.map((item) => (
+              {cartdata?.map((item, index) => (
                 <div key={item.UserId} className="flex items-center gap-4">
                   <img
-                    src={item.imageURL}
+                    src={`https://picsum.photos/id/${index + 34}/200/300`}
                     alt={item.commonName}
                     className="w-16 h-16 object-cover rounded"
                   />
@@ -124,7 +124,7 @@ export default function Checkout() {
                       Quantity: {item.quantity}
                     </p>
                     <p className="text-sm font-medium">
-                      ${item.price * item.quantity}
+                      ₹{item.price * item.quantity}
                     </p>
                   </div>
                 </div>
@@ -133,7 +133,7 @@ export default function Checkout() {
             <div className="mt-6 pt-6 border-t">
               <div className="flex justify-between items-center">
                 <span className="font-semibold">Total</span>
-                <span className="font-bold text-lg">${totalCartPrice}</span>
+                <span className="font-bold text-lg">₹{totalCartPrice}</span>
               </div>
             </div>
           </CardContent>

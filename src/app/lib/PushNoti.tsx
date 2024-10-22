@@ -4,10 +4,8 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Allow_Notification } from "../Featuers/TreeOrder/TreeOrderSlice";
 import { CustomSubscription } from "../../../type";
-
 const PushNotifications: React.FC = () => {
   const dispatch = useDispatch();
-
   useEffect(() => {
     const askPermission = async () => {
       try {
@@ -28,10 +26,9 @@ const PushNotifications: React.FC = () => {
               await registration.pushManager.subscribe({
                 userVisibleOnly: true,
                 applicationServerKey:
-                  "BIkDA8BOVfqvVC8PgqDLP-5fOvYXctaG9uW8Un8tTlxtxAHgzzIF7gQcS981FM4odeHI0e7PhAftH16SyqtkEKY",
+                  "BBPuBPUtiQ9XMcGyj_fAuupMTl_-pishcrf2Sk6HVLyQ8E3aJhvDNeiLznsSmmxT-BK52HT-hxLJqzdij23dxuk",
               });
             console.log(subscription, "Subscription");
-
             const customSubscription: CustomSubscription = {
               endpoint: subscription.endpoint,
               expirationTime: subscription.expirationTime,
@@ -41,7 +38,6 @@ const PushNotifications: React.FC = () => {
               },
             };
             console.log(customSubscription, "Custom Subscription");
-
             dispatch(Allow_Notification(customSubscription));
           } catch (error) {
             console.error(

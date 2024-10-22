@@ -77,14 +77,14 @@ export default function CartPage() {
             </CardHeader>
             <CardContent>
               <ScrollArea className="h-[calc(100vh-300px)]">
-                {cartData.map((item) => (
+                {cartData.map((item, index) => (
                   <div
                     key={item.Plant_id}
                     className="flex items-center gap-4 py-4"
                   >
                     <div className="w-24 h-24 relative">
                       <Image
-                        src={""}
+                        src={`https://picsum.photos/id/${index + 49}/200/300`}
                         alt={item.commonName}
                         layout="fill"
                         objectFit="cover"
@@ -128,7 +128,7 @@ export default function CartPage() {
                     </div>
                     <div className="text-right">
                       <p className="font-semibold">
-                        ${(item.price * item.quantity).toFixed(2)}
+                        ₹{(item.price * item.quantity).toFixed(2)}
                       </p>
                       <Button
                         size="icon"
@@ -164,7 +164,7 @@ export default function CartPage() {
                 <Separator />
                 <div className="flex justify-between font-semibold">
                   <span>Total</span>
-                  <span>${totalCartPrice.toFixed(2)}</span>
+                  <span>₹{totalCartPrice.toFixed(2)}</span>
                 </div>
               </div>
             </CardContent>

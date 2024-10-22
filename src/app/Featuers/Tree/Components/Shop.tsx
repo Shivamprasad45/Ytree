@@ -204,7 +204,7 @@ export default function Shop() {
               <div className="py-4 space-y-6">
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Price Range: ${priceRange[0]} - ${priceRange[1]}
+                    Price Range: ₹{priceRange[0]} - ₹{priceRange[1]}
                   </label>
                   <Slider
                     min={0}
@@ -269,7 +269,7 @@ export default function Shop() {
                 </div>
                 <div className="mt-2 flex items-center justify-between">
                   <p className="text-gray-500">
-                    {product.price ? `$${product.price}` : "Free"}
+                    {product.price ? `₹${product.price}` : "Free"}
                   </p>
                   <div className="flex items-center gap-1 text-sm">
                     <Star className="h-4 w-4 text-yellow-500" />
