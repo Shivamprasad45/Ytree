@@ -22,6 +22,7 @@ const Plants_coordinate_Schema = new Schema({
       auth: String,
     },
   },
+  lastWeatherState: { type: Array },
 });
 
 // Check if the model already exists to prevent overwriting

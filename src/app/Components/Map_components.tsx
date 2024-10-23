@@ -7,21 +7,35 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import L from "leaflet";
 import "leaflet.markercluster";
 import { useSession } from "next-auth/react";
-import { Loader2, Trophy, Trees, User as UserIcon } from "lucide-react";
+import {
+  Loader2,
+  Trophy,
+  Trees,
+  User as UserIcon,
+  Map,
+  Award,
+  Satellite,
+} from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   useGetALL_coordsMutation,
   useGetAll_usersMutation,
 } from "../Featuers/Global/GlobeServices";
-import { Coordinate, All_Users } from "../../../type";
+import { Coordinate, All_Users, Coordinates } from "../../../type";
 import WinnerAnnouncement from "./Winner";
 import { toast } from "sonner";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import SatelliteMap from "./Satlite";
 
-// Create icon function
 const createIcon = (iconUrl: string) =>
   new L.Icon({
     iconUrl,
@@ -35,7 +49,6 @@ const IconUser = createIcon("/Map_icon/your.png");
 const IconWinner = createIcon("/Map_icon/winner.webp");
 const IconOther = createIcon("/Map_icon/Alltree.webp");
 
-// MapUpdater component
 function MapUpdater({
   coords,
   users,
@@ -55,7 +68,6 @@ function MapUpdater({
 
       coords.forEach((coord) => {
         const userName = users.find((user) => user._id === coord.UserId);
-        ("Unknown User");
         let icon = IconOther;
 
         if (coord.UserId === session?.user?.id) {
@@ -65,13 +77,15 @@ function MapUpdater({
         }
 
         const marker = L.marker([coord.late, coord.long], { icon }).bindPopup(`
-          <p><strong>Address:</strong> ${coord.Plant_Addresses}</p>
-          <p><strong>Plant:</strong> ${coord.commonName}</p>
-          <p><strong>Conservationist : </strong>${
-            userName
-              ? `${userName?.firstName} ${userName?.lastName}`
-              : "  Unknown "
-          } </p>
+          <div class="p-2">
+            <h3 class="font-bold">${coord.commonName}</h3>
+            <p><strong>Address:</strong> ${coord.Plant_Addresses}</p>
+            <p><strong>Conservationist:</strong> ${
+              userName
+                ? `${userName.firstName} ${userName.lastName}`
+                : "Unknown"
+            }</p>
+          </div>
         `);
 
         markers.addLayer(marker);
@@ -91,10 +105,11 @@ function MapUpdater({
 
 const MapViewUpdater = ({ coords }: { coords: [number, number] }) => {
   const map = useMap();
-  map.setView(coords, 30);
+  map.setView(coords, 13);
   return null;
 };
-export default function EnhancedMapComponent() {
+
+export default function Component() {
   const { data: session } = useSession();
   const [coords, setCoords] = useState<Coordinate[]>([]);
   const [users, setUsers] = useState<All_Users[]>([]);
@@ -103,7 +118,7 @@ export default function EnhancedMapComponent() {
   const [leaderboard, setLeaderboard] = useState<All_Users[]>([]);
   const [winner, setWinner] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("map");
-
+  const [satlite, setsatlite] = useState<Coordinates | null>(null);
   const [getAllCoords] = useGetALL_coordsMutation();
   const [getAllUsers] = useGetAll_usersMutation();
   const [currentLocation, setCurrentLocation] = useState<Coordinate[] | null>(
@@ -112,17 +127,6 @@ export default function EnhancedMapComponent() {
   const [userTreecurrentLocation, setUserTreeCurrentLocation] = useState<
     [number, number] | null
   >(null);
-
-  // /Useffect the current location
-
-  const UserTree = ({ long, late }: { long: number; late: number }) => {
-    if (session && long && late) {
-      // Set the state as an array [long, late]
-
-      console.log(long, late, "set  HOME");
-      setUserTreeCurrentLocation([long, late]);
-    }
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -161,22 +165,19 @@ export default function EnhancedMapComponent() {
 
     fetchData();
   }, [getAllCoords, getAllUsers]);
-  // Animations
+
   useEffect(() => {
-    console.log(coords, "current");
     if (session) {
-      const User_Tree_coords = coords.filter(
+      const userTreeCoords = coords.filter(
         (user) => user.UserId === session?.user.id
       );
-
-      if (User_Tree_coords) {
-        setCurrentLocation(User_Tree_coords);
-      } else {
-        toast.warning("Please plant a tree");
+      setCurrentLocation(userTreeCoords);
+      if (userTreeCoords.length === 0) {
+        toast.warning("You haven't planted any trees yet. Start planting!");
       }
-      console.log(User_Tree_coords, "selected");
     }
-  }, [coords]);
+  }, [coords, session]);
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-[500px]">
@@ -195,19 +196,27 @@ export default function EnhancedMapComponent() {
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="text-center p-2">
-        <WinnerAnnouncement
-          winner={{
-            firstName: leaderboard[0].firstName + " " + leaderboard[0].lastName,
-            treeCount: leaderboard[0].treeCount!,
-          }}
-        />
-      </div>
+    <div className="container mx-auto p-4 space-y-6">
+      <WinnerAnnouncement
+        winner={{
+          firstName: `${leaderboard[0]?.firstName} ${leaderboard[0]?.lastName}`,
+          treeCount: leaderboard[0]?.treeCount || 0,
+        }}
+      />
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="map">Map</TabsTrigger>
-          <TabsTrigger value="leaderboard">Leaderboard</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="map" className="flex items-center gap-2">
+            <Map className="w-4 h-4" />
+            Map
+          </TabsTrigger>
+          <TabsTrigger value="leaderboard" className="flex items-center gap-2">
+            <Trophy className="w-4 h-4" />
+            Leaderboard
+          </TabsTrigger>
+          <TabsTrigger value="Stellite" className="flex items-center gap-2">
+            <Satellite className="w-4 h-4" />
+            Satellite
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="map" className="mt-4">
           <Card>
@@ -240,40 +249,44 @@ export default function EnhancedMapComponent() {
               </MapContainer>
             </CardContent>
           </Card>
-          <ScrollArea className="w-full whitespace-nowrap rounded-md border">
+          <ScrollArea className="w-full whitespace-nowrap rounded-md border mt-4">
             <div className="flex space-x-4 p-4">
               {currentLocation?.map((item) => (
                 <Button
                   key={item.UserId}
                   variant="outline"
-                  className="flex-shrink-0 items-center gap-2"
-                  onClick={() => UserTree({ late: item.late, long: item.long })}
+                  className="flex items-center gap-2"
+                  onClick={() =>
+                    setUserTreeCurrentLocation([item.long, item.late])
+                  }
                 >
-                  <img src="/Map_icon/your.png" width={20} height={10} alt="" />
+                  <img
+                    src="/Map_icon/your.png"
+                    width={20}
+                    height={20}
+                    alt=""
+                    className="rounded-full"
+                  />
                   <span>{item.commonName}</span>
                 </Button>
               ))}
-              <Button
-                variant="outline"
-                className="flex-shrink-0 items-center gap-2"
-              >
-                <img
-                  src="/Map_icon/Alltree.webp"
-                  width={20}
-                  height={10}
-                  alt=""
-                />
-                <span>Winner Trees</span>
-              </Button>
-              <Button
-                variant="outline"
-                className="flex-shrink-0 items-center gap-2"
-              >
+              <Button variant="outline" className="flex items-center gap-2">
                 <img
                   src="/Map_icon/winner.webp"
                   width={20}
-                  height={10}
+                  height={20}
                   alt=""
+                  className="rounded-full"
+                />
+                <span>Winner Trees</span>
+              </Button>
+              <Button variant="outline" className="flex items-center gap-2">
+                <img
+                  src="/Map_icon/Alltree.webp"
+                  width={20}
+                  height={20}
+                  alt=""
+                  className="rounded-full"
                 />
                 <span>Other Trees</span>
               </Button>
@@ -284,30 +297,69 @@ export default function EnhancedMapComponent() {
         <TabsContent value="leaderboard" className="mt-4">
           <Card>
             <CardHeader>
-              <CardTitle>Leaderboard</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <Trophy className="w-6 h-6 text-yellow-500" />
+                Leaderboard
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-2">
                 {leaderboard.map((user, index) => (
                   <li
                     key={user._id}
-                    className="flex items-center justify-between p-2 bg-secondary rounded-md"
+                    className="flex items-center justify-between p-3 bg-secondary rounded-md transition-colors hover:bg-secondary/80"
                   >
-                    <div className="flex items-center gap-2">
-                      <span className="font-bold">{index + 1}.</span>
-                      <span>{user.firstName}</span>
+                    <div className="flex items-center gap-3">
+                      <span className="font-bold text-lg">{index + 1}</span>
+                      <span className="font-medium">
+                        {user.firstName} {user.lastName}
+                      </span>
                       {user._id === session?.user?.id && (
-                        <UserIcon className="w-4 h-4" />
+                        <UserIcon className="w-4 h-4 text-blue-500" />
                       )}
                       {index === 0 && (
-                        <Trophy className="w-4 h-4 text-yellow-500" />
+                        <Award className="w-5 h-5 text-yellow-500" />
                       )}
                     </div>
-                    <span>{user.treeCount} trees</span>
+                    <span className="flex items-center gap-2">
+                      <Trees className="w-4 h-4 text-green-500" />
+                      {user.treeCount} trees
+                    </span>
                   </li>
                 ))}
               </ul>
             </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="Stellite" className="mt-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Satellite className="w-6 h-6" />
+                Satellite View
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <SatelliteMap
+                lat={satlite?.latitude!}
+                lng={satlite?.longitude!}
+              />
+            </CardContent>
+            <CardFooter className="flex flex-wrap gap-2">
+              {currentLocation?.map((r) => (
+                <Button
+                  key={r.UserId}
+                  variant="outline"
+                  className="flex items-center gap-2"
+                  onClick={() =>
+                    setsatlite({ latitude: r.late, longitude: r.long })
+                  }
+                >
+                  <Trees className="w-4 h-4 text-green-500" />
+                  {r.commonName}
+                </Button>
+              ))}
+            </CardFooter>
           </Card>
         </TabsContent>
       </Tabs>

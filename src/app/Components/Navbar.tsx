@@ -143,6 +143,13 @@ const Navbar = () => {
                   >
                     About
                   </Link>
+                  {user?.email ? (
+                    <Button onClick={() => signOut()}>Logout</Button>
+                  ) : (
+                    <Button asChild>
+                      <Link href="/login">Sign In</Link>
+                    </Button>
+                  )}
                   <ul className="space-y-2">
                     {menuItems.map(
                       (item) =>
