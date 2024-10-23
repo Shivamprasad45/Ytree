@@ -33,7 +33,7 @@ export default function Page({ params }: { params: { id: string } }) {
             </CardTitle>
             <p className="text-muted-foreground">
               Your order has been placed. You will receive email confirmation
-              shortly.
+              shortly .
             </p>
           </CardHeader>
         </Card>
