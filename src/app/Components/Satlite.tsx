@@ -17,11 +17,19 @@ interface SatelliteMapProps {
   lng: number;
 }
 
+// Utility function to check if the device is mobile
+const isMobileDevice = () => {
+  return (
+    typeof window !== "undefined" &&
+    /Mobi|Android/i.test(window.navigator.userAgent)
+  );
+};
+
 const SatelliteMap: FC<SatelliteMapProps> = ({ lat, lng }) => {
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [address, setAddress] = useState<string>(""); // Store the fetched address here
 
-  // Function to get address from lat and lng using Geocoding API
+  // Function to get address from lat and lng using Nominatim
   const getAddressFromCoords = async (lat: number, lng: number) => {
     const geocodeUrl = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`;
 
@@ -33,7 +41,6 @@ const SatelliteMap: FC<SatelliteMapProps> = ({ lat, lng }) => {
       }
 
       const data = await response.json();
-
       console.log("Click to get", data); // Log the response for debugging
 
       if (data && data.display_name) {
@@ -57,11 +64,21 @@ const SatelliteMap: FC<SatelliteMapProps> = ({ lat, lng }) => {
       >
         <Marker
           position={{ lat: lat, lng: lng }}
-          onMouseOver={() => {
+          onClick={() => {
             setShowInfoWindow(true);
-            getAddressFromCoords(lat, lng); // Fetch the address on hover
+            getAddressFromCoords(lat, lng); // Fetch the address on click
           }}
-          onMouseOut={() => setShowInfoWindow(false)} // Hide the InfoWindow when not hovering
+          onMouseOver={() => {
+            if (!isMobileDevice()) {
+              setShowInfoWindow(true);
+              getAddressFromCoords(lat, lng); // Fetch the address on hover for non-mobile
+            }
+          }}
+          onMouseOut={() => {
+            if (!isMobileDevice()) {
+              setShowInfoWindow(false); // Hide the InfoWindow when not hovering on non-mobile
+            }
+          }}
         >
           {showInfoWindow && (
             <InfoWindow
@@ -69,7 +86,7 @@ const SatelliteMap: FC<SatelliteMapProps> = ({ lat, lng }) => {
               onCloseClick={() => setShowInfoWindow(false)}
             >
               <div>
-                <p>{address ? address : "Fetching address..."}</p>{" "}
+                <p>{address ? address : "Fetching address..."}</p>
                 {/* Display the address */}
               </div>
             </InfoWindow>
