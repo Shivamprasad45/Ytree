@@ -1,6 +1,6 @@
 "use client";
 import React, { FC } from "react";
-import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 const containerStyle = {
   width: "100%",
@@ -22,6 +22,7 @@ const SatelliteMap: FC<SatelliteMapProps> = ({ lat, lng }) => {
         mapTypeId="satellite" // This enables satellite view
       >
         {/* You can add markers or other features here */}
+        <Marker position={{ lat: lat, lng: lng }} />
       </GoogleMap>
     </LoadScript>
   );
