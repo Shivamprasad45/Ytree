@@ -25,7 +25,7 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
   const route = useRouter();
   const [AddPlants, { isLoading: isAddLoading }] = useAddCartMutation();
   //for user reload
-
+  console.log(PlantDetails, "adadadadadadadadadadadadadadad");
   const Addtocart = async () => {
     try {
       if (user?.user.id) {
@@ -64,7 +64,7 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
         <div className="grid md:grid-cols-2 gap-8">
           <div>
             <Image
-              src={`https://picsum.photos/id/344/200/300`}
+              src={PlantDetails.imageURL}
               width={300}
               height={300}
               alt={PlantDetails.commonName}

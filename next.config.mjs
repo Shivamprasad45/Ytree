@@ -43,7 +43,9 @@ const nextConfig = {
       "cdn.tuk.dev",
       "i.ibb.co",
       'picsum.photos',
-      'tse2.mm.bing.net'
+      'tse2.mm.bing.net',
+      'res.cloudinary.com',
+      "example.com"
     ],
   },
   experimental: {

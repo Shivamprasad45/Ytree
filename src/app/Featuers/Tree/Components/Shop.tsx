@@ -87,7 +87,7 @@ export default function Shop() {
     initialPageParam: 1,
     staleTime: 5 * 60 * 1000, // Cache data for 5 minutes to prevent refetching on quick actions
   });
-
+  console.log(data, "treeInfo");
   const lastTreeElementRef = useCallback(
     (node: HTMLDivElement) => {
       if (isFetchingNextPage) return;
@@ -254,7 +254,7 @@ export default function Shop() {
             <Link href={`/TreeDetiles/${product._id}`} className="block h-full">
               <div className="relative aspect-square">
                 <Image
-                  src={`https://picsum.photos/id/${index + 800}/600/400`}
+                  src={product.imageURL}
                   alt={product.commonName}
                   fill
                   className="object-cover"
