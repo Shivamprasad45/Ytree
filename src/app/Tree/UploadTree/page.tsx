@@ -8,6 +8,8 @@ import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSelector } from "react-redux";
 import { Coords_Selector } from "@/app/Featuers/TreeOrder/TreeOrderSlice";
+import { UserSelector } from "@/app/Featuers/Auth/AuthSlice";
+import { useRouter } from "next/navigation";
 
 const Map = dynamic(() => import("../LogTree/Map"), {
   ssr: false,
@@ -15,6 +17,8 @@ const Map = dynamic(() => import("../LogTree/Map"), {
 });
 
 export default function UploadComponent() {
+  const user = useSelector(UserSelector);
+  const router = useRouter();
   const Plants_CurrentLocations = useSelector(Coords_Selector);
   const [
     Save_coords,
@@ -42,23 +46,26 @@ export default function UploadComponent() {
     e.preventDefault();
 
     console.log("Form Data Submitted:", formData);
-
-    try {
-      Save_coords({
-        imageURL: formData.imageUrl,
-        name: formData.name,
-        relation: formData.relation,
-        bio: formData.bio,
-        description: formData.description,
-        late: Plants_CurrentLocations?.late!,
-        long: Plants_CurrentLocations?.long!,
-        find_id: "defgdgdgdggddg",
-        UserId: "1234567890",
-        Plant_Addresses: Plants_CurrentLocations?.Address!,
-      });
-      console.log("Saved Plant Coordinates:");
-    } catch (error) {
-      console.error("Error saving plant coordinates:", error);
+    if (user?._id) {
+      try {
+        Save_coords({
+          imageURL: formData.imageUrl,
+          name: formData.name,
+          relation: formData.relation,
+          bio: formData.bio,
+          description: formData.description,
+          late: Plants_CurrentLocations?.late!,
+          long: Plants_CurrentLocations?.long!,
+          find_id: "defgdgdgdggddg",
+          UserId: user?._id,
+          Plant_Addresses: Plants_CurrentLocations?.Address!,
+        });
+        console.log("Saved Plant Coordinates:");
+      } catch (error) {
+        console.error("Error saving plant coordinates:", error);
+      }
+    } else {
+      router.push("/auth/login");
     }
   };
 

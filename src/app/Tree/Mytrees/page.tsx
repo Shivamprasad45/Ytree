@@ -1,7 +1,6 @@
 "use client";
 import MaxWidthRappers from "@/components/MaxWidthRapper";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import Image from "next/image";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import React, { useEffect } from "react";
 import { IPlantProfile } from "../../../../type";
 import Link from "next/link";
@@ -23,7 +22,6 @@ import { CalendarIcon, MapPinIcon, TreesIcon } from "lucide-react";
 
 const Page = () => {
   const user = useSelector(UserSelector);
-
   const {
     data: feature,
     isLoading,

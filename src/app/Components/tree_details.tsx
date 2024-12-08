@@ -25,7 +25,7 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
   const route = useRouter();
   const [AddPlants, { isLoading: isAddLoading }] = useAddCartMutation();
   //for user reload
-  console.log(PlantDetails, "adadadadadadadadadadadadadadad");
+
   const Addtocart = async () => {
     try {
       if (user?.user.id) {
