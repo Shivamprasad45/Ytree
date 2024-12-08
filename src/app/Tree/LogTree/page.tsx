@@ -65,7 +65,6 @@ const Logtrees = () => {
     Plaint_id: string;
   }) {
     const user = { _ID, Plaint_id, User_id };
-    console.log(user, "User");
 
     try {
       await Iplant(user);

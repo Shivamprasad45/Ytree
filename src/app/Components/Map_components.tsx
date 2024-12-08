@@ -77,15 +77,28 @@ function MapUpdater({
         }
 
         const marker = L.marker([coord.late, coord.long], { icon }).bindPopup(`
-          <div class="p-2">
-            <h3 class="font-bold">${coord.commonName}</h3>
-            <p><strong>Address:</strong> ${coord.Plant_Addresses}</p>
-            <p><strong>Conservationist:</strong> ${
-              userName
-                ? `${userName.firstName} ${userName.lastName}`
-                : "Unknown"
-            }</p>
-          </div>
+         <div class="p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+  <h3 class="text-xl font-bold text-gray-800 mb-2">${coord.commonName}</h3>
+  <p class="text-sm text-gray-600 mb-1">
+    <span class="font-semibold">Address:</span> ${coord.Plant_Addresses}
+  </p>
+   <p class="text-sm text-gray-600 mb-1">
+    <span class="font-semibold">Relation:</span> ${coord.relation}
+  </p>
+   <p class="text-sm text-gray-600 mb-1">
+    <span class="font-semibold">Name:</span> ${coord.bio}
+  </p>
+  <p class="text-sm text-gray-600">
+    <span class="font-semibold">Conservationist: </span> 
+    ${
+      userName
+        ? `<span class="text-green-600">${userName.firstName} ${userName.lastName}</span>`
+        : `<span class="text-red-600">${coord.name}</span>`
+    }
+    ${`<img src="${coord.imageURL}"/>`}
+  </p>
+</div>
+
         `);
 
         markers.addLayer(marker);

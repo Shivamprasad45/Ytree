@@ -183,14 +183,18 @@ export interface Plant_coords {
 
 export interface Enter_Plant_coords {
   find_id: string;
-  UserId: string;
-  Plant_id: string;
-  commonName: string;
+  UserId?: string;
+  Plant_id?: string;
+  commonName?: string;
   late: number;
   long: number;
   imageURL: string;
   Plant_Addresses: string;
-  subscription: CustomSubscription;
+  subscription?: CustomSubscription;
+  description?: string;
+  bio?: string;
+  name?: string;
+  relation?: string;
 }
 
 export interface Coords {
@@ -244,6 +248,10 @@ export interface Coordinate {
   Plant_Addresses: string;
   UserId: string;
   commonName: string;
+  imageURL: string;
+  bio: string;
+  relation: string;
+  name: string;
 }
 
 export interface All_Users {

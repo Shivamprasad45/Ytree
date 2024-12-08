@@ -12,9 +12,8 @@ import {
 import {
   EarthLockIcon,
   LucideMenu,
-  ShoppingBasket,
   TreesIcon,
-  UserCheck,
+  TrendingUpIcon,
   UserX2Icon,
 } from "lucide-react";
 import { ModeToggle } from "./Togglemode";
@@ -106,6 +105,17 @@ const Navbar = () => {
                 <TreesIcon className="w-5 h-5" />
               </span>
             </Link>
+            <Link
+              href="/Tree/UploadTree"
+              className="flex items-center space-x-2 hover:text-primary transition-colors"
+            >
+              <span className="relative">
+                <Badge variant="secondary" className="absolute -top-4 -right-2">
+                  {Total_cart_item}
+                </Badge>
+                <TrendingUpIcon className="w-5 h-5" />
+              </span>
+            </Link>
             {!user?.email ? (
               <Link href="/login">
                 <UserX2Icon className="w-5 h-5 hover:text-primary transition-colors" />
@@ -136,7 +146,7 @@ const Navbar = () => {
                 <SheetHeader>
                   <SheetTitle>Menu</SheetTitle>
                 </SheetHeader>
-                <div className="mt-4 space-y-4">
+                <div className="mt-4 space-y-4 flex-row space-x-4">
                   <Link
                     href="/About"
                     className="hover:text-primary transition-colors"

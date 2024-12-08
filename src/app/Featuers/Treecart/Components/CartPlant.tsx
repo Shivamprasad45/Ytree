@@ -84,7 +84,7 @@ export default function CartPage() {
                   >
                     <div className="w-24 h-24 relative">
                       <Image
-                        src={`https://picsum.photos/id/${index + 49}/200/300`}
+                        src={item.imageURL}
                         alt={item.commonName}
                         layout="fill"
                         objectFit="cover"

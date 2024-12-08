@@ -9,7 +9,18 @@ export async function POST(req: NextRequest) {
     // Fetch data from MongoDB
     const coordinatesFromDb = await Plants_coordinates.find(
       {},
-      { _id: 0, late: 1, long: 1, commonName: 1, UserId: 1, Plant_Addresses: 1 }
+      {
+        _id: 0,
+        late: 1,
+        long: 1,
+        commonName: 1,
+        UserId: 1,
+        Plant_Addresses: 1,
+        name: 1,
+        bio: 1,
+        relation: 1,
+        imageURL: 1,
+      }
     ).exec();
 
     // If no data found, return 404
