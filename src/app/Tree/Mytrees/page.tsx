@@ -23,7 +23,7 @@ import { useGetALL_coordsMutation } from "@/app/Featuers/Global/GlobeServices";
 
 const Page = () => {
   const user = useSelector(UserSelector);
-  const [getAllCoords, { data }] = useGetALL_coordsMutation();
+  const [getAllCoords, { data, isError: isErr }] = useGetALL_coordsMutation();
   const {
     data: feature,
     isLoading,
@@ -42,7 +42,7 @@ const Page = () => {
     );
   }
 
-  if (isError) {
+  if (isError && isErr) {
     return (
       <div className="pt-10 w-[80vw] h-[90vh] text-center items-center justify-center scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
         🙄 Oops you not plant any trees
@@ -56,9 +56,8 @@ const Page = () => {
     const timeDifference = currentTime - artworkAge;
     return Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
   };
-  console.log(data, "data");
 
-  const Err = data?.filter((i) => i.UserId === user?._id);
+  // const Err = data?.filter((i) => i.UserId === user?._id);
 
   return (
     <div>
