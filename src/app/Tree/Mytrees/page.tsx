@@ -19,9 +19,11 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { CalendarIcon, MapPinIcon, TreesIcon } from "lucide-react";
+import { useGetALL_coordsMutation } from "@/app/Featuers/Global/GlobeServices";
 
 const Page = () => {
   const user = useSelector(UserSelector);
+  const [getAllCoords, { data }] = useGetALL_coordsMutation();
   const {
     data: feature,
     isLoading,
@@ -29,6 +31,7 @@ const Page = () => {
     refetch,
   } = useGetMyTreeInfoBy_idQuery(user?._id!);
   useEffect(() => {
+    getAllCoords(); // Fetch all coordinates on mount
     refetch();
   }, []);
   if (isLoading) {
@@ -53,6 +56,9 @@ const Page = () => {
     const timeDifference = currentTime - artworkAge;
     return Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
   };
+  console.log(data, "data");
+
+  const Err = data?.filter((i) => i.UserId === user?._id);
 
   return (
     <div>
@@ -127,6 +133,30 @@ const Page = () => {
                     </Link>
                   </Card>
                 ))}
+            </div>
+          </ScrollArea>
+          <ScrollArea></ScrollArea>
+          <ScrollArea>
+            <div className="">
+              {data &&
+                data
+                  .filter((item) => item.UserId === user?._id)
+                  .map((filteredItem) => (
+                    <div key={filteredItem.name}>
+                      <CardContent className="flex-grow">
+                        <Link
+                          href={`/Tree/Aboutmytree/${filteredItem.find_id}`}
+                        >
+                          <img
+                            src={`${filteredItem.imageURL}`}
+                            className="w-full h-32 object-cover rounded-md"
+                          />
+                        </Link>
+                      </CardContent>
+                      <div className="">{filteredItem.UserId}</div>
+                      <div className="">{filteredItem.bio}</div>
+                    </div>
+                  ))}
             </div>
           </ScrollArea>
         </div>

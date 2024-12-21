@@ -173,12 +173,16 @@ export interface Plant_coords {
   UserId: string;
   Plant_id: string;
   commonName: string;
+  description: string;
   long: number;
   late: number;
   imageURL: string;
   Plant_Addresses: string;
   subscription: CustomSubscription;
-  lastWeatherState: LastWeatherState[]; // Array of weather states
+  lastWeatherState: LastWeatherState[];
+  bio?: string;
+  name?: string;
+  relation?: string; // Array of weather states
 }
 
 export interface Enter_Plant_coords {
@@ -243,6 +247,7 @@ export interface ContactFormResponse {
 }
 
 export interface Coordinate {
+  find_id: string;
   late: number;
   long: number;
   Plant_Addresses: string;

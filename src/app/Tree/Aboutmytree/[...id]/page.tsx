@@ -1,23 +1,38 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
 import { useAbout_my_treeQuery } from "@/app/Featuers/TreeOrder/TreeOrderServices";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { MapPin, Thermometer, Droplets, Wind } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { MapPin, Download, Leaf, Globe, Book, User } from "lucide-react";
 import { motion } from "framer-motion";
+import html2canvas from "html2canvas";
+import Link from "next/link";
 
-export default function Page({ params }: { params: { id: string } }) {
-  const { data, isLoading } = useAbout_my_treeQuery(params.id!);
+export default function EnhancedCertificate({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const { data: treeData, isLoading } = useAbout_my_treeQuery(params.id!);
+  const certificateRef = useRef<HTMLDivElement>(null);
+
+  const downloadCertificate = async () => {
+    if (certificateRef.current) {
+      const canvas = await html2canvas(certificateRef.current);
+      const image = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = image;
+      link.download = "Tree_Planting_Certificate.png";
+      link.click();
+    }
+  };
 
   if (isLoading) {
     return <LoadingSkeleton />;
   }
-
-  const weather = data?.lastWeatherState?.[0]?.weather?.[0];
-  const main = data?.lastWeatherState?.[0]?.main;
-  const temperatureInCelsius = main ? (main.temp - 273.15).toFixed(1) : null;
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
@@ -26,14 +41,14 @@ export default function Page({ params }: { params: { id: string } }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <Card className="mb-8 bg-gradient-to-br from-green-50 to-blue-50">
-          <CardHeader>
+        <Card className="mb-8 bg-gradient-to-br from-green-50 to-blue-50 shadow-lg">
+          <CardHeader className="text-center">
             <CardTitle className="text-3xl font-bold text-green-800">
               Thank you for your contribution!
             </CardTitle>
             <p className="text-muted-foreground">
               Your order has been placed. You will receive email confirmation
-              shortly .
+              shortly.
             </p>
           </CardHeader>
         </Card>
@@ -43,93 +58,123 @@ export default function Page({ params }: { params: { id: string } }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
+        className="relative"
       >
-        <Card className="overflow-hidden">
-          <CardHeader className="bg-green-700 text-white">
-            <CardTitle className="text-2xl font-semibold">
+        <Card className="overflow-hidden shadow-2xl" ref={certificateRef}>
+          <CardHeader className="bg-gradient-to-r from-green-600 to-green-800 text-white py-8">
+            <CardTitle className="text-3xl font-bold text-center">
               Certificate of Planting
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6 p-6">
-            <div className="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6">
-              <Image
-                src={"https://picsum.photos/id/27/200/300"}
-                width={200}
-                height={200}
-                className="rounded-lg shadow-md"
-                alt="Plant"
-              />
-              <div className="text-center md:text-left">
-                <h3 className="text-2xl font-bold text-green-800">
+          <CardContent className="space-y-8 p-8 bg-gradient-to-br from-green-50 to-blue-50">
+            <div className="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
+              <div className="relative">
+                <Image
+                  src={treeData?.imageURL!}
+                  width={250}
+                  height={250}
+                  className="rounded-lg shadow-md object-cover"
+                  alt="Planted Tree"
+                />
+                <div className="absolute -bottom-4 -right-4 bg-white rounded-full p-2 shadow-lg">
+                  <Leaf className="h-8 w-8 text-green-600" />
+                </div>
+              </div>
+              <div className="text-center md:text-left flex-1">
+                <h3 className="text-3xl font-bold text-green-800 mb-2">
                   Tree Planting Certificate
                 </h3>
-                <p className="text-lg text-green-600 font-semibold mt-2">
-                  You have funded the planting of 10 trees
+                <p className="text-xl text-green-700 font-semibold mt-2">
+                  {treeData?.name
+                    ? `Presented to: ${treeData.name}`
+                    : "You have funded the planting of a tree"}
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Order: {"1324WEet"}
+                  Order ID: {treeData?.find_id}
                 </p>
               </div>
             </div>
 
-            <div className="space-y-4">
-              <h4 className="text-xl font-semibold text-green-800">
+            <div className="space-y-6">
+              <h4 className="text-2xl font-semibold text-green-800 border-b border-green-200 pb-2">
                 Tree Details
               </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-b border-green-200 py-4">
-                <div>
-                  <p className="font-medium text-green-700">Tree Type</p>
-                  <p className="text-lg">{data?.commonName}</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white rounded-lg p-4 shadow-md">
+                  <p className="font-medium text-green-700 mb-1">Tree Type</p>
+                  <p className="text-xl">
+                    {treeData?.commonName || "Not specified"}
+                  </p>
                 </div>
-                <div>
-                  <p className="font-medium text-green-700">Planting Region</p>
-                  <p className="text-lg">{data?.Plant_Addresses}</p>
+                <div className="bg-white rounded-lg p-4 shadow-md">
+                  <p className="font-medium text-green-700 mb-1">
+                    Planting Region
+                  </p>
+                  <p className="text-xl">{treeData?.Plant_Addresses}</p>
                 </div>
               </div>
             </div>
 
-            <div className="flex items-start space-x-4">
-              <MapPin className="h-6 w-6 text-green-600 mt-1" />
+            <div className="flex items-start space-x-4 bg-white rounded-lg p-4 shadow-md">
+              <MapPin className="h-8 w-8 text-green-600 mt-1" />
               <div>
                 <p className="font-medium text-green-700">GPS Coordinates</p>
-                <p className="text-lg">
-                  {data?.long}, {data?.late}
+                <p className="text-xl">
+                  {treeData?.long}, {treeData?.late}
                 </p>
               </div>
             </div>
 
-            {weather && main && (
-              <div className="bg-blue-50 rounded-lg p-4 mt-4">
-                <h4 className="text-xl font-semibold text-blue-800 mb-3">
-                  Current Weather Conditions
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="flex items-center space-x-2">
-                    <Thermometer className="h-6 w-6 text-blue-600" />
-                    <div>
-                      <p className="font-medium text-blue-700">Temperature</p>
-                      <p className="text-lg">{temperatureInCelsius}°C</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Droplets className="h-6 w-6 text-blue-600" />
-                    <div>
-                      <p className="font-medium text-blue-700">Humidity</p>
-                      <p className="text-lg">{main.humidity}%</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Wind className="h-6 w-6 text-blue-600" />
-                    <div>
-                      <p className="font-medium text-blue-700">Weather</p>
-                      <p className="text-lg">{weather.description}</p>
-                    </div>
-                  </div>
+            {treeData?.description && (
+              <div className="bg-white rounded-lg p-4 shadow-md">
+                <div className="flex items-center mb-2">
+                  <Book className="h-6 w-6 text-green-600 mr-2" />
+                  <p className="font-medium text-green-700">Description</p>
                 </div>
+                <p className="text-gray-700">{treeData.description}</p>
               </div>
             )}
+
+            {treeData?.bio && (
+              <div className="bg-white rounded-lg p-4 shadow-md">
+                <div className="flex items-center mb-2">
+                  <User className="h-6 w-6 text-green-600 mr-2" />
+                  <p className="font-medium text-green-700">Bio</p>
+                </div>
+                <p className="text-gray-700">{treeData.bio}</p>
+              </div>
+            )}
+
+            {treeData?.relation && (
+              <div className="bg-white rounded-lg p-4 shadow-md">
+                <div className="flex items-center mb-2">
+                  <Link href={""} className="h-6 w-6 text-green-600 mr-2" />
+                  <p className="font-medium text-green-700">Relation</p>
+                </div>
+                <p className="text-gray-700">{treeData.relation}</p>
+              </div>
+            )}
+
+            <div className="text-center text-green-800 font-semibold">
+              <Globe className="inline-block h-6 w-6 mr-2" />
+              Thank you for contributing to a greener planet!
+            </div>
           </CardContent>
         </Card>
+
+        <motion.div
+          className="mt-6 text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8 }}
+        >
+          <Button
+            onClick={downloadCertificate}
+            className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
+          >
+            <Download className="mr-2 h-5 w-5" /> Download Certificate
+          </Button>
+        </motion.div>
       </motion.div>
     </div>
   );
@@ -140,46 +185,35 @@ function LoadingSkeleton() {
     <div className="container mx-auto px-4 py-8 max-w-4xl space-y-8">
       <Card>
         <CardHeader>
-          <Skeleton className="h-8 w-3/4" />
-          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-8 w-3/4 mx-auto" />
+          <Skeleton className="h-4 w-full mt-2" />
         </CardHeader>
       </Card>
       <Card>
         <CardHeader>
-          <Skeleton className="h-6 w-1/2" />
+          <Skeleton className="h-8 w-1/2 mx-auto" />
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="flex items-center space-x-4">
-            <Skeleton className="h-48 w-48 rounded-md" />
-            <div className="space-y-2">
-              <Skeleton className="h-6 w-40" />
-              <Skeleton className="h-4 w-60" />
-              <Skeleton className="h-4 w-32" />
+        <CardContent className="space-y-8">
+          <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-8">
+            <Skeleton className="h-64 w-64 rounded-lg" />
+            <div className="space-y-4 flex-1">
+              <Skeleton className="h-8 w-3/4" />
+              <Skeleton className="h-6 w-full" />
+              <Skeleton className="h-4 w-1/2" />
             </div>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-4">
             <Skeleton className="h-6 w-40" />
-            <div className="grid grid-cols-2 gap-4 border-t border-b py-4">
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-20" />
-                <Skeleton className="h-4 w-32" />
-              </div>
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-4 w-36" />
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Skeleton className="h-24 w-full rounded-lg" />
+              <Skeleton className="h-24 w-full rounded-lg" />
             </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <Skeleton className="h-5 w-5 rounded-full" />
-            <div className="space-y-2">
-              <Skeleton className="h-4 w-32" />
-              <Skeleton className="h-4 w-48" />
-            </div>
-          </div>
-          <Skeleton className="h-40 w-full rounded-lg" />
+          <Skeleton className="h-24 w-full rounded-lg" />
+          <Skeleton className="h-6 w-3/4 mx-auto" />
         </CardContent>
       </Card>
+      <Skeleton className="h-12 w-48 rounded-full mx-auto" />
     </div>
   );
 }

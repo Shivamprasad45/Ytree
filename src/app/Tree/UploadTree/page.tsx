@@ -10,13 +10,14 @@ import { useSelector } from "react-redux";
 import { Coords_Selector } from "@/app/Featuers/TreeOrder/TreeOrderSlice";
 import { UserSelector } from "@/app/Featuers/Auth/AuthSlice";
 import { useRouter } from "next/navigation";
-
+import shortid from "shortid";
 const Map = dynamic(() => import("../LogTree/Map"), {
   ssr: false,
   loading: () => <Skeleton className="h-64 w-full" />,
 });
 
 export default function UploadComponent() {
+  const id = shortid.generate();
   const user = useSelector(UserSelector);
   const router = useRouter();
   const Plants_CurrentLocations = useSelector(Coords_Selector);
@@ -56,7 +57,7 @@ export default function UploadComponent() {
           description: formData.description,
           late: Plants_CurrentLocations?.late!,
           long: Plants_CurrentLocations?.long!,
-          find_id: "defgdgdgdggddg",
+          find_id: id,
           UserId: user?._id,
           Plant_Addresses: Plants_CurrentLocations?.Address!,
         });

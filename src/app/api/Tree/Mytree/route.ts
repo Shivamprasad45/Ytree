@@ -21,7 +21,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     }
 
     // Fetch tree data from the collection
-    console.log(userId, "User_Id is working");
+
     const treeData = await Mytree.find({ UserId: userId });
 
     // Log the fetched data for debugging

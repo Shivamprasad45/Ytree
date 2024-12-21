@@ -41,6 +41,7 @@
     "clsx": "^2.1.1",
     "embla-carousel-react": "^8.1.3",
     "framer-motion": "^11.3.30",
+    "html2canvas": "^1.4.1",
     "jsonwebtoken": "^9.0.2",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",

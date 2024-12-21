@@ -12,6 +12,7 @@ export async function POST(req: NextRequest) {
       {
         _id: 0,
         late: 1,
+        find_id: 1,
         long: 1,
         commonName: 1,
         UserId: 1,
