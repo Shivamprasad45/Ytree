@@ -20,16 +20,21 @@ import {
 } from "@/components/ui/card";
 import { CalendarIcon, MapPinIcon, TreesIcon } from "lucide-react";
 import { useGetALL_coordsMutation } from "@/app/Featuers/Global/GlobeServices";
+import MapComponent from "@/app/Components/Mapregion";
 
 const Page = () => {
   const user = useSelector(UserSelector);
   const [getAllCoords, { data, isError: isErr }] = useGetALL_coordsMutation();
+
   const {
     data: feature,
     isLoading,
     isError,
     refetch,
   } = useGetMyTreeInfoBy_idQuery(user?._id!);
+
+  const Shoe_coords = data?.filter((i) => i.UserId === user?._id);
+
   useEffect(() => {
     getAllCoords(); // Fetch all coordinates on mount
     refetch();
@@ -64,102 +69,118 @@ const Page = () => {
       <MaxWidthRappers className="mt-3">
         <div className="container mx-auto p-4 max-w-6xl">
           <h1 className="text-3xl font-bold mb-6">My Trees</h1>
-          <ScrollArea className="h-[calc(100vh-150px)]">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {feature &&
-                feature.map((tree: IPlantProfile) => (
-                  <Card key={tree._id} className="flex flex-col">
-                    <Link
-                      href={
-                        tree.status === 3
-                          ? `/Tree/Aboutmytree/${tree.findtree_id}`
-                          : ""
-                      }
-                    >
-                      <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                          <TreesIcon className="h-5 w-5" />
-                          {tree.name}
-                        </CardTitle>
-                        <CardDescription className="flex items-center gap-2">
-                          <MapPinIcon className="h-4 w-4" />
-                          {tree.findtree_id}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent className="flex-grow">
-                        <img
-                          src={`https://images.unsplash.com/photo-1454425064867-5ba516caf601?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8cGxhbnR8fHx8fHwxNzE3NTgzMDI3&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080`}
-                          alt={`${tree.name} tree`}
-                          className="w-full h-32 object-cover rounded-md"
-                        />
-                      </CardContent>
-                      <CardFooter className="flex justify-between items-center">
-                        <div className="flex items-center gap-2">
-                          <CalendarIcon className="h-4 w-4" />
-                          <span className="text-sm text-muted-foreground">
-                            {tree.status === 3 && (
-                              <div className="text-neutral-400 text-sm font-bold font-['Inria_Sans'] leading-none">
-                                {getDaysOld(tree.age).toLocaleString()} days old
-                              </div>
-                            )}
-                          </span>
-                        </div>
-                        <Badge variant="secondary">
-                          {tree.status === 0 && (
-                            <div>
-                              <Badge>Pending</Badge>
-                            </div>
-                          )}
-                          {tree.status === 1 && (
-                            <div>
-                              <Badge>Shipping</Badge>
-                            </div>
-                          )}
-
-                          {tree.status === 2 && (
-                            <div>
-                              <Button>
-                                <Link
-                                  href={`/Tree/LogTree?id=${tree._id}&Plaintid=${tree.Plaintid}&userid=${tree.UserId}`}
-                                >
-                                  Planted
-                                </Link>
-                              </Button>
-                            </div>
-                          )}
-                        </Badge>
-                      </CardFooter>
-                    </Link>
-                  </Card>
-                ))}
-            </div>
-          </ScrollArea>
-          <ScrollArea></ScrollArea>
-          <ScrollArea>
-            <div className="">
-              {data &&
-                data
-                  .filter((item) => item.UserId === user?._id)
-                  .map((filteredItem) => (
-                    <div key={filteredItem.name}>
-                      <CardContent className="flex-grow">
-                        <Link
-                          href={`/Tree/Aboutmytree/${filteredItem.find_id}`}
-                        >
+          {feature && (
+            <ScrollArea className="h-[calc(100vh-150px)]">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {feature &&
+                  feature.map((tree: IPlantProfile) => (
+                    <Card key={tree._id} className="flex flex-col">
+                      <Link
+                        href={
+                          tree.status === 3
+                            ? `/Tree/Aboutmytree/${tree.findtree_id}`
+                            : ""
+                        }
+                      >
+                        <CardHeader>
+                          <CardTitle className="flex items-center gap-2">
+                            <TreesIcon className="h-5 w-5" />
+                            {tree.name}
+                          </CardTitle>
+                          <CardDescription className="flex items-center gap-2">
+                            <MapPinIcon className="h-4 w-4" />
+                            {tree.findtree_id}
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent className="flex-grow">
                           <img
-                            src={`${filteredItem.imageURL}`}
+                            src={`https://images.unsplash.com/photo-1454425064867-5ba516caf601?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8cGxhbnR8fHx8fHwxNzE3NTgzMDI3&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080`}
+                            alt={`${tree.name} tree`}
                             className="w-full h-32 object-cover rounded-md"
                           />
-                        </Link>
-                      </CardContent>
-                      <div className="">{filteredItem.UserId}</div>
-                      <div className="">{filteredItem.bio}</div>
-                    </div>
+                        </CardContent>
+                        <CardFooter className="flex justify-between items-center">
+                          <div className="flex items-center gap-2">
+                            <CalendarIcon className="h-4 w-4" />
+                            <span className="text-sm text-muted-foreground">
+                              {tree.status === 3 && (
+                                <div className="text-neutral-400 text-sm font-bold font-['Inria_Sans'] leading-none">
+                                  {getDaysOld(tree.age).toLocaleString()} days
+                                  old
+                                </div>
+                              )}
+                            </span>
+                          </div>
+                          <Badge variant="secondary">
+                            {tree.status === 0 && (
+                              <div>
+                                <Badge>Pending</Badge>
+                              </div>
+                            )}
+                            {tree.status === 1 && (
+                              <div>
+                                <Badge>Shipping</Badge>
+                              </div>
+                            )}
+
+                            {tree.status === 2 && (
+                              <div>
+                                <Button>
+                                  <Link
+                                    href={`/Tree/LogTree?id=${tree._id}&Plaintid=${tree.Plaintid}&userid=${tree.UserId}`}
+                                  >
+                                    Planted
+                                  </Link>
+                                </Button>
+                              </div>
+                            )}
+                          </Badge>
+                        </CardFooter>
+                      </Link>
+                    </Card>
                   ))}
+              </div>
+            </ScrollArea>
+          )}
+
+          <ScrollArea>
+            <div className="p-4 space-y-6 bg-gray-50 rounded-md shadow-lg">
+              {data &&
+                Shoe_coords?.map((filteredItem) => (
+                  <div
+                    key={filteredItem.name}
+                    className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-4"
+                  >
+                    <CardContent className="flex-grow">
+                      <Link
+                        href={`/Tree/Aboutmytree/${filteredItem.find_id}`}
+                        className="block group"
+                      >
+                        <img
+                          src={filteredItem.imageURL}
+                          alt={filteredItem.name}
+                          className="w-full h-32 object-cover rounded-md group-hover:scale-105 transition-transform duration-200"
+                        />
+                      </Link>
+                    </CardContent>
+                    <div className="mt-4">
+                      <h3 className="text-lg font-semibold text-gray-800">
+                        {filteredItem.name}
+                      </h3>
+                      <p className="text-sm text-gray-600 mt-2">
+                        {filteredItem.bio}
+                      </p>
+                    </div>
+                  </div>
+                ))}
             </div>
           </ScrollArea>
         </div>
       </MaxWidthRappers>
+      <div className="">
+        <h1 className="text-3xl font-bold mb-6">My Trees</h1>
+        <MapComponent data={Shoe_coords!} />
+      </div>
     </div>
   );
 };

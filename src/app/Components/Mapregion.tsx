@@ -1,8 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { Coordinate } from "../../../type";
 
 // Define your custom icon
 const customIcon = new L.Icon({
@@ -13,43 +14,13 @@ const customIcon = new L.Icon({
   popupAnchor: [1, -34],
 });
 
-interface MapProps {
-  searchQuery?: string; // Make searchQuery optional
-}
-
-const MapComponent: React.FC<MapProps> = ({ searchQuery }) => {
+const MapComponent = ({ data }: { data: Coordinate[] }) => {
   const [searchResult, setSearchResult] = useState<[number, number] | null>(
     null
   );
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!searchQuery) {
-        return; // Exit early if searchQuery is undefined or null
-      }
+  console.log(data, "search");
 
-      try {
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-            searchQuery
-          )}`
-        );
-        const data = await response.json();
-
-        if (data && data.length > 0) {
-          const { lat, lon } = data[0];
-          setSearchResult([parseFloat(lat), parseFloat(lon)]);
-        } else {
-          setSearchResult(null);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setSearchResult(null);
-      }
-    };
-
-    fetchData();
-  }, [searchQuery]);
   const MapViewUpdater: React.FC<{ center: [number, number] | null }> = ({
     center,
   }) => {
@@ -63,10 +34,35 @@ const MapComponent: React.FC<MapProps> = ({ searchQuery }) => {
 
     return null;
   };
+
+  const addMarkersWithPopup = (map: L.Map) => {
+    data?.forEach((coord) => {
+      const marker = L.marker([coord.late, coord.long], { icon: customIcon });
+      marker.bindPopup(`
+        <strong>${coord.commonName}</strong><br/>
+        ${coord.Plant_Addresses}<br/>
+        Latitude: ${coord.late}, Longitude: ${coord.long}
+      `);
+      marker.addTo(map);
+    });
+  };
+
+  const MarkersLayer = () => {
+    const map = useMap();
+
+    useEffect(() => {
+      if (map) {
+        addMarkersWithPopup(map);
+      }
+    }, [map]);
+
+    return null;
+  };
+
   return (
     <div>
       <MapContainer
-        center={[51.505, -0.09]} // Default center if searchResult is null or undefined
+        center={[51.505, -0.09]} // Default center
         zoom={5}
         style={{ height: "400px", width: "100%" }}
       >
@@ -74,15 +70,9 @@ const MapComponent: React.FC<MapProps> = ({ searchQuery }) => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-        <MapViewUpdater center={searchResult!} />
-        {searchResult && (
-          <Marker position={searchResult} icon={customIcon}>
-            <Popup>
-              Searched Location: <br />
-              Latitude: {searchResult[0]}, Longitude: {searchResult[1]}
-            </Popup>
-          </Marker>
-        )}
+        {data && <MapViewUpdater center={[data[0].late, data[0].long]} />}
+
+        <MarkersLayer />
       </MapContainer>
     </div>
   );
