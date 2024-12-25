@@ -10,6 +10,7 @@ import { useGetMyTreeInfoBy_idQuery } from "@/app/Featuers/TreeOrder/TreeOrderSe
 import { useSelector } from "react-redux";
 import { UserSelector } from "@/app/Featuers/Auth/AuthSlice";
 import Loading from "@/app/Loading/Loading";
+import dynamic from "next/dynamic";
 import {
   CardFooter,
   Card,
@@ -20,9 +21,13 @@ import {
 } from "@/components/ui/card";
 import { CalendarIcon, MapPinIcon, TreesIcon } from "lucide-react";
 import { useGetALL_coordsMutation } from "@/app/Featuers/Global/GlobeServices";
-import MapComponent from "@/app/Components/Mapregion";
-import Image from "next/image";
 
+import Image from "next/image";
+import { Skeleton } from "@/components/ui/skeleton";
+const MapComponent = dynamic(() => import("@/app/Components/Mapregion"), {
+  ssr: false,
+  loading: () => <Skeleton className="h-64 w-full" />,
+});
 const Page = () => {
   const user = useSelector(UserSelector);
   const [getAllCoords, { data, isError: isErr }] = useGetALL_coordsMutation();
