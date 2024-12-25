@@ -81,6 +81,20 @@ const Navbar = () => {
               </span>
               <span>Cart</span>
             </Link>
+            <Link
+              href="/Tree/UploadTree"
+              className="flex items-center space-x-2 hover:text-primary transition-colors"
+            >
+              <span className="relative">
+                <Badge
+                  variant="secondary"
+                  className="absolute -top-4 -right-2 text-[6px] text-red-500"
+                >
+                  {"New"}
+                </Badge>
+                <TrendingUpIcon className="w-5 h-5" />
+              </span>
+            </Link>
             {user?.email ? (
               <Button onClick={() => signOut()}>Logout</Button>
             ) : (
@@ -110,8 +124,11 @@ const Navbar = () => {
               className="flex items-center space-x-2 hover:text-primary transition-colors"
             >
               <span className="relative">
-                <Badge variant="secondary" className="absolute -top-4 -right-2">
-                  {Total_cart_item}
+                <Badge
+                  variant="secondary"
+                  className="absolute -top-4 -right-2 text-[6px] text-red-500"
+                >
+                  {"New"}
                 </Badge>
                 <TrendingUpIcon className="w-5 h-5" />
               </span>

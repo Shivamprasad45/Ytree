@@ -73,7 +73,7 @@ export default function Lefttab() {
   }
 
   return (
-    <div className="flex flex-col h-full border-r bg-background">
+    <div className="flex flex-col h-[40vh] border-r bg-background">
       <div className="pt-6 pr-3 pl-3 pb-3">
         {user?.Username ? (
           <div className="flex items-center space-x-4">

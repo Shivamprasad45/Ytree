@@ -19,8 +19,6 @@ const MapComponent = ({ data }: { data: Coordinate[] }) => {
     null
   );
 
-  console.log(data, "search");
-
   const MapViewUpdater: React.FC<{ center: [number, number] | null }> = ({
     center,
   }) => {

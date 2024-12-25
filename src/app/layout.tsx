@@ -61,7 +61,7 @@ export default function RootLayout({
               <Navbar />
               <main className="flex flex-col md:flex-row w-full overflow-hidden">
                 {/* Left */}
-                <div className="hidden md:flex md:fixed md:h-full md:w-64">
+                <div className="hidden  md:flex md:fixed md:h-full md:w-64">
                   <Lefttab />
                 </div>
 
@@ -72,8 +72,8 @@ export default function RootLayout({
                   </MaxWidthRappers>
                 </div>
               </main>
-              <div className="pt-4">
-                <Footer />
+              <div className="pt-4 ">
+                <Footer />{" "}
               </div>
             </div>
           </MaxWidthRappers>

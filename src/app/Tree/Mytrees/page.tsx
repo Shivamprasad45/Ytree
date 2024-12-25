@@ -21,6 +21,7 @@ import {
 import { CalendarIcon, MapPinIcon, TreesIcon } from "lucide-react";
 import { useGetALL_coordsMutation } from "@/app/Featuers/Global/GlobeServices";
 import MapComponent from "@/app/Components/Mapregion";
+import Image from "next/image";
 
 const Page = () => {
   const user = useSelector(UserSelector);
@@ -144,7 +145,7 @@ const Page = () => {
           )}
 
           <ScrollArea>
-            <div className="p-4 space-y-6 bg-gray-50 rounded-md shadow-lg">
+            <div className="p-4 space-y-6 bg-gray-50 rounded-md shadow-lg ">
               {data &&
                 Shoe_coords?.map((filteredItem) => (
                   <div
@@ -156,10 +157,12 @@ const Page = () => {
                         href={`/Tree/Aboutmytree/${filteredItem.find_id}`}
                         className="block group"
                       >
-                        <img
+                        <Image
                           src={filteredItem.imageURL}
                           alt={filteredItem.name}
                           className="w-full h-32 object-cover rounded-md group-hover:scale-105 transition-transform duration-200"
+                          width={200}
+                          height={200}
                         />
                       </Link>
                     </CardContent>
@@ -178,8 +181,10 @@ const Page = () => {
         </div>
       </MaxWidthRappers>
       <div className="">
-        <h1 className="text-3xl font-bold mb-6">My Trees</h1>
-        <MapComponent data={Shoe_coords!} />
+        <div className="h-[500px] w-full rounded-md overflow-hidden">
+          <h1 className="text-3xl font-bold mb-6">My Trees coords</h1>{" "}
+          <MapComponent data={Shoe_coords!} />
+        </div>
       </div>
     </div>
   );
