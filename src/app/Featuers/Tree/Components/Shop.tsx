@@ -87,7 +87,7 @@ export default function Shop() {
     initialPageParam: 1,
     staleTime: 5 * 60 * 1000, // Cache data for 5 minutes to prevent refetching on quick actions
   });
-  console.log(data, "treeInfo");
+
   const lastTreeElementRef = useCallback(
     (node: HTMLDivElement) => {
       if (isFetchingNextPage) return;
@@ -173,7 +173,7 @@ export default function Shop() {
   }
 
   return (
-    <div className="py-4 px-4 sm:px-6 lg:px-8">
+    <div className="py-4 min-h-[90vh] px-4 sm:px-6 lg:px-8">
       <h1 className="text-2xl font-bold mb-4 text-center">Discover Plants</h1>
 
       <div className="mb-4 flex items-center gap-2">
@@ -190,6 +190,7 @@ export default function Shop() {
             size={18}
           />
         </div>
+
         <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
           <SheetTrigger asChild>
             <Button variant="outline" size="icon">
@@ -239,7 +240,11 @@ export default function Shop() {
           </SheetContent>
         </Sheet>
       </div>
-
+      {filteredAndSortedTrees.length === 0 && (
+        <div className="flex items-center justify-center h-[60vh]">
+          <p className="text-gray-500">No plants found</p>
+        </div>
+      )}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {filteredAndSortedTrees.map((product: TreeInfo, index: number) => (
           <Card
@@ -281,8 +286,6 @@ export default function Shop() {
           </Card>
         ))}
       </div>
-
-      {/* {isFetchingNextPage && <ShopSkeleton />} */}
     </div>
   );
 }

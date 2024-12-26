@@ -185,7 +185,6 @@ export default function ContactPage() {
                             type="text"
                             id="name"
                             name="name"
-                            required
                             className="w-full"
                           />
                         </motion.div>
@@ -205,7 +204,6 @@ export default function ContactPage() {
                             type="email"
                             id="email"
                             name="email"
-                            required
                             className="w-full"
                           />
                         </motion.div>
@@ -225,7 +223,6 @@ export default function ContactPage() {
                             id="message"
                             name="message"
                             rows={4}
-                            required
                             className="w-full"
                           />
                         </motion.div>

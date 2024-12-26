@@ -27,7 +27,7 @@ export const menuItems = [
     id: 2,
     icon: <MessageCircleCodeIcon size={20} />,
     label: "Message",
-    path: "/Tree/Shop",
+    path: "/Tree/Message",
   },
   {
     id: 3,
