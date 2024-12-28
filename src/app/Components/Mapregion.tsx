@@ -35,7 +35,7 @@ const MapComponent = ({ data }: { data: Coordinate[] }) => {
 
   const addMarkersWithPopup = (map: L.Map) => {
     data?.forEach((coord) => {
-      const marker = L.marker([coord.late, coord.long], { icon: customIcon });
+      const marker = L.marker([coord.late!, coord.long!], { icon: customIcon });
       marker.bindPopup(`
         <strong>${coord.commonName}</strong><br/>
         ${coord.Plant_Addresses}<br/>

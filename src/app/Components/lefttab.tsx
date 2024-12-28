@@ -88,7 +88,7 @@ export default function Lefttab() {
             </Avatar>
             <div className="space-y-1">
               <h2 className="text-sm font-semibold">
-                {user.Username.slice(0, 8)}
+                {user.Username.slice(0, 8) + "..."}
               </h2>
               <p className="text-xs text-muted-foreground">
                 {user.email.slice(0, 10)}

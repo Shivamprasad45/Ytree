@@ -94,7 +94,7 @@ const Homes = () => {
                     variant="outline"
                     className=" border-white  text-black hover:text-white hover:bg-green-800 "
                   >
-                    Learn More
+                    <Link href={`Tree/Learnmore`}>Learn More</Link>
                   </Button>
                 </motion.div>
               </div>

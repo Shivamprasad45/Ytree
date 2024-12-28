@@ -149,7 +149,7 @@ export default function ContactPage() {
                     transition={{ delay: 0.6, duration: 0.5 }}
                   >
                     <Image
-                      src="/placeholder.svg?height=200&width=300"
+                      src="https://picsum.photos/300/200"
                       alt="Contact illustration"
                       width={300}
                       height={200}
@@ -275,18 +275,18 @@ export default function ContactPage() {
           <h2 className="text-3xl font-bold mb-6 text-center text-primary">
             Our Location
           </h2>
-          <Card>
+          <Card className="shadow-lg">
             <CardContent className="p-0">
               <div className="aspect-video relative">
                 <Image
-                  src="/placeholder.svg?height=400&width=800"
+                  src="https://picsum.photos/id/238/200/300"
                   alt="Our Location"
                   layout="fill"
                   objectFit="cover"
                   className="rounded-t-lg"
                 />
               </div>
-              <div className="p-6">
+              <div className="p-6 bg-background">
                 <p className="text-lg leading-7 text-muted-foreground text-center">
                   Visit us at our main office located in the heart of the city.
                   We are easily accessible and always ready to welcome you.

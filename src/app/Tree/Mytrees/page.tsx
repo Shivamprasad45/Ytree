@@ -61,6 +61,15 @@ const Page = () => {
     );
   }
 
+  if (feature === undefined) {
+    console.log("ok");
+    return (
+      <div className="pt-10 w-[80vw] h-[90vh] text-center items-center justify-center scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+        🙄 Oops you not plant any trees
+      </div>
+    );
+  }
+
   const getDaysOld = (age: string | number | Date) => {
     const artworkAge = new Date(age).getTime();
     const currentTime = Date.now();
@@ -150,7 +159,7 @@ const Page = () => {
           )}
 
           <ScrollArea>
-            <div className="p-4 space-y-6 bg-gray-50 rounded-md shadow-lg ">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 bg-gray-50 rounded-md shadow-lg">
               {data &&
                 Shoe_coords?.map((filteredItem) => (
                   <div
@@ -185,12 +194,14 @@ const Page = () => {
           </ScrollArea>
         </div>
       </MaxWidthRappers>
-      <div className="">
-        <div className="h-[500px] w-full rounded-md overflow-hidden">
-          <h1 className="text-3xl font-bold mb-6">My Trees coords</h1>{" "}
-          <MapComponent data={Shoe_coords!} />
+      {Shoe_coords?.length !== 0 && (
+        <div className="">
+          <div className="h-[500px] w-full rounded-md overflow-hidden">
+            <h1 className="text-3xl font-bold mb-6">My Trees coords</h1>{" "}
+            {Shoe_coords?.length !== 0 && <MapComponent data={Shoe_coords!} />}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

@@ -78,7 +78,9 @@ function MapUpdater({
 
         const marker = L.marker([coord.late, coord.long], { icon }).bindPopup(`
          <div class="p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-  <h3 class="text-xl font-bold text-gray-800 mb-2">${coord.commonName}</h3>
+  <h3 class="text-xl font-bold text-gray-800 mb-2">${`${
+    coord.commonName === undefined ? "" : coord.commonName
+  }`}</h3>
   <p class="text-sm text-gray-600 mb-1">
     <span class="font-semibold">Address:</span> ${coord.Plant_Addresses}
   </p>

@@ -55,10 +55,10 @@ export default function MessagePage() {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <Card className="w-full max-w-2xl mx-auto">
+    <div className="container mx-auto p-4 dark:bg-gray-900">
+      <Card className="w-full max-w-2xl mx-auto dark:bg-gray-800">
         <CardHeader>
-          <CardTitle>Messages</CardTitle>
+          <CardTitle className="dark:text-gray-100">Messages</CardTitle>
         </CardHeader>
         <CardContent>
           <ScrollArea className="h-[400px] w-full pr-4">
@@ -67,14 +67,14 @@ export default function MessagePage() {
                 key={message.id}
                 className={`mb-4 p-3 rounded-lg ${
                   message.sender === "user"
-                    ? "bg-blue-100 ml-auto"
-                    : "bg-gray-100"
+                    ? "bg-blue-100 dark:bg-blue-900 ml-auto"
+                    : "bg-gray-100 dark:bg-gray-700"
                 } max-w-[80%] ${
                   message.sender === "user" ? "text-right" : "text-left"
                 }`}
               >
-                <p>{message.text}</p>
-                <small className="text-gray-500">
+                <p className="dark:text-gray-100">{message.text}</p>
+                <small className="text-gray-500 dark:text-gray-400">
                   {message.timestamp.toLocaleTimeString()}
                 </small>
               </div>
@@ -86,7 +86,7 @@ export default function MessagePage() {
             placeholder="Type your message here..."
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            className="w-full"
+            className="w-full dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400"
           />
           <Button onClick={handleSendMessage} className="w-full">
             Send Message
