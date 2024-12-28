@@ -61,23 +61,19 @@ const Page = () => {
     );
   }
 
-  if (feature === undefined) {
-    console.log("ok");
+  if (Shoe_coords === undefined) {
     return (
       <div className="pt-10 w-[80vw] h-[90vh] text-center items-center justify-center scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
         🙄 Oops you not plant any trees
       </div>
     );
   }
-
   const getDaysOld = (age: string | number | Date) => {
     const artworkAge = new Date(age).getTime();
     const currentTime = Date.now();
     const timeDifference = currentTime - artworkAge;
     return Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
   };
-
-  // const Err = data?.filter((i) => i.UserId === user?._id);
 
   return (
     <div>
