@@ -3,6 +3,7 @@
 import {
   ContactRoundIcon,
   Globe,
+  Home,
   ListTree,
   MessageCircleCodeIcon,
   TreePalm,
@@ -23,6 +24,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 export const menuItems = [
   { id: 1, icon: <TreePalm size={20} />, label: "Trees", path: "/Tree/Shop" },
   { id: 6, icon: <TreesIcon size={20} />, label: "Cart", path: "/Tree/Cart" },
+  {
+    id: 8,
+    icon: <Home size={20} />,
+    label: "Home",
+    path: "/",
+  },
   {
     id: 2,
     icon: <MessageCircleCodeIcon size={20} />,

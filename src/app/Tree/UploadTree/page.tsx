@@ -104,6 +104,9 @@ export default function EnhancedUploadComponent() {
       <CardHeader>
         <CardTitle>Plant Information</CardTitle>
       </CardHeader>
+      <div className="h-64">
+        <Map />
+      </div>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -115,7 +118,7 @@ export default function EnhancedUploadComponent() {
                   <FormLabel>Description</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Describe the plant or the planting experience"
+                      placeholder="Write a description of the plant"
                       className="resize-none"
                       {...field}
                     />
@@ -228,15 +231,7 @@ export default function EnhancedUploadComponent() {
               )}
             />
 
-            <div className="h-64">
-              <Map />
-            </div>
-
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={isLoading_coords}
-            >
+            <Button className="w-full" disabled={isLoading_coords}>
               {isLoading_coords ? "Saving..." : "Submit"}
             </Button>
           </form>

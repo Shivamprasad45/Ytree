@@ -11,8 +11,8 @@ import { Use_current_location } from "@/app/Featuers/TreeOrder/TreeOrderSlice";
 
 // Create a custom icon
 const customIcon = new L.Icon({
-  iconUrl: "/Map_icon/pin.webp",
-  iconSize: [25, 41], // Size of the icon
+  iconUrl: "/logo.png",
+  iconSize: [100, 100], // Size of the icon
   iconAnchor: [12, 41], // Point of the icon which will correspond to marker's location
   popupAnchor: [1, -34], // Point from which the popup should open relative to the iconAnchor
   shadowUrl: "/Map_icon/marker-shadow.webp",
@@ -41,9 +41,7 @@ const Map: React.FC = () => {
             position.coords.latitude,
             position.coords.longitude,
           ];
-          console.log(coords[0], "long");
-          console.log(coords[1], "late");
-          console.log(coords, "coords");
+
           setCurrentLocation(coords);
 
           // Fetch area information for the current location
@@ -74,7 +72,7 @@ const Map: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col items-center">
       <MapContainer
         center={[51.505, -0.09]}
         zoom={13}
@@ -102,7 +100,7 @@ const Map: React.FC = () => {
 
       {/* Button to use current location */}
 
-      <div className="pt-3 pl-32 ">
+      <div className="mt-2 ">
         <Button onClick={handleMapClick}>Use current location</Button>
       </div>
     </div>

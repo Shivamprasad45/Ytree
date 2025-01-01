@@ -57,23 +57,23 @@ export default function RootLayout({
         <Providers>
           <Toaster />
           <MaxWidthRappers>
-            <div>
+            <div className="flex flex-col min-h-screen">
               <Navbar />
-              <main className="flex flex-col md:flex-row w-full overflow-hidden">
+              <main className="flex flex-col md:flex-row w-full flex-grow overflow-hidden">
                 {/* Left */}
-                <div className="hidden  md:flex md:fixed md:h-full md:w-64">
+                <div className="hidden md:flex md:fixed md:h-[calc(100vh-64px)] md:w-64 top-16">
                   <Lefttab />
                 </div>
 
                 {/* Middle */}
-                <div className="flex-grow md:ml-64">
+                <div className="flex-grow md:ml-64 pt-16">
                   <MaxWidthRappers className="mx-auto">
                     {children}
                   </MaxWidthRappers>
                 </div>
               </main>
-              <div className="pt-4 ">
-                <Footer />{" "}
+              <div className="mt-auto">
+                <Footer />
               </div>
             </div>
           </MaxWidthRappers>

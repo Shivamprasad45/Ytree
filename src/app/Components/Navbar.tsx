@@ -45,8 +45,8 @@ const Navbar = () => {
     cartdata && cartdata?.reduce((a, b) => a + b.quantity, 0);
 
   return (
-    <nav className="sticky top-0 z-50 border-b mb-2 bg-background">
-      <div className="container mx-auto px-4 py-1 flex items-center justify-between">
+    <nav className="sticky top-0 z-50 border-b mb-2 bg-background/80 backdrop-blur-sm transition-all">
+      <div className="container mx-auto px-4 py-1 flex items-center justify-between transition-all">
         <ConnectionStatus />
         <Link href={"/"} className="flex items-center space-x-2 justify-center">
           <Image
