@@ -61,17 +61,17 @@ export default function ContactPage() {
   const contactInfo = [
     {
       icon: <MapPin className="w-6 h-6" />,
-      text: "123 Business Ave, City, Country",
+      text: "A-12, SG Highway, Ahmedabad, Gujarat, India",
     },
-    { icon: <Mail className="w-6 h-6" />, text: "contact@example.com" },
-    { icon: <Phone className="w-6 h-6" />, text: "+1 (555) 123-4567" },
+    { icon: <Mail className="w-6 h-6" />, text: "vanagrow@gmail.com" },
+    { icon: <Phone className="w-6 h-6" />, text: "+91 8303367981" },
   ];
 
   return (
     <MaxWidthRappers>
       <Head>
         {/* Open Graph Meta Tags */}
-        <meta property="og:title" content="Contact Us - Ytree" />
+        <meta property="og:title" content="Contact Us - Vanagrow" />
         <meta
           property="og:description"
           content="Get in touch with us for any queries or support. We are here to help you."
@@ -85,7 +85,7 @@ export default function ContactPage() {
 
         {/* Twitter Card Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Contact Us - Ytree" />
+        <meta name="twitter:title" content="Contact Us - Vanagrow" />
         <meta
           name="twitter:description"
           content="Get in touch with us for any queries or support. We are here to help you."
