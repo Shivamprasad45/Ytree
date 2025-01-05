@@ -21,6 +21,7 @@ export async function POST(req: NextRequest) {
         bio: 1,
         relation: 1,
         imageURL: 1,
+        verifed: 1,
       }
     ).exec();
 

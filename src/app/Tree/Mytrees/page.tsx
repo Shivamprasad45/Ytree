@@ -40,7 +40,7 @@ const Page = () => {
   } = useGetMyTreeInfoBy_idQuery(user?._id!);
 
   const Shoe_coords = data?.filter((i) => i.UserId === user?._id);
-
+  console.log(Shoe_coords, "selected");
   useEffect(() => {
     getAllCoords(); // Fetch all coordinates on mount
     refetch();
@@ -162,28 +162,54 @@ const Page = () => {
                     key={filteredItem.name}
                     className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-4"
                   >
-                    <CardContent className="flex-grow">
-                      <Link
-                        href={`/Tree/Aboutmytree/${filteredItem.find_id}`}
-                        className="block group"
-                      >
-                        <Image
-                          src={filteredItem.imageURL}
-                          alt={filteredItem.name}
-                          className="w-full h-32 object-cover rounded-md group-hover:scale-105 transition-transform duration-200"
-                          width={200}
-                          height={200}
-                        />
-                      </Link>
-                    </CardContent>
-                    <div className="mt-4">
-                      <h3 className="text-lg font-semibold text-gray-800">
-                        {filteredItem.name}
-                      </h3>
-                      <p className="text-sm text-gray-600 mt-2">
-                        {filteredItem.bio}
-                      </p>
-                    </div>
+                    {filteredItem.verifed ? (
+                      <div className="">
+                        <CardContent className="flex-grow">
+                          <Link
+                            href={`/Tree/Aboutmytree/${filteredItem.find_id}`}
+                            className="block group"
+                          >
+                            <Image
+                              src={filteredItem.imageURL}
+                              alt={filteredItem.name}
+                              className="w-full h-32 object-cover rounded-md group-hover:scale-105 transition-transform duration-200"
+                              width={200}
+                              height={200}
+                            />
+                          </Link>
+                        </CardContent>
+                        <div className="mt-4">
+                          <h3 className="text-lg font-semibold text-gray-800">
+                            {filteredItem.name}
+                          </h3>
+                          <p className="text-sm text-gray-600 mt-2">
+                            {filteredItem.bio}
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-center">
+                        <CardContent className="flex-grow">
+                          <Link
+                            href={`/Tree/Aboutmytree/${filteredItem.find_id}`}
+                            className="block group"
+                          >
+                            <Image
+                              src={filteredItem.imageURL}
+                              alt={filteredItem.name}
+                              className="w-full h-32 object-cover rounded-md group-hover:scale-105 transition-transform duration-200"
+                              width={200}
+                              height={200}
+                            />
+                          </Link>
+                        </CardContent>
+                        <div className="">
+                          <h3 className="text-lg font-semibold text-gray-800">
+                            Not verifed yet 🤔
+                          </h3>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
             </div>

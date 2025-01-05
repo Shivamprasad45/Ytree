@@ -22,14 +22,15 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 export const menuItems = [
-  { id: 1, icon: <TreePalm size={20} />, label: "Trees", path: "/Tree/Shop" },
-  { id: 6, icon: <TreesIcon size={20} />, label: "Cart", path: "/Tree/Cart" },
   {
     id: 8,
     icon: <Home size={20} />,
     label: "Home",
     path: "/",
   },
+  { id: 1, icon: <TreePalm size={20} />, label: "Trees", path: "/Tree/Shop" },
+  { id: 6, icon: <TreesIcon size={20} />, label: "Cart", path: "/Tree/Cart" },
+
   {
     id: 2,
     icon: <MessageCircleCodeIcon size={20} />,
@@ -80,7 +81,7 @@ export default function Lefttab() {
   }
 
   return (
-    <div className="flex flex-col h-[40vh] border-r bg-background">
+    <div className="flex flex-col h-[55vh] border-r bg-background">
       <div className="pt-6 pr-3 pl-3 pb-3">
         {user?.Username ? (
           <div className="flex items-center space-x-4">

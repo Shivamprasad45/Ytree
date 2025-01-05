@@ -81,13 +81,18 @@ export default function EnhancedCertificate({
                   transition={{ delay: 0.2, duration: 0.4 }}
                   className="relative"
                 >
-                  <Image
-                    src={treeData?.imageURL || "/placeholder.svg"}
-                    width={250}
-                    height={250}
-                    className="rounded-full shadow-lg object-cover border-4 border-emerald-500"
-                    alt="Planted Tree"
-                  />
+                  {
+                    <Image
+                      src={
+                        (treeData?.verifed && treeData?.imageURL) ||
+                        "/placeholder.svg"
+                      }
+                      width={250}
+                      height={250}
+                      className="rounded-full shadow-lg object-cover border-4 border-emerald-500"
+                      alt=" Planted Tree"
+                    />
+                  }
                   <div className="absolute -bottom-4 -right-4 bg-emerald-500 rounded-full p-3 shadow-lg">
                     <Leaf className="h-8 w-8 text-white" />
                   </div>

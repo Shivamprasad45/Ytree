@@ -31,6 +31,7 @@ export interface UserMessage {
   success: boolean;
   error: string;
 }
+
 export interface TreeInfo {
   _id: string;
   commonName: string;
@@ -182,7 +183,9 @@ export interface Plant_coords {
   lastWeatherState: LastWeatherState[];
   bio?: string;
   name?: string;
-  relation?: string; // Array of weather states
+  relation?: string;
+  verifed: boolean;
+  // Array of weather states
 }
 
 export interface Enter_Plant_coords {
@@ -257,6 +260,7 @@ export interface Coordinate {
   bio: string;
   relation: string;
   name: string;
+  verifed: boolean;
 }
 
 export interface All_Users {

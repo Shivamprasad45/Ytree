@@ -63,6 +63,11 @@ const Plants_coordinate_Schema = new Schema({
     type: [String],
     required: false, // Preserved
   },
+  verifed: {
+    default: false,
+    type: Boolean,
+    required: false, // Added
+  },
 });
 
 // Check if the model already exists to prevent overwriting

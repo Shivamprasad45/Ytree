@@ -79,16 +79,20 @@ function MapUpdater({
         const marker = L.marker([coord.late, coord.long], { icon }).bindPopup(`
          <div class="p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
   <h3 class="text-xl font-bold text-gray-800 mb-2">${`${
-    coord.commonName === undefined ? "" : coord.commonName
+    coord.commonName === undefined ? coord.name : coord.commonName
   }`}</h3>
   <p class="text-sm text-gray-600 mb-1">
     <span class="font-semibold">Address:</span> ${coord.Plant_Addresses}
   </p>
    <p class="text-sm text-gray-600 mb-1">
-    <span class="font-semibold">Relation:</span> ${coord.relation}
+    <span class="font-semibold">Relation:</span> ${
+      coord.relation === undefined ? "" : coord.relation
+    }
   </p>
    <p class="text-sm text-gray-600 mb-1">
-    <span class="font-semibold">Name:</span> ${coord.bio}
+    <span class="font-semibold">Name:</span> ${
+      coord.bio === undefined ? "" : coord.bio
+    }
   </p>
   <p class="text-sm text-gray-600">
     <span class="font-semibold">Conservationist: </span> 
@@ -282,7 +286,7 @@ export default function Component() {
                     alt=""
                     className="rounded-full"
                   />
-                  <span>{item.commonName}</span>
+                  <span>{item.commonName || item.name}</span>
                 </Button>
               ))}
               <Button variant="outline" className="flex items-center gap-2">
@@ -371,7 +375,7 @@ export default function Component() {
                   }
                 >
                   <Trees className="w-4 h-4 text-green-500" />
-                  {r.commonName}
+                  {r.commonName || r.name}
                 </Button>
               ))}
             </CardFooter>

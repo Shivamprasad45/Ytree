@@ -49,7 +49,6 @@ export async function GET(req: NextRequest) {
     // Validate the id parameter
 
     const Coords = await Plants_coordinates.findOne({ find_id: id });
-    console.log(Coords, "coords");
 
     if (!Coords) {
       return NextResponse.json({ error: "not found" }, { status: 404 });
