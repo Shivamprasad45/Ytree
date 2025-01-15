@@ -57,6 +57,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(Coords);
   } catch (error: any) {
     console.error("Error fetching tree details:", error);
+
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

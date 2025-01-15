@@ -50,7 +50,7 @@ export default function EnhancedCertificate({
   }
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-4xl">
+    <div className="container mx-auto px-4 py-12 max-w-3xl">
       <AnimatePresence>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -64,9 +64,9 @@ export default function EnhancedCertificate({
             ref={certificateRef}
           >
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-emerald-500/20 to-teal-500/20 z-0" />
-            <CardContent className="relative z-10 p-8 space-y-8">
+            <CardContent className="relative z-10 p-6 space-y-6">
               <div className="text-center space-y-2">
-                <h1 className="text-4xl font-extrabold text-emerald-800 tracking-tight">
+                <h1 className="text-3xl font-extrabold text-emerald-800 tracking-tight">
                   Certificate of Tree Planting
                 </h1>
                 <p className="text-emerald-600 font-medium">
@@ -74,31 +74,29 @@ export default function EnhancedCertificate({
                 </p>
               </div>
 
-              <div className="flex flex-col md:flex-row items-center gap-8">
+              <div className="flex flex-col md:flex-row items-center gap-6">
                 <motion.div
                   initial={{ scale: 0.9, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: 0.2, duration: 0.4 }}
                   className="relative"
                 >
-                  {
-                    <Image
-                      src={
-                        (treeData?.verifed && treeData?.imageURL) ||
-                        "/placeholder.svg"
-                      }
-                      width={250}
-                      height={250}
-                      className="rounded-full shadow-lg object-cover border-4 border-emerald-500"
-                      alt=" Planted Tree"
-                    />
-                  }
+                  <Image
+                    src={
+                      (treeData?.verifed && treeData?.imageURL) ||
+                      "/placeholder.svg"
+                    }
+                    width={200}
+                    height={200}
+                    className="rounded-full shadow-lg object-cover border-4 border-emerald-500 max-h-40"
+                    alt="Planted Tree"
+                  />
                   <div className="absolute -bottom-4 -right-4 bg-emerald-500 rounded-full p-3 shadow-lg">
-                    <Leaf className="h-8 w-8 text-white" />
+                    <Leaf className="h-6 w-6 text-white" />
                   </div>
                 </motion.div>
                 <div className="flex-1 space-y-4">
-                  <h2 className="text-3xl font-bold text-emerald-700">
+                  <h2 className="text-2xl font-bold text-emerald-700">
                     {treeData?.name || "Tree Planting Supporter"}
                   </h2>
                   <p className="text-emerald-600 font-medium">

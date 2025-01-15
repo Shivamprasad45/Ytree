@@ -77,8 +77,8 @@ const Page = () => {
 
   return (
     <div>
-      <MaxWidthRappers className="mt-3">
-        <div className="container mx-auto p-4 max-w-6xl">
+      <MaxWidthRappers className="">
+        <div className="container mx-auto p-2 max-w-6xl">
           <h1 className="text-3xl font-bold mb-6">My Trees</h1>
           {feature && (
             <ScrollArea className="h-[calc(100vh-150px)]">
