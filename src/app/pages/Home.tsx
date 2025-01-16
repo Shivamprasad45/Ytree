@@ -61,7 +61,8 @@ const Homes = () => {
             transition={{ duration: 1 }}
             className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-cover bg-center relative overflow-hidden"
             style={{
-              backgroundImage: 'url("/Banner/Banner.webp")',
+              backgroundImage:
+                'url("https://res.cloudinary.com/dn633knvv/image/upload/v1737000554/a-vibrant-and-inspiring-illustration-for_qXHSuMslRfWKyMK81sGlLw_GDZNoVguQgql8AfcnuBVUw_rtl11b.jpg")',
             }}
           >
             <div className="absolute inset-0 bg-black bg-opacity-50" />
