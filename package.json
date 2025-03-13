@@ -35,6 +35,7 @@
     "@reduxjs/toolkit": "^2.2.5",
     "@tanstack/react-query": "^5.40.1",
     "@types/leaflet": "^1.9.12",
+    "@vercel/analytics": "^1.5.0",
     "axios": "^1.7.2",
     "bcryptjs": "^2.4.3",
     "canvas-confetti": "^1.9.3",

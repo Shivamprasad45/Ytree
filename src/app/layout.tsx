@@ -5,7 +5,7 @@ import Providers from "./lib/Providers";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 import MaxWidthRappers from "@/components/MaxWidthRapper";
-
+import { Analytics } from "@vercel/analytics/react";
 import Lefttab from "./Components/lefttab";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
@@ -55,6 +55,7 @@ export default function RootLayout({
 
       <body className={cn("min-h-screen font-sans antialiased")}>
         <Providers>
+          <Analytics />
           <Toaster />
           <MaxWidthRappers>
             <div className="flex flex-col min-h-screen">
