@@ -2,6 +2,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   Enter_Plant_coords,
+  Free_clam_plant,
   IPlantProfile,
   Plant_coords,
   Plant_order,
@@ -91,6 +92,28 @@ export const TreeOrder_API = createApi({
         }
       },
     }),
+    Free_plants_clam: builder.mutation<UserMessage, Free_clam_plant>({
+      query: (data) => ({
+        url: `/Free_clam`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Order"],
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          if (data.success) {
+            toast(data.message);
+          }
+          if (data.error) {
+            toast(data.error);
+          }
+        } catch (error) {
+          console.error("Fetching user info failed:", error);
+        } finally {
+        }
+      },
+    }),
   }),
 });
 
@@ -101,4 +124,5 @@ export const {
   useSave_plants_coordsMutation,
   useSave_plants_OrderMutation,
   useAbout_my_treeQuery,
+  useFree_plants_clamMutation,
 } = TreeOrder_API;

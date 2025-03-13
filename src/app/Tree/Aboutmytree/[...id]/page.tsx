@@ -88,7 +88,7 @@ export default function EnhancedCertificate({
                     }
                     width={200}
                     height={200}
-                    className="rounded-full shadow-lg object-cover border-4 border-emerald-500 max-h-40"
+                    className="rounded-full shadow-lg object-cover border-4 border-emerald-500 "
                     alt="Planted Tree"
                   />
                   <div className="absolute -bottom-4 -right-4 bg-emerald-500 rounded-full p-3 shadow-lg">

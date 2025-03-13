@@ -18,6 +18,7 @@ import Image from "next/image";
 import { Droplets, ShoppingBag, Sun, Wind } from "lucide-react";
 import Head from "next/head";
 import { motion } from "framer-motion";
+import PopupModal from "../Components/Pop_up";
 
 const Homes = () => {
   const { data: feature, isLoading, isError } = useGetTreeInfoQuery();
@@ -82,6 +83,7 @@ const Homes = () => {
                     high-quality trees.
                   </p>
                 </motion.div>
+                <PopupModal />
                 <motion.div
                   initial={{ y: 50, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}

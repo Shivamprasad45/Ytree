@@ -274,3 +274,12 @@ export interface Coordinates {
   latitude: number;
   longitude: number;
 }
+export interface Free_clam_plant {
+  email: string;
+  name: string;
+  mobil_number: string;
+  reason: string;
+  long: number;
+  late: number;
+  address: string;
+}
