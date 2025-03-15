@@ -32,7 +32,7 @@ export function middleware(request: NextRequest) {
     path === "/login" || path === "/Signup" || path === "/Auth/Verify-succes";
 
   const token = request.cookies.get("authjs.session-token")?.value || "";
-  console.log(token, "authjs.session-token");
+
   // if (!ispublic && !token) {
   //   return NextResponse.redirect(new URL("/Signup", request.url));
   // }

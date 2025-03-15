@@ -1,7 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  useMap,
+  Marker,
+  Popup,
+  Circle,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import L from "leaflet";
@@ -48,6 +55,15 @@ const createIcon = (iconUrl: string) =>
 const IconUser = createIcon("/Map_icon/your.png");
 const IconWinner = createIcon("/Map_icon/winner.webp");
 const IconOther = createIcon("/Map_icon/Alltree.webp");
+
+// Add to your existing icon creation code
+const IconPollution = new L.Icon({
+  iconUrl: "https://i.giphy.com/1xlqOpx8T0dlV3ZoHV.webp",
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -32],
+  shadowUrl: "/Map_icon/marker-shadow.webp",
+});
 
 function MapUpdater({
   coords,
@@ -146,7 +162,64 @@ export default function Component() {
   const [userTreecurrentLocation, setUserTreeCurrentLocation] = useState<
     [number, number] | null
   >(null);
+  //
 
+  interface RedZone {
+    lat: number;
+    lng: number;
+    radius: number; // in meters
+    name: string;
+  }
+
+  const [redZones] = useState<RedZone[]>([
+    // Existing zones
+    {
+      lat: 28.7041,
+      lng: 77.1025,
+      radius: 5000,
+      name: "Delhi High Pollution Zone",
+    },
+    {
+      lat: 39.9042,
+      lng: 116.4074,
+      radius: 8000,
+      name: "Beijing Pollution Zone",
+    },
+    // New Uttar Pradesh zones
+    {
+      lat: 25.7615, // Ballia, UP
+      lng: 84.1471,
+      radius: 50000,
+      name: "Ballia High Pollution Zone",
+    },
+    {
+      lat: 25.9417, // Mau, UP
+      lng: 83.5611,
+      radius: 5000,
+      name: "Mau Industrial Pollution Area",
+    },
+    {
+      lat: 25.3176, // Varanasi (Banaras), UP
+      lng: 82.9739,
+      radius: 7000, // Larger radius for Banaras
+      name: "Varanasi River Pollution Zone",
+    },
+  ]);
+  const RedZoneLegend = () => (
+    <div className="leaflet-bottom leaflet-right bg-white p-4 rounded shadow-md mr-4 mb-4">
+      <div className="flex items-center gap-2 mb-2">
+        <div className="w-4 h-4 bg-red-500 rounded-full"></div>
+        <span className="text-sm">Pollution Marker</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <div
+          className="w-4 h-4 bg-red-500/20"
+          style={{ border: "2px solid #ff0000" }}
+        ></div>
+        <span className="text-sm">Red Zone (High Pollution)</span>
+      </div>
+    </div>
+  );
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -249,6 +322,30 @@ export default function Component() {
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
+                {redZones.map((zone, idx) => (
+                  <Circle
+                    key={idx}
+                    center={[zone.lat, zone.lng]}
+                    radius={zone.radius}
+                    pathOptions={{
+                      color: "#ff0000",
+                      fillColor: "#ff4444",
+                      fillOpacity: 0.2,
+                      weight: 2,
+                    }}
+                  >
+                    <Popup>
+                      <div className="p-2">
+                        <h3 className="font-bold text-red-600">{zone.name}</h3>
+                        <p className="text-sm">
+                          Radius: {(zone.radius / 1000).toFixed(1)}km
+                        </p>
+                        <p className="text-sm">Air Quality Index: Hazardous</p>
+                      </div>
+                    </Popup>
+                  </Circle>
+                ))}
+                <RedZoneLegend />
                 <MapUpdater
                   coords={coords}
                   users={users}

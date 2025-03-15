@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
-import { Sprout } from "lucide-react";
+import { Loader, Sprout } from "lucide-react";
 
 import { regester } from "@/action/action";
 
@@ -23,12 +23,39 @@ export default function Register() {
   if (session?.user) {
     router.push("/");
   }
-
-  const handleGoogleSignUp = async () => {
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const handleGoogleSignIn = async () => {
+    setIsGoogleLoading(true);
     try {
-      await signIn("google", { callbackUrl: "/" });
+      const referralCode = searchParams.get("referral");
+
+      if (referralCode) {
+        // Generate a temporary email identifier
+        // This will be linked to the actual email after sign-in
+        const tempEmail = `temp_${Date.now()}@example.com`;
+
+        localStorage.setItem("tempEmail", tempEmail);
+
+        // Store the referral code with this temporary email
+        await fetch("/api/store-referral", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: tempEmail,
+            referralCode,
+          }),
+        });
+      }
+
+      await signIn("google", {
+        callbackUrl: "/",
+      });
     } catch (error) {
-      console.error("Error during Google sign-up", error);
+      console.error("Google sign-in error:", error);
+      toast.error("Failed to initiate Google sign-in");
+    } finally {
+      setIsGoogleLoading(false);
     }
   };
 
@@ -149,16 +176,23 @@ export default function Register() {
               <Button
                 variant="outline"
                 className="w-full"
-                onClick={handleGoogleSignUp}
+                onClick={handleGoogleSignIn}
+                disabled={isGoogleLoading}
               >
-                <Image
-                  src="/google.svg"
-                  alt="Google"
-                  width={20}
-                  height={20}
-                  className="mr-2"
-                />
-                Google
+                {isGoogleLoading ? (
+                  <Loader className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <>
+                    <Image
+                      src="/google.svg"
+                      alt="Google"
+                      width={20}
+                      height={20}
+                      className="mr-2"
+                    />
+                    Google
+                  </>
+                )}
               </Button>
             </div>
           </div>

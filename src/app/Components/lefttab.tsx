@@ -9,6 +9,7 @@ import {
   TreePalm,
   TreesIcon,
   UserX2Icon,
+  Share2,
 } from "lucide-react";
 
 import Link from "next/link";
@@ -54,6 +55,12 @@ export const menuItems = [
     icon: <Globe size={20} />,
     label: "Tree Locations",
     path: "/Tree/Global",
+  },
+  {
+    id: 8,
+    icon: <Share2 size={20} />,
+    label: "invite me",
+    path: "/invite",
   },
 ];
 
