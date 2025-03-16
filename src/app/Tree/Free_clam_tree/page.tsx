@@ -29,6 +29,7 @@ import { useFree_plants_clamMutation } from "@/app/Featuers/TreeOrder/TreeOrderS
 import { toast } from "sonner";
 import { UserSelector } from "@/app/Featuers/Auth/AuthSlice";
 import { useRouter } from "next/navigation";
+import PlantUnlockModal from "@/app/Components/PlantUnlock";
 
 const Map = dynamic(() => import("../LogTree/Map"), {
   ssr: false,
@@ -65,6 +66,10 @@ const Free_clam = () => {
   const [getPlant, { data, isError: isErr, isLoading }] =
     useFree_plants_clamMutation();
 
+  // State for the unlock celebration modal
+  const [showUnlockModal, setShowUnlockModal] = useState(false);
+  const [unlockedPlantName, setUnlockedPlantName] = useState("");
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -76,8 +81,21 @@ const Free_clam = () => {
     },
   });
 
+  // Handle API response
   if (data?.error) {
     toast.error(data.message);
+  }
+  if (data?.success) {
+    // Find the selected tree type name
+    const selectedTree = TREE_TYPES.find(
+      (tree) => tree.id === form.getValues().treeType
+    );
+    // Set the unlocked plant name and show the celebration modal
+    if (!showUnlockModal) {
+      setUnlockedPlantName(selectedTree?.name || "Free Tree");
+      setShowUnlockModal(true);
+      toast.success(data.message);
+    }
   }
 
   // User data is available in form
@@ -88,7 +106,6 @@ const Free_clam = () => {
       toast.error("Please upload a photo");
       return;
     }
-    console.log(values, "qwewrwrwr");
 
     if (user?.email) {
       if (
@@ -105,6 +122,9 @@ const Free_clam = () => {
           name: values.name,
           treeType: values.treeType,
           photoUrl: values.imageUrl,
+          findtree_id: values.treeType,
+          UserId: user._id,
+          Plaintid: "",
         });
       } else {
         console.error("Plant location coordinates are missing");
@@ -117,177 +137,186 @@ const Free_clam = () => {
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
-      <CardHeader>
-        <CardTitle>Free Tree Claim Form</CardTitle>
-      </CardHeader>
-      <div className="h-80">
-        <Map />
-      </div>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Enter Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Your full name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+    <>
+      <Card className="w-full max-w-2xl mx-auto">
+        <CardHeader>
+          <CardTitle>Free Tree Claim Form</CardTitle>
+        </CardHeader>
+        <div className="h-80">
+          <Map />
+        </div>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Enter Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Your full name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="mobileNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Mobile Number</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Your mobile number"
-                      type="tel"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="mobileNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Mobile Number</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Your mobile number"
+                        type="tel"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="imageUrl"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Live Photo Proof</FormLabel>
-                  <FormControl>
-                    <div className="flex flex-col space-y-3">
-                      <CldUploadWidget
-                        uploadPreset={
-                          process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_PRESET
-                        }
-                        options={{
-                          sources: ["camera"],
-                          resourceType: "image",
-                          maxFiles: 1,
-                          clientAllowedFormats: ["jpg", "jpeg", "png"],
-                          showUploadMoreButton: false,
-                          text: {
-                            en: {
-                              local: {
-                                browse: "Take a Photo",
-                                dd_title_single: "Take a photo as proof",
-                                dd_title: "Take a photo as proof",
+              <FormField
+                control={form.control}
+                name="imageUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Live Photo Proof</FormLabel>
+                    <FormControl>
+                      <div className="flex flex-col space-y-3">
+                        <CldUploadWidget
+                          uploadPreset={
+                            process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_PRESET
+                          }
+                          options={{
+                            sources: ["camera"],
+                            resourceType: "image",
+                            maxFiles: 1,
+                            clientAllowedFormats: ["jpg", "jpeg", "png"],
+                            showUploadMoreButton: false,
+                            text: {
+                              en: {
+                                local: {
+                                  browse: "Take a Photo",
+                                  dd_title_single: "Take a photo as proof",
+                                  dd_title: "Take a photo as proof",
+                                },
                               },
                             },
-                          },
-                        }}
-                        onSuccess={(result: any) => {
-                          field.onChange(result.info?.secure_url);
-                        }}
-                      >
-                        {({ open }) => (
-                          <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => open()}
-                            className="w-full"
-                          >
-                            Take a Live Photo
-                          </Button>
-                        )}
-                      </CldUploadWidget>
+                          }}
+                          onSuccess={(result: any) => {
+                            field.onChange(result.info?.secure_url);
+                          }}
+                        >
+                          {({ open }) => (
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => open()}
+                              className="w-full"
+                            >
+                              Take a Live Photo
+                            </Button>
+                          )}
+                        </CldUploadWidget>
 
-                      {field.value && (
-                        <div className="mt-3">
-                          <p className="text-sm text-green-600 mb-2">
-                            Photo uploaded successfully
-                          </p>
-                          <div className="relative h-40 w-full overflow-hidden rounded-md">
-                            <img
-                              src={field.value}
-                              alt="Uploaded photo"
-                              className="object-cover w-full h-full"
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="treeType"
-              render={({ field }) => (
-                <FormItem className="space-y-3">
-                  <FormLabel>Select Tree Type</FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className="grid grid-cols-2 gap-4"
-                    >
-                      {TREE_TYPES.map((tree) => (
-                        <FormItem key={tree.id}>
-                          <FormLabel className="flex flex-col items-center space-y-2 cursor-pointer [&:has([data-state=checked])]:border-primary [&:has([data-state=checked])]:bg-primary/10 p-2 rounded-md border-2">
-                            <FormControl>
-                              <RadioGroupItem
-                                value={tree.id}
-                                className="sr-only"
+                        {field.value && (
+                          <div className="mt-3">
+                            <p className="text-sm text-green-600 mb-2">
+                              Photo uploaded successfully
+                            </p>
+                            <div className="relative h-40 w-full overflow-hidden rounded-md">
+                              <img
+                                src={field.value}
+                                alt="Uploaded photo"
+                                className="object-cover w-full h-full"
                               />
-                            </FormControl>
-                            <Image
-                              src={tree.image}
-                              width={120}
-                              height={120}
-                              alt={tree.name}
-                              className="rounded-md"
-                            />
-                            <span>{tree.name}</span>
-                          </FormLabel>
-                        </FormItem>
-                      ))}
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="reason"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Why do you want this tree plant?</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Explain why you want this tree plant..."
-                      className="resize-none min-h-[100px]"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="treeType"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel>Select Tree Type</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="grid grid-cols-2 gap-4"
+                      >
+                        {TREE_TYPES.map((tree) => (
+                          <FormItem key={tree.id}>
+                            <FormLabel className="flex flex-col items-center space-y-2 cursor-pointer [&:has([data-state=checked])]:border-primary [&:has([data-state=checked])]:bg-primary/10 p-2 rounded-md border-2">
+                              <FormControl>
+                                <RadioGroupItem
+                                  value={tree.id}
+                                  className="sr-only"
+                                />
+                              </FormControl>
+                              <Image
+                                src={tree.image}
+                                width={120}
+                                height={120}
+                                alt={tree.name}
+                                className="rounded-md"
+                              />
+                              <span>{tree.name}</span>
+                            </FormLabel>
+                          </FormItem>
+                        ))}
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <Button type="submit" className="w-full">
-              {isLoading ? ".........." : "Loading"}
-            </Button>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+              <FormField
+                control={form.control}
+                name="reason"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Why do you want this tree plant?</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Explain why you want this tree plant..."
+                        className="resize-none min-h-[100px]"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button type="submit" className="w-full">
+                {isLoading ? "Submitting..." : "Claim Free Tree"}
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+
+      {/* Plant Unlock Celebration Modal */}
+      <PlantUnlockModal
+        isOpen={showUnlockModal}
+        onClose={() => setShowUnlockModal(false)}
+        plantName={unlockedPlantName}
+      />
+    </>
   );
 };
 

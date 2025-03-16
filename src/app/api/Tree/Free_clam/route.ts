@@ -1,14 +1,15 @@
 import User from "@/Models/Free_tree";
+import Mytree from "@/Models/Mytree";
 import DbConnect from "@/Utils/mongooesConnect";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-
+import shortid from "shortid";
 const resend = new Resend(process.env.RESEND_API_KEY); // Set API Key from .env
 
 export async function POST(req: NextRequest) {
   try {
     await DbConnect();
-
+    const id = shortid.generate();
     const {
       address,
       email,
@@ -19,7 +20,10 @@ export async function POST(req: NextRequest) {
       name,
       treeType,
       photoUrl,
+      findtree_id,
+      UserId,
     } = await req.json();
+
     const verifyNum = await User.findOne({ mobil_number });
     if (verifyNum) {
       return NextResponse.json({
@@ -36,6 +40,16 @@ export async function POST(req: NextRequest) {
         error: "conflict",
       });
     } else {
+      await Mytree.create({
+        Plaintid: id,
+        findtree_id,
+        UserId: UserId,
+        age: Date.now(),
+        imageUrl: photoUrl,
+        name,
+        status: 0,
+      });
+
       await User.create({
         email,
         address,

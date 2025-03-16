@@ -22,6 +22,7 @@ import {
   Map,
   Award,
   Satellite,
+  TreePalm,
 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
@@ -164,62 +165,203 @@ export default function Component() {
   >(null);
   //
 
-  interface RedZone {
-    lat: number;
-    lng: number;
-    radius: number; // in meters
-    name: string;
+  interface StateTreeData {
+    state: string;
+    lat: number; // approximate latitude (usually near the state capital)
+    lng: number; // approximate longitude (usually near the state capital)
+    treesPerPerson: number; // estimated number of trees per person
   }
 
-  const [redZones] = useState<RedZone[]>([
-    // Existing zones
+  const stateTreeData: StateTreeData[] = [
     {
-      lat: 28.7041,
-      lng: 77.1025,
-      radius: 5000,
-      name: "Delhi High Pollution Zone",
+      state: "Andhra Pradesh",
+      lat: 16.5417, // Approximate (Amaravati)
+      lng: 80.515,
+      treesPerPerson: 4.5,
     },
     {
-      lat: 39.9042,
-      lng: 116.4074,
-      radius: 8000,
-      name: "Beijing Pollution Zone",
-    },
-    // New Uttar Pradesh zones
-    {
-      lat: 25.7615, // Ballia, UP
-      lng: 84.1471,
-      radius: 50000,
-      name: "Ballia High Pollution Zone",
+      state: "Arunachal Pradesh",
+      lat: 27.083, // Itanagar approximate
+      lng: 93.617,
+      treesPerPerson: 30.0,
     },
     {
-      lat: 25.9417, // Mau, UP
-      lng: 83.5611,
-      radius: 5000,
-      name: "Mau Industrial Pollution Area",
+      state: "Assam",
+      lat: 26.14, // Approximate (Guwahati/Dispur)
+      lng: 91.79,
+      treesPerPerson: 8.57,
     },
     {
-      lat: 25.3176, // Varanasi (Banaras), UP
-      lng: 82.9739,
-      radius: 7000, // Larger radius for Banaras
-      name: "Varanasi River Pollution Zone",
+      state: "Bihar",
+      lat: 25.5941, // Patna
+      lng: 85.1376,
+      treesPerPerson: 1.0,
     },
-  ]);
+    {
+      state: "Chhattisgarh",
+      lat: 21.2514, // Raipur
+      lng: 81.6296,
+      treesPerPerson: 15.0,
+    },
+    {
+      state: "Goa",
+      lat: 15.4909, // Panaji
+      lng: 73.8278,
+      treesPerPerson: 5.0,
+    },
+    {
+      state: "Gujarat",
+      lat: 23.2156, // Gandhinagar
+      lng: 72.6369,
+      treesPerPerson: 2.57,
+    },
+    {
+      state: "Haryana",
+      lat: 30.7333, // Chandigarh as a proxy
+      lng: 76.7794,
+      treesPerPerson: 1.5,
+    },
+    {
+      state: "Himachal Pradesh",
+      lat: 31.1048, // Shimla
+      lng: 77.1734,
+      treesPerPerson: 20.0,
+    },
+    {
+      state: "Jharkhand",
+      lat: 23.3441, // Ranchi
+      lng: 85.3096,
+      treesPerPerson: 2.0,
+    },
+    {
+      state: "Karnataka",
+      lat: 12.9716, // Bengaluru
+      lng: 77.5946,
+      treesPerPerson: 6.0,
+    },
+    {
+      state: "Kerala",
+      lat: 8.5241, // Thiruvananthapuram
+      lng: 76.9366,
+      treesPerPerson: 6.0,
+    },
+    {
+      state: "Madhya Pradesh",
+      lat: 23.2599, // Bhopal
+      lng: 77.4126,
+      treesPerPerson: 28.88,
+    },
+    {
+      state: "Maharashtra",
+      lat: 19.076, // Mumbai
+      lng: 72.8777,
+      treesPerPerson: 3.0,
+    },
+    {
+      state: "Manipur",
+      lat: 24.817, // Imphal
+      lng: 93.9368,
+      treesPerPerson: 12.0,
+    },
+    {
+      state: "Meghalaya",
+      lat: 25.5707, // Shillong
+      lng: 91.8833,
+      treesPerPerson: 25.0,
+    },
+    {
+      state: "Mizoram",
+      lat: 23.7271, // Aizawl
+      lng: 92.717,
+      treesPerPerson: 35.0,
+    },
+    {
+      state: "Nagaland",
+      lat: 25.67, // Kohima
+      lng: 94.11,
+      treesPerPerson: 28.0,
+    },
+    {
+      state: "Odisha",
+      lat: 20.2961, // Bhubaneswar
+      lng: 85.8245,
+      treesPerPerson: 4.0,
+    },
+    {
+      state: "Punjab",
+      lat: 30.7333, // Chandigarh as a proxy
+      lng: 76.7794,
+      treesPerPerson: 1.2,
+    },
+    {
+      state: "Rajasthan",
+      lat: 26.9124, // Jaipur
+      lng: 75.7873,
+      treesPerPerson: 2.25,
+    },
+    {
+      state: "Sikkim",
+      lat: 27.3389, // Gangtok
+      lng: 88.6065,
+      treesPerPerson: 40.0,
+    },
+    {
+      state: "Tamil Nadu",
+      lat: 13.0827, // Chennai
+      lng: 80.2707,
+      treesPerPerson: 3.6,
+    },
+    {
+      state: "Telangana",
+      lat: 17.385, // Hyderabad
+      lng: 78.4867,
+      treesPerPerson: 3.0,
+    },
+    {
+      state: "Tripura",
+      lat: 23.8315, // Agartala
+      lng: 91.2868,
+      treesPerPerson: 10.0,
+    },
+    {
+      state: "Uttar Pradesh",
+      lat: 26.8467, // Lucknow
+      lng: 80.9462,
+      treesPerPerson: 0.68,
+    },
+    {
+      state: "Uttarakhand",
+      lat: 30.3165, // Dehradun
+      lng: 78.0322,
+      treesPerPerson: 12.0,
+    },
+    {
+      state: "West Bengal",
+      lat: 22.5726, // Kolkata
+      lng: 88.3639,
+      treesPerPerson: 1.33,
+    },
+  ];
   const RedZoneLegend = () => (
     <div className="leaflet-bottom leaflet-right bg-white p-4 rounded shadow-md mr-4 mb-4">
-      <div className="flex items-center gap-2 mb-2">
-        <div className="w-4 h-4 bg-red-500 rounded-full"></div>
-        <span className="text-sm">Pollution Marker</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <div
-          className="w-4 h-4 bg-red-500/20"
-          style={{ border: "2px solid #ff0000" }}
-        ></div>
-        <span className="text-sm">Red Zone (High Pollution)</span>
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center gap-2"></div>
+        <div className="border-t pt-2">
+          <div className="text-sm font-bold">Oxygen Facts</div>
+          <div className="text-xs">
+            Daily oxygen need per person: <strong>~500 L</strong>
+          </div>
+          <div className="text-xs">
+            Oxygen produced by one tree: <strong>~226 L/day</strong>
+          </div>
+          <div className="text-xs">
+            Trees needed per person: <strong>~3 trees</strong>
+          </div>
+        </div>
       </div>
     </div>
   );
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -286,7 +428,19 @@ export default function Component() {
       </Alert>
     );
   }
-
+  // Function to determine colors based on trees per person value
+  const getColorByTreesPerPerson = (value: number) => {
+    if (value >= 10) {
+      // High trees per person: Good (green)
+      return { stroke: "#008000", fill: "#00FF00" };
+    } else if (value >= 5) {
+      // Moderate trees per person: Average (orange/yellow)
+      return { stroke: "#FFA500", fill: "#FFD700" };
+    } else {
+      // Low trees per person: Poor (red)
+      return { stroke: "#FF0000", fill: "#FF6347" };
+    }
+  };
   return (
     <div className="container mx-auto p-4 space-y-6">
       <WinnerAnnouncement
@@ -322,29 +476,43 @@ export default function Component() {
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
-                {redZones.map((zone, idx) => (
-                  <Circle
-                    key={idx}
-                    center={[zone.lat, zone.lng]}
-                    radius={zone.radius}
-                    pathOptions={{
-                      color: "#ff0000",
-                      fillColor: "#ff4444",
-                      fillOpacity: 0.2,
-                      weight: 2,
-                    }}
-                  >
-                    <Popup>
-                      <div className="p-2">
-                        <h3 className="font-bold text-red-600">{zone.name}</h3>
-                        <p className="text-sm">
-                          Radius: {(zone.radius / 1000).toFixed(1)}km
-                        </p>
-                        <p className="text-sm">Air Quality Index: Hazardous</p>
-                      </div>
-                    </Popup>
-                  </Circle>
-                ))}
+
+                {stateTreeData.map((zone, idx) => {
+                  const colors = getColorByTreesPerPerson(zone.treesPerPerson);
+
+                  return (
+                    <Circle
+                      key={idx}
+                      center={[zone.lat, zone.lng]}
+                      radius={300000}
+                      pathOptions={{
+                        color: colors.stroke,
+                        fillColor: colors.fill,
+                        fillOpacity: 0.2,
+                        weight: 2,
+                      }}
+                    >
+                      <Popup>
+                        <div className="p-2">
+                          <h3
+                            className="font-bold"
+                            style={{ color: colors.stroke }}
+                          >
+                            {zone.state}
+                          </h3>
+                          <p className="text-sm flex items-center">
+                            <TreePalm
+                              className="mr-1"
+                              style={{ color: colors.fill }}
+                            />
+                            Per person tree: {zone.treesPerPerson}
+                          </p>
+                        </div>
+                      </Popup>
+                    </Circle>
+                  );
+                })}
+
                 <RedZoneLegend />
                 <MapUpdater
                   coords={coords}

@@ -284,4 +284,7 @@ export interface Free_clam_plant {
   address: string;
   treeType: string;
   photoUrl: string;
+  UserId: string;
+  findtree_id: string;
+  Plaintid: string;
 }
