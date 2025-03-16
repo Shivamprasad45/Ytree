@@ -62,7 +62,8 @@ const TREE_TYPES = [
 const Free_clam = () => {
   const Plants_CurrentLocations = useSelector(Coords_Selector);
   const router = useRouter();
-  const [getPlant, { data, isError: isErr }] = useFree_plants_clamMutation();
+  const [getPlant, { data, isError: isErr, isLoading }] =
+    useFree_plants_clamMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -87,6 +88,7 @@ const Free_clam = () => {
       toast.error("Please upload a photo");
       return;
     }
+    console.log(values, "qwewrwrwr");
 
     if (user?.email) {
       if (
@@ -280,7 +282,7 @@ const Free_clam = () => {
             />
 
             <Button type="submit" className="w-full">
-              Submit Claim
+              {isLoading ? ".........." : "Loading"}
             </Button>
           </form>
         </Form>

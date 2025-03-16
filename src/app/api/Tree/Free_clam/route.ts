@@ -9,8 +9,24 @@ export async function POST(req: NextRequest) {
   try {
     await DbConnect();
 
-    const { address, email, late, long, reason, mobil_number, name } =
-      await req.json();
+    const {
+      address,
+      email,
+      late,
+      long,
+      reason,
+      mobil_number,
+      name,
+      treeType,
+      photoUrl,
+    } = await req.json();
+    const verifyNum = await User.findOne({ mobil_number });
+    if (verifyNum) {
+      return NextResponse.json({
+        message: "You have already claimed one. Please buy instead.",
+        error: "conflict",
+      });
+    }
 
     const verify = await User.findOne({ email });
 
@@ -28,6 +44,8 @@ export async function POST(req: NextRequest) {
         reason,
         mobil_number,
         name,
+        treeType,
+        photoUrl,
       });
 
       // Send Email Notification using Resend
