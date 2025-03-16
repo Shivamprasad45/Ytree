@@ -1,11 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { toast } from "sonner";
-import { Copy, Share2, Users, Gift } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -14,9 +10,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import MaxWidthRappers from "@/components/MaxWidthRapper";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Copy, Gift, Share2, Users } from "lucide-react";
 import { Input } from "@/components/ui/input";
-
+import MaxWidthRappers from "@/components/MaxWidthRapper";
+import ReferralGarden from "./Garden";
+import SkyLanternReferral from "./Garden";
 export default function ReferralPage() {
   const { data: session, status } = useSession();
   const [referralUrl, setReferralUrl] = useState("");
@@ -118,6 +118,13 @@ export default function ReferralPage() {
           Your Referral Program
         </h1>
 
+        {/* Add the visualization component here */}
+
+        <SkyLanternReferral
+          referralCount={referralStats.totalReferred}
+          targetCount={10}
+        />
+
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -193,7 +200,7 @@ export default function ReferralPage() {
               <li>
                 You earn rewards when your referrals make their first purchase
               </li>
-              <li>The more friends you refer, the more rewards you earn!</li>
+              <li>Watch your garden grow with each successful referral!</li>
             </ol>
           </CardContent>
         </Card>

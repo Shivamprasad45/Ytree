@@ -8,6 +8,8 @@ interface IUser extends Document {
   reason: string;
   mobil_number: number;
   name: string;
+  treeType: string;
+  photoUrl: string;
 }
 
 const UserSchema = new Schema<IUser>({
@@ -18,6 +20,8 @@ const UserSchema = new Schema<IUser>({
   reason: { type: String, required: true },
   mobil_number: { type: Number, required: true },
   name: { type: String, required: true },
+  treeType: { type: String, required: true },
+  photoUrl: { type: String, required: true },
 });
 const User =
   mongoose.models.Free_clam || mongoose.model("Free_clam", UserSchema);

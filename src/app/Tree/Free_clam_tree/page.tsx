@@ -4,6 +4,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import dynamic from "next/dynamic";
+import { useState } from "react";
+import Image from "next/image";
+import { CldUploadWidget } from "next-cloudinary";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,6 +22,7 @@ import {
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 import { Coords_Selector } from "@/app/Featuers/TreeOrder/TreeOrderSlice";
 import { useFree_plants_clamMutation } from "@/app/Featuers/TreeOrder/TreeOrderServices";
@@ -40,31 +44,50 @@ const formSchema = z.object({
   reason: z
     .string()
     .min(10, "Please provide a detailed reason (min 10 characters)"),
+  treeType: z.string({
+    required_error: "Please select a tree type",
+  }),
+  imageUrl: z.string({
+    required_error: "Please upload a photo as proof",
+  }),
 });
+
+const TREE_TYPES = [
+  { id: "tree1", name: "Oak Tree", image: "/api/placeholder/120/120" },
+  { id: "tree2", name: "Maple Tree", image: "/api/placeholder/120/120" },
+  { id: "tree3", name: "Pine Tree", image: "/api/placeholder/120/120" },
+  { id: "tree4", name: "Willow Tree", image: "/api/placeholder/120/120" },
+];
 
 const Free_clam = () => {
   const Plants_CurrentLocations = useSelector(Coords_Selector);
   const router = useRouter();
   const [getPlant, { data, isError: isErr }] = useFree_plants_clamMutation();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       mobileNumber: "",
       reason: "",
+      treeType: "",
+      imageUrl: "",
     },
   });
 
   if (data?.error) {
     toast.error(data.message);
   }
-  //User data is available in form
-  const user = useSelector(UserSelector);
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    // Handle form submission
 
-    // Add your submission logic here
-    // For example: call an API to save the data
+  // User data is available in form
+  const user = useSelector(UserSelector);
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!values.imageUrl) {
+      toast.error("Please upload a photo");
+      return;
+    }
+
     if (user?.email) {
       if (
         Plants_CurrentLocations?.late !== undefined &&
@@ -78,13 +101,16 @@ const Free_clam = () => {
           reason: values.reason,
           mobil_number: values.mobileNumber,
           name: values.name,
+          treeType: values.treeType,
+          photoUrl: values.imageUrl,
         });
       } else {
         console.error("Plant location coordinates are missing");
+        toast.error("Please select a location on the map");
       }
     } else {
       router.push("/login");
-      toast.error("Login first ");
+      toast.error("Login first");
     }
   };
 
@@ -125,6 +151,110 @@ const Free_clam = () => {
                       type="tel"
                       {...field}
                     />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="imageUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Live Photo Proof</FormLabel>
+                  <FormControl>
+                    <div className="flex flex-col space-y-3">
+                      <CldUploadWidget
+                        uploadPreset={
+                          process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_PRESET
+                        }
+                        options={{
+                          sources: ["camera"],
+                          resourceType: "image",
+                          maxFiles: 1,
+                          clientAllowedFormats: ["jpg", "jpeg", "png"],
+                          showUploadMoreButton: false,
+                          text: {
+                            en: {
+                              local: {
+                                browse: "Take a Photo",
+                                dd_title_single: "Take a photo as proof",
+                                dd_title: "Take a photo as proof",
+                              },
+                            },
+                          },
+                        }}
+                        onSuccess={(result: any) => {
+                          field.onChange(result.info?.secure_url);
+                        }}
+                      >
+                        {({ open }) => (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => open()}
+                            className="w-full"
+                          >
+                            Take a Live Photo
+                          </Button>
+                        )}
+                      </CldUploadWidget>
+
+                      {field.value && (
+                        <div className="mt-3">
+                          <p className="text-sm text-green-600 mb-2">
+                            Photo uploaded successfully
+                          </p>
+                          <div className="relative h-40 w-full overflow-hidden rounded-md">
+                            <img
+                              src={field.value}
+                              alt="Uploaded photo"
+                              className="object-cover w-full h-full"
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="treeType"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Select Tree Type</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="grid grid-cols-2 gap-4"
+                    >
+                      {TREE_TYPES.map((tree) => (
+                        <FormItem key={tree.id}>
+                          <FormLabel className="flex flex-col items-center space-y-2 cursor-pointer [&:has([data-state=checked])]:border-primary [&:has([data-state=checked])]:bg-primary/10 p-2 rounded-md border-2">
+                            <FormControl>
+                              <RadioGroupItem
+                                value={tree.id}
+                                className="sr-only"
+                              />
+                            </FormControl>
+                            <Image
+                              src={tree.image}
+                              width={120}
+                              height={120}
+                              alt={tree.name}
+                              className="rounded-md"
+                            />
+                            <span>{tree.name}</span>
+                          </FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -282,4 +282,6 @@ export interface Free_clam_plant {
   long: number;
   late: number;
   address: string;
+  treeType: string;
+  photoUrl: string;
 }
