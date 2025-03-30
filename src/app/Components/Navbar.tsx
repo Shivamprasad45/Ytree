@@ -1,7 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { useSelector } from "react-redux";
+import { signOut, useSession } from "next-auth/react";
+import { useGetCartItemByIdQuery } from "../Featuers/Treecart/TreeServicesAPI";
+import { UserSelector } from "../Featuers/Auth/AuthSlice";
+import { menuItems } from "./lefttab";
+
 import {
   Sheet,
   SheetContent,
@@ -10,193 +18,391 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import {
-  EarthLockIcon,
-  LucideMenu,
-  TreesIcon,
-  TrendingUpIcon,
-  UserX2Icon,
-} from "lucide-react";
-import { ModeToggle } from "./Togglemode";
-import { Badge } from "@/components/ui/badge";
-import { menuItems } from "./lefttab";
-import { usePathname } from "next/navigation";
-import { useSelector } from "react-redux";
-import ConnectionStatus from "../lib/Connection";
-import Image from "next/image";
-import { UserSelector } from "../Featuers/Auth/AuthSlice";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { signOut, useSession } from "next-auth/react";
-import { useGetCartItemByIdQuery } from "../Featuers/Treecart/TreeServicesAPI";
+import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ModeToggle } from "./Togglemode";
+import ConnectionStatus from "../lib/Connection";
+
+import {
+  Menu,
+  Upload,
+  ShoppingCart,
+  User,
+  LogOut,
+  ChevronDown,
+  Home,
+  Info,
+} from "lucide-react";
 
 const Navbar = () => {
   const user = useSelector(UserSelector);
-  const { data: session, status } = useSession();
-  const { data: cartdata, isLoading: isCartLoading } = useGetCartItemByIdQuery(
-    user?._id!
-  );
+  const { data: session } = useSession();
+  const { data: cartdata } = useGetCartItemByIdQuery(user?._id!);
+  const pathname = usePathname();
+  const [scrolled, setScrolled] = useState(false);
+  const [shouldRender, setShouldRender] = useState(true);
 
-  const route = usePathname();
+  useEffect(() => {
+    setShouldRender(!["/Signup", "/login", "/Resend"].includes(pathname));
+  }, [pathname]);
 
-  if (["/Signup", "/login", "/Resend"].includes(route)) {
-    return null; // No sidebar on these routes
+  // Skip rendering on auth pages
+  if (!shouldRender) {
+    return <></>;
   }
-  const Total_cart_item =
-    cartdata && cartdata?.reduce((a, b) => a + b.quantity, 0);
+
+  // Calculate total cart items
+  const totalCartItems = cartdata?.reduce((a, b) => a + b.quantity, 0) || 0;
+
+  // Handle scroll effect
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     setScrolled(window.scrollY > 10);
+  //   };
+
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, []);
 
   return (
-    <nav className="sticky top-0 z-50 border-b mb-2 bg-background/80 backdrop-blur-sm transition-all">
-      <div className="container mx-auto px-4 py-1 flex items-center justify-between transition-all">
-        <ConnectionStatus />
-        <Link href={"/"} className="flex items-center space-x-2 justify-center">
-          <Image
-            height={300}
-            width={400}
-            alt="Yplant Logo"
-            src="/logo.png"
-            className="w-14 h-12"
-          />
-          <div className="text-container text-sm md:text-lg font-semibold">
-            <span className="letter text-primary">Vana</span>
-            <span className="letter">Grow</span>
-          </div>
-        </Link>
-        <div className="flex items-center space-x-4 md:space-x-8">
-          <div className="hidden md:flex items-center space-x-8">
+    <nav
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-background/95 shadow-sm backdrop-blur-md py-2"
+          : "bg-background/80 backdrop-blur-sm py-3"
+      }`}
+    >
+      <div className="container mx-auto px-4 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2">
+            <Image
+              height={300}
+              width={400}
+              alt="VanaGrow Logo"
+              src="/logo.png"
+              className="w-10 h-9 md:w-12 md:h-10"
+              priority
+            />
+            <div className="font-semibold text-lg md:text-xl">
+              <span className="text-primary">Vana</span>
+              <span>Grow</span>
+            </div>
+          </Link>
+
+          {/* Connection Status - Always visible */}
+          <ConnectionStatus />
+        </div>
+
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-6">
+          <div className="flex items-center gap-6">
+            <Link
+              href="/"
+              className={`transition-colors hover:text-primary ${
+                pathname === "/" ? "text-primary font-medium" : ""
+              }`}
+            >
+              Home
+            </Link>
             <Link
               href="/About"
-              className="hover:text-primary transition-colors"
+              className={`transition-colors hover:text-primary ${
+                pathname === "/About" ? "text-primary font-medium" : ""
+              }`}
             >
               About
             </Link>
+
+            {/* Services Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="flex items-center gap-1 px-2 h-9"
+                >
+                  Services <ChevronDown className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="center" className="w-48">
+                {menuItems
+                  .filter((item) => item.id !== 6)
+                  .map((item) => (
+                    <DropdownMenuItem key={item.id} asChild>
+                      <Link
+                        href={item.path}
+                        className="flex items-center gap-2 cursor-pointer"
+                      >
+                        {React.cloneElement(item.icon, {
+                          className: "h-4 w-4",
+                        })}
+                        <span>{item.label}</span>
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+
+          <div className="flex items-center gap-4">
+            {/* Cart */}
             <Link
               href="/Tree/Cart"
-              className="flex items-center space-x-2 hover:text-primary transition-colors"
+              className="relative p-2 hover:bg-muted rounded-full transition-colors"
             >
-              <span className="relative">
-                <Badge variant="secondary" className="absolute -top-4 -right-2">
-                  {Total_cart_item}
+              <ShoppingCart className="w-5 h-5" />
+              {totalCartItems > 0 && (
+                <Badge
+                  variant={"default"}
+                  className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
+                >
+                  {totalCartItems}
                 </Badge>
-                <TreesIcon className="w-5 h-5" />
-              </span>
-              <span>Cart</span>
+              )}
+              <span className="sr-only">Cart</span>
             </Link>
+
+            {/* Upload Tree */}
             <Link
               href="/Tree/UploadTree"
-              className="flex items-center space-x-2 hover:text-primary transition-colors"
+              className="relative p-2 hover:bg-muted rounded-full transition-colors"
             >
-              <span className="relative">
-                <Badge
-                  variant="secondary"
-                  className="absolute -top-4 -right-2 text-[6px] text-red-500"
-                >
-                  {"New"}
-                </Badge>
-                <TrendingUpIcon className="w-5 h-5" />
-              </span>
+              <Upload className="w-5 h-5" />
+              <Badge
+                variant="destructive"
+                className="absolute -top-1 -right-1 h-4 w-8 flex items-center justify-center p-0 text-[10px]"
+              >
+                NEW
+              </Badge>
+              <span className="sr-only">Upload Tree</span>
             </Link>
+
+            {/* Theme Toggle */}
+            <ModeToggle />
+
+            {/* User Menu */}
             {user?.email ? (
-              <Button onClick={() => signOut()}>Logout</Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="relative h-9 w-9 rounded-full"
+                  >
+                    <Avatar className="h-9 w-9">
+                      {session?.user.image ? (
+                        <AvatarImage src={session.user.image} alt="Profile" />
+                      ) : (
+                        <AvatarFallback>
+                          {user.Username?.slice(0, 2).toUpperCase() || "U"}
+                        </AvatarFallback>
+                      )}
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/profile" className="cursor-pointer">
+                      Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/Tree/Mytrees" className="cursor-pointer">
+                      My Trees
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => signOut()}
+                    className="text-destructive cursor-pointer"
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
-              <Button asChild>
+              <Button asChild size="sm">
                 <Link href="/login">Sign In</Link>
               </Button>
             )}
           </div>
-          <ModeToggle />
-          <div className="flex items-center space-x-4 md:hidden">
-            <Link href="/Tree/Mytrees">
-              <EarthLockIcon className="w-5 h-5 hover:text-primary transition-colors" />
-            </Link>
-            <Link
-              href="/Tree/Cart"
-              className="flex items-center space-x-2 hover:text-primary transition-colors"
-            >
-              <span className="relative">
-                <Badge variant="secondary" className="absolute -top-4 -right-2">
-                  {Total_cart_item}
-                </Badge>
-                <TreesIcon className="w-5 h-5" />
-              </span>
-            </Link>
-            <Link
-              href="/Tree/UploadTree"
-              className="flex items-center space-x-2 hover:text-primary transition-colors"
-            >
-              <span className="relative">
-                <Badge
-                  variant="secondary"
-                  className="absolute -top-4 -right-2 text-[6px] text-red-500"
-                >
-                  {"New"}
-                </Badge>
-                <TrendingUpIcon className="w-5 h-5" />
-              </span>
-            </Link>
-            {!user?.email ? (
-              <Link href="/login">
-                <UserX2Icon className="w-5 h-5 hover:text-primary transition-colors" />
-              </Link>
-            ) : (
-              <Avatar className="w-7 h-7">
-                {session?.user.image ? (
-                  <AvatarImage
-                    className="  "
-                    src={session?.user.image}
-                    alt="Profile picture"
-                  />
-                ) : (
-                  <AvatarFallback>
-                    {user.Username.slice(0, 2).toUpperCase()}
-                  </AvatarFallback>
-                )}
-              </Avatar>
+        </div>
+
+        {/* Mobile Navigation */}
+        <div className="flex items-center gap-3 md:hidden">
+          {/* Cart */}
+          <Link href="/Tree/Cart" className="relative p-2">
+            <ShoppingCart className="w-5 h-5" />
+            {totalCartItems > 0 && (
+              <Badge
+                variant="default"
+                className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
+              >
+                {totalCartItems}
+              </Badge>
             )}
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <LucideMenu className="w-5 h-5" />
-                  <span className="sr-only">Open menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent>
-                <SheetHeader>
-                  <SheetTitle>Menu</SheetTitle>
-                </SheetHeader>
-                <div className="mt-4 space-y-4 flex-row space-x-4">
+          </Link>
+
+          {/* Upload Tree */}
+          <Link href="/Tree/UploadTree" className="relative p-2">
+            <Upload className="w-5 h-5" />
+            <Badge
+              variant="destructive"
+              className="absolute -top-1 -right-1 h-4 w-8 flex items-center justify-center p-0 text-[10px]"
+            >
+              NEW
+            </Badge>
+          </Link>
+
+          {/* User Avatar or Sign In */}
+          {user?.email ? (
+            <Avatar className="h-8 w-8">
+              {session?.user.image ? (
+                <AvatarImage src={session.user.image} alt="Profile" />
+              ) : (
+                <AvatarFallback>
+                  {user.Username?.slice(0, 2).toUpperCase() || "U"}
+                </AvatarFallback>
+              )}
+            </Avatar>
+          ) : (
+            <Link href="/login">
+              <User className="w-5 h-5" />
+            </Link>
+          )}
+
+          {/* Mobile Menu */}
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-9 w-9">
+                <Menu className="h-5 w-5" />
+                <span className="sr-only">Open menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right">
+              <SheetHeader>
+                <SheetTitle>
+                  <div className="flex items-center gap-2">
+                    <Image
+                      height={40}
+                      width={40}
+                      alt="VanaGrow Logo"
+                      src="/logo.png"
+                      className="w-8 h-7"
+                    />
+                    <span className="font-semibold">
+                      <span className="text-primary">Vana</span>
+                      <span>Grow</span>
+                    </span>
+                  </div>
+                </SheetTitle>
+              </SheetHeader>
+
+              <div className="mt-6 flex flex-col gap-4">
+                {/* User Info */}
+                {user?.email && (
+                  <div className="flex items-center gap-3 mb-2 p-3 bg-muted/50 rounded-lg">
+                    <Avatar className="h-10 w-10">
+                      {session?.user.image ? (
+                        <AvatarImage src={session.user.image} alt="Profile" />
+                      ) : (
+                        <AvatarFallback>
+                          {user.Username?.slice(0, 2).toUpperCase() || "U"}
+                        </AvatarFallback>
+                      )}
+                    </Avatar>
+                    <div>
+                      <p className="font-medium">{user.Username || "User"}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {user.email}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Navigation Links */}
+                <div className="space-y-1">
+                  <Link
+                    href="/"
+                    className={`flex items-center gap-2 p-2 rounded-md hover:bg-muted transition-colors ${
+                      pathname === "/" ? "bg-muted font-medium" : ""
+                    }`}
+                  >
+                    <Home className="h-5 w-5" />
+                    <span>Home</span>
+                  </Link>
+
                   <Link
                     href="/About"
-                    className="hover:text-primary transition-colors"
+                    className={`flex items-center gap-2 p-2 rounded-md hover:bg-muted transition-colors ${
+                      pathname === "/About" ? "bg-muted font-medium" : ""
+                    }`}
                   >
-                    About
+                    <Info className="h-5 w-5" />
+                    <span>About</span>
                   </Link>
+                </div>
+
+                {/* Services Section */}
+                <div className="pt-2">
+                  <h3 className="mb-1 px-2 text-sm font-medium text-muted-foreground">
+                    Services
+                  </h3>
+                  <div className="space-y-1">
+                    {menuItems
+                      .filter((item) => item.id !== 6)
+                      .map((item) => (
+                        <Link
+                          key={item.id}
+                          href={item.path}
+                          className={`flex items-center gap-2 p-2 rounded-md hover:bg-muted transition-colors ${
+                            pathname === item.path ? "bg-muted font-medium" : ""
+                          }`}
+                        >
+                          {React.cloneElement(item.icon, {
+                            className: "h-5 w-5",
+                          })}
+                          <span>{item.label}</span>
+                        </Link>
+                      ))}
+                  </div>
+                </div>
+
+                {/* Theme Toggle */}
+                <div className="pt-2 px-2">
+                  <ModeToggle />
+                </div>
+
+                {/* Auth Button */}
+                <div className="pt-4">
                   {user?.email ? (
-                    <Button onClick={() => signOut()}>Logout</Button>
+                    <Button
+                      onClick={() => signOut()}
+                      variant="destructive"
+                      className="w-full"
+                    >
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Log out
+                    </Button>
                   ) : (
-                    <Button asChild>
+                    <Button asChild className="w-full">
                       <Link href="/login">Sign In</Link>
                     </Button>
                   )}
-                  <ul className="space-y-2">
-                    {menuItems.map(
-                      (item) =>
-                        item.id !== 6 && (
-                          <li key={item.id}>
-                            <Link
-                              href={item.path}
-                              className="flex items-center space-x-2 hover:text-primary transition-colors"
-                            >
-                              {item.icon}
-                              <span>{item.label}</span>
-                            </Link>
-                          </li>
-                        )
-                    )}
-                  </ul>
                 </div>
-              </SheetContent>
-            </Sheet>
-          </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </nav>

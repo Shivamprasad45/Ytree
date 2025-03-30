@@ -1,14 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  MapContainer,
-  TileLayer,
-  useMap,
-  Marker,
-  Popup,
-  Circle,
-} from "react-leaflet";
+import { MapContainer, TileLayer, useMap, Popup, Circle } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import L from "leaflet";
@@ -25,13 +18,7 @@ import {
   TreePalm,
 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -42,7 +29,7 @@ import { Coordinate, All_Users, Coordinates } from "../../../type";
 import WinnerAnnouncement from "./Winner";
 import { toast } from "sonner";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import SatelliteMap from "./Satlite";
+import RedZoneLegend from "./Anothers/RedZone";
 
 const createIcon = (iconUrl: string) =>
   new L.Icon({
@@ -154,7 +141,7 @@ export default function Component() {
   const [leaderboard, setLeaderboard] = useState<All_Users[]>([]);
   const [winner, setWinner] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("map");
-  const [satlite, setsatlite] = useState<Coordinates | null>(null);
+
   const [getAllCoords] = useGetALL_coordsMutation();
   const [getAllUsers] = useGetAll_usersMutation();
   const [currentLocation, setCurrentLocation] = useState<Coordinate[] | null>(
@@ -342,25 +329,6 @@ export default function Component() {
       treesPerPerson: 1.33,
     },
   ];
-  const RedZoneLegend = () => (
-    <div className="leaflet-bottom leaflet-right bg-white p-4 rounded shadow-md mr-4 mb-4">
-      <div className="flex flex-col gap-3">
-        <div className="flex items-center gap-2"></div>
-        <div className="border-t pt-2">
-          <div className="text-sm font-bold">Oxygen Facts</div>
-          <div className="text-xs">
-            Daily oxygen need per person: <strong>~500 L</strong>
-          </div>
-          <div className="text-xs">
-            Oxygen produced by one tree: <strong>~226 L/day</strong>
-          </div>
-          <div className="text-xs">
-            Trees needed per person: <strong>~3 trees</strong>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -450,7 +418,7 @@ export default function Component() {
         }}
       />
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="map" className="flex items-center gap-2">
             <Map className="w-4 h-4" />
             Map
@@ -458,10 +426,6 @@ export default function Component() {
           <TabsTrigger value="leaderboard" className="flex items-center gap-2">
             <Trophy className="w-4 h-4" />
             Leaderboard
-          </TabsTrigger>
-          <TabsTrigger value="Stellite" className="flex items-center gap-2">
-            <Satellite className="w-4 h-4" />
-            Satellite
           </TabsTrigger>
         </TabsList>
         <TabsContent value="map" className="mt-4">
@@ -613,37 +577,6 @@ export default function Component() {
                 ))}
               </ul>
             </CardContent>
-          </Card>
-        </TabsContent>
-        <TabsContent value="Stellite" className="mt-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Satellite className="w-6 h-6" />
-                Satellite View
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <SatelliteMap
-                lat={satlite?.latitude!}
-                lng={satlite?.longitude!}
-              />
-            </CardContent>
-            <CardFooter className="flex flex-wrap gap-2">
-              {currentLocation?.map((r) => (
-                <Button
-                  key={r.UserId}
-                  variant="outline"
-                  className="flex items-center gap-2"
-                  onClick={() =>
-                    setsatlite({ latitude: r.late, longitude: r.long })
-                  }
-                >
-                  <Trees className="w-4 h-4 text-green-500" />
-                  {r.commonName || r.name}
-                </Button>
-              ))}
-            </CardFooter>
           </Card>
         </TabsContent>
       </Tabs>

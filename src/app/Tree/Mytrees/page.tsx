@@ -1,50 +1,62 @@
 "use client";
-import MaxWidthRappers from "@/components/MaxWidthRapper";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import React, { useEffect } from "react";
-import { IPlantProfile } from "../../../../type";
-import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { useGetMyTreeInfoBy_idQuery } from "@/app/Featuers/TreeOrder/TreeOrderServices";
+
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { UserSelector } from "@/app/Featuers/Auth/AuthSlice";
-import Loading from "@/app/Loading/Loading";
-import dynamic from "next/dynamic";
-import {
-  CardFooter,
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-import { CalendarIcon, MapPinIcon, TreesIcon } from "lucide-react";
+import { useGetMyTreeInfoBy_idQuery } from "@/app/Featuers/TreeOrder/TreeOrderServices";
 import { useGetALL_coordsMutation } from "@/app/Featuers/Global/GlobeServices";
+// import type { IPlantProfile } from "../type"
+import dynamic from "next/dynamic";
 
-import Image from "next/image";
+// Components
+import MaxWidthRappers from "@/components/MaxWidthRapper";
+import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { MapPinIcon, TreePine, Leaf, AlertCircle } from "lucide-react";
+import Loading from "@/app/Loading/Loading";
+import { EmptyState } from "./Components/empty-state";
+import { IPlantProfile } from "../../../../type";
+import { TreeCard } from "./Components/tree-card";
+import { TreeCoordCard } from "./Components/tree-coord-card";
+// import { EmptyState } from "../components/empty-state"
+// import { TreeCard } from "../components/tree-card"
+// import { TreeCoordCard } from "../components/tree-coord-card"
+
+// Dynamically import the map component to avoid SSR issues
 const MapComponent = dynamic(() => import("@/app/Components/Mapregion"), {
   ssr: false,
-  loading: () => <Skeleton className="h-64 w-full" />,
+  loading: () => <Skeleton className="h-[500px] w-full rounded-lg" />,
 });
-const Page = () => {
+
+export default function MyTreesPage() {
   const user = useSelector(UserSelector);
-  const [getAllCoords, { data, isError: isErr }] = useGetALL_coordsMutation();
+  const [getAllCoords, { data: coordsData, isError: isCoordsError }] =
+    useGetALL_coordsMutation();
 
   const {
-    data: feature,
+    data: trees,
     isLoading,
     isError,
     refetch,
   } = useGetMyTreeInfoBy_idQuery(user?._id!);
 
-  const Shoe_coords = data?.filter((i) => i.UserId === user?._id);
-  console.log(Shoe_coords, "selected");
+  const userCoords = coordsData?.filter((coord) => coord.UserId === user?._id);
+
   useEffect(() => {
-    getAllCoords(); // Fetch all coordinates on mount
+    getAllCoords();
     refetch();
-  }, []);
+  }, [getAllCoords, refetch]);
+
+  // Calculate tree age in days
+  const getDaysOld = (plantDate: string | number | Date) => {
+    const plantTimestamp = new Date(plantDate).getTime();
+    const currentTime = Date.now();
+    const timeDifference = currentTime - plantTimestamp;
+    return Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+  };
+
   if (isLoading) {
     return (
       <MaxWidthRappers>
@@ -53,179 +65,102 @@ const Page = () => {
     );
   }
 
-  if (isError && isErr) {
-    return (
-      <div className="pt-10 w-[80vw] h-[90vh] text-center items-center justify-center scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-        🙄 Oops you not plant any trees
-      </div>
-    );
-  }
+  const hasNoTrees =
+    (isError && isCoordsError) || (!trees?.length && !userCoords?.length);
 
-  if (Shoe_coords === undefined) {
-    return (
-      <div className="pt-10 w-[80vw] h-[90vh] text-center items-center justify-center scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-        🙄 Oops you not plant any trees
-      </div>
-    );
+  if (hasNoTrees) {
+    return <EmptyState />;
   }
-  const getDaysOld = (age: string | number | Date) => {
-    const artworkAge = new Date(age).getTime();
-    const currentTime = Date.now();
-    const timeDifference = currentTime - artworkAge;
-    return Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
-  };
 
   return (
-    <div>
-      <MaxWidthRappers className="">
-        <div className="container mx-auto p-2 max-w-6xl">
-          <h1 className="text-3xl font-bold mb-6">My Trees</h1>
-          {feature && (
-            <ScrollArea className="h-[calc(100vh-150px)]">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {feature &&
-                  feature.map((tree: IPlantProfile) => (
-                    <Card key={tree._id} className="flex flex-col">
-                      <Link
-                        href={
-                          tree.status === 3
-                            ? `/Tree/Aboutmytree/${tree.findtree_id}`
-                            : ""
-                        }
-                      >
-                        <CardHeader>
-                          <CardTitle className="flex items-center gap-2">
-                            <TreesIcon className="h-5 w-5" />
-                            {tree.name}
-                          </CardTitle>
-                          <CardDescription className="flex items-center gap-2">
-                            <MapPinIcon className="h-4 w-4" />
-                            {tree.findtree_id}
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent className="flex-grow">
-                          <img
-                            src={tree.imageUrl}
-                            alt={`${tree.name} tree`}
-                            className="w-full h-32 object-cover rounded-md"
-                          />
-                        </CardContent>
-                        <CardFooter className="flex justify-between items-center">
-                          <div className="flex items-center gap-2">
-                            <CalendarIcon className="h-4 w-4" />
-                            <span className="text-sm text-muted-foreground">
-                              {tree.status === 3 && (
-                                <div className="text-neutral-400 text-sm font-bold font-['Inria_Sans'] leading-none">
-                                  {getDaysOld(tree.age).toLocaleString()} days
-                                  old
-                                </div>
-                              )}
-                            </span>
-                          </div>
-                          <Badge variant="secondary">
-                            {tree.status === 0 && (
-                              <div>
-                                <Badge>Pending</Badge>
-                              </div>
-                            )}
-                            {tree.status === 1 && (
-                              <div>
-                                <Badge>Shipping</Badge>
-                              </div>
-                            )}
+    <div className="bg-background min-h-screen pb-12">
+      <MaxWidthRappers>
+        <div className="container mx-auto p-4 max-w-7xl">
+          <header className="mb-8">
+            <h1 className="text-4xl font-bold text-primary">My Forest</h1>
+            <p className="text-muted-foreground mt-2">
+              Track and manage your planted trees
+            </p>
+          </header>
 
-                            {tree.status === 2 && (
-                              <div>
-                                <Button>
-                                  <Link
-                                    href={`/Tree/LogTree?id=${tree._id}&Plaintid=${tree.Plaintid}&userid=${tree.UserId}`}
-                                  >
-                                    Planted
-                                  </Link>
-                                </Button>
-                              </div>
-                            )}
-                          </Badge>
-                        </CardFooter>
-                      </Link>
-                    </Card>
+          <Tabs defaultValue="trees" className="w-full">
+            <TabsList className="mb-6 w-full sm:w-auto">
+              <TabsTrigger value="trees" className="flex items-center gap-2">
+                <TreePine className="h-4 w-4" />
+                <span>My Trees</span>
+                {(trees?.length ?? 0) > 0 && (
+                  <Badge variant="secondary" className="ml-1">
+                    {trees?.length ?? 0}
+                  </Badge>
+                )}
+              </TabsTrigger>
+              <TabsTrigger value="map" className="flex items-center gap-2">
+                <MapPinIcon className="h-4 w-4" />
+                <span>Map View</span>
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="trees" className="space-y-8">
+              {trees && trees.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {trees.map((tree: IPlantProfile) => (
+                    <TreeCard
+                      key={tree._id}
+                      tree={tree}
+                      getDaysOld={getDaysOld}
+                    />
                   ))}
-              </div>
-            </ScrollArea>
-          )}
+                </div>
+              ) : (
+                <Card className="bg-muted/50">
+                  <CardContent className="pt-6 text-center">
+                    <AlertCircle className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+                    <p>You haven&#39;t added any trees yet.</p>
+                  </CardContent>
+                </Card>
+              )}
 
-          <ScrollArea>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 bg-gray-50 rounded-md shadow-lg">
-              {data &&
-                Shoe_coords?.map((filteredItem) => (
-                  <div
-                    key={filteredItem.name}
-                    className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-4"
-                  >
-                    {filteredItem.verifed ? (
-                      <div className="">
-                        <CardContent className="flex-grow">
-                          <Link
-                            href={`/Tree/Aboutmytree/${filteredItem.find_id}`}
-                            className="block group"
-                          >
-                            <Image
-                              src={filteredItem.imageURL}
-                              alt={filteredItem.name}
-                              className="w-full h-32 object-cover rounded-md group-hover:scale-105 transition-transform duration-200"
-                              width={200}
-                              height={200}
-                            />
-                          </Link>
-                        </CardContent>
-                        <div className="mt-4">
-                          <h3 className="text-lg font-semibold text-gray-800">
-                            {filteredItem.name}
-                          </h3>
-                          <p className="text-sm text-gray-600 mt-2">
-                            {filteredItem.bio}
-                          </p>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="text-center">
-                        <CardContent className="flex-grow">
-                          <Link
-                            href={`/Tree/Aboutmytree/${filteredItem.find_id}`}
-                            className="block group"
-                          >
-                            <Image
-                              src={filteredItem.imageURL}
-                              alt={filteredItem.name}
-                              className="w-full h-32 object-cover rounded-md group-hover:scale-105 transition-transform duration-200"
-                              width={200}
-                              height={200}
-                            />
-                          </Link>
-                        </CardContent>
-                        <div className="">
-                          <h3 className="text-lg font-semibold text-gray-800">
-                            Not verifed yet 🤔
-                          </h3>
-                        </div>
-                      </div>
-                    )}
+              {userCoords && userCoords.length > 0 && (
+                <div className="mt-10">
+                  <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
+                    <Leaf className="h-5 w-5 text-green-600" />
+                    Tree Locations
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {userCoords.map((coord) => (
+                      <TreeCoordCard key={coord.find_id} coord={coord} />
+                    ))}
                   </div>
-                ))}
-            </div>
-          </ScrollArea>
+                </div>
+              )}
+            </TabsContent>
+
+            <TabsContent value="map">
+              {userCoords && userCoords.length > 0 ? (
+                <div className="space-y-4">
+                  <Card>
+                    <CardHeader className="pb-0">
+                      <h2 className="text-2xl font-semibold">My Trees Map</h2>
+                    </CardHeader>
+                    <CardContent className="pt-4">
+                      <div className="h-[500px] w-full rounded-lg overflow-hidden border">
+                        <MapComponent data={userCoords} />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              ) : (
+                <Card className="bg-muted/50">
+                  <CardContent className="pt-6 text-center">
+                    <MapPinIcon className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+                    <p>No tree locations to display on the map.</p>
+                  </CardContent>
+                </Card>
+              )}
+            </TabsContent>
+          </Tabs>
         </div>
       </MaxWidthRappers>
-      {Shoe_coords?.length !== 0 && (
-        <div className="">
-          <div className="h-[500px] w-full rounded-md overflow-hidden">
-            <h1 className="text-3xl font-bold mb-6">My Trees coords</h1>{" "}
-            {Shoe_coords?.length !== 0 && <MapComponent data={Shoe_coords!} />}
-          </div>
-        </div>
-      )}
     </div>
   );
-};
-
-export default Page;
+}
