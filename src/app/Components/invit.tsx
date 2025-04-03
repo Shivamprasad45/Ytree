@@ -60,7 +60,7 @@ export default function ReferralPage() {
           } else {
             toast({
               title: "Error",
-              description: "Failed to load referral data",
+              description: "Failed to  load referral data",
               variant: "destructive",
             });
           }
