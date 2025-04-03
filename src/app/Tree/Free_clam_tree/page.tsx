@@ -85,6 +85,7 @@ const Free_clam = () => {
   if (data?.error) {
     toast.error(data.message);
   }
+
   if (data?.success) {
     // Find the selected tree type name
     const selectedTree = TREE_TYPES.find(
@@ -114,6 +115,7 @@ const Free_clam = () => {
       ) {
         await getPlant({
           address: Plants_CurrentLocations?.Address,
+
           email: user?.email ?? "",
           late: Plants_CurrentLocations.late,
           long: Plants_CurrentLocations.long,
@@ -125,6 +127,8 @@ const Free_clam = () => {
           findtree_id: values.treeType,
           UserId: user._id,
           Plaintid: "",
+          district: Plants_CurrentLocations.district,
+          state: Plants_CurrentLocations.state,
         });
       } else {
         console.error("Plant location coordinates are missing");

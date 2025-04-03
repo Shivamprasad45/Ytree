@@ -1,4 +1,5 @@
 import User from "@/Models/Free_tree";
+import Leader from "@/Models/LeaderBoard";
 import Mytree from "@/Models/Mytree";
 import DbConnect from "@/Utils/mongooesConnect";
 import { NextRequest, NextResponse } from "next/server";
@@ -22,6 +23,8 @@ export async function POST(req: NextRequest) {
       photoUrl,
       findtree_id,
       UserId,
+      district,
+      state,
     } = await req.json();
 
     const verifyNum = await User.findOne({ mobil_number });
@@ -48,6 +51,7 @@ export async function POST(req: NextRequest) {
         imageUrl: photoUrl,
         name,
         status: 0,
+        Free: true,
       });
 
       await User.create({
@@ -61,7 +65,11 @@ export async function POST(req: NextRequest) {
         treeType,
         photoUrl,
       });
-
+      await Leader.create({
+        UserId: UserId,
+        district,
+        state,
+      });
       // Send Email Notification using Resend
       const { data, error } = await resend.emails.send({
         from: "onboarding@resend.dev", // Must be a verified sender

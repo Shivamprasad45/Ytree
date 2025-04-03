@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import MaxWidthRappers from "@/components/MaxWidthRapper";
-import SkyLanternReferral from "./Garden";
+import SkyLanternReferral from "./garden";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { motion } from "framer-motion";

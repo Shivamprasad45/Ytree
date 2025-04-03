@@ -29,6 +29,10 @@ export const MytreeSchema = new Schema({
     type: Number,
     required: true,
   },
+  Free: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // Check if the model already exists to prevent overwriting

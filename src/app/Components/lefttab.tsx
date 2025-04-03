@@ -6,8 +6,8 @@ import {
   Home,
   ListTree,
   MessageCircleCodeIcon,
+  ShoppingCart,
   TreePalm,
-  TreesIcon,
   UserX2Icon,
   Share2,
 } from "lucide-react";
@@ -21,6 +21,14 @@ import { setUserInfo, UserSelector } from "../Featuers/Auth/AuthSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useMobile } from "@/Utils/use-mobile";
 
 export const menuItems = [
   {
@@ -30,8 +38,12 @@ export const menuItems = [
     path: "/",
   },
   { id: 1, icon: <TreePalm size={20} />, label: "Trees", path: "/Tree/Shop" },
-  { id: 6, icon: <TreesIcon size={20} />, label: "Cart", path: "/Tree/Cart" },
-
+  {
+    id: 6,
+    icon: <ShoppingCart size={20} />,
+    label: "Cart",
+    path: "/Tree/Cart",
+  },
   {
     id: 2,
     icon: <MessageCircleCodeIcon size={20} />,
@@ -47,7 +59,7 @@ export const menuItems = [
   {
     id: 5,
     icon: <ListTree size={20} />,
-    label: "Mytree",
+    label: "My Trees",
     path: "/Tree/Mytrees",
   },
   {
@@ -59,17 +71,17 @@ export const menuItems = [
   {
     id: 8,
     icon: <Share2 size={20} />,
-    label: "invite me",
+    label: "Invite Friends",
     path: "/invite",
   },
 ];
 
-export default function Lefttab() {
+function Lefttab() {
   const dispatch = useDispatch();
   const { data: session, status } = useSession();
-
   const user = useSelector(UserSelector);
-  const route = usePathname();
+  const pathname = usePathname();
+  const isMobile = useMobile();
 
   useEffect(() => {
     if (session?.user) {
@@ -83,59 +95,105 @@ export default function Lefttab() {
     }
   }, [session, status, dispatch]);
 
-  if (["/Signup", "/login", "/Resend"].includes(route)) {
+  if (["/Signup", "/login", "/Resend"].includes(pathname)) {
     return null;
   }
 
   return (
-    <div className="flex flex-col h-[55vh] border-r bg-background">
-      <div className="pt-6 pr-3 pl-3 pb-3">
+    <div className="flex flex-col h-full border-r bg-background shadow-sm">
+      <div className="p-4 border-b">
         {user?.Username ? (
-          <div className="flex items-center space-x-4">
-            <Avatar className="w-10 h-10">
+          <div className="flex items-center space-x-3">
+            <Avatar className="w-10 h-10 border">
               {session?.user.image ? (
-                <AvatarImage src={session?.user.image} alt="Profile picture" />
+                <AvatarImage
+                  src={session?.user.image}
+                  alt={`${user.Username}'s profile picture`}
+                />
               ) : (
-                <AvatarFallback>
+                <AvatarFallback className="bg-green-100 text-green-800">
                   {user.Username.slice(0, 2).toUpperCase()}
                 </AvatarFallback>
               )}
             </Avatar>
-            <div className="space-y-1">
-              <h2 className="text-sm font-semibold">
-                {user.Username.slice(0, 8) + "..."}
+            <div className="space-y-1 overflow-hidden">
+              <h2
+                className="text-sm font-semibold truncate"
+                title={user.Username}
+              >
+                {user.Username.length > 15
+                  ? `${user.Username.slice(0, 15)}...`
+                  : user.Username}
               </h2>
-              <p className="text-xs text-muted-foreground">
-                {user.email.slice(0, 10)}
+              <p
+                className="text-xs text-muted-foreground truncate"
+                title={user.email}
+              >
+                {user.email}
               </p>
             </div>
           </div>
         ) : (
           <Link href="/login">
-            <Button variant="outline" className="w-full">
-              <UserX2Icon className="mr-2 h-4 w-4" />
+            <Button variant="outline" className="w-full gap-2 font-medium">
+              <UserX2Icon className="h-4 w-4" />
               Sign In
             </Button>
           </Link>
         )}
       </div>
-      <ScrollArea className="flex-1 px-2">
-        <div className="space-y-1">
-          {menuItems.map((item) => (
-            <Link key={item.id} href={item.path}>
-              <Button
-                variant="ghost"
-                className={`w-full justify-start ${
-                  item.id === 6 ? "hidden" : ""
-                }`}
-              >
-                {item.icon}
-                <span className="ml-3">{item.label}</span>
-              </Button>
-            </Link>
-          ))}
-        </div>
+
+      <ScrollArea className="flex-1 py-2">
+        <TooltipProvider delayDuration={300}>
+          <div className="space-y-1 px-2">
+            {menuItems.map((item) => {
+              const isActive =
+                pathname === item.path || pathname.startsWith(`${item.path}/`);
+
+              return (
+                <Tooltip key={item.id}>
+                  <TooltipTrigger asChild>
+                    <Link href={item.path}>
+                      <Button
+                        variant={isActive ? "secondary" : "ghost"}
+                        className={cn(
+                          "w-full justify-start transition-all",
+                          isActive && "font-medium",
+                          isMobile && "px-3"
+                        )}
+                      >
+                        <span
+                          className={cn(
+                            "mr-3 transition-colors",
+                            isActive
+                              ? "text-green-600"
+                              : "text-muted-foreground"
+                          )}
+                        >
+                          {item.icon}
+                        </span>
+                        {!isMobile && <span>{item.label}</span>}
+                      </Button>
+                    </Link>
+                  </TooltipTrigger>
+                  {isMobile && (
+                    <TooltipContent side="right">{item.label}</TooltipContent>
+                  )}
+                </Tooltip>
+              );
+            })}
+          </div>
+        </TooltipProvider>
       </ScrollArea>
+
+      <div className="p-4 border-t mt-auto">
+        <div className="text-xs text-center text-muted-foreground">
+          <p>© {new Date().getFullYear()} Tree Planting</p>
+          <p className="mt-1">Grow a greener future</p>
+        </div>
+      </div>
     </div>
   );
 }
+
+export default Lefttab;

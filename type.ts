@@ -208,6 +208,8 @@ export interface Coords {
   long: number;
   late: number;
   Address: string;
+  state: string;
+  district: string;
 }
 
 interface Addresses {
@@ -287,4 +289,6 @@ export interface Free_clam_plant {
   UserId: string;
   findtree_id: string;
   Plaintid: string;
+  state: string;
+  district: string;
 }
