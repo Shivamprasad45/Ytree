@@ -28,7 +28,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { motion } from "framer-motion";
 import { useToast } from "@/components/ui/use-toast";
-import SkyLanternReferral from "./garden";
+import SkyLanternReferral from "./Anothers/garden";
 
 export default function ReferralPage() {
   const { data: session, status } = useSession();
