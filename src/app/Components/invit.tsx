@@ -28,7 +28,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { motion } from "framer-motion";
 import { useToast } from "@/components/ui/use-toast";
-import SkyLanternReferral from "./Anothers/garden";
+// import SkyLanternReferral from "./Anothers/garden";
 
 export default function ReferralPage() {
   const { data: session, status } = useSession();
@@ -198,10 +198,10 @@ export default function ReferralPage() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="mb-12"
         >
-          <SkyLanternReferral
+          {/* <SkyLanternReferral
             referralCount={referralStats.totalReferred}
             targetCount={10}
-          />
+          /> */}
         </motion.div>
 
         <Tabs defaultValue="stats" className="mb-12">
