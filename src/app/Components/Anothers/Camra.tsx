@@ -142,7 +142,7 @@ const Camera: React.FC<CameraProps> = ({ onImageSelected }) => {
         {!capturedImageUrl ? (
           <div className="flex justify-between items-center w-full">
             <Button
-              variant="outline"
+              variant="default"
               size="icon"
               className="rounded-full border-white text-white"
               onClick={flipCamera}
@@ -160,7 +160,7 @@ const Camera: React.FC<CameraProps> = ({ onImageSelected }) => {
         ) : (
           <div className="flex gap-4">
             <Button
-              variant="outline"
+              variant="default"
               className="border-white text-white"
               onClick={resetCamera}
             >
