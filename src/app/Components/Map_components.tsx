@@ -1,7 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, useMap, Popup, Circle } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  useMap,
+  Popup,
+  Circle,
+  GeoJSON,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import L from "leaflet";
@@ -30,6 +37,8 @@ import WinnerAnnouncement from "./Winner";
 import { toast } from "sonner";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import RedZoneLegend from "./Anothers/RedZone";
+import { indiaStatesGeoJson } from "./Anothers/GeoJson";
+import Leaderboard from "./Leader/Leader";
 
 const createIcon = (iconUrl: string) =>
   new L.Icon({
@@ -409,6 +418,59 @@ export default function Component() {
       return { stroke: "#FF0000", fill: "#FF6347" };
     }
   };
+  const stateStyle = (feature: any) => {
+    const stateName = feature.properties.name;
+    const stateData = stateTreeData.find(
+      (state) => state.state.toLowerCase() === stateName.toLowerCase()
+    );
+
+    const defaultStyle = {
+      fillColor: "#cccccc",
+      weight: 2,
+      opacity: 1,
+      color: "#666666",
+      fillOpacity: 0.2,
+    };
+
+    if (stateData) {
+      const colors = getColorByTreesPerPerson(stateData.treesPerPerson);
+      return {
+        fillColor: colors.fill,
+        weight: 2,
+        opacity: 1,
+        color: colors.stroke,
+        fillOpacity: 0.2,
+      };
+    }
+
+    return defaultStyle;
+  };
+
+  const onEachFeature = (feature: any, layer: any) => {
+    const stateName = feature.properties.name;
+    const stateData = stateTreeData.find(
+      (state) => state.state.toLowerCase() === stateName.toLowerCase()
+    );
+
+    if (stateData) {
+      layer.bindPopup(`
+        <div class="p-2">
+          <h3 class="font-bold" style="color: ${
+            getColorByTreesPerPerson(stateData.treesPerPerson).stroke
+          }">
+            ${stateData.state}
+          </h3>
+          <p class="text-sm">
+            Per person tree: ${stateData.treesPerPerson}
+          </p>
+        </div>
+      `);
+    } else {
+      layer.bindPopup(
+        `<div class="p-2"><h3 class="font-bold">${stateName}</h3><p>No tree data available</p></div>`
+      );
+    }
+  };
   return (
     <div className="container mx-auto p-4 space-y-6">
       <WinnerAnnouncement
@@ -441,42 +503,11 @@ export default function Component() {
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
 
-                {stateTreeData.map((zone, idx) => {
-                  const colors = getColorByTreesPerPerson(zone.treesPerPerson);
-
-                  return (
-                    <Circle
-                      key={idx}
-                      center={[zone.lat, zone.lng]}
-                      radius={300000}
-                      pathOptions={{
-                        color: colors.stroke,
-                        fillColor: colors.fill,
-                        fillOpacity: 0.2,
-                        weight: 2,
-                      }}
-                    >
-                      <Popup>
-                        <div className="p-2">
-                          <h3
-                            className="font-bold"
-                            style={{ color: colors.stroke }}
-                          >
-                            {zone.state}
-                          </h3>
-                          <p className="text-sm flex items-center">
-                            <TreePalm
-                              className="mr-1"
-                              style={{ color: colors.fill }}
-                            />
-                            Per person tree: {zone.treesPerPerson}
-                          </p>
-                        </div>
-                      </Popup>
-                    </Circle>
-                  );
-                })}
-
+                <GeoJSON
+                  data={indiaStatesGeoJson as GeoJSON.FeatureCollection}
+                  style={stateStyle}
+                  onEachFeature={onEachFeature}
+                />
                 <RedZoneLegend />
                 <MapUpdater
                   coords={coords}
@@ -543,41 +574,7 @@ export default function Component() {
           </ScrollArea>
         </TabsContent>
         <TabsContent value="leaderboard" className="mt-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Trophy className="w-6 h-6 text-yellow-500" />
-                Leaderboard
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2">
-                {leaderboard.map((user, index) => (
-                  <li
-                    key={user._id}
-                    className="flex items-center justify-between p-3 bg-secondary rounded-md transition-colors hover:bg-secondary/80"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="font-bold text-lg">{index + 1}</span>
-                      <span className="font-medium">
-                        {user.firstName} {user.lastName}
-                      </span>
-                      {user._id === session?.user?.id && (
-                        <UserIcon className="w-4 h-4 text-blue-500" />
-                      )}
-                      {index === 0 && (
-                        <Award className="w-5 h-5 text-yellow-500" />
-                      )}
-                    </div>
-                    <span className="flex items-center gap-2">
-                      <Trees className="w-4 h-4 text-green-500" />
-                      {user.treeCount} trees
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
+          <Leaderboard />
         </TabsContent>
       </Tabs>
     </div>

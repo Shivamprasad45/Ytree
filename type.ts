@@ -292,3 +292,20 @@ export interface Free_clam_plant {
   state: string;
   district: string;
 }
+
+export interface GeoJsonFeature {
+  type: string;
+  properties: {
+    name: string;
+    [key: string]: any;
+  };
+  geometry: {
+    type: string;
+    coordinates: any[];
+  };
+}
+
+export interface GeoJsonData {
+  type: string;
+  features: GeoJsonFeature[];
+}

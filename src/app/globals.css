@@ -189,3 +189,32 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(-2deg); }
 }
+
+.camera-container {
+  @apply bg-black min-h-screen flex flex-col;
+}
+
+.camera-viewport {
+  @apply relative w-full flex-1 overflow-hidden;
+}
+
+.camera-feed {
+  @apply w-full h-full object-cover;
+  transform: scaleX(-1); /* Mirror the camera feed */
+}
+
+.capture-button {
+  @apply w-16 h-16 rounded-full bg-white border-4 border-white shadow-lg transition-transform;
+}
+
+.capture-button:active {
+  @apply scale-90;
+}
+
+.gallery-thumbnail {
+  @apply w-full h-full object-cover rounded-md;
+}
+
+.photo-gallery {
+  @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 p-4 bg-black;
+}

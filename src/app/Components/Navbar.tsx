@@ -33,7 +33,6 @@ import ConnectionStatus from "../lib/Connection";
 
 import {
   Menu,
-  Upload,
   ShoppingCart,
   User,
   LogOut,
@@ -171,7 +170,7 @@ const Navbar = () => {
             </Link>
 
             {/* Upload Tree */}
-            <Link
+            {/* <Link
               href="/Tree/UploadTree"
               className="relative p-2 hover:bg-muted rounded-full transition-colors"
             >
@@ -183,10 +182,10 @@ const Navbar = () => {
                 NEW
               </Badge>
               <span className="sr-only">Upload Tree</span>
-            </Link>
+            </Link> */}
 
             {/* Theme Toggle */}
-            <ModeToggle />
+            {/* <ModeToggle /> */}
 
             {/* User Menu */}
             {user?.email ? (
@@ -254,7 +253,7 @@ const Navbar = () => {
           </Link>
 
           {/* Upload Tree */}
-          <Link href="/Tree/UploadTree" className="relative p-2">
+          {/* <Link href="/Tree/UploadTree" className="relative p-2">
             <Upload className="w-5 h-5" />
             <Badge
               variant="destructive"
@@ -262,7 +261,7 @@ const Navbar = () => {
             >
               NEW
             </Badge>
-          </Link>
+          </Link> */}
 
           {/* User Avatar or Sign In */}
           {user?.email ? (
@@ -379,9 +378,9 @@ const Navbar = () => {
                 </div>
 
                 {/* Theme Toggle */}
-                <div className="pt-2 px-2">
+                {/* <div className="pt-2 px-2">
                   <ModeToggle />
-                </div>
+                </div> */}
 
                 {/* Auth Button */}
                 <div className="pt-4">

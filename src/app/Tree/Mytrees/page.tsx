@@ -119,20 +119,6 @@ export default function MyTreesPage() {
                   </CardContent>
                 </Card>
               )}
-
-              {userCoords && userCoords.length > 0 && (
-                <div className="mt-10">
-                  <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-                    <Leaf className="h-5 w-5 text-green-600" />
-                    Tree Locations
-                  </h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {userCoords.map((coord) => (
-                      <TreeCoordCard key={coord.find_id} coord={coord} />
-                    ))}
-                  </div>
-                </div>
-              )}
             </TabsContent>
 
             <TabsContent value="map">
