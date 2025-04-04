@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { signOut, useSession } from "next-auth/react";
 import { useGetCartItemByIdQuery } from "../Featuers/Treecart/TreeServicesAPI";
@@ -46,11 +46,18 @@ const Navbar = () => {
   const { data: session } = useSession();
   const { data: cartdata } = useGetCartItemByIdQuery(user?._id!);
   const pathname = usePathname();
+  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [shouldRender, setShouldRender] = useState(true);
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   useEffect(() => {
     setShouldRender(!["/Signup", "/login", "/Resend"].includes(pathname));
+  }, [pathname]);
+
+  // Close sheet when pathname changes (navigation occurs)
+  useEffect(() => {
+    setSheetOpen(false);
   }, [pathname]);
 
   // Skip rendering on auth pages
@@ -169,21 +176,6 @@ const Navbar = () => {
               <span className="sr-only">Cart</span>
             </Link>
 
-            {/* Upload Tree */}
-            {/* <Link
-              href="/Tree/UploadTree"
-              className="relative p-2 hover:bg-muted rounded-full transition-colors"
-            >
-              <Upload className="w-5 h-5" />
-              <Badge
-                variant="destructive"
-                className="absolute -top-1 -right-1 h-4 w-8 flex items-center justify-center p-0 text-[10px]"
-              >
-                NEW
-              </Badge>
-              <span className="sr-only">Upload Tree</span>
-            </Link> */}
-
             {/* Theme Toggle */}
             {/* <ModeToggle /> */}
 
@@ -252,17 +244,6 @@ const Navbar = () => {
             )}
           </Link>
 
-          {/* Upload Tree */}
-          {/* <Link href="/Tree/UploadTree" className="relative p-2">
-            <Upload className="w-5 h-5" />
-            <Badge
-              variant="destructive"
-              className="absolute -top-1 -right-1 h-4 w-8 flex items-center justify-center p-0 text-[10px]"
-            >
-              NEW
-            </Badge>
-          </Link> */}
-
           {/* User Avatar or Sign In */}
           {user?.email ? (
             <Avatar className="h-8 w-8">
@@ -281,7 +262,7 @@ const Navbar = () => {
           )}
 
           {/* Mobile Menu */}
-          <Sheet>
+          <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="h-9 w-9">
                 <Menu className="h-5 w-5" />
@@ -336,6 +317,7 @@ const Navbar = () => {
                     className={`flex items-center gap-2 p-2 rounded-md hover:bg-muted transition-colors ${
                       pathname === "/" ? "bg-muted font-medium" : ""
                     }`}
+                    onClick={() => setSheetOpen(false)}
                   >
                     <Home className="h-5 w-5" />
                     <span>Home</span>
@@ -346,6 +328,7 @@ const Navbar = () => {
                     className={`flex items-center gap-2 p-2 rounded-md hover:bg-muted transition-colors ${
                       pathname === "/About" ? "bg-muted font-medium" : ""
                     }`}
+                    onClick={() => setSheetOpen(false)}
                   >
                     <Info className="h-5 w-5" />
                     <span>About</span>
@@ -367,6 +350,7 @@ const Navbar = () => {
                           className={`flex items-center gap-2 p-2 rounded-md hover:bg-muted transition-colors ${
                             pathname === item.path ? "bg-muted font-medium" : ""
                           }`}
+                          onClick={() => setSheetOpen(false)}
                         >
                           {React.cloneElement(item.icon, {
                             className: "h-5 w-5",
@@ -386,7 +370,10 @@ const Navbar = () => {
                 <div className="pt-4">
                   {user?.email ? (
                     <Button
-                      onClick={() => signOut()}
+                      onClick={() => {
+                        setSheetOpen(false);
+                        signOut();
+                      }}
                       variant="destructive"
                       className="w-full"
                     >
@@ -394,7 +381,11 @@ const Navbar = () => {
                       Log out
                     </Button>
                   ) : (
-                    <Button asChild className="w-full">
+                    <Button
+                      asChild
+                      className="w-full"
+                      onClick={() => setSheetOpen(false)}
+                    >
                       <Link href="/login">Sign In</Link>
                     </Button>
                   )}

@@ -72,14 +72,11 @@ export async function POST(req: NextRequest) {
     ]);
 
     if (existingEmail || existingNumber) {
-      return NextResponse.json(
-        {
-          message:
-            "You have already claimed a free tree. Please purchase instead.",
-          error: "conflict",
-        },
-        { status: 409 }
-      );
+      return NextResponse.json({
+        message:
+          "You have already claimed a free tree. Please purchase instead.",
+        error: "Conflict",
+      });
     }
 
     // Transaction-like pattern (MongoDB needs replica set for real transactions)
@@ -139,12 +136,9 @@ export async function POST(req: NextRequest) {
     );
   } catch (error) {
     console.error("Error processing request:", error);
-    return NextResponse.json(
-      {
-        error: "Internal Server Error",
-        message: error instanceof Error ? error.message : "Unknown error",
-      },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      error: "Internal Server Error",
+      message: error instanceof Error ? error.message : "Unknown error",
+    });
   }
 }

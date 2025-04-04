@@ -39,6 +39,9 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import RedZoneLegend from "./Anothers/RedZone";
 import { indiaStatesGeoJson } from "./Anothers/GeoJson";
 import Leaderboard from "./Leader/Leader";
+import { getCurrentLocation } from "@/Utils/locationsServices";
+import { useDispatch } from "react-redux";
+import { Location_Current } from "../Featuers/Treecart/TreeSliec";
 
 const createIcon = (iconUrl: string) =>
   new L.Icon({
@@ -142,6 +145,12 @@ const MapViewUpdater = ({ coords }: { coords: [number, number] }) => {
 };
 
 export default function Component() {
+  const dispatch = useDispatch();
+  const Loc = async () => {
+    const data = await getCurrentLocation();
+    dispatch(Location_Current(data));
+  };
+  Loc();
   const { data: session } = useSession();
   const [coords, setCoords] = useState<Coordinate[]>([]);
   const [users, setUsers] = useState<All_Users[]>([]);

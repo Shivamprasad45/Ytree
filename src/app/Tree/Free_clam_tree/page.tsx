@@ -2,13 +2,10 @@
 import { useSelector } from "react-redux";
 import { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import * as z from "zod";
-
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-
 import { Coords_Selector } from "@/app/Featuers/TreeOrder/TreeOrderSlice";
 import { useFree_plants_clamMutation } from "@/app/Featuers/TreeOrder/TreeOrderServices";
 import { toast } from "sonner";
@@ -70,7 +67,8 @@ const TREE_TYPES = [
 const Free_clam = () => {
   const Plants_CurrentLocations = useSelector(Coords_Selector);
   const router = useRouter();
-  const [getPlant, { data, isLoading }] = useFree_plants_clamMutation();
+  const [getPlant, { data, isLoading, isError }] =
+    useFree_plants_clamMutation();
 
   // Form state
   const [name, setName] = useState("");

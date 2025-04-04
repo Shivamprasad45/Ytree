@@ -34,6 +34,8 @@ interface LeaderboardItem {
 // If not, you'll need to adjust the import path or include the data directly
 import districtsByState from "../Anothers/State";
 import { useMobile } from "@/Utils/use-mobile";
+import { useSelector } from "react-redux";
+import { LocationDataSelector } from "@/app/Featuers/Treecart/TreeSliec";
 
 const states = [
   // States (28)
@@ -78,13 +80,15 @@ const states = [
 ];
 
 export default function Leaderboard() {
-  const [state, setState] = useState("");
-  const [district, setDistrict] = useState("");
+  const Location = useSelector(LocationDataSelector);
+  const [state, setState] = useState(Location?.state);
+  const [district, setDistrict] = useState(Location?.district);
   const [data, setData] = useState<LeaderboardItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const isMobile = useMobile();
+
   const itemsPerPage = 10;
 
   useEffect(() => {
