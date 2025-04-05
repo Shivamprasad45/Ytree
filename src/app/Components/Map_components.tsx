@@ -1,14 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  MapContainer,
-  TileLayer,
-  useMap,
-  Popup,
-  Circle,
-  GeoJSON,
-} from "react-leaflet";
+import { MapContainer, TileLayer, useMap, GeoJSON } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import L from "leaflet";
@@ -40,8 +33,11 @@ import RedZoneLegend from "./Anothers/RedZone";
 import { indiaStatesGeoJson } from "./Anothers/GeoJson";
 import Leaderboard from "./Leader/Leader";
 import { getCurrentLocation } from "@/Utils/locationsServices";
-import { useDispatch } from "react-redux";
-import { Location_Current } from "../Featuers/Treecart/TreeSliec";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  Location_Current,
+  LocationDataSelector,
+} from "../Featuers/Treecart/TreeSliec";
 
 const createIcon = (iconUrl: string) =>
   new L.Icon({
@@ -100,16 +96,8 @@ function MapUpdater({
   <p class="text-sm text-gray-600 mb-1">
     <span class="font-semibold">Address:</span> ${coord.Plant_Addresses}
   </p>
-   <p class="text-sm text-gray-600 mb-1">
-    <span class="font-semibold">Relation:</span> ${
-      coord.relation === undefined ? "" : coord.relation
-    }
-  </p>
-   <p class="text-sm text-gray-600 mb-1">
-    <span class="font-semibold">Name:</span> ${
-      coord.bio === undefined ? "" : coord.bio
-    }
-  </p>
+  
+ 
   <p class="text-sm text-gray-600">
     <span class="font-semibold">Conservationist: </span> 
     ${
@@ -150,7 +138,7 @@ export default function Component() {
     const data = await getCurrentLocation();
     dispatch(Location_Current(data));
   };
-  Loc();
+
   const { data: session } = useSession();
   const [coords, setCoords] = useState<Coordinate[]>([]);
   const [users, setUsers] = useState<All_Users[]>([]);
@@ -165,6 +153,7 @@ export default function Component() {
   const [currentLocation, setCurrentLocation] = useState<Coordinate[] | null>(
     null
   );
+  const Location = useSelector(LocationDataSelector);
   const [userTreecurrentLocation, setUserTreeCurrentLocation] = useState<
     [number, number] | null
   >(null);
@@ -351,6 +340,7 @@ export default function Component() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        Loc();
         setIsLoading(true);
         const [coordsData, usersData] = await Promise.all([
           getAllCoords().unwrap(),
@@ -528,10 +518,10 @@ export default function Component() {
                   coords={[
                     userTreecurrentLocation
                       ? userTreecurrentLocation[1]
-                      : 26.0204409,
+                      : Location?.lat ?? 0,
                     userTreecurrentLocation
                       ? userTreecurrentLocation[0]
-                      : 83.9037192,
+                      : Location?.lng ?? 0,
                   ]}
                 />
               </MapContainer>
