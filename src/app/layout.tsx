@@ -57,27 +57,26 @@ export default function RootLayout({
         <Providers>
           <Analytics />
           <Toaster />
-          <MaxWidthRappers>
-            <div className="flex flex-col min-h-screen">
-              <Navbar />
-              <main className="flex flex-col md:flex-row w-full flex-grow overflow-hidden">
-                {/* Left */}
-                <div className="hidden md:flex md:fixed md:h-[calc(100vh-64px)] md:w-64 top-16">
-                  <Lefttab />
-                </div>
+          <div className="flex flex-col min-h-screen">
+            <Navbar />
 
-                {/* Middle */}
-                <div className="flex-grow md:ml-64 pt-12">
-                  <MaxWidthRappers className="mx-auto">
-                    {children}
-                  </MaxWidthRappers>
-                </div>
-              </main>
-              <div className="mt-auto">
-                <Footer />
+            <div className="flex flex-1 w-full">
+              {/* Sidebar - visible on md and above */}
+              <div className="hidden md:block fixed top-16 h-[calc(100vh-64px)] w-64 border-r bg-white z-10">
+                <Lefttab />
+              </div>
+
+              {/* Main content */}
+              <div className="flex-1 md:ml-64 px-4 pb-24 pt-4">
+                {" "}
+                {/* Add pb-24 to create space for footer */}
+                <MaxWidthRappers>{children}</MaxWidthRappers>
               </div>
             </div>
-          </MaxWidthRappers>
+
+            {/* Footer stays at the bottom */}
+            <Footer />
+          </div>
         </Providers>
       </body>
     </html>
