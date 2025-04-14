@@ -1,9 +1,8 @@
 "use client";
-
 import { useState, useRef, useEffect } from "react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { useAbout_my_treeQuery } from "@/app/Featuers/TreeOrder/TreeOrderServices";
-
+import { useSearchParams } from "next/navigation";
 export default function MapVideoForm({ params }: { params: { id: string } }) {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -18,10 +17,19 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
     includeStats: true,
     includeSeasons: false,
   });
+  const searchParams = useSearchParams();
+  const search = searchParams.get("id");
+  const Plaintid = searchParams.get("Plaintid");
+  const userid = searchParams.get("userid");
   const ffmpegRef = useRef<FFmpeg>(new FFmpeg());
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const { data: treeData, isLoading } = useAbout_my_treeQuery(params.id!);
+  const { data: treeData, isLoading } = useAbout_my_treeQuery({
+    id: search ?? "",
+    plantid: Plaintid ?? "",
+    userid: userid ?? "",
+  });
 
+  console.log(Plaintid);
   // Theme settings
   const themeSettings = {
     nature: {
@@ -111,8 +119,10 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
     } = options;
 
     const canvas = document.createElement("canvas");
-    canvas.width = 640;
-    canvas.height = 640;
+
+    canvas.width = 1080; // Increased from 640
+    canvas.height = 1080; // Increased from 640
+
     const ctx = canvas.getContext("2d")!;
 
     // Fill background if not an overlay
@@ -1181,10 +1191,14 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
         "frame%04d.png",
         "-c:v",
         "libx264",
+        "-preset",
+        "slow", // Use slower preset for better quality
+        "-crf",
+        "18", // Lower CRF means higher quality (18-23 is visually lossless)
         "-pix_fmt",
         "yuv420p",
         "-vf",
-        "scale=640:640:force_original_aspect_ratio=decrease,pad=640:640:(ow-iw)/2:(oh-ih)/2",
+        "scale=1080:1080:force_original_aspect_ratio=decrease,pad=1080:1080:(ow-iw)/2:(oh-ih)/2",
         "main.mp4",
       ]);
 
@@ -1568,7 +1582,7 @@ async function fetchMapImagesForLocation(
     const progress = i / totalFrames;
     const currentZoom = minZoom + zoomRange * progress;
     const roundedZoom = Math.round(currentZoom * 100) / 100;
-    const url = `https://api.mapbox.com/styles/v1/${style}/static/${longitude},${latitude},${roundedZoom},0/640x640?access_token=${accessToken}`;
+    const url = `https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v11/static/${longitude},${latitude},${roundedZoom},0/1080x1080@2x?access_token=${accessToken}`;
     images.push({ url, zoomLevel: roundedZoom });
   }
 

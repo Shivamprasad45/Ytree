@@ -113,7 +113,7 @@ export function TreeCard({ tree, getDaysOld }: TreeCardProps) {
         {tree.status === 2 ? (
           <Button className="w-full" asChild>
             <Link
-              href={`/Tree/LogTree?id=${tree._id}&Plaintid=${tree.Plaintid}&userid=${tree.UserId}`}
+              href={`/Tree/LogTree?id=${tree._id}&Plaintid=${tree.findtree_id}&userid=${tree.UserId}`}
             >
               Mark as Planted
             </Link>
@@ -128,7 +128,7 @@ export function TreeCard({ tree, getDaysOld }: TreeCardProps) {
             <Link
               href={
                 tree.status === 3
-                  ? `/Tree/Aboutmytree/${tree.findtree_id}`
+                  ? `/Tree/Aboutmytree/?id=${tree._id}&Plaintid=${tree.findtree_id}&userid=${tree.UserId}`
                   : "#"
               }
             >

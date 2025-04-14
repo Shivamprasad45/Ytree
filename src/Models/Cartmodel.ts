@@ -19,5 +19,4 @@ export const cartSchema = new Schema({
 
 // Check if the model already exists to prevent overwriting
 const cart = mongoose.models.Treecart || mongoose.model("Treecart", cartSchema);
-
 export default cart;

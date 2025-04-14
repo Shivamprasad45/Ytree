@@ -43,13 +43,19 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   try {
     await DbConnect();
-
-    const id = req.nextUrl.searchParams.get("id");
-
+    const findid = req.nextUrl.searchParams.get("id");
+    const id = req.nextUrl.searchParams.get("userid");
+    const plantid = req.nextUrl.searchParams.get("plantid");
+    console.log(findid, id, plantid, "  sd");
     // Validate the id parameter
-
-    const Coords = await Plants_coordinates.findOne({ find_id: id });
-
+    console.log(findid);
+    console.log(id);
+    console.log(plantid);
+    const Coords = await Plants_coordinates.findOne({
+      find_id: plantid,
+      UserId: id,
+    });
+    console.log(Coords, "sfs");
     if (!Coords) {
       return NextResponse.json({ error: "not found" }, { status: 404 });
     }
@@ -57,7 +63,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(Coords);
   } catch (error: any) {
     console.error("Error fetching tree details:", error);
-
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

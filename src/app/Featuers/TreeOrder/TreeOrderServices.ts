@@ -77,21 +77,25 @@ export const TreeOrder_API = createApi({
         }
       },
     }),
-    About_my_tree: builder.query<Plant_coords, string>({
-      query: (id) => ({
-        url: `/Coords?id=${id}`,
+    About_my_tree: builder.query<
+      Plant_coords,
+      { id: string; plantid: string; userid: string }
+    >({
+      query: ({ id, plantid, userid }) => ({
+        url: `/Coords?id=${id}&plantid=${plantid}&userid=${userid}`, // Use '&' not '$'
         method: "GET",
       }),
 
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
+          // You can optionally dispatch some action here using the data
         } catch (error) {
           console.error("Fetching user info failed:", error);
-        } finally {
         }
       },
     }),
+
     Free_plants_clam: builder.mutation<UserMessage, Free_clam_plant>({
       query: (data) => ({
         url: `/Free_clam`,
@@ -101,18 +105,26 @@ export const TreeOrder_API = createApi({
       invalidatesTags: ["Order"],
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
-          const { data } = await queryFulfilled;
-          if (data.success) {
-            toast(data.message);
-          }
-          if (data.error) {
-            toast(data.error);
-          }
         } catch (error) {
           console.error("Fetching user info failed:", error);
         } finally {
         }
       },
+    }),
+    Free_plants_clam_Referel: builder.mutation<UserMessage, IPlantProfile>({
+      query: (data) => ({
+        url: `/ReferClam`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Order"],
+    }),
+    Referel: builder.mutation<any, void>({
+      query: () => ({
+        url: `/referral`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["Order"],
     }),
   }),
 });
@@ -125,4 +137,6 @@ export const {
   useSave_plants_OrderMutation,
   useAbout_my_treeQuery,
   useFree_plants_clamMutation,
+  useFree_plants_clam_ReferelMutation,
+  useReferelMutation,
 } = TreeOrder_API;

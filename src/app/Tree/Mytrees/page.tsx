@@ -20,9 +20,6 @@ import { EmptyState } from "./Components/empty-state";
 import { IPlantProfile } from "../../../../type";
 import { TreeCard } from "./Components/tree-card";
 import { TreeCoordCard } from "./Components/tree-coord-card";
-// import { EmptyState } from "../components/empty-state"
-// import { TreeCard } from "../components/tree-card"
-// import { TreeCoordCard } from "../components/tree-coord-card"
 
 // Dynamically import the map component to avoid SSR issues
 const MapComponent = dynamic(() => import("@/app/Components/Mapregion"), {

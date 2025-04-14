@@ -18,7 +18,7 @@ interface UserDocument {
   referredUsers?: number;
 }
 
-export async function GET() {
+export async function PUT() {
   try {
     const session: Session | null = await auth();
 

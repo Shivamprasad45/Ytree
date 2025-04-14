@@ -62,29 +62,30 @@ export default function CartPage() {
     return (
       <div className="flex items-center justify-center h-screen">
         <Loader2 className="w-8 h-8 animate-spin" />
+        <span className="ml-2 text-lg">Loading your cart...</span>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8  max-w-6xl">
+    <div className="container mx-auto px-4 py-8 max-w-6xl">
       <h1 className="text-3xl font-bold mb-8">Your Cart</h1>
       {cartData && cartData.length > 0 ? (
         <div className="flex flex-col lg:flex-row gap-8">
           <Card className="lg:w-2/3">
             <CardHeader>
-              <CardTitle>Cart Items</CardTitle>
+              <CardTitle>Cart Items ({cartData.length})</CardTitle>
             </CardHeader>
             <CardContent>
-              <ScrollArea className="h-[calc(100vh-300px)]">
+              <ScrollArea className="h-[calc(100vh-300px)] md:h-[500px]">
                 {cartData.map((item, index) => (
                   <div
                     key={item.Plant_id}
-                    className="flex items-center gap-4 py-4"
+                    className="flex flex-col sm:flex-row items-start sm:items-center gap-4 py-4 border-b last:border-b-0"
                   >
                     <div className="w-24 h-24 relative">
                       <Image
-                        src={item.imageURL}
+                        src={item.imageURL || "/placeholder.svg"}
                         alt={item.commonName}
                         layout="fill"
                         objectFit="cover"
@@ -100,7 +101,7 @@ export default function CartPage() {
                         Region: {item.region}
                       </p>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 mt-2 sm:mt-0">
                       <Button
                         size="icon"
                         variant="outline"
@@ -112,7 +113,11 @@ export default function CartPage() {
                           handleUpdateCart(item.Plant_id, item.UserId, "Minus")
                         }
                       >
-                        <Minus className="h-4 w-4" />
+                        {updatingItemId === item.Plant_id ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Minus className="h-4 w-4" />
+                        )}
                       </Button>
                       <span className="w-8 text-center">{item.quantity}</span>
                       <Button
@@ -123,29 +128,46 @@ export default function CartPage() {
                           handleUpdateCart(item.Plant_id, item.UserId, "Plus")
                         }
                       >
-                        <Plus className="h-4 w-4" />
+                        {updatingItemId === item.Plant_id ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Plus className="h-4 w-4" />
+                        )}
                       </Button>
                     </div>
-                    <div className="text-right">
+                    <div className="text-right flex flex-row sm:flex-col items-center sm:items-end gap-2 sm:gap-0 mt-2 sm:mt-0 ml-auto">
                       <p className="font-semibold">
                         ₹{(item.price * item.quantity).toFixed(2)}
                       </p>
                       <Button
                         size="icon"
                         variant="ghost"
-                        className="text-red-500 hover:text-red-700"
+                        className="text-red-500 hover:text-red-700 hover:bg-red-50"
                         disabled={updatingItemId === item.Plant_id}
                         onClick={() =>
                           handleUpdateCart(item.Plant_id, item.UserId, "Remove")
                         }
                       >
-                        <Trash2 className="h-4 w-4" />
+                        {updatingItemId === item.Plant_id ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Trash2 className="h-4 w-4" />
+                        )}
                       </Button>
                     </div>
                   </div>
                 ))}
               </ScrollArea>
             </CardContent>
+            <CardFooter className="flex justify-between">
+              <Button variant="outline" asChild>
+                <Link href="/Tree/Shop">Continue Shopping</Link>
+              </Button>
+              <div className="text-sm text-gray-500">
+                {cartData.length} {cartData.length === 1 ? "item" : "items"} in
+                cart
+              </div>
+            </CardFooter>
           </Card>
           <Card className="lg:w-1/3">
             <CardHeader>
@@ -155,21 +177,17 @@ export default function CartPage() {
               <div className="space-y-4">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span>${totalCartPrice.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Shipping</span>
-                  <span>Free</span>
+                  <span>₹{totalCartPrice.toFixed(2)}</span>
                 </div>
                 <Separator />
-                <div className="flex justify-between font-semibold">
+                <div className="flex justify-between font-semibold text-lg">
                   <span>Total</span>
                   <span>₹{totalCartPrice.toFixed(2)}</span>
                 </div>
               </div>
             </CardContent>
             <CardFooter>
-              <Button className="w-full" asChild>
+              <Button className="w-full" size="lg" asChild>
                 <Link href="/Tree/Checkout">Proceed to Checkout</Link>
               </Button>
             </CardFooter>
@@ -177,14 +195,17 @@ export default function CartPage() {
         </div>
       ) : (
         <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <ShoppingCart className="w-16 h-16 text-gray-400 mb-4" />
+          <CardContent className="flex flex-col items-center justify-center py-16">
+            <div className="bg-gray-50 p-6 rounded-full mb-6">
+              <ShoppingCart className="w-20 h-20 text-gray-400" />
+            </div>
             <h2 className="text-2xl font-semibold mb-2">Your cart is empty</h2>
-            <p className="text-gray-500 mb-4">
-              Add some plants to your cart and start shopping!
+            <p className="text-gray-500 mb-6 text-center max-w-md">
+              Looks like you haven&apos;t added any plants to your cart yet.
+              Explore our collection and find the perfect plants for your space!
             </p>
-            <Button asChild>
-              <Link href="/Tree/Shop">Continue Shopping</Link>
+            <Button size="lg" asChild>
+              <Link href="/Tree/Shop">Browse Plants</Link>
             </Button>
           </CardContent>
         </Card>

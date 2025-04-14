@@ -92,7 +92,6 @@ export async function POST(req: NextRequest) {
         imageUrl: photoUrl,
         name,
         status: 0,
-        Free: true,
       }),
       FreeTreeUser.create({
         email,
