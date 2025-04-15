@@ -10,6 +10,7 @@ import {
   TreePalm,
   UserX2Icon,
   Share2,
+  FireExtinguisher,
 } from "lucide-react";
 
 import Link from "next/link";
@@ -46,9 +47,9 @@ export const menuItems = [
   },
   {
     id: 2,
-    icon: <MessageCircleCodeIcon size={20} />,
-    label: "Message",
-    path: "/Tree/Message",
+    icon: <FireExtinguisher size={20} />,
+    label: "Start joureny",
+    path: "/Tree/Free_clam_tree",
   },
   {
     id: 3,

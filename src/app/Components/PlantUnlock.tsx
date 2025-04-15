@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect } from "react";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
@@ -24,8 +23,23 @@ const PlantUnlockModal: React.FC<PlantUnlockModalProps> = ({
         spread: 70,
         origin: { y: 0.6 },
       });
+
+      // Auto-close the modal after 3 seconds
+      const timer = setTimeout(() => {
+        onClose();
+      }, 3000);
+
+      // Clear the timeout if the component unmounts or if isOpen changes
+      return () => clearTimeout(timer);
     }
-  }, [isOpen]);
+  }, [isOpen, onClose]);
+
+  // Close modal when clicking outside
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
 
   return (
     <AnimatePresence>
@@ -35,6 +49,7 @@ const PlantUnlockModal: React.FC<PlantUnlockModalProps> = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          onClick={handleBackdropClick}
         >
           <motion.div
             className="bg-gradient-to-br from-green-50 to-white rounded-3xl p-8 w-5/6 max-w-md text-center shadow-xl"
@@ -42,6 +57,7 @@ const PlantUnlockModal: React.FC<PlantUnlockModalProps> = ({
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{ type: "spring", damping: 15 }}
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="text-3xl mb-2 text-green-600">
               🎉 Congratulations! 🎉

@@ -81,26 +81,21 @@ const Free_clam = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // State for the unlock celebration modal
-  const [showUnlockModal, setShowUnlockModal] = useState(false);
-  const [unlockedPlantName, setUnlockedPlantName] = useState("");
 
   // Handle API response
   useEffect(() => {
     if (data?.error) {
       toast.error(data.message);
+
+      router.push("/Tree/Shop");
     }
 
     if (data?.success) {
       // Find the selected tree type name
-      const selectedTree = TREE_TYPES.find((tree) => tree.id === treeType);
-      // Set the unlocked plant name and show the celebration modal
-      if (!showUnlockModal) {
-        setUnlockedPlantName(selectedTree?.name || "Free Tree");
-        setShowUnlockModal(true);
-        toast.success(data.message);
-      }
+      toast.success(data.success);
+      router.push("/Tree/Mytrees");
     }
-  }, [data, treeType, showUnlockModal]);
+  });
 
   // User data is available in form
   const user = useSelector(UserSelector);
@@ -344,11 +339,6 @@ const Free_clam = () => {
       </Card>
 
       {/* Plant Unlock Celebration Modal */}
-      <PlantUnlockModal
-        isOpen={showUnlockModal}
-        onClose={() => setShowUnlockModal(false)}
-        plantName={unlockedPlantName}
-      />
     </div>
   );
 };
