@@ -2,7 +2,7 @@
 
 export async function GET() {
   const response = await fetch(
-    "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+    "https://s33.aconvert.com/convert/p3r68-cdx67/ug5ru-rwocb.mp3"
   );
 
   if (!response.ok) {
