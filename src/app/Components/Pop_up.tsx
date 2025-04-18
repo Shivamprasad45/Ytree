@@ -6,20 +6,27 @@ const PopupModal = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    // Check if the popup has already been shown in this session
     const hasSeenPopup = sessionStorage.getItem("hasSeenPopup");
-
     if (!hasSeenPopup) {
       setIsOpen(true);
-      sessionStorage.setItem("hasSeenPopup", "true"); // Mark as seen for this session
+      sessionStorage.setItem("hasSeenPopup", "true");
     }
   }, []);
 
   return (
     <>
       {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96 text-center">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="relative bg-white p-6 rounded-lg shadow-lg w-96 text-center">
+            {/* Close button */}
+            <button
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-xl"
+              onClick={() => setIsOpen(false)}
+              aria-label="Close"
+            >
+              &times;
+            </button>
+
             <h2 className="text-2xl font-bold text-green-600">
               Start a New Journey! 🌱
             </h2>
