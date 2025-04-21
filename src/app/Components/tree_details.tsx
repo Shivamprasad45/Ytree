@@ -23,9 +23,12 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
   const { data: user, status } = useSession();
   //For redirect to Login or signup
   const route = useRouter();
-  const [AddPlants, { isLoading: isAddLoading }] = useAddCartMutation();
+  const [AddPlants, { isLoading: isAddLoading, isSuccess }] =
+    useAddCartMutation();
   //for user reload
-
+  if (isSuccess) {
+    route.push("/Tree/Checkout");
+  }
   const Addtocart = async () => {
     try {
       if (user?.user.id) {

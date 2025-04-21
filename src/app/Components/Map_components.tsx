@@ -472,12 +472,12 @@ export default function Component() {
   };
   return (
     <div className="container mx-auto p-4 space-y-6">
-      <WinnerAnnouncement
+      {/* <WinnerAnnouncement
         winner={{
           firstName: `${leaderboard[0]?.firstName} ${leaderboard[0]?.lastName}`,
           treeCount: leaderboard[0]?.treeCount || 0,
         }}
-      />
+      /> */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="map" className="flex items-center gap-2">
