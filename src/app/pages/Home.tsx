@@ -125,13 +125,22 @@ const Homes = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
           className="w-full py-8 md:py-16 lg:py-24 xl:py-32 bg-cover bg-center relative overflow-hidden"
-          style={{
-            backgroundImage:
-              'url("https://res.cloudinary.com/dn633knvv/image/upload/v1737000554/a-vibrant-and-inspiring-illustration-for_qXHSuMslRfWKyMK81sGlLw_GDZNoVguQgql8AfcnuBVUw_rtl11b.jpg")',
-          }}
           aria-labelledby="hero-heading"
         >
-          <div className="absolute inset-0 bg-black bg-opacity-60" />
+          {/* Video background */}
+          <div className="absolute inset-0 overflow-hidden">
+            <iframe
+              className="w-full h-full object-cover"
+              src="https://www.youtube.com/embed/es4x5R-rV9s?autoplay=1&mute=0&loop=1&playlist=es4x5R-rV9s&controls=0&showinfo=0&modestbranding=1"
+              title="YouTube video background"
+              frameBorder="0"
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+            />
+            <div className="absolute inset-0 bg-black bg-opacity-60" />
+          </div>
+
+          {/* Content above video */}
           <div className="container px-4 relative z-10">
             <div className="flex flex-col items-center space-y-6 text-center text-white">
               <motion.div
