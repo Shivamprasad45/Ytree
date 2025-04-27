@@ -147,8 +147,8 @@ const Homes = () => {
                   No Space? No Time? No Problem.
                 </h1>
                 <p className="mx-auto max-w-full sm:max-w-[700px] text-sm md:text-base lg:text-xl text-gray-200">
-                  Plant trees and make the world greener, even if you don't have
-                  a yard or the time to care for them yourself.
+                  Plant trees and make the world greener, even if you don&#39;t
+                  have a yard or the time to care for them yourself.
                 </p>
               </motion.div>
               <PopupModal />
@@ -485,8 +485,9 @@ const Homes = () => {
                 <AccordionContent className="text-sm sm:text-base">
                   Our platform lets you fund tree planting in dedicated
                   locations around the world. You select the trees and
-                  locations, and our team handles the planting and care. You'll
-                  receive updates about your trees' growth and impact.
+                  locations, and our team handles the planting and care.
+                  You&#39;ll receive updates about your trees&#39; growth and
+                  impact.
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-2">
@@ -496,18 +497,18 @@ const Homes = () => {
                 <AccordionContent className="text-sm sm:text-base">
                   We provide photo verification of your planted trees and
                   regular growth updates. Each tree has a unique identifier, and
-                  you can track its progress through our app or website. We're
-                  fully transparent about our planting operations.
+                  you can track its progress through our app or website.
+                  We&#39;re fully transparent about our planting operations.
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-3">
                 <AccordionTrigger className="text-sm sm:text-base">
-                  What happens if my tree doesn't survive?
+                  What happens if my tree doesn&#39;t survive?
                 </AccordionTrigger>
                 <AccordionContent className="text-sm sm:text-base">
                   We guarantee the trees we plant for at least three years. If a
-                  tree fails to thrive during this period, we'll replace it at
-                  no additional cost. Our expert team selects species
+                  tree fails to thrive during this period, we&#39;ll replace it
+                  at no additional cost. Our expert team selects species
                   appropriate for each location to maximize survival rates.
                 </AccordionContent>
               </AccordionItem>
@@ -517,9 +518,10 @@ const Homes = () => {
                 </AccordionTrigger>
                 <AccordionContent className="text-sm sm:text-base">
                   Absolutely! Trees make meaningful, sustainable gifts. When
-                  checking out, select the "Gift" option and provide the
-                  recipient's details. They'll receive a beautiful digital
-                  certificate and access to track their tree's growth.
+                  checking out, select the &quot;Gift&quot; option and provide
+                  the recipient&#39;s details. They&#39;ll receive a beautiful
+                  digital certificate and access to track their tree&#39;s
+                  growth.
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
