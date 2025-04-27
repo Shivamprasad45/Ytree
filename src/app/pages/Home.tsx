@@ -517,7 +517,7 @@ const Homes = () => {
                   Can I gift trees to someone else?
                 </AccordionTrigger>
                 <AccordionContent className="text-sm sm:text-base">
-                  Absolutely! Trees make meaningful, sustainable gifts. When
+                  Absolutely! Trees make meaningful , sustainable gifts. When
                   checking out, select the &quot;Gift&quot; option and provide
                   the recipient&#39;s details. They&#39;ll receive a beautiful
                   digital certificate and access to track their tree&#39;s
