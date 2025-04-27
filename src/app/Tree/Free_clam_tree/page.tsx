@@ -192,37 +192,6 @@ const Free_clam = () => {
         <CardHeader className="bg-green-50">
           <CardTitle className="text-green-700">Free Tree Claim Form</CardTitle>
         </CardHeader>
-
-        <div className="h-80">
-          <Map />
-        </div>
-        <div className="">
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Upload Photo Proof
-            </label>
-            <Camera onImageSelected={handleImageSelected} />
-
-            {imageUrl && (
-              <div className="mt-4">
-                <p className="text-sm text-green-600 mb-2">
-                  Image uploaded successfully!
-                </p>
-                <div className="relative w-full h-32 bg-gray-100 rounded-md overflow-hidden">
-                  <img
-                    src={imageUrl}
-                    alt="Uploaded proof"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-            )}
-
-            {errors.imageUrl && (
-              <p className="text-sm text-red-500 mt-1">{errors.imageUrl}</p>
-            )}
-          </div>
-        </div>
         <CardContent className="pt-6">
           <form onSubmit={onSubmit} className="space-y-6">
             <div className="mb-4">
@@ -336,6 +305,36 @@ const Free_clam = () => {
             </Button>
           </form>
         </CardContent>
+        <div className="h-80">
+          <Map />
+        </div>
+        <div className="">
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Upload Photo Proof
+            </label>
+            <Camera onImageSelected={handleImageSelected} />
+
+            {imageUrl && (
+              <div className="mt-4">
+                <p className="text-sm text-green-600 mb-2">
+                  Image uploaded successfully!
+                </p>
+                <div className="relative w-full h-32 bg-gray-100 rounded-md overflow-hidden">
+                  <img
+                    src={imageUrl}
+                    alt="Uploaded proof"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            )}
+
+            {errors.imageUrl && (
+              <p className="text-sm text-red-500 mt-1">{errors.imageUrl}</p>
+            )}
+          </div>
+        </div>
       </Card>
 
       {/* Plant Unlock Celebration Modal */}

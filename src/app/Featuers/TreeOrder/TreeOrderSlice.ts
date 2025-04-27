@@ -14,6 +14,7 @@ interface State {
   Coords: Coords | null;
   Order_before: Plant_order | null;
   Subcription: CustomSubscription | null;
+  referred: any;
 }
 
 const initialState: State = {
@@ -21,6 +22,7 @@ const initialState: State = {
   Coords: null,
   Order_before: null,
   Subcription: null,
+  referred: null,
 };
 
 const OrderSlice = createSlice({
@@ -41,6 +43,9 @@ const OrderSlice = createSlice({
       console.log(action.payload, "Use coords");
       state.Subcription = action.payload;
     },
+    setReferred(state, action: PayloadAction<any>) {
+      state.referred = action.payload;
+    },
   },
 });
 
@@ -50,6 +55,7 @@ export const {
   Use_current_location,
   Plant_Order_before,
   Allow_Notification,
+  setReferred,
 } = OrderSlice.actions;
 
 export const MyTreesSelector = (state: { order: State }) =>
@@ -57,6 +63,9 @@ export const MyTreesSelector = (state: { order: State }) =>
 export const Coords_Selector = (state: { order: State }) => state.order.Coords;
 export const Before_PlantOrder_Selector = (state: { order: State }) =>
   state.order.Order_before;
+
+export const Before_Plant_selector = (state: { order: State }) =>
+  state.order.referred;
 export const Allow_Notification_Endpoints_Selector = (state: {
   order: State;
 }) => state.order.Subcription;

@@ -81,7 +81,6 @@ export default function ReferralPage() {
     }
 
     try {
-      // Claim the free tree
       await Free_tree_clam({
         UserId: session.user.id,
         imageUrl: "",
@@ -93,10 +92,7 @@ export default function ReferralPage() {
         _id: "",
       });
 
-      // Reset the mutation state
       reset();
-
-      // Fetch fresh referral data to update the UI
       await Grf();
 
       toast({
@@ -117,7 +113,6 @@ export default function ReferralPage() {
       const fetchReferralData = async () => {
         try {
           setIsLoading(true);
-          // Call the API to get referral data
           await Grf();
         } catch (error) {
           console.error("Error fetching referral data:", error);
@@ -135,7 +130,6 @@ export default function ReferralPage() {
     }
   }, [session, status, toast, Grf]);
 
-  // Process the API response data when it changes
   useEffect(() => {
     if (isRefrelSuccess && Refrel?.success) {
       const baseUrl = window.location.origin;
@@ -194,7 +188,6 @@ export default function ReferralPage() {
     }
   };
 
-  // Calculate progress percentage for the progress bar
   const progressPercentage = Math.min(
     (referralStats.totalReferred / 10) * 100,
     100
@@ -250,28 +243,191 @@ export default function ReferralPage() {
         transition={{ duration: 0.5 }}
         className="py-10 px-4 max-w-5xl mx-auto"
       >
-        <div className="text-center mb-10">
+        {/* Improved Header Section with Clear Value Proposition */}
+        <div className="text-center mb-8">
           <motion.div
             initial={{ y: -20 }}
             animate={{ y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-green-500 to-emerald-700 bg-clip-text text-transparent">
-              Your Referral Garden
+              Refer Friends, Get Free Plants
             </h1>
-            <p className="text-muted-foreground max-w-xl mx-auto">
-              Invite friends, earn rewards, and watch your garden flourish with
-              each successful referral.
+            <p className="text-lg text-muted-foreground max-w-xl mx-auto">
+              Share Vanagrow with friends and earn rewards with each successful
+              referral.
             </p>
           </motion.div>
         </div>
 
+        {/* How It Works Section - Moved Up for Better Context */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="mb-10"
+        >
+          <Card className="border-2 border-green-100 dark:border-green-900/30">
+            <CardHeader>
+              <CardTitle className="text-xl flex items-center gap-2">
+                <Gift className="h-5 w-5 text-green-600" />
+                How It Works
+              </CardTitle>
+              <CardDescription>
+                Three simple steps to earn free plants and rewards
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-6 md:grid-cols-3">
+                <div className="flex flex-col items-center text-center p-4">
+                  <div className="bg-green-100 dark:bg-green-900/30 rounded-full p-3 mb-4">
+                    <Share2 className="h-6 w-6 text-green-600 dark:text-green-400" />
+                  </div>
+                  <h3 className="font-medium mb-2">1. Share Your Link</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Copy your unique referral link and share it with friends
+                  </p>
+                </div>
+
+                <div className="flex flex-col items-center text-center p-4">
+                  <div className="bg-green-100 dark:bg-green-900/30 rounded-full p-3 mb-4">
+                    <Users className="h-6 w-6 text-green-600 dark:text-green-400" />
+                  </div>
+                  <h3 className="font-medium mb-2">2. Friends Sign Up</h3>
+                  <p className="text-sm text-muted-foreground">
+                    When friends create an account using your link, you earn
+                    points
+                  </p>
+                </div>
+
+                <div className="flex flex-col items-center text-center p-4">
+                  <div className="bg-green-100 dark:bg-green-900/30 rounded-full p-3 mb-4">
+                    <Gift className="h-6 w-6 text-green-600 dark:text-green-400" />
+                  </div>
+                  <h3 className="font-medium mb-2">3. Get Free Plants</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Refer 10 friends and claim a free plant as a reward
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
         <div className="grid gap-8 md:grid-cols-2">
-          {/* Left Column: Referral Link and Sharing */}
+          {/* Left Column: Rewards Section (Moved Up from bottom right) */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="space-y-6"
+          >
+            {/* Rewards Card - Prioritized */}
+            <Card className="overflow-hidden border-2 border-green-100 dark:border-green-900/30">
+              <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 pb-2">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg font-semibold">
+                    Your Rewards
+                  </CardTitle>
+                  <Gift className="h-5 w-5 text-green-600 dark:text-green-400" />
+                </div>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="text-4xl font-bold">
+                    {referralStats.rewards}
+                  </div>
+                  <div className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs px-2 py-1 rounded-full">
+                    Points
+                  </div>
+                </div>
+
+                <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4 mb-4">
+                  <div className="flex items-start gap-3">
+                    <Award className="h-5 w-5 mt-0.5 text-green-600 dark:text-green-400" />
+                    <div>
+                      <h4 className="font-medium text-sm">Free Plant Reward</h4>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Get a free plant when you refer 10 friends
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <Button
+                  onClick={claimReward}
+                  disabled={!canClaimReward || isClaimLoading}
+                  className="w-full bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 transition-all"
+                >
+                  {isClaimLoading ? (
+                    <>
+                      <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-b-transparent"></div>
+                      Processing...
+                    </>
+                  ) : canClaimReward ? (
+                    "Claim Your Free Plant"
+                  ) : (
+                    "Keep Referring to Unlock"
+                  )}
+                </Button>
+
+                {!canClaimReward && (
+                  <p className="text-xs text-center text-muted-foreground mt-2">
+                    You need {10 - referralStats.totalReferred} more referrals
+                    to claim
+                  </p>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Referral Stats Card */}
+            <Card className="overflow-hidden border-2 border-green-100 dark:border-green-900/30">
+              <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 pb-2">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg font-semibold">
+                    Your Progress
+                  </CardTitle>
+                  <Users className="h-5 w-5 text-green-600 dark:text-green-400" />
+                </div>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <div className="flex items-end justify-between">
+                  <div className="flex items-end gap-2">
+                    <div className="text-4xl font-bold">
+                      {referralStats.totalReferred}
+                    </div>
+                    <div className="text-sm text-muted-foreground mb-1">
+                      people referred
+                    </div>
+                  </div>
+                  <div className="text-sm font-medium text-green-600">
+                    {referralStats.totalReferred >= 10
+                      ? "Goal reached!"
+                      : `${10 - referralStats.totalReferred} more to go`}
+                  </div>
+                </div>
+                <div className="mt-4 space-y-1">
+                  <div className="flex justify-between text-sm">
+                    <span>Progress</span>
+                    <span>{Math.round(progressPercentage)}%</span>
+                  </div>
+                  <Progress
+                    value={progressPercentage}
+                    className="h-2 bg-green-100 dark:bg-green-900/30"
+                  />
+                </div>
+                <p className="text-sm text-muted-foreground mt-4">
+                  Refer 10 friends to unlock your free plant
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Right Column: Referral Link and Sharing */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
           >
             <Card className="border-2 border-green-100 dark:border-green-900/30 overflow-hidden h-full">
               <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
@@ -280,7 +436,7 @@ export default function ReferralPage() {
                   Share Your Referral Link
                 </CardTitle>
                 <CardDescription>
-                  Invite friends and earn rewards when they sign up
+                  Invite friends to join Vanagrow and earn rewards together
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-6">
@@ -395,165 +551,7 @@ export default function ReferralPage() {
               </CardFooter>
             </Card>
           </motion.div>
-
-          {/* Right Column: Stats and Rewards */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="space-y-6"
-          >
-            {/* Referral Stats Card */}
-            <Card className="overflow-hidden border-2 border-green-100 dark:border-green-900/30">
-              <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 pb-2">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-semibold">
-                    Your Referral Progress
-                  </CardTitle>
-                  <Users className="h-5 w-5 text-green-600 dark:text-green-400" />
-                </div>
-              </CardHeader>
-              <CardContent className="pt-6">
-                <div className="flex items-end justify-between">
-                  <div className="flex items-end gap-2">
-                    <div className="text-4xl font-bold">
-                      {referralStats.totalReferred}
-                    </div>
-                    <div className="text-sm text-muted-foreground mb-1">
-                      people referred
-                    </div>
-                  </div>
-                  <div className="text-sm font-medium text-green-600">
-                    {referralStats.totalReferred >= 10
-                      ? "Goal reached!"
-                      : `${10 - referralStats.totalReferred} more to go`}
-                  </div>
-                </div>
-                <div className="mt-4 space-y-1">
-                  <div className="flex justify-between text-sm">
-                    <span>Progress</span>
-                    <span>{Math.round(progressPercentage)}%</span>
-                  </div>
-                  <Progress
-                    value={progressPercentage}
-                    className="h-2 bg-green-100 dark:bg-green-900/30"
-                  />
-                </div>
-                <p className="text-sm text-muted-foreground mt-4">
-                  Refer 10 friends to unlock special rewards
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Rewards Card */}
-            <Card className="overflow-hidden border-2 border-green-100 dark:border-green-900/30">
-              <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 pb-2">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-semibold">
-                    Rewards Center
-                  </CardTitle>
-                  <Gift className="h-5 w-5 text-green-600 dark:text-green-400" />
-                </div>
-              </CardHeader>
-              <CardContent className="pt-6">
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="text-4xl font-bold">
-                    {referralStats.rewards}
-                  </div>
-                  <div className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs px-2 py-1 rounded-full">
-                    Points
-                  </div>
-                </div>
-
-                <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4 mb-4">
-                  <div className="flex items-start gap-3">
-                    <Award className="h-5 w-5 mt-0.5 text-green-600 dark:text-green-400" />
-                    <div>
-                      <h4 className="font-medium text-sm">Free Plant Reward</h4>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        Get a free plant when you refer 10 friends
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <Button
-                  onClick={claimReward}
-                  disabled={!canClaimReward || isClaimLoading}
-                  className="w-full bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 transition-all"
-                >
-                  {isClaimLoading ? (
-                    <>
-                      <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-b-transparent"></div>
-                      Processing...
-                    </>
-                  ) : canClaimReward ? (
-                    "Claim Your Free Plant"
-                  ) : (
-                    "Keep Referring to Unlock"
-                  )}
-                </Button>
-
-                {!canClaimReward && (
-                  <p className="text-xs text-center text-muted-foreground mt-2">
-                    You need {10 - referralStats.totalReferred} more referrals
-                    to claim
-                  </p>
-                )}
-              </CardContent>
-            </Card>
-          </motion.div>
         </div>
-
-        {/* How It Works Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-12"
-        >
-          <Card className="border-2 border-green-100 dark:border-green-900/30">
-            <CardHeader>
-              <CardTitle className="text-xl">How It Works</CardTitle>
-              <CardDescription>
-                Follow these simple steps to earn rewards
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-6 md:grid-cols-3">
-                <div className="flex flex-col items-center text-center p-4">
-                  <div className="bg-green-100 dark:bg-green-900/30 rounded-full p-3 mb-4">
-                    <Share2 className="h-6 w-6 text-green-600 dark:text-green-400" />
-                  </div>
-                  <h3 className="font-medium mb-2">1. Share Your Link</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Copy your unique referral link and share it with friends
-                  </p>
-                </div>
-
-                <div className="flex flex-col items-center text-center p-4">
-                  <div className="bg-green-100 dark:bg-green-900/30 rounded-full p-3 mb-4">
-                    <Users className="h-6 w-6 text-green-600 dark:text-green-400" />
-                  </div>
-                  <h3 className="font-medium mb-2">2. Friends Sign Up</h3>
-                  <p className="text-sm text-muted-foreground">
-                    When your friends use your link to create an account
-                  </p>
-                </div>
-
-                <div className="flex flex-col items-center text-center p-4">
-                  <div className="bg-green-100 dark:bg-green-900/30 rounded-full p-3 mb-4">
-                    <Gift className="h-6 w-6 text-green-600 dark:text-green-400" />
-                  </div>
-                  <h3 className="font-medium mb-2">3. Earn Rewards</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Get points and unlock special rewards like free plants
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
       </motion.div>
     </MaxWidthWrapper>
   );

@@ -119,8 +119,8 @@ export default function Payment() {
         },
         prefill: {
           name: plant_order?.User_name,
-          email: plant_order?.Addresss.email,
-          contact: plant_order?.Addresss.phone!,
+          // email: plant_order?.Addresss.email,
+          // contact: plant_order?.Addresss.phone!,
         },
         theme: {
           color: "#10B981",

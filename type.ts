@@ -224,7 +224,7 @@ interface Addresses {
 }
 
 export interface Plant_order {
-  Addresss: Addresses;
+  Addresss?: Addresses;
   Orderid: string;
   plants: TreeCart[];
   User_name: string;

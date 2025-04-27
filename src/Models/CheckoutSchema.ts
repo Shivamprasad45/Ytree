@@ -19,7 +19,7 @@ const addressSchema = new Schema({
   zipCode: { type: String, required: true },
 });
 const plantOrderSchema = new Schema({
-  Addresss: { type: addressSchema, required: true },
+  Addresss: { type: addressSchema, required: false },
   Orderid: { type: String, required: true },
   plants: { type: [cartSchema], required: true },
   User_name: { type: String, required: true },

@@ -10,26 +10,26 @@ import { useSession } from "next-auth/react";
 import {
   Loader2,
   Trophy,
-  Trees,
   User as UserIcon,
   Map,
   Award,
-  Satellite,
+  Navigation,
+  Maximize,
+  Minimize,
   TreePalm,
+  Info,
 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   useGetALL_coordsMutation,
   useGetAll_usersMutation,
 } from "../Featuers/Global/GlobeServices";
-import { Coordinate, All_Users, Coordinates } from "../../../type";
-import WinnerAnnouncement from "./Winner";
+import { Coordinate, All_Users } from "../../../type";
 import { toast } from "sonner";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import RedZoneLegend from "./Anothers/RedZone";
 import { indiaStatesGeoJson } from "./Anothers/GeoJson";
 import Leaderboard from "./Leader/Leader";
 import { getCurrentLocation } from "@/Utils/locationsServices";
@@ -39,27 +39,16 @@ import {
   LocationDataSelector,
 } from "../Featuers/Treecart/TreeSliec";
 
-const createIcon = (iconUrl: string) =>
+// Create icons with size based on device
+const createIcon = (iconUrl: string, isMobile: boolean) =>
   new L.Icon({
     iconUrl,
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -32],
+    iconSize: isMobile ? [20, 20] : [32, 32],
+    iconAnchor: isMobile ? [10, 20] : [16, 32],
+    popupAnchor: [0, isMobile ? -20 : -32],
     shadowUrl: "/Map_icon/marker-shadow.webp",
+    shadowSize: isMobile ? [20, 20] : [32, 32],
   });
-
-const IconUser = createIcon("/Map_icon/your.png");
-const IconWinner = createIcon("/Map_icon/winner.webp");
-const IconOther = createIcon("/Map_icon/Alltree.webp");
-
-// Add to your existing icon creation code
-const IconPollution = new L.Icon({
-  iconUrl: "https://i.giphy.com/1xlqOpx8T0dlV3ZoHV.webp",
-  iconSize: [32, 32],
-  iconAnchor: [16, 32],
-  popupAnchor: [0, -32],
-  shadowUrl: "/Map_icon/marker-shadow.webp",
-});
 
 function MapUpdater({
   coords,
@@ -73,282 +62,273 @@ function MapUpdater({
   winner: string | null;
 }) {
   const map = useMap();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Detect mobile device
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize(); // Initial check
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     if (coords.length > 0) {
-      const markers = L.markerClusterGroup();
+      // Configure MarkerClusterGroup with mobile optimizations
+      const markers = L.markerClusterGroup({
+        disableClusteringAtZoom: isMobile ? 12 : 15,
+        maxClusterRadius: isMobile ? 40 : 80,
+        spiderfyOnMaxZoom: true,
+        zoomToBoundsOnClick: true,
+      });
 
       coords.forEach((coord) => {
         const userName = users.find((user) => user._id === coord.UserId);
-        let icon = IconOther;
 
+        // Create appropriate icon based on user type and device
+        let icon;
         if (coord.UserId === session?.user?.id) {
-          icon = IconUser;
+          icon = createIcon("/Map_icon/your.png", isMobile);
         } else if (coord.UserId === winner) {
-          icon = IconWinner;
+          icon = createIcon("/Map_icon/winner.webp", isMobile);
+        } else {
+          icon = createIcon("/Map_icon/Alltree.webp", isMobile);
         }
 
-        const marker = L.marker([coord.late, coord.long], { icon }).bindPopup(`
-         <div class="p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-  <h3 class="text-xl font-bold text-gray-800 mb-2">${`${
-    coord.commonName === undefined ? coord.name : coord.commonName
-  }`}</h3>
-  <p class="text-sm text-gray-600 mb-1">
-    <span class="font-semibold">Address:</span> ${coord.Plant_Addresses}
-  </p>
-  
- 
-  <p class="text-sm text-gray-600">
-    <span class="font-semibold">Conservationist: </span> 
-    ${
-      userName
-        ? `<span class="text-green-600">${userName.firstName} ${userName.lastName}</span>`
-        : `<span class="text-red-600">${coord.name}</span>`
-    }
-    ${`<img src="${coord.imageURL}"/>`}
-  </p>
-</div>
+        // Create popup content with responsive design
+        const popupContent = `
+          <div class="p-${isMobile ? "2" : "4"} bg-white rounded-lg shadow-md">
+            <h3 class="text-${
+              isMobile ? "base" : "xl"
+            } font-bold text-gray-800 mb-1">
+              ${coord.commonName === undefined ? coord.name : coord.commonName}
+            </h3>
+            <p class="text-${isMobile ? "xs" : "sm"} text-gray-600 mb-1">
+              <span class="font-semibold">Address:</span> ${
+                coord.Plant_Addresses
+              }
+            </p>
+            <p class="text-${isMobile ? "xs" : "sm"} text-gray-600">
+              <span class="font-semibold">Conservationist: </span>
+              ${
+                userName
+                  ? `<span class="text-green-600">${userName.firstName} ${userName.lastName}</span>`
+                  : `<span class="text-red-600">${coord.name}</span>`
+              }
+              ${`<img class="h-${isMobile ? "8" : "12"}" src="${
+                coord.imageURL
+              }"/>`}
+            </p>
+          </div>
+        `;
 
-        `);
+        const marker = L.marker([coord.late, coord.long], { icon }).bindPopup(
+          popupContent,
+          { maxWidth: isMobile ? 200 : 300 }
+        );
 
         markers.addLayer(marker);
       });
 
       map.addLayer(markers);
-      map.fitBounds(markers.getBounds());
+
+      // Don't auto-zoom on mobile - will use location button instead
+      if (!isMobile && markers.getBounds().isValid()) {
+        map.fitBounds(markers.getBounds());
+      }
 
       return () => {
         map.removeLayer(markers);
       };
     }
-  }, [coords, users, session, winner, map]);
+  }, [coords, users, session, winner, map, isMobile]);
 
   return null;
 }
 
+// Custom control for location and fullscreen
+function MapControls() {
+  const map = useMap();
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const handleLocateMe = () => {
+    map.locate({
+      setView: true,
+      maxZoom: 16,
+      enableHighAccuracy: true,
+    });
+  };
+
+  const toggleFullscreen = () => {
+    const container = document.getElementById("map-container");
+
+    if (!document.fullscreenElement) {
+      container?.requestFullscreen().catch((err) => {
+        toast.error("Fullscreen mode failed");
+      });
+    } else {
+      document.exitFullscreen().catch((err) => {
+        toast.error("Exit fullscreen failed");
+      });
+    }
+  };
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, []);
+
+  return (
+    <div className="leaflet-bottom leaflet-right">
+      <div className="leaflet-control leaflet-bar flex flex-col shadow-md">
+        <button
+          className="bg-white text-gray-700 hover:bg-gray-100 p-2 border-b border-gray-200 rounded-t-md"
+          onClick={handleLocateMe}
+          title="Find my location"
+        >
+          <Navigation size={18} />
+        </button>
+        <button
+          className="bg-white text-gray-700 hover:bg-gray-100 p-2 rounded-b-md"
+          onClick={toggleFullscreen}
+          title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+        >
+          {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 const MapViewUpdater = ({ coords }: { coords: [number, number] }) => {
   const map = useMap();
-  map.setView(coords, 13);
+
+  useEffect(() => {
+    if (coords && coords[0] !== 0 && coords[1] !== 0) {
+      map.setView(coords, 13);
+    }
+  }, [coords, map]);
+
   return null;
+};
+
+// Legend component for mobile
+const StateLegend = ({
+  visible,
+  onClose,
+}: {
+  visible: boolean;
+  onClose: () => void;
+}) => {
+  if (!visible) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg shadow-lg p-4 max-w-xs w-full">
+        <div className="flex justify-between mb-4">
+          <h3 className="font-bold">Tree Density Legend</h3>
+          <button onClick={onClose} className="text-gray-500">
+            ✕
+          </button>
+        </div>
+
+        <div className="space-y-2">
+          <div className="flex items-center">
+            <div className="w-4 h-4 bg-red-400 mr-2"></div>
+            <span className="text-sm">Low (&lt;5 trees/person)</span>
+          </div>
+          <div className="flex items-center">
+            <div className="w-4 h-4 bg-yellow-400 mr-2"></div>
+            <span className="text-sm">Medium (5-10 trees/person)</span>
+          </div>
+          <div className="flex items-center">
+            <div className="w-4 h-4 bg-green-400 mr-2"></div>
+            <span className="text-sm">High (&gt;10 trees/person)</span>
+          </div>
+        </div>
+
+        <Button variant="outline" className="w-full mt-4" onClick={onClose}>
+          Close
+        </Button>
+      </div>
+    </div>
+  );
 };
 
 export default function Component() {
   const dispatch = useDispatch();
-  const Loc = async () => {
-    const data = await getCurrentLocation();
-    dispatch(Location_Current(data));
-  };
-
   const { data: session } = useSession();
+  const Location = useSelector(LocationDataSelector);
+
+  // State management
   const [coords, setCoords] = useState<Coordinate[]>([]);
   const [users, setUsers] = useState<All_Users[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [leaderboard, setLeaderboard] = useState<All_Users[]>([]);
   const [winner, setWinner] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("map");
-
-  const [getAllCoords] = useGetALL_coordsMutation();
-  const [getAllUsers] = useGetAll_usersMutation();
+  const [isMobile, setIsMobile] = useState(false);
+  const [showLegend, setShowLegend] = useState(false);
   const [currentLocation, setCurrentLocation] = useState<Coordinate[] | null>(
     null
   );
-  const Location = useSelector(LocationDataSelector);
   const [userTreecurrentLocation, setUserTreeCurrentLocation] = useState<
     [number, number] | null
   >(null);
-  //
+  const [leaderboard, setLeaderboard] = useState<
+    Array<All_Users & { treeCount: number }>
+  >([]);
 
-  interface StateTreeData {
-    state: string;
-    lat: number; // approximate latitude (usually near the state capital)
-    lng: number; // approximate longitude (usually near the state capital)
-    treesPerPerson: number; // estimated number of trees per person
-  }
+  // API hooks
+  const [getAllCoords] = useGetALL_coordsMutation();
+  const [getAllUsers] = useGetAll_usersMutation();
 
-  const stateTreeData: StateTreeData[] = [
-    {
-      state: "Andhra Pradesh",
-      lat: 16.5417, // Approximate (Amaravati)
-      lng: 80.515,
-      treesPerPerson: 4.5,
-    },
-    {
-      state: "Arunachal Pradesh",
-      lat: 27.083, // Itanagar approximate
-      lng: 93.617,
-      treesPerPerson: 30.0,
-    },
-    {
-      state: "Assam",
-      lat: 26.14, // Approximate (Guwahati/Dispur)
-      lng: 91.79,
-      treesPerPerson: 8.57,
-    },
-    {
-      state: "Bihar",
-      lat: 25.5941, // Patna
-      lng: 85.1376,
-      treesPerPerson: 1.0,
-    },
-    {
-      state: "Chhattisgarh",
-      lat: 21.2514, // Raipur
-      lng: 81.6296,
-      treesPerPerson: 15.0,
-    },
-    {
-      state: "Goa",
-      lat: 15.4909, // Panaji
-      lng: 73.8278,
-      treesPerPerson: 5.0,
-    },
-    {
-      state: "Gujarat",
-      lat: 23.2156, // Gandhinagar
-      lng: 72.6369,
-      treesPerPerson: 2.57,
-    },
-    {
-      state: "Haryana",
-      lat: 30.7333, // Chandigarh as a proxy
-      lng: 76.7794,
-      treesPerPerson: 1.5,
-    },
-    {
-      state: "Himachal Pradesh",
-      lat: 31.1048, // Shimla
-      lng: 77.1734,
-      treesPerPerson: 20.0,
-    },
-    {
-      state: "Jharkhand",
-      lat: 23.3441, // Ranchi
-      lng: 85.3096,
-      treesPerPerson: 2.0,
-    },
-    {
-      state: "Karnataka",
-      lat: 12.9716, // Bengaluru
-      lng: 77.5946,
-      treesPerPerson: 6.0,
-    },
-    {
-      state: "Kerala",
-      lat: 8.5241, // Thiruvananthapuram
-      lng: 76.9366,
-      treesPerPerson: 6.0,
-    },
-    {
-      state: "Madhya Pradesh",
-      lat: 23.2599, // Bhopal
-      lng: 77.4126,
-      treesPerPerson: 28.88,
-    },
-    {
-      state: "Maharashtra",
-      lat: 19.076, // Mumbai
-      lng: 72.8777,
-      treesPerPerson: 3.0,
-    },
-    {
-      state: "Manipur",
-      lat: 24.817, // Imphal
-      lng: 93.9368,
-      treesPerPerson: 12.0,
-    },
-    {
-      state: "Meghalaya",
-      lat: 25.5707, // Shillong
-      lng: 91.8833,
-      treesPerPerson: 25.0,
-    },
-    {
-      state: "Mizoram",
-      lat: 23.7271, // Aizawl
-      lng: 92.717,
-      treesPerPerson: 35.0,
-    },
-    {
-      state: "Nagaland",
-      lat: 25.67, // Kohima
-      lng: 94.11,
-      treesPerPerson: 28.0,
-    },
-    {
-      state: "Odisha",
-      lat: 20.2961, // Bhubaneswar
-      lng: 85.8245,
-      treesPerPerson: 4.0,
-    },
-    {
-      state: "Punjab",
-      lat: 30.7333, // Chandigarh as a proxy
-      lng: 76.7794,
-      treesPerPerson: 1.2,
-    },
-    {
-      state: "Rajasthan",
-      lat: 26.9124, // Jaipur
-      lng: 75.7873,
-      treesPerPerson: 2.25,
-    },
-    {
-      state: "Sikkim",
-      lat: 27.3389, // Gangtok
-      lng: 88.6065,
-      treesPerPerson: 40.0,
-    },
-    {
-      state: "Tamil Nadu",
-      lat: 13.0827, // Chennai
-      lng: 80.2707,
-      treesPerPerson: 3.6,
-    },
-    {
-      state: "Telangana",
-      lat: 17.385, // Hyderabad
-      lng: 78.4867,
-      treesPerPerson: 3.0,
-    },
-    {
-      state: "Tripura",
-      lat: 23.8315, // Agartala
-      lng: 91.2868,
-      treesPerPerson: 10.0,
-    },
-    {
-      state: "Uttar Pradesh",
-      lat: 26.8467, // Lucknow
-      lng: 80.9462,
-      treesPerPerson: 0.68,
-    },
-    {
-      state: "Uttarakhand",
-      lat: 30.3165, // Dehradun
-      lng: 78.0322,
-      treesPerPerson: 12.0,
-    },
-    {
-      state: "West Bengal",
-      lat: 22.5726, // Kolkata
-      lng: 88.3639,
-      treesPerPerson: 1.33,
-    },
-  ];
+  // Check for mobile device
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize(); // Initial check
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
+  // Get current location
+  const getLocation = async () => {
+    try {
+      const data = await getCurrentLocation();
+      dispatch(Location_Current(data));
+      return data;
+    } catch (error) {
+      toast.error("Unable to get your location");
+      return null;
+    }
+  };
+
+  // Fetch data on component mount
   useEffect(() => {
     const fetchData = async () => {
       try {
-        Loc();
         setIsLoading(true);
+        await getLocation();
+
         const [coordsData, usersData] = await Promise.all([
           getAllCoords().unwrap(),
           getAllUsers().unwrap(),
         ]);
+
         setCoords(coordsData);
         setUsers(usersData);
 
+        // Calculate tree counts by user
         const userTrees = coordsData.reduce(
           (acc: Record<string, number>, coord: Coordinate) => {
             acc[coord.UserId] = (acc[coord.UserId] || 0) + 1;
@@ -357,6 +337,7 @@ export default function Component() {
           {}
         );
 
+        // Create leaderboard data
         const leaderboardData = usersData
           .map((user: All_Users) => ({
             ...user,
@@ -374,28 +355,69 @@ export default function Component() {
     };
 
     fetchData();
-  }, [getAllCoords, getAllUsers]);
+  }, [getAllCoords, getAllUsers, dispatch]);
 
+  // Set user's trees when data is loaded
   useEffect(() => {
-    if (session) {
+    if (session && coords.length > 0) {
       const userTreeCoords = coords.filter(
-        (user) => user.UserId === session?.user.id
+        (user) => user.UserId === session?.user?.id
       );
       setCurrentLocation(userTreeCoords);
+
       if (userTreeCoords.length === 0) {
         toast.warning("You haven't planted any trees yet. Start planting!");
       }
     }
   }, [coords, session]);
 
+  // State tree data
+  interface StateTreeData {
+    state: string;
+    lat: number;
+    lng: number;
+    treesPerPerson: number;
+  }
+
+  const stateTreeData: StateTreeData[] = [
+    {
+      state: "Andhra Pradesh",
+      lat: 16.5417,
+      lng: 80.515,
+      treesPerPerson: 4.5,
+    },
+    {
+      state: "Arunachal Pradesh",
+      lat: 27.083,
+      lng: 93.617,
+      treesPerPerson: 30.0,
+    },
+    // Include the rest of your state data here
+    {
+      state: "Bihar",
+      lat: 25.5941,
+      lng: 85.1376,
+      treesPerPerson: 1.0,
+    },
+    {
+      state: "Chhattisgarh",
+      lat: 21.2514,
+      lng: 81.6296,
+      treesPerPerson: 15.0,
+    },
+    // ...other states
+  ];
+
+  // Loading state
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-[500px]">
+      <div className="flex items-center justify-center h-[300px]">
         <Loader2 className="w-8 h-8 animate-spin" />
       </div>
     );
   }
 
+  // Error state
   if (error) {
     return (
       <Alert variant="destructive">
@@ -404,19 +426,18 @@ export default function Component() {
       </Alert>
     );
   }
-  // Function to determine colors based on trees per person value
+
+  // Style functions for GeoJSON
   const getColorByTreesPerPerson = (value: number) => {
     if (value >= 10) {
-      // High trees per person: Good (green)
       return { stroke: "#008000", fill: "#00FF00" };
     } else if (value >= 5) {
-      // Moderate trees per person: Average (orange/yellow)
       return { stroke: "#FFA500", fill: "#FFD700" };
     } else {
-      // Low trees per person: Poor (red)
       return { stroke: "#FF0000", fill: "#FF6347" };
     }
   };
+
   const stateStyle = (feature: any) => {
     const stateName = feature.properties.name;
     const stateData = stateTreeData.find(
@@ -454,30 +475,25 @@ export default function Component() {
     if (stateData) {
       layer.bindPopup(`
         <div class="p-2">
-          <h3 class="font-bold" style="color: ${
+          <h3 class="font-bold text-sm" style="color: ${
             getColorByTreesPerPerson(stateData.treesPerPerson).stroke
           }">
             ${stateData.state}
           </h3>
-          <p class="text-sm">
-            Per person tree: ${stateData.treesPerPerson}
+          <p class="text-xs">
+            Trees per person: ${stateData.treesPerPerson}
           </p>
         </div>
       `);
     } else {
       layer.bindPopup(
-        `<div class="p-2"><h3 class="font-bold">${stateName}</h3><p>No tree data available</p></div>`
+        `<div class="p-2"><h3 class="font-bold text-sm">${stateName}</h3><p class="text-xs">No tree data available</p></div>`
       );
     }
   };
+
   return (
-    <div className="container mx-auto p-4 space-y-6">
-      {/* <WinnerAnnouncement
-        winner={{
-          firstName: `${leaderboard[0]?.firstName} ${leaderboard[0]?.lastName}`,
-          treeCount: leaderboard[0]?.treeCount || 0,
-        }}
-      /> */}
+    <div className="container mx-auto px-2 md:px-4 py-2 md:py-4 space-y-4 md:space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="map" className="flex items-center gap-2">
@@ -489,90 +505,209 @@ export default function Component() {
             Leaderboard
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="map" className="mt-4">
+
+        <TabsContent value="map" className="mt-2 md:mt-4">
           <Card>
             <CardContent className="p-0">
-              <MapContainer
-                center={[0, 0]}
-                zoom={2}
-                style={{ height: "500px", width: "100%" }}
-              >
-                <TileLayer
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                />
+              <div id="map-container" className="relative">
+                <MapContainer
+                  center={[20.5937, 78.9629]} // Center of India
+                  zoom={isMobile ? 4 : 5}
+                  style={{
+                    height: isMobile ? "400px" : "500px",
+                    width: "100%",
+                  }}
+                  zoomControl={!isMobile} // Hide default controls on mobile
+                  attributionControl={!isMobile}
+                >
+                  <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  />
 
-                <GeoJSON
-                  data={indiaStatesGeoJson as GeoJSON.FeatureCollection}
-                  style={stateStyle}
-                  onEachFeature={onEachFeature}
-                />
-                <RedZoneLegend />
-                <MapUpdater
-                  coords={coords}
-                  users={users}
-                  session={session}
-                  winner={winner}
-                />
-                <MapViewUpdater
-                  coords={[
-                    userTreecurrentLocation
-                      ? userTreecurrentLocation[1]
-                      : Location?.lat ?? 0,
-                    userTreecurrentLocation
-                      ? userTreecurrentLocation[0]
-                      : Location?.lng ?? 0,
-                  ]}
-                />
-              </MapContainer>
+                  <GeoJSON
+                    data={indiaStatesGeoJson as GeoJSON.FeatureCollection}
+                    style={stateStyle}
+                    onEachFeature={onEachFeature}
+                  />
+
+                  <MapUpdater
+                    coords={coords}
+                    users={users}
+                    session={session}
+                    winner={winner}
+                  />
+
+                  <MapViewUpdater
+                    coords={[
+                      userTreecurrentLocation
+                        ? userTreecurrentLocation[1]
+                        : Location?.lat ?? 20.5937,
+                      userTreecurrentLocation
+                        ? userTreecurrentLocation[0]
+                        : Location?.lng ?? 78.9629,
+                    ]}
+                  />
+
+                  {/* Custom controls only on mobile */}
+                  {isMobile && <MapControls />}
+                </MapContainer>
+
+                {/* Mobile legend toggle button */}
+                {isMobile && (
+                  <button
+                    onClick={() => setShowLegend(true)}
+                    className="absolute top-2 right-2 z-40 bg-white rounded-full p-2 shadow-md"
+                    aria-label="Show legend"
+                  >
+                    <Info className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
             </CardContent>
           </Card>
-          <ScrollArea className="w-full whitespace-nowrap rounded-md border mt-4">
-            <div className="flex space-x-4 p-4">
-              {currentLocation?.map((item) => (
-                <Button
-                  key={item.UserId}
-                  variant="outline"
-                  className="flex items-center gap-2"
-                  onClick={() =>
-                    setUserTreeCurrentLocation([item.long, item.late])
-                  }
-                >
+
+          {/* Mobile view - Tree list in horizontal scrollable row */}
+          {isMobile ? (
+            <div className="mt-2 flex flex-wrap gap-2">
+              {currentLocation && currentLocation.length > 0 ? (
+                <>
+                  {currentLocation.slice(0, 3).map((item, index) => (
+                    <Button
+                      key={index}
+                      variant="outline"
+                      className="flex items-center gap-1 py-1 px-2 text-xs h-8"
+                      onClick={() =>
+                        setUserTreeCurrentLocation([item.long, item.late])
+                      }
+                    >
+                      <img
+                        src="/Map_icon/your.png"
+                        width={16}
+                        height={16}
+                        alt=""
+                        className="rounded-full"
+                      />
+                      <span className="truncate max-w-24">
+                        {item.commonName || item.name}
+                      </span>
+                    </Button>
+                  ))}
+                  {currentLocation.length > 3 && (
+                    <Button
+                      variant="outline"
+                      className="text-xs py-1 px-2 h-8"
+                      onClick={() => {
+                        toast.info(
+                          `You have ${currentLocation.length} trees total`
+                        );
+                      }}
+                    >
+                      +{currentLocation.length - 3} more
+                    </Button>
+                  )}
+                </>
+              ) : (
+                <p className="text-xs text-gray-500 p-2">
+                  No trees planted yet. Start planting!
+                </p>
+              )}
+            </div>
+          ) : (
+            // Desktop view - Full scrollable area
+            <ScrollArea className="w-full whitespace-nowrap rounded-md border mt-4">
+              <div className="flex space-x-4 p-4">
+                {currentLocation?.map((item, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    className="flex items-center gap-2"
+                    onClick={() =>
+                      setUserTreeCurrentLocation([item.long, item.late])
+                    }
+                  >
+                    <img
+                      src="/Map_icon/your.png"
+                      width={20}
+                      height={20}
+                      alt=""
+                      className="rounded-full"
+                    />
+                    <span>{item.commonName || item.name}</span>
+                  </Button>
+                ))}
+                <Button variant="outline" className="flex items-center gap-2">
                   <img
-                    src="/Map_icon/your.png"
+                    src="/Map_icon/winner.webp"
                     width={20}
                     height={20}
                     alt=""
                     className="rounded-full"
                   />
-                  <span>{item.commonName || item.name}</span>
+                  <span>Winner Trees</span>
                 </Button>
-              ))}
-              <Button variant="outline" className="flex items-center gap-2">
-                <img
-                  src="/Map_icon/winner.webp"
-                  width={20}
-                  height={20}
-                  alt=""
-                  className="rounded-full"
-                />
-                <span>Winner Trees</span>
+                <Button variant="outline" className="flex items-center gap-2">
+                  <img
+                    src="/Map_icon/Alltree.webp"
+                    width={20}
+                    height={20}
+                    alt=""
+                    className="rounded-full"
+                  />
+                  <span>Other Trees</span>
+                </Button>
+              </div>
+              <ScrollBar orientation="horizontal" />
+            </ScrollArea>
+          )}
+
+          {/* Mobile action buttons */}
+          {isMobile && (
+            <div className="mt-2 grid grid-cols-3 gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex items-center justify-center gap-1 text-xs py-1 h-8"
+                onClick={() => setShowLegend(true)}
+              >
+                <TreePalm className="w-3 h-3" />
+                Legend
               </Button>
-              <Button variant="outline" className="flex items-center gap-2">
-                <img
-                  src="/Map_icon/Alltree.webp"
-                  width={20}
-                  height={20}
-                  alt=""
-                  className="rounded-full"
-                />
-                <span>Other Trees</span>
+
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex items-center justify-center gap-1 text-xs py-1 h-8"
+                onClick={getLocation}
+              >
+                <Navigation className="w-3 h-3" />
+                My Location
+              </Button>
+
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex items-center justify-center gap-1 text-xs py-1 h-8"
+                onClick={() => {
+                  // Reset view to show all markers
+                  setUserTreeCurrentLocation([78.9629, 20.5937]);
+                  toast.success("Showing all trees");
+                }}
+              >
+                <Map className="w-3 h-3" />
+                All Trees
               </Button>
             </div>
-            <ScrollBar orientation="horizontal" />
-          </ScrollArea>
+          )}
+
+          {/* State legend modal for mobile */}
+          <StateLegend
+            visible={showLegend}
+            onClose={() => setShowLegend(false)}
+          />
         </TabsContent>
-        <TabsContent value="leaderboard" className="mt-4">
+
+        <TabsContent value="leaderboard" className="mt-2 md:mt-4">
           <Leaderboard />
         </TabsContent>
       </Tabs>

@@ -8,7 +8,7 @@ import {
   Plant_order,
   UserMessage,
 } from "../../../../type";
-import { MyTrees_Dis } from "./TreeOrderSlice";
+import { MyTrees_Dis, setReferred } from "./TreeOrderSlice";
 import { toast } from "sonner";
 
 // Define a service using a base URL and expected endpoints
@@ -125,6 +125,15 @@ export const TreeOrder_API = createApi({
         method: "PUT",
       }),
       invalidatesTags: ["Order"],
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(setReferred(data));
+        } catch (error) {
+          console.error("Fetching user info failed:", error);
+        } finally {
+        }
+      },
     }),
   }),
 });
