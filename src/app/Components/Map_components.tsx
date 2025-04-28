@@ -99,30 +99,75 @@ function MapUpdater({
 
         // Create popup content with responsive design
         const popupContent = `
-          <div class="p-${isMobile ? "2" : "4"} bg-white rounded-lg shadow-md">
-            <h3 class="text-${
-              isMobile ? "base" : "xl"
-            } font-bold text-gray-800 mb-1">
-              ${coord.commonName === undefined ? coord.name : coord.commonName}
-            </h3>
-            <p class="text-${isMobile ? "xs" : "sm"} text-gray-600 mb-1">
-              <span class="font-semibold">Address:</span> ${
-                coord.Plant_Addresses
-              }
-            </p>
-            <p class="text-${isMobile ? "xs" : "sm"} text-gray-600">
-              <span class="font-semibold">Conservationist: </span>
-              ${
-                userName
-                  ? `<span class="text-green-600">${userName.firstName} ${userName.lastName}</span>`
-                  : `<span class="text-red-600">${coord.name}</span>`
-              }
-              ${`<img class="h-${isMobile ? "8" : "12"}" src="${
-                coord.imageURL
-              }"/>`}
-            </p>
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden max-w-sm">
+          <!-- Large Feature Image at Top -->
+          <div class="relative">
+            <img src="${coord.imageURL}" alt="${
+          coord.commonName ?? coord.name
+        }" 
+                 class="w-full h-48 object-cover">
+            
+            <!-- Overlay Badge for Conservation Status (if applicable) -->
+            : ""
+            }
           </div>
-        `;
+          
+          <!-- Content Area -->
+          <div class="p-5 space-y-4">
+            <!-- Plant Name and Location -->
+            <div>
+              <h3 class="text-2xl font-bold text-gray-900">${
+                coord.commonName ?? coord.name
+              }</h3>
+              <p class="text-sm text-gray-500">${coord.Plant_Addresses}</p>
+             
+            </div>
+            
+            <!-- Conservationist Info with Avatar -->
+            <div class="flex items-center space-x-3 border-t pt-4">
+              <div class="bg-green-100 p-2 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+              <div>
+                <span class="block text-sm font-medium">Conservationist</span>
+                ${
+                  userName
+                    ? `<span class="text-green-600 font-semibold">${userName.firstName} ${userName.lastName}</span>`
+                    : `<span class="text-red-500 font-semibold">Unassigned</span>`
+                }
+              </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="flex space-x-2 pt-2">
+              <button class="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors">
+                Details
+              </button>
+              <button class="flex-1 border border-green-600 text-green-600 hover:bg-green-50 py-2 px-4 rounded-lg text-sm font-medium transition-colors">
+                Directions
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+
+        // For handling mobile responsiveness without using arbitrary values
+        const getMobilePopupContent = () => {
+          return popupContent
+            .replace("h-48", "h-36")
+            .replace("p-5", "p-3")
+            .replace("space-y-4", "space-y-2")
+            .replace("text-2xl", "text-lg")
+            .replace("pt-4", "pt-2")
+            .replace("h-6 w-6", "h-4 w-4");
+        };
+
+        // Use this conditional rendering approach
+        const finalPopupContent = isMobile
+          ? getMobilePopupContent()
+          : popupContent;
 
         const marker = L.marker([coord.late, coord.long], { icon }).bindPopup(
           popupContent,
