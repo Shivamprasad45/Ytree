@@ -212,7 +212,7 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div className="mt-16 max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+          {/* <div className="mt-16 max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-2">
               <div className="p-8">
                 <h3 className="text-2xl font-bold text-green-800 mb-4">
@@ -256,7 +256,7 @@ export default function HomePage() {
                 />
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
 
@@ -323,7 +323,7 @@ export default function HomePage() {
       </section> */}
 
       {/* CTA Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-green-700 to-green-900 text-white">
+      {/* <section className="py-16 md:py-24 bg-gradient-to-br from-green-700 to-green-900 text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <motion.div
@@ -355,7 +355,7 @@ export default function HomePage() {
             </motion.div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Footer */}
     </div>
