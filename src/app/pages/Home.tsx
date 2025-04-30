@@ -260,7 +260,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Testimonials */}
       {/* <section id="testimonials" className="py-16 md:py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
