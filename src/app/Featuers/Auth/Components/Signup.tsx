@@ -40,7 +40,7 @@ export default function Register() {
         });
       }
 
-      await signIn("google", { callbackUrl: "/" });
+      await signIn("google", { callbackUrl: "/Tree/Free_clam_tree" });
     } catch (error) {
       console.error("Google sign-in error:", error);
       toast.error("Failed to initiate Google sign-in");

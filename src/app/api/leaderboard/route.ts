@@ -21,7 +21,9 @@ export async function GET(req: Request) {
       $group: {
         _id: "$UserId",
         totalTrees: { $sum: "$Trees" },
-        name: { $first: "$name" }, // Take the first occurrence of the name
+        name: { $first: "$name" },
+        state: { $first: "$state" },
+        district: { $first: "$district" },
       },
     },
     { $sort: { totalTrees: -1 } },

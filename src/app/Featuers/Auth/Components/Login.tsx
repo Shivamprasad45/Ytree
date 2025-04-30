@@ -42,7 +42,7 @@ export default function Login() {
       }
 
       await signIn("google", {
-        callbackUrl: "/",
+        callbackUrl: "/Tree/Free_clam_tree",
       });
     } catch (error) {
       console.error("Google sign-in error:", error);

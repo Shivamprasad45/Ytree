@@ -1,570 +1,364 @@
 "use client";
 
-import MaxWidthRappers from "@/components/MaxWidthRapper";
-import { Button } from "@/components/ui/button";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { useGetTreeInfoQuery } from "../Featuers/Tree/TreeServices";
-import Loading from "../Loading/Loading";
-import {
-  Droplets,
-  ShoppingBag,
-  Wind,
-  Sun,
-  Users,
-  Gift,
-  Share2,
-  MapPin,
-  Clock,
-  Home,
-  PlayCircle,
-  ExternalLink,
-} from "lucide-react";
 import { motion } from "framer-motion";
-import PopupModal from "../Components/Pop_up";
-import { useReferelMutation } from "../Featuers/TreeOrder/TreeOrderServices";
-import { Progress } from "@/components/ui/progress";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from "@/components/ui/card";
-import { useState, useEffect } from "react";
+  ArrowRight,
+  MapPin,
+  BadgeIcon as Certificate,
+  Leaf,
+  Gift,
+  Heart,
+} from "lucide-react";
 
-export const metadata = {
-  title: "Vanagrow - Plant Trees Without Limits",
-  description:
-    "No space? No time? No problem. Plant and care for trees effortlessly with Vanagrow, even if you don't have a yard.",
-  keywords:
-    "tree planting, remote tree care, small space gardening, sustainable living",
-  openGraph: {
-    title: "Vanagrow - Plant Trees Without Limits",
-    description:
-      "Join our mission to make the world greener, even if you don't have the space or time to do it yourself.",
-  },
-};
-
-const Homes = () => {
-  const { data: feature, isLoading, isError } = useGetTreeInfoQuery();
-  const [referralStats, setReferralStats] = useState({
-    totalReferred: 0,
-    rewards: 0,
-  });
-  const [showVideoModal, setShowVideoModal] = useState(false);
-  const [
-    Grf,
-    {
-      data: Refrel,
-      isLoading: isRefrelLoading,
-      isSuccess: isRefrelSuccess,
-      reset,
-    },
-  ] = useReferelMutation();
-
-  // Handle Instagram video modal
-  const openInstagramVideo = () => {
-    window.open(
-      "https://www.instagram.com/reel/DI2ZetmTApE/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
-      "_blank"
-    );
-  };
-
-  useEffect(() => {
-    // Instagram embed API script
-    const script = document.createElement("script");
-    script.src = "https://www.instagram.com/embed.js";
-    script.async = true;
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
-
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  const progressPercentage = Math.min(
-    (referralStats.totalReferred / 10) * 100,
-    100
-  );
-
-  if (isError) {
-    return (
-      <div className="flex justify-center items-center min-h-[50vh]">
-        <div className="text-center p-6 bg-red-50 rounded-lg">
-          <h2 className="text-xl font-semibold text-red-700 mb-2">Error</h2>
-          <p>Failed to fetch tree information. Please try again later.</p>
-          <Button
-            variant="outline"
-            className="mt-4"
-            onClick={() => window.location.reload()}
-          >
-            Retry
-          </Button>
-        </div>
-      </div>
-    );
-  }
+export default function HomePage() {
+  const [activeTab, setActiveTab] = useState("how-it-works");
 
   return (
-    <MaxWidthRappers className="w-full max-w-full px-4 sm:px-6 md:max-w-screen-md lg:max-w-screen-lg mx-auto overflow-hidden">
-      <header className="p-2 sm:p-4">
-        {/* Hero Section with Updated Messaging */}
-        <motion.section
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-          className="w-full py-8 md:py-16 lg:py-24 xl:py-32 bg-cover bg-center relative overflow-hidden"
-          aria-labelledby="hero-heading"
-        >
-          {/* Video background */}
-          <div className="absolute inset-0 overflow-hidden">
-            <iframe
-              className="w-full h-full object-cover"
-              src="https://www.youtube.com/embed/es4x5R-rV9s?autoplay=1&mute=0&loop=1&playlist=es4x5R-rV9s&controls=0&showinfo=0&modestbranding=1"
-              title="YouTube video background"
-              frameBorder="0"
-              allow="autoplay; encrypted-media"
-              allowFullScreen
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-60" />
-          </div>
+    <div className="min-h-screen bg-white font-sans">
+      {/* Header */}
 
-          {/* Content above video */}
-          <div className="container px-4 relative z-10">
-            <div className="flex flex-col items-center space-y-6 text-center text-white">
-              <motion.div
-                initial={{ y: 50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.2, duration: 0.8 }}
-                className="space-y-4"
-              >
-                <h1
-                  id="hero-heading"
-                  className="text-2xl font-bold tracking-tighter sm:text-3xl md:text-4xl lg:text-5xl"
-                >
-                  No Space? No Time? No Problem.
-                </h1>
-                <p className="mx-auto max-w-full sm:max-w-[700px] text-sm md:text-base lg:text-xl text-gray-200">
-                  Plant trees and make the world greener, even if you don&#39;t
-                  have a yard or the time to care for them yourself.
-                </p>
-              </motion.div>
-              <PopupModal />
-              <motion.div
-                initial={{ y: 50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.4, duration: 0.8 }}
-                className="flex flex-wrap justify-center gap-3 sm:space-x-4"
-              >
-                <Button
-                  asChild
-                  className="bg-green-600 hover:bg-green-700 text-white text-sm sm:text-base"
-                >
-                  <Link href="/Tree/Shop">Plant a Tree Now</Link>
-                </Button>
-                <Button
-                  asChild
-                  variant="default"
-                  className="border-white text-white hover:text-white hover:bg-green-800 text-sm sm:text-base"
-                >
-                  <Link href="/Tree/Learnmore">How It Works</Link>
-                </Button>
-              </motion.div>
-            </div>
-          </div>
-        </motion.section>
+      {/* Hero Section */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-green-50 to-green-100 -z-10" />
+        <div className="absolute right-0 top-0 w-1/2 h-full hidden lg:block -z-10">
+          <Image
+            src="/placeholder.svg?height=800&width=800"
+            alt="Forest view"
+            width={800}
+            height={800}
+            className="object-cover h-full w-full opacity-90"
+          />
+          <div className="absolute inset-0 bg-gradient-to-l from-transparent to-green-50/90" />
+        </div>
 
-        {/* Featured Video Section */}
-        <motion.section
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="w-full py-8 md:py-12 bg-background"
-        >
-          <div className="container px-4">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl sm:text-3xl font-bold text-green-800">
-                See How It Works
-              </h2>
-              <p className="text-gray-600 mt-2">
-                Watch how we&#39;re making tree planting accessible for everyone
+        <div className="container mx-auto px-4 py-16 md:py-24 lg:py-32">
+          <div className="max-w-2xl">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-green-800 mb-4">
+                🌿 Fulfillment
+              </h1>
+              <p className="text-xl md:text-2xl text-green-700 mb-8 leading-relaxed">
+                The deep satisfaction of making a real difference for the planet
+                — even when you can&#39;t plant a tree yourself.
               </p>
-            </div>
-
-            <div className="relative mx-auto max-w-2xl overflow-hidden rounded-xl shadow-lg">
-              {/* Video Thumbnail and Play Button */}
-              <div className="relative aspect-video bg-gray-100 flex justify-center items-center">
-                <div
-                  className="absolute inset-0 bg-cover bg-center"
-                  style={{
-                    backgroundImage: `url('/api/placeholder/640/360')`,
-                    filter: "brightness(0.8)",
-                  }}
-                />
-                <Button
-                  onClick={openInstagramVideo}
-                  variant="ghost"
-                  size="lg"
-                  className="relative z-10 hover:bg-green-600/70 hover:scale-105 transition-all"
-                >
-                  <PlayCircle className="h-16 w-16 text-white" />
-                </Button>
+              <p className="text-gray-600 mb-8 text-lg">
+                At Vanagrow, we understand that life gets busy. Not everyone has
+                the time, space, or tools to plant a tree — but everyone wants
+                to make a difference.
+              </p>
+              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-green-100 mb-8">
+                <p className="text-xl font-medium text-green-800 mb-2">
+                  That&#39;s why we created Vanagrow:
+                </p>
+                <p className="text-2xl font-bold text-green-600">
+                  Buy a plant, and we&#39;ll plant it for you in our dedicated
+                  mini-forest.
+                </p>
               </div>
 
-              {/* Instagram Content Link */}
-              <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-4 flex justify-between items-center">
-                <div>
-                  <h3 className="font-medium text-green-800">
-                    Tree Planting Made Simple
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    See the impact of our community&#39;s efforts
-                  </p>
-                </div>
-                <Button
-                  onClick={openInstagramVideo}
-                  variant="ghost"
-                  size="sm"
-                  className="flex items-center gap-1 text-green-700 hover:text-green-800 hover:bg-green-100"
-                >
-                  <span>Watch on Instagram</span>
-                  <ExternalLink className="h-4 w-4" />
-                </Button>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link href="/Tree/Shop" className="w-full sm:w-auto">
+                  <button className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-full font-bold text-lg transition-colors flex items-center justify-center gap-2 shadow-lg">
+                    Start Planting
+                    <ArrowRight className="w-5 h-5" />
+                  </button>
+                </Link>
+                <Link href="/Tree/Learnmore" className="w-full sm:w-auto">
+                  <button className="w-full sm:w-auto bg-white hover:bg-green-50 text-green-700 border-2 border-green-600 px-8 py-4 rounded-full font-bold text-lg transition-colors">
+                    Learn More
+                  </button>
+                </Link>
               </div>
-            </div>
+            </motion.div>
           </div>
-        </motion.section>
+        </div>
+      </section>
 
-        {/* "How We Solve Your Problems" Section */}
-        <motion.section
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="w-full py-8 md:py-12 bg-background"
-          aria-labelledby="solutions-heading"
-        >
-          <div className="container px-4">
-            <h2
-              id="solutions-heading"
-              className="text-2xl sm:text-3xl font-bold tracking-tighter text-center mb-8 text-green-800"
-            >
-              Plant Trees Without Limitations
+      {/* What Happens Section */}
+      <section id="how-it-works" className="py-16 md:py-24">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-green-800 mb-4">
+              🌱 What Happens After You Buy a Plant?
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              {[
-                {
-                  icon: Home,
-                  title: "No Space Required",
-                  description:
-                    "We plant and maintain trees in dedicated lands on your behalf. No yard or garden needed.",
-                },
-                {
-                  icon: Clock,
-                  title: "No Time Commitment",
-                  description:
-                    "Our experts handle all care and maintenance. You get updates without the work.",
-                },
-                {
-                  icon: MapPin,
-                  title: "Plant Anywhere",
-                  description:
-                    "Choose where your trees grow—from urban areas to conservation hotspots.",
-                },
-              ].map((item, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.5 }}
-                  className="flex flex-col items-center text-center p-6 bg-green-50 dark:bg-green-900/10 rounded-lg shadow-sm"
-                >
-                  <div
-                    className="mb-4 bg-green-100 dark:bg-green-800/30 p-3 rounded-full"
-                    aria-hidden="true"
-                  >
-                    <item.icon className="h-8 w-8 text-green-600" />
-                  </div>
-                  <h3 className="text-lg sm:text-xl font-bold mb-2 text-green-800">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
-                    {item.description}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </motion.section>
-
-        {/* "How It Works" Process Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="my-10"
-        >
-          <Card className="border-2 border-green-100 dark:border-green-900/30">
-            <CardHeader>
-              <CardTitle className="text-xl flex items-center gap-2">
-                <Gift className="h-5 w-5 text-green-600" />
-                Simple Steps to Make a Difference
-              </CardTitle>
-              <CardDescription>
-                How to plant trees effortlessly through our platform
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-6 md:grid-cols-3">
-                <div className="flex flex-col items-center text-center p-4">
-                  <div className="bg-green-100 dark:bg-green-900/30 rounded-full p-3 mb-4">
-                    <ShoppingBag className="h-6 w-6 text-green-600 dark:text-green-400" />
-                  </div>
-                  <h3 className="font-medium mb-2">1. Choose Your Trees</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Select tree species and planting locations that match your
-                    preferences
-                  </p>
-                </div>
-
-                <div className="flex flex-col items-center text-center p-4">
-                  <div className="bg-green-100 dark:bg-green-900/30 rounded-full p-3 mb-4">
-                    <Sun className="h-6 w-6 text-green-600 dark:text-green-400" />
-                  </div>
-                  <h3 className="font-medium mb-2">2. We Plant & Care</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Our team plants your trees and provides expert ongoing care
-                  </p>
-                </div>
-
-                <div className="flex flex-col items-center text-center p-4">
-                  <div className="bg-green-100 dark:bg-green-900/30 rounded-full p-3 mb-4">
-                    <Droplets className="h-6 w-6 text-green-600 dark:text-green-400" />
-                  </div>
-                  <h3 className="font-medium mb-2">3. Track Your Impact</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Receive updates and see how your trees are helping the
-                    planet
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        {/* Benefits Section */}
-        <motion.section
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="w-full py-8 md:py-16 bg-background"
-          aria-labelledby="benefits-heading"
-        >
-          <div className="container px-4">
-            <h2
-              id="benefits-heading"
-              className="text-2xl sm:text-3xl font-bold tracking-tighter text-center mb-6 text-green-800"
-            >
-              Why Plant Trees With Us?
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[
-                {
-                  icon: Wind,
-                  title: "Improve Air Quality",
-                  description:
-                    "Your trees absorb pollutants and release clean oxygen into the atmosphere.",
-                },
-                {
-                  icon: Droplets,
-                  title: "Fight Climate Change",
-                  description:
-                    "Each tree captures carbon and helps mitigate global warming effects.",
-                },
-                {
-                  icon: Users,
-                  title: "Build Community",
-                  description:
-                    "Join thousands making a difference together, without needing their own land.",
-                },
-                {
-                  icon: Gift,
-                  title: "Create Your Legacy",
-                  description:
-                    "Trees you plant today will benefit generations to come.",
-                },
-              ].map((item, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.5 }}
-                  className="flex flex-col items-center text-center p-3"
-                >
-                  <div className="mb-3" aria-hidden="true">
-                    <item.icon className="h-8 w-8 sm:h-10 sm:w-10 text-green-600" />
-                  </div>
-                  <h3 className="text-lg sm:text-xl font-bold mb-2 text-green-800">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm sm:text-base text-gray-600">
-                    {item.description}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </motion.section>
-
-        {/* Referral Program */}
-        <Card className="overflow-hidden border-2 border-green-100 dark:border-green-900/30 my-8">
-          <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 pb-2">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-lg font-semibold">
-                Grow Our Forest Together
-              </CardTitle>
-              <Users className="h-5 w-5 text-green-600 dark:text-green-400" />
-            </div>
-            <CardDescription>
-              Refer friends and earn free trees for your virtual forest
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <div className="flex items-end justify-between">
-              <div className="flex items-end gap-2">
-                <div className="text-4xl font-bold">
-                  {referralStats.totalReferred}
-                </div>
-                <div className="text-sm text-muted-foreground mb-1">
-                  people referred
-                </div>
-              </div>
-              <div className="text-sm font-medium text-green-600">
-                {referralStats.totalReferred >= 10
-                  ? "Goal reached!"
-                  : `${10 - referralStats.totalReferred} more to go`}
-              </div>
-            </div>
-            <div className="mt-4 space-y-1">
-              <div className="flex justify-between text-sm">
-                <span>Progress</span>
-                <span>{Math.round(progressPercentage)}%</span>
-              </div>
-              <Progress
-                value={progressPercentage}
-                className="h-2 bg-green-100 dark:bg-green-900/30"
-              />
-            </div>
-            <div className="flex justify-center mt-6">
-              <Button className="bg-green-600 hover:bg-green-700">
-                Share Your Link
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* FAQ Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="flex flex-col bg-background p-4 sm:p-6 md:p-8 rounded-lg shadow-lg my-8"
-        >
-          <div className="mb-6">
-            <h2 className="scroll-m-20 text-xl sm:text-2xl font-semibold tracking-tight text-green-800">
-              Frequently Asked Questions
-            </h2>
-          </div>
-          <div>
-            <Accordion type="single" collapsible className="w-full">
-              <AccordionItem value="item-1">
-                <AccordionTrigger className="text-sm sm:text-base">
-                  How do I plant trees if I live in an apartment?
-                </AccordionTrigger>
-                <AccordionContent className="text-sm sm:text-base">
-                  Our platform lets you fund tree planting in dedicated
-                  locations around the world. You select the trees and
-                  locations, and our team handles the planting and care.
-                  You&#39;ll receive updates about your trees&#39; growth and
-                  impact.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-2">
-                <AccordionTrigger className="text-sm sm:text-base">
-                  How do I know my trees are really being planted?
-                </AccordionTrigger>
-                <AccordionContent className="text-sm sm:text-base">
-                  We provide photo verification of your planted trees and
-                  regular growth updates. Each tree has a unique identifier, and
-                  you can track its progress through our app or website.
-                  We&#39;re fully transparent about our planting operations.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-3">
-                <AccordionTrigger className="text-sm sm:text-base">
-                  What happens if my tree doesn&#39;t survive?
-                </AccordionTrigger>
-                <AccordionContent className="text-sm sm:text-base">
-                  We guarantee the trees we plant for at least three years. If a
-                  tree fails to thrive during this period, we&#39;ll replace it
-                  at no additional cost. Our expert team selects species
-                  appropriate for each location to maximize survival rates.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-4">
-                <AccordionTrigger className="text-sm sm:text-base">
-                  Can I gift trees to someone else?
-                </AccordionTrigger>
-                <AccordionContent className="text-sm sm:text-base">
-                  Absolutely! Trees make meaningful , sustainable gifts. When
-                  checking out, select the &quot;Gift&quot; option and provide
-                  the recipient&#39;s details. They&#39;ll receive a beautiful
-                  digital certificate and access to track their tree&#39;s
-                  growth.
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </div>
-        </motion.div>
-
-        {/* Call to Action */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="px-4 sm:px-8 py-12 sm:py-16 flex flex-col justify-center items-center gap-6 bg-green-50 dark:bg-green-900/10 rounded-lg shadow-inner my-8"
-        >
-          <div className="text-center">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold font-['Plus Jakarta Sans'] leading-tight text-green-800">
-              Start greening the planet today
-            </h2>
-            <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
-              Join thousands of people making a difference without the space or
-              time constraints of traditional tree planting.
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Your journey to making a difference begins with a simple purchase,
+              but the impact lasts for generations.
             </p>
           </div>
-          <div className="w-full flex justify-center">
-            <Button
-              asChild
-              className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg"
-            >
-              <Link href="/Tree/Shop">Plant Your First Tree</Link>
-            </Button>
-          </div>
-        </motion.div>
-      </header>
-    </MaxWidthRappers>
-  );
-};
 
-export default Homes;
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                icon: <Leaf className="w-8 h-8 text-white" />,
+                title: "We plant your tree",
+                description:
+                  "We plant your tree in our Vanagrow mini-forest — a growing ecosystem of life.",
+                color: "bg-green-600",
+              },
+              {
+                icon: <MapPin className="w-8 h-8 text-white" />,
+                title: "You get the location",
+                description:
+                  "You get the GPS location, photo, and certificate of your tree.",
+                color: "bg-blue-500",
+              },
+              {
+                icon: <Gift className="w-8 h-8 text-white" />,
+                title: "We care for it",
+                description:
+                  "We care for it, monitor the weather, and send you meaningful updates.",
+                color: "bg-amber-500",
+              },
+              {
+                icon: <Certificate className="w-8 h-8 text-white" />,
+                title: "You earn eco-coins",
+                description:
+                  "You earn eco-coins and track your positive impact on our platform.",
+                color: "bg-purple-500",
+              },
+              {
+                icon: <Heart className="w-8 h-8 text-white" />,
+                title: "You feel fulfillment",
+                description:
+                  "You feel the fulfillment of doing your part for a greener world — effortlessly.",
+                color: "bg-red-500",
+              },
+              {
+                icon: <ArrowRight className="w-8 h-8 text-white" />,
+                title: "Spread the word",
+                description:
+                  "Share your impact with friends and inspire others to join the movement.",
+                color: "bg-teal-500",
+              },
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+              >
+                <div className={`${item.color} p-6`}>
+                  <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mb-4">
+                    {item.icon}
+                  </div>
+                  <h3 className="text-xl font-bold text-white">{item.title}</h3>
+                </div>
+                <div className="p-6">
+                  <p className="text-gray-600">{item.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Impact Visualization */}
+      <section id="impact" className="py-16 md:py-24 bg-green-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-green-800 mb-4">
+              Your Impact Matters
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Every tree planted contributes to a healthier planet. Here&#39;s
+              how your contribution makes a difference.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                number: "24,752",
+                label: "Trees Planted",
+                description: "And growing every day with your help",
+              },
+              {
+                number: "495",
+                label: "Tons CO₂ Captured",
+                description: "Directly offsetting carbon emissions",
+              },
+              {
+                number: "1,873",
+                label: "Community Members",
+                description: "Growing our forest together",
+              },
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ delay: index * 0.2 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-xl shadow-md p-8 text-center"
+              >
+                <div className="text-4xl md:text-5xl font-bold text-green-600 mb-2">
+                  {stat.number}
+                </div>
+                <div className="text-xl font-medium text-green-800 mb-2">
+                  {stat.label}
+                </div>
+                <p className="text-gray-600">{stat.description}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="mt-16 max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="grid grid-cols-1 md:grid-cols-2">
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-green-800 mb-4">
+                  Track Your Forest&#39;s Growth
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Our interactive dashboard lets you monitor your trees&#39;
+                  growth, carbon capture, and overall environmental impact in
+                  real-time.
+                </p>
+                <ul className="space-y-3">
+                  {[
+                    "Real-time growth tracking",
+                    "Carbon capture metrics",
+                    "Biodiversity impact scores",
+                    "Weather and climate data",
+                    "Community contribution rankings",
+                  ].map((item, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <div className="w-5 h-5 rounded-full bg-green-100 flex-shrink-0 flex items-center justify-center mt-0.5">
+                        <div className="w-2.5 h-2.5 rounded-full bg-green-600"></div>
+                      </div>
+                      <span className="text-gray-700">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Link href="/dashboard">
+                  <button className="mt-8 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center gap-2">
+                    View Dashboard Demo
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </Link>
+              </div>
+              <div className="bg-green-100 flex items-center justify-center p-8">
+                <Image
+                  src="/placeholder.svg?height=400&width=400"
+                  alt="Dashboard preview"
+                  width={400}
+                  height={400}
+                  className="rounded-lg shadow-lg"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      {/* <section id="testimonials" className="py-16 md:py-24">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-green-800 mb-4">
+              Growing Together
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Join our community of forest founders making a difference
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Sarah K.",
+                location: "New York",
+                text: "I live in a tiny apartment but now have 20 trees growing across three continents. The photo updates make me feel connected to nature.",
+                trees: 20,
+              },
+              {
+                name: "James T.",
+                location: "London",
+                text: "Started by gifting trees for birthdays, now my entire family is competing to see who can grow the biggest forest. Love the impact tracking!",
+                trees: 45,
+              },
+              {
+                name: "Maria J.",
+                location: "Barcelona",
+                text: "As someone who travels constantly for work, having Vanagrow plant and maintain my forest gives me a sense of home wherever I go.",
+                trees: 12,
+              },
+            ].map((testimonial, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-xl shadow-md p-6 border border-green-100"
+              >
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-800 font-bold">
+                    {testimonial.name.charAt(0)}
+                  </div>
+                  <div>
+                    <h3 className="font-bold">{testimonial.name}</h3>
+                    <p className="text-sm text-gray-500">
+                      {testimonial.location}
+                    </p>
+                  </div>
+                </div>
+                <p className="text-gray-700 mb-6">"{testimonial.text}"</p>
+                <div className="flex items-center gap-2 text-green-600 font-medium">
+                  <Leaf className="w-5 h-5" />
+                  <span>{testimonial.trees} trees planted</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section> */}
+
+      {/* CTA Section */}
+      <section className="py-16 md:py-24 bg-gradient-to-br from-green-700 to-green-900 text-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                Start Your Forest Today
+              </h2>
+              <p className="text-xl text-green-100 mb-8">
+                No land. No maintenance. Just positive impact for generations to
+                come.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link href="/Tree/Shop" className="w-full sm:w-auto">
+                  <button className="w-full sm:w-auto bg-white hover:bg-green-50 text-green-800 px-8 py-4 rounded-full font-bold text-lg transition-colors flex items-center justify-center gap-2 shadow-lg">
+                    Plant Your First Tree
+                    <ArrowRight className="w-5 h-5" />
+                  </button>
+                </Link>
+                <Link href="/Tree/Learnmore" className="w-full sm:w-auto">
+                  <button className="w-full sm:w-auto bg-transparent hover:bg-white/10 text-white border-2 border-white px-8 py-4 rounded-full font-bold text-lg transition-colors">
+                    Learn More
+                  </button>
+                </Link>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+    </div>
+  );
+}

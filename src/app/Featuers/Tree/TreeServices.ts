@@ -22,6 +22,11 @@ export const TreeApi = createApi({
         method: "POST",
       }),
     }),
+    All_leaders: builder.query<any, void>({
+      query: () => ({
+        url: `/leaderboard`,
+      }),
+    }),
   }),
 });
 
@@ -31,4 +36,5 @@ export const {
   useGetTreeInfoQuery,
   useGetTreeDetailsQuery,
   useGetlog_treeMutation,
+  useAll_leadersQuery,
 } = TreeApi;

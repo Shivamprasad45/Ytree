@@ -1,47 +1,24 @@
 "use client";
-import { useSelector } from "react-redux";
-import { useState, useRef, useEffect } from "react";
-import dynamic from "next/dynamic";
-import * as z from "zod";
+
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Coords_Selector } from "@/app/Featuers/TreeOrder/TreeOrderSlice";
-import { useFree_plants_clamMutation } from "@/app/Featuers/TreeOrder/TreeOrderServices";
-import { toast } from "sonner";
-import { UserSelector } from "@/app/Featuers/Auth/AuthSlice";
-import { useRouter } from "next/navigation";
-import Camera from "@/app/Components/Anothers/Camra";
-import { motion } from "framer-motion";
 import {
-  CheckCircle2,
   Leaf,
   MapPin,
   Camera as CameraIcon,
   Send,
+  CheckCircle2,
 } from "lucide-react";
-import confetti from "canvas-confetti";
+import { useToast } from "@/components/ui/use-toast";
+import Camera from "@/app/Components/Anothers/Camra";
+import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
+import { useSelector } from "react-redux";
+import { Coords_Selector } from "@/app/Featuers/TreeOrder/TreeOrderSlice";
 
 const Map = dynamic(() => import("../LogTree/Map"), {
   ssr: false,
-  loading: () => <Skeleton className="h-80 w-full" />,
-});
-
-const formSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  mobileNumber: z
-    .string()
-    .min(10, "Mobile number must be at least 10 digits")
-    .regex(/^\d+$/, "Mobile number must contain only digits"),
-  reason: z
-    .string()
-    .min(10, "Please provide a detailed reason (min 10 characters)"),
-  treeType: z.string({
-    required_error: "Please select a tree type",
-  }),
-  imageUrl: z.string({
-    required_error: "Please upload a photo as proof",
-  }),
 });
 
 const TREE_TYPES = [
@@ -79,11 +56,34 @@ const TREE_TYPES = [
   },
 ];
 
-const Free_clam = () => {
+interface Errors {
+  name?: string;
+  mobileNumber?: string;
+  treeType?: string;
+  reason?: string;
+  location?: string;
+  imageUrl?: string;
+  [key: string]: string | undefined;
+}
+
+interface CompletedSteps {
+  personalInfo: boolean;
+  treeSelection: boolean;
+  locationSelection: boolean;
+  photoUpload: boolean;
+}
+
+interface LocationType {
+  Address?: string;
+  late?: number;
+  long?: number;
+  district?: string;
+  state?: string;
+}
+
+const Index = () => {
+  const { toast } = useToast();
   const Plants_CurrentLocations = useSelector(Coords_Selector);
-  const router = useRouter();
-  const [getPlant, { data, isLoading, isError }] =
-    useFree_plants_clamMutation();
 
   // Form state
   const [name, setName] = useState("");
@@ -93,73 +93,111 @@ const Free_clam = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState<Errors>({});
-  const [completedSteps, setCompletedSteps] = useState({
+  const [completedSteps, setCompletedSteps] = useState<CompletedSteps>({
     personalInfo: false,
     treeSelection: false,
     locationSelection: false,
     photoUpload: false,
   });
+  const [formDataRestored, setFormDataRestored] = useState(false);
 
-  // Handle API response
+  // Initialize location with empty object to prevent null/undefined errors
+  const [location, setLocation] = useState<LocationType>({});
+
+  // Update location when Plants_CurrentLocations changes
   useEffect(() => {
-    if (data?.error) {
-      toast.error(data.message);
-      router.push("/Tree/Shop");
+    if (Plants_CurrentLocations) {
+      setLocation({
+        Address: Plants_CurrentLocations.Address || "",
+        late: Plants_CurrentLocations.late,
+        long: Plants_CurrentLocations.long,
+        district: Plants_CurrentLocations.district || "",
+        state: Plants_CurrentLocations.state || "",
+      });
     }
+  }, [Plants_CurrentLocations]);
 
-    if (data?.success) {
-      launchConfetti();
-      toast.success(data.success);
-      router.push("/Tree/Mytrees");
+  // Load saved form data from localStorage on component mount
+  useEffect(() => {
+    if (!formDataRestored) {
+      try {
+        const savedFormData = localStorage.getItem("treeClaimFormData");
+        if (savedFormData) {
+          const formData = JSON.parse(savedFormData);
+          setName(formData.name || "");
+          setMobileNumber(formData.mobileNumber || "");
+          setReason(formData.reason || "");
+          setTreeType(formData.treeType || "");
+          setImageUrl(formData.imageUrl || "");
+          setStep(formData.step || 1);
+
+          // Safely restore location data
+          if (formData.location) {
+            setLocation(formData.location);
+          }
+
+          setCompletedSteps(
+            formData.completedSteps || {
+              personalInfo: false,
+              treeSelection: false,
+              locationSelection: false,
+              photoUpload: false,
+            }
+          );
+          toast({
+            title: "Form Data Restored",
+            description: "Your progress has been restored",
+          });
+        }
+      } catch (error) {
+        console.error("Error loading saved form data:", error);
+      }
+      setFormDataRestored(true);
     }
-  }, [data, router]);
+  }, [formDataRestored]);
 
-  const launchConfetti = () => {
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-    });
-  };
+  // Save form data to localStorage whenever relevant state changes
+  useEffect(() => {
+    if (formDataRestored) {
+      const formData = {
+        name,
+        mobileNumber,
+        reason,
+        treeType,
+        imageUrl,
+        step,
+        location,
+        completedSteps,
+      };
+      localStorage.setItem("treeClaimFormData", JSON.stringify(formData));
+    }
+  }, [
+    name,
+    mobileNumber,
+    reason,
+    treeType,
+    imageUrl,
+    step,
+    location,
+    completedSteps,
+    formDataRestored,
+  ]);
 
-  // User data
-  const user = useSelector(UserSelector);
-
-  interface HandleImageSelectedParams {
-    url: string;
-  }
-
-  const handleImageSelected = (url: HandleImageSelectedParams["url"]): void => {
+  // Handle image selection
+  const handleImageSelected = (url: string): void => {
     setImageUrl(url);
     if (errors.imageUrl) {
-      setErrors((prev: Errors) => {
-        const newErrors: Errors = { ...prev };
+      setErrors((prev) => {
+        const newErrors = { ...prev };
         delete newErrors.imageUrl;
         return newErrors;
       });
     }
-    setCompletedSteps((prev: CompletedSteps) => ({
+    setCompletedSteps((prev) => ({
       ...prev,
       photoUpload: true,
     }));
   };
-
-  interface Errors {
-    name?: string;
-    mobileNumber?: string;
-    treeType?: string;
-    reason?: string;
-    location?: string;
-    imageUrl?: string;
-    [key: string]: string | undefined;
-  }
-
-  interface CompletedSteps {
-    personalInfo: boolean;
-    treeSelection: boolean;
-    locationSelection: boolean;
-    photoUpload: boolean;
-  }
 
   const validateStep = (currentStep: number): boolean => {
     const newErrors: Errors = {};
@@ -173,7 +211,7 @@ const Free_clam = () => {
       } else if (!/^\d+$/.test(mobileNumber)) {
         newErrors.mobileNumber = "Mobile number must contain only digits";
       }
-      setCompletedSteps((prev: CompletedSteps) => ({
+      setCompletedSteps((prev) => ({
         ...prev,
         personalInfo: !Object.keys(newErrors).length,
       }));
@@ -187,7 +225,7 @@ const Free_clam = () => {
         newErrors.reason =
           "Please provide a detailed reason (min 10 characters)";
       }
-      setCompletedSteps((prev: CompletedSteps) => ({
+      setCompletedSteps((prev) => ({
         ...prev,
         treeSelection: !Object.keys(newErrors).length,
       }));
@@ -195,12 +233,13 @@ const Free_clam = () => {
 
     if (currentStep === 3) {
       if (
-        Plants_CurrentLocations?.late === undefined ||
-        Plants_CurrentLocations?.long === undefined
+        !location ||
+        location.late === undefined ||
+        location.long === undefined
       ) {
         newErrors.location = "Please select a location on the map";
       } else {
-        setCompletedSteps((prev: CompletedSteps) => ({
+        setCompletedSteps((prev) => ({
           ...prev,
           locationSelection: true,
         }));
@@ -227,54 +266,36 @@ const Free_clam = () => {
     setStep((prev) => prev - 1);
   };
 
-  interface SubmitData {
-    address: string;
-    email: string;
-    late: number;
-    long: number;
-    reason: string;
-    mobil_number: string;
-    name: string;
-    treeType: string;
-    photoUrl: string;
-    findtree_id: string;
-    UserId: string;
-    Plaintid: string;
-    district: string;
-    state: string;
-  }
-
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!validateStep(4)) {
       return;
     }
 
-    if (!user?.email) {
-      router.push("/login");
-      toast.error("Login first");
-      return;
-    }
+    // Mock successful submission
+    toast({
+      title: "Tree Claim Submitted!",
+      description: "Your tree claim has been successfully submitted",
+    });
 
-    const submitData: SubmitData = {
-      address: Plants_CurrentLocations?.Address || "",
-      email: user.email,
-      late: Plants_CurrentLocations?.late ?? 0,
-      long: Plants_CurrentLocations?.long ?? 0,
-      reason: reason,
-      mobil_number: mobileNumber,
-      name: name,
-      treeType: treeType,
-      photoUrl: imageUrl,
-      findtree_id: treeType,
-      UserId: user._id,
-      Plaintid: "",
-      district: Plants_CurrentLocations?.district || "",
-      state: Plants_CurrentLocations?.state ?? "",
-    };
+    // Clear localStorage after successful submission
+    localStorage.removeItem("treeClaimFormData");
 
-    await getPlant(submitData);
+    // Reset form
+    setName("");
+    setMobileNumber("");
+    setReason("");
+    setTreeType("");
+    setImageUrl("");
+    setLocation({});
+    setStep(1);
+    setCompletedSteps({
+      personalInfo: false,
+      treeSelection: false,
+      locationSelection: false,
+      photoUpload: false,
+    });
   };
 
   // Function to get the selected tree info
@@ -295,31 +316,24 @@ const Free_clam = () => {
       <div className="mb-8">
         <div className="flex justify-between items-center mb-2">
           {[1, 2, 3, 4].map((stepNum) => (
-            <motion.div
+            <div
               key={stepNum}
-              initial={{ scale: 0.8 }}
-              animate={{
-                scale: step === stepNum ? 1.2 : 1,
-                backgroundColor:
-                  step >= stepNum ? "rgb(34, 197, 94)" : "rgb(229, 231, 235)",
-              }}
-              className={`w-10 h-10 rounded-full flex items-center justify-center ${
+              className={`w-10 h-10 rounded-full flex items-center justify-center
+              ${
                 step >= stepNum
                   ? "bg-green-500 text-white"
                   : "bg-gray-200 text-gray-600"
               }`}
             >
               {stepNum}
-            </motion.div>
+            </div>
           ))}
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2.5">
-          <motion.div
+          <div
             className="bg-green-500 h-2.5 rounded-full"
-            initial={{ width: "0%" }}
-            animate={{ width: `${getProgressPercentage()}%` }}
-            transition={{ duration: 0.5 }}
-          ></motion.div>
+            style={{ width: `${getProgressPercentage()}%` }}
+          ></div>
         </div>
         <div className="flex justify-between text-xs mt-1 text-gray-600">
           <span>Your Info</span>
@@ -333,19 +347,14 @@ const Free_clam = () => {
 
   return (
     <div className="container mx-auto py-8 px-4 bg-gradient-to-b from-green-50 to-white min-h-screen">
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="text-center mb-8"
-      >
+      <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-green-700">
           Start Your Green Journey
         </h1>
         <p className="text-gray-600 mt-2">
           Join thousands of tree lovers making our planet greener!
         </p>
-      </motion.div>
+      </div>
 
       <Card className="w-full max-w-2xl mx-auto shadow-lg">
         <CardHeader className="bg-green-100 border-b border-green-200">
@@ -361,12 +370,7 @@ const Free_clam = () => {
 
           <form onSubmit={onSubmit} className="space-y-6">
             {step === 1 && (
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3 }}
-                className="space-y-6"
-              >
+              <div className="space-y-6">
                 <h2 className="text-xl font-medium text-green-700 mb-4">
                   Tell us about yourself
                 </h2>
@@ -420,16 +424,11 @@ const Free_clam = () => {
                     dioxide per year!
                   </p>
                 </div>
-              </motion.div>
+              </div>
             )}
 
             {step === 2 && (
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3 }}
-                className="space-y-6"
-              >
+              <div className="space-y-6">
                 <h2 className="text-xl font-medium text-green-700 mb-4">
                   Choose your tree companion
                 </h2>
@@ -440,11 +439,7 @@ const Free_clam = () => {
                   </label>
                   <div className="grid grid-cols-2 gap-4">
                     {TREE_TYPES.map((tree) => (
-                      <motion.div
-                        whileHover={{ scale: 1.03 }}
-                        key={tree.id}
-                        className="relative"
-                      >
+                      <div key={tree.id} className="relative">
                         <input
                           type="radio"
                           id={tree.id}
@@ -471,16 +466,12 @@ const Free_clam = () => {
                           </div>
                           <span className="font-medium">{tree.name}</span>
                           {treeType === tree.id && (
-                            <motion.div
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              className="absolute -top-2 -right-2 bg-green-500 text-white rounded-full p-1"
-                            >
+                            <div className="absolute -top-2 -right-2 bg-green-500 text-white rounded-full p-1">
                               <CheckCircle2 size={16} />
-                            </motion.div>
+                            </div>
                           )}
                         </label>
-                      </motion.div>
+                      </div>
                     ))}
                   </div>
                   {errors.treeType && (
@@ -491,11 +482,7 @@ const Free_clam = () => {
                 </div>
 
                 {selectedTree && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="p-4 bg-green-50 rounded-lg border border-green-100"
-                  >
+                  <div className="p-4 bg-green-50 rounded-lg border border-green-100">
                     <h3 className="font-medium text-green-700">
                       {selectedTree.name} Benefits:
                     </h3>
@@ -505,7 +492,7 @@ const Free_clam = () => {
                     <p className="text-sm text-gray-700 mt-1">
                       CO₂ Absorption: {selectedTree.co2}
                     </p>
-                  </motion.div>
+                  </div>
                 )}
 
                 <div className="mb-4">
@@ -526,7 +513,7 @@ const Free_clam = () => {
                     <p className="text-sm text-red-500 mt-1">{errors.reason}</p>
                   )}
                 </div>
-              </motion.div>
+              </div>
             )}
 
             {step === 3 && (
@@ -545,14 +532,12 @@ const Free_clam = () => {
                   <Map />
                 </div>
 
-                {Plants_CurrentLocations?.Address && (
+                {location?.Address && (
                   <div className="p-3 bg-green-50 rounded-lg text-sm">
                     <p className="font-medium text-green-700">
                       Selected Location:
                     </p>
-                    <p className="text-gray-700">
-                      {Plants_CurrentLocations.Address}
-                    </p>
+                    <p className="text-gray-700">{location.Address}</p>
                   </div>
                 )}
 
@@ -616,8 +601,7 @@ const Free_clam = () => {
                     <ul className="text-sm text-gray-700 space-y-1">
                       <li>• Tree Type: {selectedTree.name}</li>
                       <li>
-                        • Location:{" "}
-                        {Plants_CurrentLocations?.Address || "Not selected yet"}
+                        • Location: {location?.Address || "Not selected yet"}
                       </li>
                       <li>• Your Name: {name}</li>
                     </ul>
@@ -650,16 +634,9 @@ const Free_clam = () => {
                 <Button
                   type="submit"
                   className="bg-green-600 hover:bg-green-700 ml-auto flex items-center"
-                  disabled={isLoading}
                 >
-                  {isLoading ? (
-                    "Submitting..."
-                  ) : (
-                    <>
-                      <Send className="mr-2 h-4 w-4" />
-                      Claim Your Free Tree
-                    </>
-                  )}
+                  <Send className="mr-2 h-4 w-4" />
+                  Claim Your Free Tree
                 </Button>
               )}
             </div>
@@ -670,4 +647,4 @@ const Free_clam = () => {
   );
 };
 
-export default Free_clam;
+export default Index;
