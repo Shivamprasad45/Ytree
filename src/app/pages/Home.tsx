@@ -12,6 +12,7 @@ import {
   Gift,
   Heart,
 } from "lucide-react";
+import PopupModal from "../Components/Pop_up";
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState("how-it-works");
@@ -19,7 +20,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white font-sans">
       {/* Header */}
-
+      <PopupModal />
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-green-50 to-green-100 -z-10" />
