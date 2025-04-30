@@ -25,12 +25,13 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-r from-green-50 to-green-100 -z-10" />
         <div className="absolute right-0 top-0 w-1/2 h-full hidden lg:block -z-10">
           <Image
-            src="/placeholder.svg?height=800&width=800"
+            src="https://media.istockphoto.com/id/1391173662/vector/customer-feedback-giving-rating-based-on-experience-or-quality-from-product-and-service.jpg?s=2048x2048&w=is&k=20&c=YHKml-eM5g5GdUwmtoDkLY00HPW3H-G5U6FeWVLlarc="
             alt="Forest view"
             width={800}
             height={800}
             className="object-cover h-full w-full opacity-90"
           />
+
           <div className="absolute inset-0 bg-gradient-to-l from-transparent to-green-50/90" />
         </div>
 

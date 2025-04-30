@@ -46,6 +46,7 @@ const nextConfig = {
       'tse2.mm.bing.net',
       'res.cloudinary.com',
       "example.com"
+      ,"media.istockphoto.com"
     ],
   },
   experimental: {
