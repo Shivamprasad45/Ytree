@@ -16,6 +16,9 @@ import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
 import { Coords_Selector } from "@/app/Featuers/TreeOrder/TreeOrderSlice";
+import { useFree_plants_clamMutation } from "@/app/Featuers/TreeOrder/TreeOrderServices";
+import { UserSelector } from "@/app/Featuers/Auth/AuthSlice";
+import { useRouter } from "next/navigation"; // Fixed import for App Router
 
 const Map = dynamic(() => import("../LogTree/Map"), {
   ssr: false,
@@ -84,7 +87,7 @@ interface LocationType {
 const Index = () => {
   const { toast } = useToast();
   const Plants_CurrentLocations = useSelector(Coords_Selector);
-
+  const router = useRouter();
   // Form state
   const [name, setName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
@@ -101,8 +104,37 @@ const Index = () => {
   });
   const [formDataRestored, setFormDataRestored] = useState(false);
 
+  const [FreeClam, { data, isLoading, isSuccess }] =
+    useFree_plants_clamMutation();
+  const user = useSelector(UserSelector);
+
   // Initialize location with empty object to prevent null/undefined errors
   const [location, setLocation] = useState<LocationType>({});
+
+  // Handle successful submission and navigation
+  useEffect(() => {
+    if (data?.error) {
+      console.log(data.message);
+      toast({
+        title: "Tree Claim field",
+        description: "Your tree claim has been successfully submitted",
+      });
+    }
+
+    if (data?.success) {
+      // Clear localStorage after successful submission
+      localStorage.removeItem("treeClaimFormData");
+
+      // Show success toast
+      toast({
+        title: "Tree Claim Submitted!",
+        description: "Your tree claim has been successfully submitted",
+      });
+
+      // Navigate to the my trees page
+      router.push("/Tree/Mytrees");
+    }
+  }, [isSuccess, router, toast]);
 
   // Update location when Plants_CurrentLocations changes
   useEffect(() => {
@@ -154,7 +186,7 @@ const Index = () => {
       }
       setFormDataRestored(true);
     }
-  }, [formDataRestored]);
+  }, [formDataRestored, toast]);
 
   // Save form data to localStorage whenever relevant state changes
   useEffect(() => {
@@ -266,36 +298,33 @@ const Index = () => {
     setStep((prev) => prev - 1);
   };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    if (!user) {
+      router.push("/login");
+    }
     if (!validateStep(4)) {
       return;
     }
 
-    // Mock successful submission
-    toast({
-      title: "Tree Claim Submitted!",
-      description: "Your tree claim has been successfully submitted",
+    await FreeClam({
+      address: Plants_CurrentLocations?.Address || "",
+      district: Plants_CurrentLocations?.district || "",
+      mobil_number: mobileNumber,
+      findtree_id: treeType, // Assuming treeType corresponds to the tree ID
+      email: user?.email || "", // Replace with actual email input
+      name: name || "",
+      reason: reason,
+      long: Plants_CurrentLocations?.long || 0,
+      late: Plants_CurrentLocations?.late || 0,
+      state: Plants_CurrentLocations?.state || "",
+      photoUrl: imageUrl || "",
+      Plaintid: "",
+      UserId: user?._id || "",
+      treeType,
     });
 
-    // Clear localStorage after successful submission
-    localStorage.removeItem("treeClaimFormData");
-
-    // Reset form
-    setName("");
-    setMobileNumber("");
-    setReason("");
-    setTreeType("");
-    setImageUrl("");
-    setLocation({});
-    setStep(1);
-    setCompletedSteps({
-      personalInfo: false,
-      treeSelection: false,
-      locationSelection: false,
-      photoUpload: false,
-    });
+    // Note: We don't need to handle success here as it's now moved to the useEffect
   };
 
   // Function to get the selected tree info
@@ -634,9 +663,16 @@ const Index = () => {
                 <Button
                   type="submit"
                   className="bg-green-600 hover:bg-green-700 ml-auto flex items-center"
+                  disabled={isLoading}
                 >
-                  <Send className="mr-2 h-4 w-4" />
-                  Claim Your Free Tree
+                  {isLoading ? (
+                    "Processing..."
+                  ) : (
+                    <>
+                      <Send className="mr-2 h-4 w-4" />
+                      Claim Your Free Tree
+                    </>
+                  )}
                 </Button>
               )}
             </div>
