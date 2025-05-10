@@ -11,18 +11,18 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import Camera from "@/app/Components/Anothers/Camra";
-import { motion } from "framer-motion";
-import dynamic from "next/dynamic";
+// import Camera from "@/app/Components/Anothers/Camra";
+// import { motion } from "framer-motion";
+// import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
 import { Coords_Selector } from "@/app/Featuers/TreeOrder/TreeOrderSlice";
 import { useFree_plants_clamMutation } from "@/app/Featuers/TreeOrder/TreeOrderServices";
 import { UserSelector } from "@/app/Featuers/Auth/AuthSlice";
 import { useRouter } from "next/navigation"; // Fixed import for App Router
 
-const Map = dynamic(() => import("../LogTree/Map"), {
-  ssr: false,
-});
+// const Map = dynamic(() => import("../LogTree/Map"), {
+//   ssr: false,
+// });
 
 const TREE_TYPES = [
   {
@@ -72,35 +72,31 @@ interface Errors {
 interface CompletedSteps {
   personalInfo: boolean;
   treeSelection: boolean;
-  locationSelection: boolean;
-  photoUpload: boolean;
 }
 
-interface LocationType {
-  Address?: string;
-  late?: number;
-  long?: number;
-  district?: string;
-  state?: string;
-}
+// interface LocationType {
+//   Address?: string;
+//   late?: number;
+//   long?: number;
+//   district?: string;
+//   state?: string;
+// }
 
 const Index = () => {
   const { toast } = useToast();
-  const Plants_CurrentLocations = useSelector(Coords_Selector);
+  // const Plants_CurrentLocations = useSelector(Coords_Selector);
   const router = useRouter();
   // Form state
   const [name, setName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
   const [reason, setReason] = useState("");
   const [treeType, setTreeType] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  // const [imageUrl, setImageUrl] = useState("");
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState<Errors>({});
   const [completedSteps, setCompletedSteps] = useState<CompletedSteps>({
     personalInfo: false,
     treeSelection: false,
-    locationSelection: false,
-    photoUpload: false,
   });
   const [formDataRestored, setFormDataRestored] = useState(false);
 
@@ -109,45 +105,29 @@ const Index = () => {
   const user = useSelector(UserSelector);
 
   // Initialize location with empty object to prevent null/undefined errors
-  const [location, setLocation] = useState<LocationType>({});
+  // const [location, setLocation] = useState<LocationType>({});
 
   // Handle successful submission and navigation
+
   useEffect(() => {
     if (data?.error) {
-      console.log(data.message);
-      toast({
-        title: "Tree Claim field",
-        description: "Your tree claim has been successfully submitted",
-      });
+      router.push("/Tree/Shop");
     }
 
     if (data?.success) {
-      // Clear localStorage after successful submission
-      localStorage.removeItem("treeClaimFormData");
-
-      // Show success toast
       toast({
         title: "Tree Claim Submitted!",
         description: "Your tree claim has been successfully submitted",
       });
+      // Clear localStorage after successful submission
+      localStorage.removeItem("treeClaimFormData");
+
+      // Show success toast
 
       // Navigate to the my trees page
       router.push("/Tree/Mytrees");
     }
   }, [isSuccess, router, toast]);
-
-  // Update location when Plants_CurrentLocations changes
-  useEffect(() => {
-    if (Plants_CurrentLocations) {
-      setLocation({
-        Address: Plants_CurrentLocations.Address || "",
-        late: Plants_CurrentLocations.late,
-        long: Plants_CurrentLocations.long,
-        district: Plants_CurrentLocations.district || "",
-        state: Plants_CurrentLocations.state || "",
-      });
-    }
-  }, [Plants_CurrentLocations]);
 
   // Load saved form data from localStorage on component mount
   useEffect(() => {
@@ -160,20 +140,18 @@ const Index = () => {
           setMobileNumber(formData.mobileNumber || "");
           setReason(formData.reason || "");
           setTreeType(formData.treeType || "");
-          setImageUrl(formData.imageUrl || "");
+          // setImageUrl(formData.imageUrl || "");
           setStep(formData.step || 1);
 
           // Safely restore location data
-          if (formData.location) {
-            setLocation(formData.location);
-          }
+          // if (formData.location) {
+          //   setLocation(formData.location);
+          // }
 
           setCompletedSteps(
             formData.completedSteps || {
               personalInfo: false,
               treeSelection: false,
-              locationSelection: false,
-              photoUpload: false,
             }
           );
           toast({
@@ -196,9 +174,7 @@ const Index = () => {
         mobileNumber,
         reason,
         treeType,
-        imageUrl,
         step,
-        location,
         completedSteps,
       };
       localStorage.setItem("treeClaimFormData", JSON.stringify(formData));
@@ -208,30 +184,31 @@ const Index = () => {
     mobileNumber,
     reason,
     treeType,
-    imageUrl,
+
     step,
-    location,
+
     completedSteps,
     formDataRestored,
   ]);
 
   // Handle image selection
-  const handleImageSelected = (url: string): void => {
-    setImageUrl(url);
-    if (errors.imageUrl) {
-      setErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors.imageUrl;
-        return newErrors;
-      });
-    }
-    setCompletedSteps((prev) => ({
-      ...prev,
-      photoUpload: true,
-    }));
-  };
+  // const handleImageSelected = (url: string): void => {
+  //   setImageUrl(url);
+  //   if (errors.imageUrl) {
+  //     setErrors((prev) => {
+  //       const newErrors = { ...prev };
+  //       delete newErrors.imageUrl;
+  //       return newErrors;
+  //     });
+  //   }
+  //   setCompletedSteps((prev) => ({
+  //     ...prev,
+  //     photoUpload: true,
+  //   }));
+  // };
 
   const validateStep = (currentStep: number): boolean => {
+    console.log(currentStep);
     const newErrors: Errors = {};
 
     if (currentStep === 1) {
@@ -263,28 +240,29 @@ const Index = () => {
       }));
     }
 
-    if (currentStep === 3) {
-      if (
-        !location ||
-        location.late === undefined ||
-        location.long === undefined
-      ) {
-        newErrors.location = "Please select a location on the map";
-      } else {
-        setCompletedSteps((prev) => ({
-          ...prev,
-          locationSelection: true,
-        }));
-      }
-    }
+    // if (currentStep === 3) {
+    //   if (
+    //     !location ||
+    //     location.late === undefined ||
+    //     location.long === undefined
+    //   ) {
+    //     newErrors.location = "Please select a location on the map";
+    //   } else {
+    //     setCompletedSteps((prev) => ({
+    //       ...prev,
+    //       locationSelection: true,
+    //     }));
+    //   }
+    // }
 
-    if (currentStep === 4) {
-      if (!imageUrl) {
-        newErrors.imageUrl = "Please upload a photo as proof";
-      }
-    }
+    // if (currentStep === 4) {
+    //   if (!imageUrl) {
+    //     newErrors.imageUrl = "Please upload a photo as proof";
+    //   }
+    // }
 
     setErrors(newErrors);
+
     return Object.keys(newErrors).length === 0;
   };
 
@@ -303,22 +281,17 @@ const Index = () => {
     if (!user) {
       router.push("/login");
     }
-    if (!validateStep(4)) {
+    if (!validateStep(2)) {
       return;
     }
 
     await FreeClam({
-      address: Plants_CurrentLocations?.Address || "",
-      district: Plants_CurrentLocations?.district || "",
       mobil_number: mobileNumber,
       findtree_id: treeType, // Assuming treeType corresponds to the tree ID
       email: user?.email || "", // Replace with actual email input
       name: name || "",
       reason: reason,
-      long: Plants_CurrentLocations?.long || 0,
-      late: Plants_CurrentLocations?.late || 0,
-      state: Plants_CurrentLocations?.state || "",
-      photoUrl: imageUrl || "",
+
       Plaintid: "",
       UserId: user?._id || "",
       treeType,
@@ -337,14 +310,14 @@ const Index = () => {
   // Calculate progress percentage
   const getProgressPercentage = () => {
     const stepsCompleted = Object.values(completedSteps).filter(Boolean).length;
-    return (stepsCompleted / 4) * 100;
+    return (stepsCompleted / 2) * 100;
   };
 
   const renderStepIndicator = () => {
     return (
       <div className="mb-8">
         <div className="flex justify-between items-center mb-2">
-          {[1, 2, 3, 4].map((stepNum) => (
+          {[1, 2].map((stepNum) => (
             <div
               key={stepNum}
               className={`w-10 h-10 rounded-full flex items-center justify-center
@@ -358,7 +331,7 @@ const Index = () => {
             </div>
           ))}
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-2.5">
+        <div className=" bg-gray-200 rounded-full h-2.5">
           <div
             className="bg-green-500 h-2.5 rounded-full"
             style={{ width: `${getProgressPercentage()}%` }}
@@ -367,8 +340,6 @@ const Index = () => {
         <div className="flex justify-between text-xs mt-1 text-gray-600">
           <span>Your Info</span>
           <span>Tree Choice</span>
-          <span>Location</span>
-          <span>Photo</span>
         </div>
       </div>
     );
@@ -545,7 +516,7 @@ const Index = () => {
               </div>
             )}
 
-            {step === 3 && (
+            {/* {step === 3 && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -581,9 +552,9 @@ const Index = () => {
                   </p>
                 </div>
               </motion.div>
-            )}
+            )} */}
 
-            {step === 4 && (
+            {/* {step === 4 && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -620,9 +591,9 @@ const Index = () => {
 
                 {errors.imageUrl && (
                   <p className="text-sm text-red-500 mt-1">{errors.imageUrl}</p>
-                )}
+                )} */}
 
-                <div className="p-4 bg-green-50 rounded-lg">
+            {/* <div className="p-4 bg-green-50 rounded-lg">
                   <h3 className="font-medium text-green-700 mb-2">
                     Your Tree Planting Summary:
                   </h3>
@@ -637,7 +608,7 @@ const Index = () => {
                   )}
                 </div>
               </motion.div>
-            )}
+            )} */}
 
             <div className="flex justify-between mt-8">
               {step > 1 && (

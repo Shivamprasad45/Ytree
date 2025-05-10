@@ -25,19 +25,15 @@ export async function POST(req: NextRequest) {
 
     // Destructure with required field checks
     const requiredFields = [
-      "address",
       "email",
-      "late",
-      "long",
+
       "reason",
       "mobil_number",
       "name",
       "treeType",
-      "photoUrl",
+
       "findtree_id",
       "UserId",
-      "district",
-      "state",
     ];
 
     for (const field of requiredFields) {
@@ -50,19 +46,15 @@ export async function POST(req: NextRequest) {
     }
 
     const {
-      address,
       email,
-      late: lat, // Consider renaming to latitude
-      long: lng, // Consider renaming to longitude
+
       reason,
       mobil_number,
       name,
       treeType,
-      photoUrl,
+
       findtree_id,
       UserId,
-      district,
-      state,
     } = body;
 
     // Check for existing claims
@@ -89,25 +81,21 @@ export async function POST(req: NextRequest) {
         findtree_id,
         UserId,
         age: Date.now(),
-        imageUrl: photoUrl,
+        imageUrl: "sd",
         name,
         status: 0,
       }),
       FreeTreeUser.create({
         email,
-        address,
-        late: lat,
-        long: lng,
+
         reason,
         mobil_number,
         name,
         treeType,
-        photoUrl,
       }),
       Leader.create({
         UserId,
-        district,
-        state,
+
         name,
       }),
     ]);

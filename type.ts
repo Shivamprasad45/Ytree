@@ -281,16 +281,12 @@ export interface Free_clam_plant {
   name: string;
   mobil_number: string;
   reason: string;
-  long: number;
-  late: number;
-  address: string;
+
   treeType: string;
-  photoUrl: string;
+
   UserId: string;
   findtree_id: string;
   Plaintid: string;
-  state: string;
-  district: string;
 }
 
 export interface GeoJsonFeature {

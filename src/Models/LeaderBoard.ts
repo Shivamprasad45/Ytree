@@ -8,8 +8,8 @@ export const cartSchema = new Schema(
     },
 
     Trees: { type: Number, required: true, default: 0 },
-    district: { type: String, required: true },
-    state: { type: String, required: true },
+    // district: { type: String, required: true },
+    // state: { type: String, required: true },
     name: { type: String, required: true },
   },
   {
