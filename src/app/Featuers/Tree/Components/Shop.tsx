@@ -104,8 +104,8 @@ export default function Shop() {
               <Sparkles className="h-8 w-8 text-yellow-300 animate-pulse" />
             </div>
             <p className="text-green-100 text-lg max-w-2xl mx-auto">
-              Transform your space with nature's finest collection. From sacred
-              trees to fruitful companions.
+              Transform your space with nature&apos;s finest collection. From
+              sacred trees to fruitful companions.
             </p>
 
             {/* Search Bar */}
