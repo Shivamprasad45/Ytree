@@ -182,7 +182,7 @@ export default function Shop() {
               <Link href={`/TreeDetiles/${tree._id}`} className="block">
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
-                    src={tree.imageURL}
+                    src={"https://picsum.photos/seed/picsum/200/300"}
                     alt={tree.commonName}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
