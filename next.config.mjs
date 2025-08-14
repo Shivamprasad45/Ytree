@@ -42,11 +42,11 @@ const nextConfig = {
       "i.postimg.cc",
       "cdn.tuk.dev",
       "i.ibb.co",
-      'picsum.photos',
-      'tse2.mm.bing.net',
-      'res.cloudinary.com',
-      "example.com"
-      ,"media.istockphoto.com"
+      "picsum.photos",
+      "tse2.mm.bing.net",
+      "res.cloudinary.com",
+      "res-console.cloudinary.com",
+      "media.istockphoto.com",
     ],
   },
   experimental: {
