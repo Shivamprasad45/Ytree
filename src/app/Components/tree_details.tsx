@@ -110,7 +110,7 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
               </div>
               <div className="flex items-center">
                 <Droplet className="mr-2 h-5 w-5 text-blue-500" />
-                <span>Regular Watering</span>
+                <span>Regular Watering </span>
               </div>
             </div>
           </Card>
