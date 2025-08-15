@@ -43,7 +43,7 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
           commonName: PlantDetails?.commonName || "",
           scientificName: PlantDetails?.scientificName || "",
           description: PlantDetails?.description || "",
-          price: PlantDetails?.price || 45,
+          price: 45,
           imageURL: PlantDetails?.imageURL || "",
 
           region: PlantDetails?.region || "",
