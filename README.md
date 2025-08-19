@@ -1,180 +1,218 @@
-# 🌱 Ytree - Smart Plant Care Platform
+# 🌳 TreePlant - Environmental Impact Platform
 
-<div align="center">
-  
-  ![Plant Care](https://img.shields.io/badge/Plant%20Care-Smart-green?style=for-the-badge&logo=leaf&logoColor=white)
-  ![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js&logoColor=white)
-  ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
-  ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
+A modern web application built with Next.js that enables users to plant trees, track their environmental impact, and participate in a global reforestation community.
 
-  <p align="center">
-    <strong>🌿 Your Ultimate Plant Care Companion 🌿</strong>
-  </p>
-  
-  <p align="center">
-    AI-powered plant shopping with smart care recommendations and gamified experiences.
-  </p>
+## 🚀 Features
 
-  [![🎥 Watch Demo](https://img.shields.io/badge/🎥%20Watch%20Demo-YouTube-red?style=for-the-badge&logo=youtube)](https://www.youtube.com/watch?v=JNtUBbQnGoA)
-  
-  [🌐 Live Demo](https://ytree-demo.vercel.app) • [📖 Docs](https://github.com/Shivamprasad45/Ytree/wiki) • [🐛 Issues](https://github.com/Shivamprasad45/Ytree/issues)
-
-</div>
-
----
-
-## 🎬 Project Demo
-
-<div align="center">
-  
-  [![Ytree Demo Video](https://img.youtube.com/vi/JNtUBbQnGoA/maxresdefault.jpg)](https://www.youtube.com/watch?v=JNtUBbQnGoA)
-  
-  **👆 Click to watch the full demo and walkthrough!**
-  
-</div>
-
----
-
-## ✨ Key Features
-
-🛒 **Plant Marketplace** - Browse and purchase plants with secure payments  
-🌤️ **Weather Integration** - Location-based care recommendations  
-📅 **Smart Tasks** - Daily personalized plant care activities  
-🤖 **AI Verification** - Photo-based task completion using TensorFlow.js  
-🪙 **Reward System** - Earn coins for completed tasks  
-🔔 **Push Notifications** - Real-time care reminders  
-
----
+- **🌱 Tree Planting**: Browse and purchase trees to plant in various locations
+- **🗺️ Interactive Maps**: View planted trees on an interactive map with coordinates
+- **👤 User Authentication**: Secure signup/login with email verification
+- **🛒 Shopping Cart**: Add trees to cart and manage orders
+- **📊 Leaderboard**: Track top contributors and environmental impact
+- **📱 Responsive Design**: Mobile-first design with PWA capabilities
+- **🎯 Referral System**: Invite friends and earn rewards
+- **📍 Geolocation**: Track and log tree locations with coordinates
+- **💳 Payment Integration**: Secure checkout and payment processing
 
 ## 🛠️ Tech Stack
 
-**Frontend:** Next.js, TypeScript, Redux, TailwindCSS  
-**Backend:** Node.js, Express.js, MongoDB, Mongoose  
-**AI:** TensorFlow.js for image recognition  
-**Payments:** Razorpay integration  
-**Notifications:** Web-push for real-time alerts  
+- **Frontend**: Next.js 14, React, TypeScript
+- **Styling**: Tailwind CSS, shadcn/ui components
+- **Backend**: Next.js API Routes
+- **Database**: MongoDB with Mongoose
+- **Authentication**: NextAuth.js
+- **State Management**: Redux Toolkit
+- **Maps**: Interactive mapping with geolocation services
+- **Deployment**: Vercel
 
----
+## 📁 Project Structure
 
-## 🚀 Quick Start
+```
+src/
+├── Models/              # Database schemas
+├── Utils/               # Utility functions
+├── action/              # Server actions
+├── app/                 # Next.js 13+ app directory
+│   ├── Components/      # Reusable UI components
+│   ├── Features/        # Feature-specific code
+│   ├── api/            # API routes
+│   ├── Tree/           # Tree-related pages
+│   └── pages/          # Page components
+├── components/         # Shared UI components
+└── lib/               # Library configurations
+```
+
+## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (v18+)
-- MongoDB (v5.0+)
-- npm/yarn/pnpm
+
+- Node.js 18+ 
+- npm or yarn
+- MongoDB database
+- Environment variables configured
 
 ### Installation
 
+1. Clone the repository:
 ```bash
-# Clone the repository
-git clone https://github.com/Shivamprasad45/Ytree.git
-cd Ytree
-
-# Install dependencies
-npm install
-
-# Setup environment variables
-cp .env.example .env.local
+git clone <your-repo-url>
+cd tree-plant-app
 ```
 
-### Environment Configuration
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Set up environment variables:
+Create a `.env.local` file in the root directory:
 
 ```env
 # Database
-MONGODB_URI=mongodb://localhost:27017/ytree
+MONGODB_URI=your_mongodb_connection_string
 
-# Payment Gateway
-RAZORPAY_KEY_ID=your_razorpay_key_id
-RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+# Authentication
+NEXTAUTH_SECRET=your_nextauth_secret
+NEXTAUTH_URL=http://localhost:3000
 
-# Weather API
-WEATHER_API_KEY=your_weather_api_key
+# Email Service
+EMAIL_SERVER_USER=your_email
+EMAIL_SERVER_PASSWORD=your_password
+EMAIL_FROM=noreply@yourapp.com
 
-# Push Notifications
-VAPID_PUBLIC_KEY=your_vapid_public_key
-VAPID_PRIVATE_KEY=your_vapid_private_key
+# Payment (if applicable)
+STRIPE_PUBLISHABLE_KEY=your_stripe_public_key
+STRIPE_SECRET_KEY=your_stripe_secret_key
+
+# Other services
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
 ```
 
-### Run Development Server
-
+4. Run the development server:
 ```bash
 npm run dev
-# Open http://localhost:3000
+# or
+yarn dev
 ```
 
----
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## 💡 How It Works
+## 📝 API Endpoints
 
-1. **Browse & Buy** plants from our marketplace
-2. **Get Recommendations** based on your location's weather
-3. **Complete Daily Tasks** for plant care
-4. **Take Selfies** with your plants for AI verification
-5. **Earn Coins** and redeem for discounts
-6. **Track Progress** and build care streaks
+### Authentication
+- `POST /api/auth/signup` - User registration
+- `POST /api/auth/verify` - Email verification
+- `POST /api/auth/resend` - Resend verification email
 
----
+### Trees
+- `GET /api/Tree/AllTree` - Get all available trees
+- `GET /api/Tree/Mytree` - Get user's planted trees
+- `POST /api/Tree/Order` - Create tree order
+- `GET /api/Tree/Coords` - Get tree coordinates
+- `POST /api/Tree/Logtree` - Log a planted tree
 
-## 🤖 AI Features
+### Cart
+- `POST /api/Cart/Addtree` - Add tree to cart
+- `GET /api/Cart/Mycarttree` - Get user's cart
+- `DELETE /api/Cart/Removetree` - Remove tree from cart
+- `PUT /api/Cart/UpdateCart` - Update cart quantities
 
-- **Task Verification** using computer vision
-- **Plant Health Assessment** through photo analysis
-- **Weather-based Care Recommendations**
-- **Automated Task Scheduling**
+### Other
+- `GET /api/leaderboard` - Get leaderboard data
+- `POST /api/create-order` - Process payments
+- `GET /api/TreeInfo` - Get tree information
 
-```javascript
-// Example: AI Task Verification
-const verifyTask = async (imageData, taskType) => {
-  const model = await tf.loadLayersModel('/models/plant-care-model.json');
-  const prediction = model.predict(imageData);
-  return prediction.dataSync()[0] > 0.8; // 80% confidence threshold
-};
+## 🎨 UI Components
+
+Built with shadcn/ui and Tailwind CSS:
+
+- Navigation & Layout components
+- Form components (inputs, buttons, selects)
+- Data display (cards, tables, badges)
+- Feedback components (alerts, toasts)
+- Interactive elements (dialogs, dropdowns)
+
+## 🗺️ Map Features
+
+- Interactive tree location mapping
+- Satellite view toggle
+- Custom markers for different tree types
+- Geolocation services for precise coordinates
+- Regional tree distribution visualization
+
+## 👥 User Features
+
+- **Profile Management**: Track personal tree planting history
+- **Referral System**: Earn rewards for inviting friends
+- **Leaderboard**: Compete with other users
+- **Order History**: View past purchases and plantings
+- **Impact Tracking**: Monitor environmental contributions
+
+## 🔧 Development
+
+### Scripts
+
+```bash
+npm run dev        # Start development server
+npm run build      # Build for production
+npm run start      # Start production server
+npm run lint       # Run ESLint
 ```
 
----
+### Code Organization
 
+- **Models**: Database schemas and data structures
+- **Components**: Reusable UI components
+- **Features**: Business logic organized by feature
+- **Utils**: Helper functions and utilities
+- **API Routes**: Backend endpoints
 
----
+## 🌍 Environment Impact
+
+This application helps users:
+- Plant real trees in verified locations
+- Track carbon offset contributions
+- Participate in global reforestation efforts
+- Build environmental awareness communities
 
 ## 🤝 Contributing
 
-We welcome contributions! Please check our [Contributing Guide](CONTRIBUTING.md).
+1. Fork the project
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-```bash
-# Fork and clone the repo
-git clone https://github.com/your-username/Ytree.git
+## 📱 PWA Features
 
-# Create feature branch
-git checkout -b feature/amazing-feature
+- Service worker for offline functionality
+- Push notifications for tree updates
+- App-like experience on mobile devices
+- Cached resources for improved performance
 
-# Make changes and commit
-git commit -m "Add amazing feature"
+## 🔒 Security
 
-# Push and create PR
-git push origin feature/amazing-feature
-```
-
----
+- Secure authentication with NextAuth.js
+- Protected API routes
+- Input validation and sanitization
+- Environment variable protection
 
 ## 📄 License
 
-This project is licensed under the MIT License - see [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+- Environmental organizations supporting reforestation
+- Open source community for amazing tools and libraries
+- Contributors and users making this project possible
+
+## 📞 Support
+
+For support, email support@yourapp.com or create an issue in this repository.
 
 ---
 
-## 📞 Support & Contact
-
-<div align="center">
-
-
-
-**🎥 [Watch the Demo Video](https://www.youtube.com/watch?v=JNtUBbQnGoA) for a complete walkthrough!**
-
-</div>
-
----
-
-<div align="center">
-  <p><strong>🌱 Made with ❤️ by <a href="https://github.com/Shivamprasad45">Shivam Prasad</a></strong></p>
-  <p><sub>⭐ Star this repo if you find it helpful!</sub></p>
-</div>
+Made with 💚 for a greener planet 🌍
