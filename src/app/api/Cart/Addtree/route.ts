@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     const Cart = await cart.insertMany(cart_data);
 
     // Log success and return a success response
-    console.log(Cart, "Cart data added successfully");
+    // console.log(Cart, "Cart data added successfully");
     return NextResponse.json({ success: true, message: "Add success" });
   } catch (error: any) {
     // Log the error and return a more informative error message

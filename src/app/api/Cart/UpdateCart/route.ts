@@ -6,10 +6,9 @@ DbConnect();
 export async function POST(request: NextRequest) {
   try {
     const Updatedata = await request.json();
-
     const Id = request.nextUrl.searchParams.get("Id");
     const UserId = request.nextUrl.searchParams.get("UserId");
-    console.log(Id, UserId, "User id");
+
     const Cart = await cart.findOneAndUpdate(
       { Plant_id: Id, UserId: UserId },
       Updatedata,
