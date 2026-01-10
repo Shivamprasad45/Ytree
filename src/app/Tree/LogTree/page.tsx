@@ -131,7 +131,7 @@ const Logtrees = () => {
             <CardTitle>{About_Mytree?.name || "Tree Details"}</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="relative h-48 bg-green-100">
+            <div className="relative h-48 bg-muted">
               <img
                 src={
                   "https://images.unsplash.com/photo-1454425064867-5ba516caf601?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8cGxhbnR8fHx8fHwxNzE3NTgzMDI3&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080"
@@ -139,8 +139,8 @@ const Logtrees = () => {
                 alt={About_Mytree?.name || "Tree"}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute bottom-0 left-0 right-0 bg-white bg-opacity-75 p-4">
-                <p className="text-sm text-gray-600">
+              <div className="absolute bottom-0 left-0 right-0 bg-background/90 p-4">
+                <p className="text-sm text-muted-foreground">
                   {new Date().toLocaleString()}
                 </p>
               </div>
@@ -155,7 +155,7 @@ const Logtrees = () => {
             </div>
           </CardContent>
           <CardFooter>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               {Plants_CurrentLocations?.Address || "Location not set"}
             </p>
           </CardFooter>

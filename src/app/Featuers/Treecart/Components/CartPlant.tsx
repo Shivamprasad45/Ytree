@@ -43,9 +43,8 @@ export default function CartPage() {
       await removeCartItem({ _id: id, UserId: userId, Symbol: action });
       toast({
         title: "Cart updated",
-        description: `Item ${
-          action === "Remove" ? "removed from" : "updated in"
-        } cart successfully.`,
+        description: `Item ${action === "Remove" ? "removed from" : "updated in"
+          } cart successfully.`,
       });
     } catch (error) {
       toast({
@@ -94,10 +93,10 @@ export default function CartPage() {
                     </div>
                     <div className="flex-grow">
                       <h3 className="font-semibold">{item.commonName}</h3>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-muted-foreground">
                         {item.scientificName}
                       </p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-muted-foreground">
                         Region: {item.region}
                       </p>
                     </div>
@@ -142,7 +141,7 @@ export default function CartPage() {
                       <Button
                         size="icon"
                         variant="ghost"
-                        className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                        className="text-destructive hover:text-destructive hover:bg-destructive/10"
                         disabled={updatingItemId === item.Plant_id}
                         onClick={() =>
                           handleUpdateCart(item.Plant_id, item.UserId, "Remove")
@@ -163,7 +162,7 @@ export default function CartPage() {
               <Button variant="outline" asChild>
                 <Link href="/Tree/Shop">Continue Shopping</Link>
               </Button>
-              <div className="text-sm text-gray-500">
+              <div className="text-sm text-muted-foreground">
                 {cartData.length} {cartData.length === 1 ? "item" : "items"} in
                 cart
               </div>
@@ -196,11 +195,11 @@ export default function CartPage() {
       ) : (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-16">
-            <div className="bg-gray-50 p-6 rounded-full mb-6">
-              <ShoppingCart className="w-20 h-20 text-gray-400" />
+            <div className="bg-muted p-6 rounded-full mb-6">
+              <ShoppingCart className="w-20 h-20 text-muted-foreground" />
             </div>
             <h2 className="text-2xl font-semibold mb-2">Your cart is empty</h2>
-            <p className="text-gray-500 mb-6 text-center max-w-md">
+            <p className="text-muted-foreground mb-6 text-center max-w-md">
               Looks like you haven&apos;t added any plants to your cart yet.
               Explore our collection and find the perfect plants for your space!
             </p>

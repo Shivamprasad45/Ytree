@@ -84,13 +84,13 @@ export default function Login() {
   return (
     <MaxWidthRappers>
       <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-background">
-        <div className="w-full max-w-md space-y-6 bg-white dark:bg-zinc-900 shadow-lg rounded-2xl p-8 border border-zinc-200 dark:border-zinc-800">
+        <div className="w-full max-w-md space-y-6 bg-card shadow-lg rounded-2xl p-8 border border-border">
           <div className="text-center">
-            <Leaf className="mx-auto h-10 w-10 text-green-600" />
-            <h2 className="mt-4 text-2xl font-bold text-gray-900 dark:text-white">
+            <Leaf className="mx-auto h-10 w-10 text-primary" />
+            <h2 className="mt-4 text-2xl font-bold text-foreground">
               Welcome to Vanagrow
             </h2>
-            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            <p className="mt-2 text-sm text-muted-foreground">
               Sign in to nurture your green space 🌱
             </p>
           </div>
@@ -141,7 +141,7 @@ export default function Login() {
             Don't have an account?{" "}
             <Link
               href="/Signup"
-              className="font-medium text-green-600 hover:text-green-500 transition-colors"
+              className="font-medium text-primary hover:text-primary/80 transition-colors"
             >
               Sign up
             </Link>

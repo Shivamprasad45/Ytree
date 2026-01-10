@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: "/payment",
+      disallow: ["/payment", "/api/"],
     },
     sitemap: `https://vanagrow.com/sitemap.xml`,
   };

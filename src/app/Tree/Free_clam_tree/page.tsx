@@ -321,23 +321,22 @@ const Index = () => {
             <div
               key={stepNum}
               className={`w-10 h-10 rounded-full flex items-center justify-center
-              ${
-                step >= stepNum
-                  ? "bg-green-500 text-white"
-                  : "bg-gray-200 text-gray-600"
-              }`}
+              ${step >= stepNum
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted text-muted-foreground"
+                }`}
             >
               {stepNum}
             </div>
           ))}
         </div>
-        <div className=" bg-gray-200 rounded-full h-2.5">
+        <div className=" bg-muted rounded-full h-2.5">
           <div
-            className="bg-green-500 h-2.5 rounded-full"
+            className="bg-primary h-2.5 rounded-full"
             style={{ width: `${getProgressPercentage()}%` }}
           ></div>
         </div>
-        <div className="flex justify-between text-xs mt-1 text-gray-600">
+        <div className="flex justify-between text-xs mt-1 text-muted-foreground">
           <span>Your Info</span>
           <span>Tree Choice</span>
         </div>
@@ -346,21 +345,21 @@ const Index = () => {
   };
 
   return (
-    <div className="container mx-auto py-8 px-4 bg-gradient-to-b from-green-50 to-white min-h-screen">
+    <div className="container mx-auto py-8 px-4 bg-background min-h-screen">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-green-700">
+        <h1 className="text-3xl font-bold text-primary">
           Start Your Green Journey
         </h1>
-        <p className="text-gray-600 mt-2">
+        <p className="text-muted-foreground mt-2">
           Join thousands of tree lovers making our planet greener!
         </p>
       </div>
 
       <Card className="w-full max-w-2xl mx-auto shadow-lg">
-        <CardHeader className="bg-green-100 border-b border-green-200">
+        <CardHeader className="bg-primary/10 border-b border-border">
           <div className="flex items-center">
-            <Leaf className="w-6 h-6 text-green-600 mr-2" />
-            <CardTitle className="text-green-700">
+            <Leaf className="w-6 h-6 text-primary mr-2" />
+            <CardTitle className="text-primary">
               Free Tree Claim Form
             </CardTitle>
           </div>
@@ -371,14 +370,14 @@ const Index = () => {
           <form onSubmit={onSubmit} className="space-y-6">
             {step === 1 && (
               <div className="space-y-6">
-                <h2 className="text-xl font-medium text-green-700 mb-4">
+                <h2 className="text-xl font-medium text-primary mb-4">
                   Tell us about yourself
                 </h2>
 
                 <div className="mb-4">
                   <label
                     htmlFor="name"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-sm font-medium text-foreground mb-2"
                   >
                     Your Name
                   </label>
@@ -388,17 +387,17 @@ const Index = () => {
                     placeholder="What should we call you?"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="w-full px-3 py-2 border border-border bg-input text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
                   />
                   {errors.name && (
-                    <p className="text-sm text-red-500 mt-1">{errors.name}</p>
+                    <p className="text-sm text-destructive mt-1">{errors.name}</p>
                   )}
                 </div>
 
                 <div className="mb-4">
                   <label
                     htmlFor="mobileNumber"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-sm font-medium text-foreground mb-2"
                   >
                     Mobile Number
                   </label>
@@ -408,16 +407,16 @@ const Index = () => {
                     placeholder="We'll update you about your tree"
                     value={mobileNumber}
                     onChange={(e) => setMobileNumber(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="w-full px-3 py-2 border border-border bg-input text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
                   />
                   {errors.mobileNumber && (
-                    <p className="text-sm text-red-500 mt-1">
+                    <p className="text-sm text-destructive mt-1">
                       {errors.mobileNumber}
                     </p>
                   )}
                 </div>
 
-                <div className="p-4 bg-green-50 rounded-lg border border-green-100 text-gray-700">
+                <div className="p-4 bg-muted rounded-lg border border-border text-foreground">
                   <p className="text-sm">
                     🌱 <span className="font-medium">Exciting fact:</span> A
                     single tree can absorb as much as 48 pounds of carbon
@@ -429,12 +428,12 @@ const Index = () => {
 
             {step === 2 && (
               <div className="space-y-6">
-                <h2 className="text-xl font-medium text-green-700 mb-4">
+                <h2 className="text-xl font-medium text-primary mb-4">
                   Choose your tree companion
                 </h2>
 
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-foreground mb-2">
                     Select Tree Type
                   </label>
                   <div className="grid grid-cols-2 gap-4">
@@ -451,11 +450,10 @@ const Index = () => {
                         />
                         <label
                           htmlFor={tree.id}
-                          className={`flex flex-col items-center space-y-2 cursor-pointer p-3 rounded-md border-2 transition-all ${
-                            treeType === tree.id
-                              ? "border-green-500 bg-green-50 shadow-md"
-                              : "border-gray-200 hover:border-green-200"
-                          }`}
+                          className={`flex flex-col items-center space-y-2 cursor-pointer p-3 rounded-md border-2 transition-all ${treeType === tree.id
+                              ? "border-primary bg-primary/10 shadow-md"
+                              : "border-border hover:border-primary/50"
+                            }`}
                         >
                           <div className="relative overflow-hidden rounded-md h-32 w-full">
                             <img
@@ -464,9 +462,9 @@ const Index = () => {
                               className="object-cover h-full w-full transition-transform hover:scale-110 duration-300"
                             />
                           </div>
-                          <span className="font-medium">{tree.name}</span>
+                          <span className="font-medium text-foreground">{tree.name}</span>
                           {treeType === tree.id && (
-                            <div className="absolute -top-2 -right-2 bg-green-500 text-white rounded-full p-1">
+                            <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground rounded-full p-1">
                               <CheckCircle2 size={16} />
                             </div>
                           )}
@@ -475,21 +473,21 @@ const Index = () => {
                     ))}
                   </div>
                   {errors.treeType && (
-                    <p className="text-sm text-red-500 mt-1">
+                    <p className="text-sm text-destructive mt-1">
                       {errors.treeType}
                     </p>
                   )}
                 </div>
 
                 {selectedTree && (
-                  <div className="p-4 bg-green-50 rounded-lg border border-green-100">
-                    <h3 className="font-medium text-green-700">
+                  <div className="p-4 bg-muted rounded-lg border border-border">
+                    <h3 className="font-medium text-primary">
                       {selectedTree.name} Benefits:
                     </h3>
-                    <p className="text-sm text-gray-700 mt-1">
+                    <p className="text-sm text-muted-foreground mt-1">
                       {selectedTree.benefits}
                     </p>
-                    <p className="text-sm text-gray-700 mt-1">
+                    <p className="text-sm text-muted-foreground mt-1">
                       CO₂ Absorption: {selectedTree.co2}
                     </p>
                   </div>
@@ -498,7 +496,7 @@ const Index = () => {
                 <div className="mb-4">
                   <label
                     htmlFor="reason"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-sm font-medium text-foreground mb-2"
                   >
                     Why do you want to plant this tree?
                   </label>
@@ -507,108 +505,14 @@ const Index = () => {
                     placeholder="Share your story and motivation..."
                     value={reason}
                     onChange={(e) => setReason(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 resize-none min-h-[100px]"
+                    className="w-full px-3 py-2 border border-border bg-input text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-ring resize-none min-h-[100px]"
                   />
                   {errors.reason && (
-                    <p className="text-sm text-red-500 mt-1">{errors.reason}</p>
+                    <p className="text-sm text-destructive mt-1">{errors.reason}</p>
                   )}
                 </div>
               </div>
             )}
-
-            {/* {step === 3 && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-                className="space-y-6"
-              >
-                <h2 className="text-xl font-medium text-green-700 flex items-center mb-4">
-                  <MapPin className="mr-2 h-5 w-5" /> Where will your tree
-                  thrive?
-                </h2>
-
-                <div className="bg-white p-2 rounded-lg border border-gray-200 h-80">
-                  <Map />
-                </div>
-
-                {location?.Address && (
-                  <div className="p-3 bg-green-50 rounded-lg text-sm">
-                    <p className="font-medium text-green-700">
-                      Selected Location:
-                    </p>
-                    <p className="text-gray-700">{location.Address}</p>
-                  </div>
-                )}
-
-                {errors.location && (
-                  <p className="text-sm text-red-500 mt-1">{errors.location}</p>
-                )}
-
-                <div className="p-4 bg-blue-50 rounded-lg border border-blue-100 text-gray-700">
-                  <p className="text-sm">
-                    💡 <span className="font-medium">Tip:</span> Zoom in and
-                    click precisely where you want to plant your tree!
-                  </p>
-                </div>
-              </motion.div>
-            )} */}
-
-            {/* {step === 4 && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-                className="space-y-6"
-              >
-                <h2 className="text-xl font-medium text-green-700 flex items-center mb-4">
-                  <CameraIcon className="mr-2 h-5 w-5" /> Upload Photo Proof
-                </h2>
-
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <Camera onImageSelected={handleImageSelected} />
-                </div>
-
-                {imageUrl && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="mt-4"
-                  >
-                    <p className="text-sm text-green-600 mb-2 flex items-center">
-                      <CheckCircle2 className="mr-1 h-4 w-4" /> Image uploaded
-                      successfully!
-                    </p>
-                    <div className="relative w-full h-32 bg-gray-100 rounded-md overflow-hidden">
-                      <img
-                        src={imageUrl}
-                        alt="Uploaded proof"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  </motion.div>
-                )}
-
-                {errors.imageUrl && (
-                  <p className="text-sm text-red-500 mt-1">{errors.imageUrl}</p>
-                )} */}
-
-            {/* <div className="p-4 bg-green-50 rounded-lg">
-                  <h3 className="font-medium text-green-700 mb-2">
-                    Your Tree Planting Summary:
-                  </h3>
-                  {selectedTree && (
-                    <ul className="text-sm text-gray-700 space-y-1">
-                      <li>• Tree Type: {selectedTree.name}</li>
-                      <li>
-                        • Location: {location?.Address || "Not selected yet"}
-                      </li>
-                      <li>• Your Name: {name}</li>
-                    </ul>
-                  )}
-                </div>
-              </motion.div>
-            )} */}
 
             <div className="flex justify-between mt-8">
               {step > 1 && (
@@ -616,7 +520,7 @@ const Index = () => {
                   type="button"
                   variant="outline"
                   onClick={prevStep}
-                  className="border-green-600 text-green-600 hover:bg-green-50"
+                  className="border-primary text-primary hover:bg-primary/10"
                 >
                   Back
                 </Button>
@@ -625,7 +529,7 @@ const Index = () => {
               {step < 4 ? (
                 <Button
                   type="button"
-                  className="bg-green-600 hover:bg-green-700 ml-auto"
+                  className="bg-primary hover:bg-primary/90 ml-auto"
                   onClick={nextStep}
                 >
                   Continue
@@ -633,7 +537,7 @@ const Index = () => {
               ) : (
                 <Button
                   type="submit"
-                  className="bg-green-600 hover:bg-green-700 ml-auto flex items-center"
+                  className="bg-primary hover:bg-primary/90 ml-auto flex items-center"
                   disabled={isLoading}
                 >
                   {isLoading ? (

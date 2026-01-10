@@ -112,7 +112,7 @@ function Lefttab() {
                   alt={`${user.Username}'s profile picture`}
                 />
               ) : (
-                <AvatarFallback className="bg-green-100 text-green-800">
+                <AvatarFallback className="bg-primary/10 text-primary font-bold">
                   {user.Username.slice(0, 2).toUpperCase()}
                 </AvatarFallback>
               )}
@@ -167,7 +167,7 @@ function Lefttab() {
                           className={cn(
                             "mr-3 transition-colors",
                             isActive
-                              ? "text-green-600"
+                              ? "text-primary"
                               : "text-muted-foreground"
                           )}
                         >

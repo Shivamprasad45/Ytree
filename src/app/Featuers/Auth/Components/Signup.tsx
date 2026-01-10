@@ -51,14 +51,14 @@ export default function Register() {
 
   return (
     <MaxWidthRappers>
-      <div className="flex min-h-screen items-center justify-center px-4 sm:px-6 lg:px-8">
-        <div className="w-full max-w-md space-y-8 border border-gray-200 dark:border-gray-800 rounded-2xl p-8 shadow-xl dark:shadow-gray-800 bg-white dark:bg-gray-950">
+      <div className="flex min-h-screen items-center justify-center px-4 sm:px-6 lg:px-8 bg-background">
+        <div className="w-full max-w-md space-y-8 border border-border rounded-2xl p-8 shadow-xl bg-card">
           <div className="text-center">
-            <Sprout className="mx-auto h-12 w-12 text-green-600" />
-            <h1 className="mt-4 text-3xl font-bold text-gray-900 dark:text-white">
+            <Sprout className="mx-auto h-12 w-12 text-primary" />
+            <h1 className="mt-4 text-3xl font-bold text-foreground">
               Join Vanagrow
             </h1>
-            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            <p className="mt-2 text-sm text-muted-foreground">
               Sign up with Google to begin your green journey 🌱
             </p>
           </div>
@@ -85,11 +85,11 @@ export default function Register() {
             )}
           </Button>
 
-          <p className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
+          <p className="mt-4 text-center text-sm text-muted-foreground">
             Already have an account?{" "}
             <Link
               href="/login"
-              className="font-medium text-green-600 hover:text-green-500"
+              className="font-medium text-primary hover:text-primary/80"
             >
               Log in
             </Link>

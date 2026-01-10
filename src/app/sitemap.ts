@@ -1,50 +1,47 @@
 import { MetadataRoute } from "next";
-import { TreeInfo } from "../../type";
+import Tree from "@/Models/TreeCollection";
+import Blog from "@/Models/BlogCollection";
+import DbConnect from "@/Utils/mongooesConnect";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const siteUrl = process.env.URL || "https://vanagrow.com"; // Fallback in case the URL isn't set
+  const siteUrl = process.env.URL || "https://vanagrow.com";
 
-  const All_Tree: TreeInfo[] = await fetch(`${siteUrl}/api/Tree/AllTree`)
-    .then((res) => res.json())
-    .catch((error) => {
-      console.error("Failed to fetch tree data:", error);
-      return []; // Fallback to an empty array if the API request fails
-    });
+  await DbConnect();
 
-  const All_Tree_Details = All_Tree.map((tree) => ({
-    url: `${siteUrl}/Tree/Details/${tree.id}`, // Frontend URL for the tree details page
+  // Fetch all trees
+  const trees = await Tree.find({}, { id: 1, updatedAt: 1 }).lean();
+  const treeUrls = trees.map((tree: any) => ({
+    url: `${siteUrl}/TreeDetiles/${tree.id}`,
+    lastModified: tree.updatedAt ? new Date(tree.updatedAt).toISOString() : new Date().toISOString(),
+  }));
+
+  // Fetch all published blogs
+  const blogs = await Blog.find({ isPublished: true }, { slug: 1, updatedAt: 1 }).lean();
+  const blogUrls = blogs.map((blog: any) => ({
+    url: `${siteUrl}/blog/${blog.slug}`,
+    lastModified: blog.updatedAt ? new Date(blog.updatedAt).toISOString() : new Date().toISOString(),
+  }));
+
+  // Static routes
+  const staticRoutes = [
+    "",
+    "/About",
+    "/login",
+    "/Signup",
+    "/Tree/Global",
+    "/Tree/Shop",
+    "/Tree/Mytree",
+    "/affiliate-shop",
+    "/blog",
+    "/how-it-works",
+    "/Contact",
+    "/PrivacyPolicy",
+    "/Terms",
+    "/refund",
+  ].map((route) => ({
+    url: `${siteUrl}${route}`,
     lastModified: new Date().toISOString(),
   }));
 
-  return [
-    {
-      url: `${siteUrl}/`,
-      lastModified: new Date().toISOString(),
-    },
-    {
-      url: `${siteUrl}/About`,
-      lastModified: new Date().toISOString(),
-    },
-    {
-      url: `${siteUrl}/login`,
-      lastModified: new Date().toISOString(),
-    },
-    {
-      url: `${siteUrl}/Signup`,
-      lastModified: new Date().toISOString(),
-    },
-    {
-      url: `${siteUrl}/Tree/Global`,
-      lastModified: new Date().toISOString(),
-    },
-    {
-      url: `${siteUrl}/Tree/Shop`,
-      lastModified: new Date().toISOString(),
-    },
-    {
-      url: `${siteUrl}/Tree/Mytree`,
-      lastModified: new Date().toISOString(),
-    },
-    ...All_Tree_Details, // Include dynamic tree details
-  ];
+  return [...staticRoutes, ...treeUrls, ...blogUrls];
 }

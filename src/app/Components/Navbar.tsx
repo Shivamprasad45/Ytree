@@ -39,6 +39,9 @@ import {
   ChevronDown,
   Home,
   Info,
+  ShoppingBag,
+  BookOpen,
+  CircleHelp,
 } from "lucide-react";
 
 const Navbar = () => {
@@ -80,11 +83,10 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-background/95 shadow-sm backdrop-blur-md py-2"
-          : "bg-background/80 backdrop-blur-sm py-3"
-      }`}
+      className={`sticky top-0 z-50 transition-all duration-300 ${scrolled
+        ? "bg-background/95 shadow-sm backdrop-blur-md py-2"
+        : "bg-background/80 backdrop-blur-sm py-3"
+        }`}
     >
       <div className="container mx-auto px-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -113,19 +115,38 @@ const Navbar = () => {
           <div className="flex items-center gap-6">
             <Link
               href="/"
-              className={`transition-colors hover:text-primary ${
-                pathname === "/" ? "text-primary font-medium" : ""
-              }`}
+              className={`transition-colors hover:text-primary ${pathname === "/" ? "text-primary font-medium" : ""
+                }`}
             >
               Home
             </Link>
             <Link
               href="/About"
-              className={`transition-colors hover:text-primary ${
-                pathname === "/About" ? "text-primary font-medium" : ""
-              }`}
+              className={`transition-colors hover:text-primary ${pathname === "/About" ? "text-primary font-medium" : ""
+                }`}
             >
               About
+            </Link>
+            <Link
+              href="/affiliate-shop"
+              className={`transition-colors hover:text-primary ${pathname === "/affiliate-shop" ? "text-primary font-medium" : ""
+                }`}
+            >
+              Shop
+            </Link>
+            <Link
+              href="/blog"
+              className={`transition-colors hover:text-primary ${pathname === "/blog" ? "text-primary font-medium" : ""
+                }`}
+            >
+              Blog
+            </Link>
+            <Link
+              href="/how-it-works"
+              className={`transition-colors hover:text-primary ${pathname === "/how-it-works" ? "text-primary font-medium" : ""
+                }`}
+            >
+              How it Works
             </Link>
 
             {/* Services Dropdown */}
@@ -177,7 +198,7 @@ const Navbar = () => {
             </Link>
 
             {/* Theme Toggle */}
-            {/* <ModeToggle /> */}
+            <ModeToggle />
 
             {/* User Menu */}
             {user?.email ? (
@@ -314,9 +335,8 @@ const Navbar = () => {
                 <div className="space-y-1">
                   <Link
                     href="/"
-                    className={`flex items-center gap-2 p-2 rounded-md hover:bg-muted transition-colors ${
-                      pathname === "/" ? "bg-muted font-medium" : ""
-                    }`}
+                    className={`flex items-center gap-2 p-2 rounded-md hover:bg-muted transition-colors ${pathname === "/" ? "bg-muted font-medium" : ""
+                      }`}
                     onClick={() => setSheetOpen(false)}
                   >
                     <Home className="h-5 w-5" />
@@ -325,13 +345,46 @@ const Navbar = () => {
 
                   <Link
                     href="/About"
-                    className={`flex items-center gap-2 p-2 rounded-md hover:bg-muted transition-colors ${
-                      pathname === "/About" ? "bg-muted font-medium" : ""
-                    }`}
+                    className={`flex items-center gap-2 p-2 rounded-md hover:bg-muted transition-colors ${pathname === "/About" ? "bg-muted font-medium" : ""
+                      }`}
                     onClick={() => setSheetOpen(false)}
                   >
                     <Info className="h-5 w-5" />
                     <span>About</span>
+                  </Link>
+
+                  <Link
+                    href="/affiliate-shop"
+                    className={`flex items-center gap-2 p-2 rounded-md hover:bg-muted transition-colors ${pathname === "/affiliate-shop"
+                      ? "bg-muted font-medium"
+                      : ""
+                      }`}
+                    onClick={() => setSheetOpen(false)}
+                  >
+                    <ShoppingBag className="h-5 w-5" />
+                    <span>Shop</span>
+                  </Link>
+
+                  <Link
+                    href="/blog"
+                    className={`flex items-center gap-2 p-2 rounded-md hover:bg-muted transition-colors ${pathname === "/blog" ? "bg-muted font-medium" : ""
+                      }`}
+                    onClick={() => setSheetOpen(false)}
+                  >
+                    <BookOpen className="h-5 w-5" />
+                    <span>Blog</span>
+                  </Link>
+
+                  <Link
+                    href="/how-it-works"
+                    className={`flex items-center gap-2 p-2 rounded-md hover:bg-muted transition-colors ${pathname === "/how-it-works"
+                      ? "bg-muted font-medium"
+                      : ""
+                      }`}
+                    onClick={() => setSheetOpen(false)}
+                  >
+                    <CircleHelp className="h-5 w-5" />
+                    <span>How it Works</span>
                   </Link>
                 </div>
 
@@ -347,9 +400,8 @@ const Navbar = () => {
                         <Link
                           key={item.id}
                           href={item.path}
-                          className={`flex items-center gap-2 p-2 rounded-md hover:bg-muted transition-colors ${
-                            pathname === item.path ? "bg-muted font-medium" : ""
-                          }`}
+                          className={`flex items-center gap-2 p-2 rounded-md hover:bg-muted transition-colors ${pathname === item.path ? "bg-muted font-medium" : ""
+                            }`}
                           onClick={() => setSheetOpen(false)}
                         >
                           {React.cloneElement(item.icon, {
@@ -362,9 +414,9 @@ const Navbar = () => {
                 </div>
 
                 {/* Theme Toggle */}
-                {/* <div className="pt-2 px-2">
+                <div className="pt-2 px-2">
                   <ModeToggle />
-                </div> */}
+                </div>
 
                 {/* Auth Button */}
                 <div className="pt-4">
