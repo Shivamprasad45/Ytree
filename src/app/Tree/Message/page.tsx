@@ -34,7 +34,7 @@ export default function MessagePage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const generateResponse = async (userInput: string) => {
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-001" });
     const prompt = `Respond to this message in a helpful, friendly manner: ${userInput}`;
 
     try {
@@ -98,16 +98,14 @@ export default function MessagePage() {
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`mb-4 ${
-                  message.sender === "user" ? "text-right" : "text-left"
-                }`}
+                className={`mb-4 ${message.sender === "user" ? "text-right" : "text-left"
+                  }`}
               >
                 <div
-                  className={`inline-block p-3 rounded-lg ${
-                    message.sender === "user"
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-200 dark:bg-gray-700 dark:text-gray-100"
-                  }`}
+                  className={`inline-block p-3 rounded-lg ${message.sender === "user"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200 dark:bg-gray-700 dark:text-gray-100"
+                    }`}
                 >
                   <p>{message.text}</p>
                   <span className="text-xs opacity-70 mt-1 block">

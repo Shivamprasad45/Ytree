@@ -1318,8 +1318,7 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
     } catch (error) {
       console.error("Error generating video:", error);
       setStatusMessage(
-        `Video generation failed: ${
-          error instanceof Error ? error.message : "Unknown error"
+        `Video generation failed: ${error instanceof Error ? error.message : "Unknown error"
         }`
       );
     } finally {
@@ -1330,10 +1329,10 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
   // Tree preview card component
   const TreePreviewCard = () => {
     if (!treeData)
-      return <div className="p-4 text-center">Loading tree data...</div>;
+      return <div className="p-4 text-center text-muted-foreground">Loading tree data...</div>;
 
     return (
-      <div className="bg-white rounded-lg shadow-md p-4 mb-6">
+      <div className="bg-card text-card-foreground rounded-lg shadow-md p-4 mb-6 border border-border">
         <h3 className="text-lg font-semibold mb-2">
           {treeData.name || "Unnamed Tree"}
         </h3>
@@ -1349,13 +1348,13 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
             />
           </div>
         )}
-        <div className="text-sm">
+        <div className="text-sm text-muted-foreground">
           <p>
-            <span className="font-medium">Location:</span>{" "}
+            <span className="font-medium text-foreground">Location:</span>{" "}
             {treeData.Plant_Addresses || "Unknown location"}
           </p>
           <p>
-            <span className="font-medium">Coordinates:</span> {treeData.late},{" "}
+            <span className="font-medium text-foreground">Coordinates:</span> {treeData.late},{" "}
             {treeData.long}
           </p>
         </div>
@@ -1366,7 +1365,7 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
   return (
     <div className="container mx-auto p-4">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+        <div className="bg-card text-card-foreground rounded-xl shadow-lg p-6 mb-8 border border-border">
           <h2 className="text-2xl font-bold mb-6 text-center">
             Create Your Tree Story
           </h2>
@@ -1374,7 +1373,7 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
           {/* Tree Data Preview Toggle */}
           <button
             onClick={togglePreview}
-            className="mb-4 text-blue-600 underline flex items-center"
+            className="mb-4 text-primary underline flex items-center hover:text-primary/80"
           >
             {showPreview ? "Hide" : "Show"} Tree Preview
             <svg
@@ -1400,7 +1399,7 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Video Duration (seconds)
                 </label>
                 <input
@@ -1415,9 +1414,9 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
                       duration: Number.parseInt(e.target.value),
                     })
                   }
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                  className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
                 />
-                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                <div className="flex justify-between text-xs text-muted-foreground mt-1">
                   <span>15s</span>
                   <span>{customOptions.duration}s</span>
                   <span>30s</span>
@@ -1425,7 +1424,7 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Theme
                 </label>
                 <select
@@ -1436,7 +1435,7 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
                       theme: e.target.value,
                     })
                   }
-                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-background border border-input text-foreground focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md"
                 >
                   <option value="nature">Nature</option>
                   <option value="modern">Modern</option>
@@ -1445,7 +1444,7 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Visual Style
                 </label>
                 <select
@@ -1456,7 +1455,7 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
                       effects: e.target.value,
                     })
                   }
-                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-background border border-input text-foreground focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md"
                 >
                   <option value="standard">Standard</option>
                   <option value="cinematic">Cinematic</option>
@@ -1475,9 +1474,9 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
                         includeMusic: e.target.checked,
                       })
                     }
-                    className="form-checkbox h-5 w-5 text-blue-600"
+                    className="form-checkbox h-5 w-5 text-primary border-input rounded focus:ring-primary"
                   />
-                  <span className="text-sm font-medium text-gray-700">
+                  <span className="text-sm font-medium text-foreground">
                     Include background music
                   </span>
                 </label>
@@ -1494,9 +1493,9 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
                         includeStats: e.target.checked,
                       })
                     }
-                    className="form-checkbox h-5 w-5 text-blue-600"
+                    className="form-checkbox h-5 w-5 text-primary border-input rounded focus:ring-primary"
                   />
-                  <span className="text-sm font-medium text-gray-700">
+                  <span className="text-sm font-medium text-foreground">
                     Show environmental impact
                   </span>
                 </label>
@@ -1513,9 +1512,9 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
                         includeSeasons: e.target.checked,
                       })
                     }
-                    className="form-checkbox h-5 w-5 text-blue-600"
+                    className="form-checkbox h-5 w-5 text-primary border-input rounded focus:ring-primary"
                   />
-                  <span className="text-sm font-medium text-gray-700">
+                  <span className="text-sm font-medium text-foreground">
                     Include seasonal views
                   </span>
                 </label>
@@ -1527,7 +1526,7 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
               <button
                 type="submit"
                 disabled={loading || isLoading}
-                className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                className="w-full bg-primary text-primary-foreground py-3 px-4 rounded-lg hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 shadow-md disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed transition-colors"
               >
                 {loading
                   ? "Creating Your Tree Story..."
@@ -1539,16 +1538,16 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
             {loading && (
               <div className="mt-4">
                 <div className="mb-1 flex justify-between">
-                  <span className="text-sm font-medium text-gray-700">
+                  <span className="text-sm font-medium text-foreground">
                     {statusMessage}
                   </span>
-                  <span className="text-sm font-medium text-gray-700">
+                  <span className="text-sm font-medium text-foreground">
                     {progress}%
                   </span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
+                <div className="w-full bg-muted rounded-full h-2.5">
                   <div
-                    className="bg-green-600 h-2.5 rounded-full"
+                    className="bg-primary h-2.5 rounded-full transition-all duration-300"
                     style={{ width: `${progress}%` }}
                   ></div>
                 </div>
@@ -1559,7 +1558,7 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
 
         {/* Video Preview */}
         {videoUrl && (
-          <div className="bg-white rounded-xl shadow-lg p-6 text-center">
+          <div className="bg-card text-card-foreground rounded-xl shadow-lg p-6 text-center border border-border">
             <h2 className="text-xl font-semibold mb-4">
               {treeData?.name || "Your Tree"} Story
             </h2>
@@ -1570,7 +1569,7 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
                 height="640"
                 controls
                 autoPlay
-                className="mx-auto rounded-lg shadow"
+                className="mx-auto rounded-lg shadow border border-border bg-black"
               >
                 <source src={videoUrl} type="video/mp4" />
                 Your browser does not support the video tag.
@@ -1579,7 +1578,7 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
             <div className="flex flex-col md:flex-row justify-center gap-4">
               <button
                 onClick={downloadVideo}
-                className="bg-green-600 text-white py-2 px-6 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 shadow-md flex items-center justify-center"
+                className="bg-primary text-primary-foreground py-2 px-6 rounded-lg hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 shadow-md flex items-center justify-center"
               >
                 <svg
                   className="w-5 h-5 mr-2"
@@ -1599,12 +1598,12 @@ export default function MapVideoForm({ params }: { params: { id: string } }) {
               </button>
               <button
                 onClick={() => setVideoUrl(null)}
-                className="bg-gray-200 text-gray-800 py-2 px-6 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 shadow-md"
+                className="bg-secondary text-secondary-foreground py-2 px-6 rounded-lg hover:bg-secondary/80 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 shadow-md"
               >
                 Create Another Video
               </button>
             </div>
-            <small className="block mt-6 text-gray-500">
+            <small className="block mt-6 text-muted-foreground">
               Map data © OpenStreetMap contributors
             </small>
           </div>

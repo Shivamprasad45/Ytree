@@ -4,6 +4,16 @@
 
  
 @layer base {
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .bg-hero-pattern {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBEUHMdpf_n7-0yZcg_L3O-R91ULB6-vqpRl-Snln9d-97eS_A-qTfmaIuIBUZ3q_hXT2KDMlMc7mhy4t9VimuVM7NadTUxwpLnbSLYodb5Ys3LmFrWq-n9qxkF6L-gkO4bfLpew7PiCvCtQtD9BVLHchc9ABP60AuFSsH0r32qo_6suxTRDKOiBmuGosM2zbrCE4lxYZtW5N8QgZArQxewyL-hmHvhuNJZ34NLuOgExSJNy79ve95-GBZgfKZn3dwmy_373msq2qR1");
+  }
+  .bg-map-pattern {
+    background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCmR1PEMTwCluXErp_iTm3GEWWLh5TQJ0M7iirVGOQ4Th9mQpcNO7vIXwKBM2j_RO4ZE9wevd9uMt8T8oWpscs66Yc9n1MVSwFdP8BKxgBUbdadko2h0h7G3LqG6X9zJxismhNO0obCzV9adayMvJml6wBdnKVp6XED6pjON31Vx8MgDEMJsG6tGJUtDCvH0GB9IRhgB36w78vctXjIsQ5_I-_Yywrmnils8PcvEY2zmv048CCbN0_xzzcO3FuVSup3hEDsNUY31ddG');
+  }
+
   :root {
     --background: 60 10% 98%;
     --foreground: 120 15% 15%;

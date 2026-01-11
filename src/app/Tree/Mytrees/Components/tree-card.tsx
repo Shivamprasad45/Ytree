@@ -57,15 +57,15 @@ export function TreeCard({ tree, getDaysOld }: TreeCardProps) {
   const getStatusColor = () => {
     switch (tree.status) {
       case 0:
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-yellow-500/15 text-yellow-700 dark:text-yellow-400";
       case 1:
-        return "bg-blue-100 text-blue-800";
+        return "bg-blue-500/15 text-blue-700 dark:text-blue-400";
       case 2:
-        return "bg-purple-100 text-purple-800";
+        return "bg-purple-500/15 text-purple-700 dark:text-purple-400";
       case 3:
-        return "bg-green-100 text-green-800";
+        return "bg-green-500/15 text-green-700 dark:text-green-400";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-muted text-muted-foreground";
     }
   };
 
@@ -89,7 +89,7 @@ export function TreeCard({ tree, getDaysOld }: TreeCardProps) {
         <div className="flex justify-between items-start">
           <div>
             <CardTitle className="flex items-center gap-2 text-xl">
-              <TreePine className="h-5 w-5 text-green-600" />
+              <TreePine className="h-5 w-5 text-primary" />
               {tree.name}
             </CardTitle>
             <CardDescription className="flex items-center gap-1.5 mt-1">

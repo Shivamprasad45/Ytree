@@ -1,59 +1,102 @@
 "use client";
-import { Linkedin } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React from "react";
+import React from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
-const Footer = () => {
-  const route = usePathname();
-  if (["/Signup", "/login", "/Resend"].includes(route)) {
+const Footer: React.FC = () => {
+  const pathname = usePathname();
+
+  // Don't show footer on auth pages
+  if (["/Signup", "/login", "/Resend"].includes(pathname)) {
     return null;
   }
 
   return (
-    <footer className="bg-green-800 text-white py-4 text-sm">
-      <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
-        <p className="text-center md:text-left">
-          © 2025 Plant Paradise. All rights reserved.
-        </p>
-        <div className="flex space-x-4 justify-center">
-          <a
-            href="https://www.instagram.com/vana_grow/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-green-300"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm.315 4.865a5.135 5.135 0 100 10.27 5.135 5.135 0 000-10.27zM17.338 5.462a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z"
-              />
-            </svg>
-          </a>
-          <a href="#" className="hover:text-green-300" aria-label="Twitter">
-            <svg
-              className="w-5 h-5"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-            </svg>
-          </a>
-          <Link
-            href="https://www.linkedin.com/in/vanagrow/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Linkedin className="w-5 h-5 hover:text-green-300" />
-          </Link>
+    <footer className="bg-white border-t border-sage/10 pt-24 pb-12">
+      <div className="max-w-[1200px] mx-auto px-6">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-16 mb-24">
+          <div className="col-span-2">
+            <div className="flex items-center gap-2 mb-8">
+              <div className="text-primary">
+                <div className="relative w-8 h-8">
+                  <Image
+                    fill
+                    alt="VanaGrow Logo"
+                    src="/logo.png"
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+              <h2 className="text-2xl font-black tracking-tight">Vanagrow</h2>
+            </div>
+            <p className="text-sage max-w-xs leading-relaxed text-lg mb-10 font-medium">
+              Empowering consumers to restore the earth&apos;s vital ecosystems through sustainable shopping and transparent reforestation.
+            </p>
+            <div className="flex gap-5">
+              <a
+                href="https://www.instagram.com/vana_grow/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="size-12 rounded-full bg-sage/5 flex items-center justify-center text-deep-forest hover:bg-primary hover:text-white transition-all transform hover:scale-110 shadow-sm"
+              >
+                <span className="material-symbols-outlined">public</span>
+              </a>
+              <a
+                href="https://www.linkedin.com/in/vanagrow/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="size-12 rounded-full bg-sage/5 flex items-center justify-center text-deep-forest hover:bg-primary hover:text-white transition-all transform hover:scale-110 shadow-sm"
+              >
+                <span className="material-symbols-outlined">diversity_3</span>
+              </a>
+              <a
+                href="mailto:support@vanagrow.com"
+                className="size-12 rounded-full bg-sage/5 flex items-center justify-center text-deep-forest hover:bg-primary hover:text-white transition-all transform hover:scale-110 shadow-sm"
+              >
+                <span className="material-symbols-outlined">mail</span>
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="font-bold text-lg mb-8">Platform</h4>
+            <ul className="flex flex-col gap-5 text-sage text-base font-medium">
+              <li><Link className="hover:text-primary transition-colors" href="/shop">Browse Products</Link></li>
+              <li><Link className="hover:text-primary transition-colors" href="/Tree/Global">Planting Sites</Link></li>
+              <li><Link className="hover:text-primary transition-colors" href="/Tree/Global">The Forest Map</Link></li>
+              <li><Link className="hover:text-primary transition-colors" href="/Planted">Leaderboard</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-bold text-lg mb-8">Company</h4>
+            <ul className="flex flex-col gap-5 text-sage text-base font-medium">
+              <li><Link className="hover:text-primary transition-colors" href="/About">Our Story</Link></li>
+              <li><Link className="hover:text-primary transition-colors" href="/blog">Impact Report</Link></li>
+              <li><Link className="hover:text-primary transition-colors" href="/how-it-works">Careers</Link></li>
+              <li><Link className="hover:text-primary transition-colors" href="/blog">Press Kit</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-bold text-lg mb-8">Support</h4>
+            <ul className="flex flex-col gap-5 text-sage text-base font-medium">
+              <li><Link className="hover:text-primary transition-colors" href="/Contact">Help Center</Link></li>
+              <li><Link className="hover:text-primary transition-colors" href="/Planted">Track My Tree</Link></li>
+              <li><Link className="hover:text-primary transition-colors" href="/Contact">Contact Us</Link></li>
+              <li><Link className="hover:text-primary transition-colors" href="/PrivacyPolicy">Privacy Policy</Link></li>
+            </ul>
+          </div>
         </div>
+
+        {/* <div className="pt-10 border-t border-sage/10 flex flex-col md:flex-row justify-between items-center gap-6 text-sage text-sm font-semibold">
+          <p>© 2024 Vanagrow Foundation. All rights reserved. Reforesting the world, one purchase at a time.</p>
+          <div className="flex gap-10">
+            <Link className="hover:text-deep-forest transition-colors" href="/Terms">Terms of Service</Link>
+            <Link className="hover:text-deep-forest transition-colors" href="/refund">Cookie Settings</Link>
+          </div>
+        </div> */}
       </div>
     </footer>
   );
