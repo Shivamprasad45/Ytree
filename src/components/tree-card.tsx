@@ -44,7 +44,7 @@ export function TreeCard({ tree, index, showPrice = false }: TreeCardProps) {
           {showPrice ? (
             <div className="w-full flex-col justify-start items-start flex">
               <p className="self-stretch text-neutral-500 text-sm font-normal leading-tight">
-                ₹{tree.price}
+                ₹{tree.prise}
               </p>
             </div>
           ) : (

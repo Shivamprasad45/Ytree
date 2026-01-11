@@ -17,3 +17,39 @@ export interface IBlog {
     createdAt?: string;
     updatedAt?: string;
 }
+
+export interface Message {
+    role: 'model' | 'user';
+    text: string;
+}
+
+export interface TreeInfo {
+    _id?: string;
+    id: string;
+    commonName: string;
+    scientificName: string;
+    description: string;
+    growthRequirements: string;
+    benefits: string[];
+    region: string;
+    imageURL: string;
+    prise: number;
+    seoTitle: string;
+    seoDescription: string;
+    growthTips: string;
+    seoKeywords: string[];
+    createdAt?: Date;
+    updatedAt?: Date;
+    deletedAt?: Date;
+    isPublished?: boolean;
+    metadata?: any;
+    privateMetadata?: any;
+    tags: string[];
+    AffiliateLink?: string;
+    AffiliateImage?: string;
+    AffiliateName?: string;
+    AffiliateDescription?: string;
+    AffiliatePrise?: number;
+    AffiliateDiscount?: number;
+    AffiliatePriseAfterDiscount?: number;
+}

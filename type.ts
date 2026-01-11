@@ -357,3 +357,31 @@ export interface GeoJsonData {
   type: string;
   features: GeoJsonFeature[];
 }
+
+
+
+export interface Message {
+  role: 'user' | 'model';
+  text: string;
+}
+
+export interface ImpactStat {
+  icon: string;
+  label: string;
+  value: string;
+}
+
+export interface Step {
+  id: number;
+  title: string;
+  description: string;
+  icon: string;
+}
+
+export interface Testimonial {
+  name: string;
+  role: string;
+  content: string;
+  rating: number;
+  imageUrl: string;
+}
