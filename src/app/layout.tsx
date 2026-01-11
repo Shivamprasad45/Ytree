@@ -81,7 +81,7 @@ export default function RootLayout({
 
             {/* Footer at the bottom */}
             <Footer />
-            <LowGravityEffect />
+            {/* <LowGravityEffect /> */}
           </div>
         </Providers>
       </body>

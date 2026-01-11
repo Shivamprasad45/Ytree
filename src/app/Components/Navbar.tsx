@@ -112,7 +112,7 @@ const Navbar = () => {
                 priority
               />
             </div>
-            <div className="font-bold text-lg md:text-xl tracking-tight">
+            <div className="font-bold text-base md:text-xl tracking-tight">
               <span className="text-primary">Vana</span>
               <span className="text-foreground">Grow</span>
             </div>
@@ -166,9 +166,11 @@ const Navbar = () => {
         </div>
 
         {/* Right Section: Actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 md:gap-3">
 
-          <ModeToggle />
+          <div className="hidden md:block">
+            <ModeToggle />
+          </div>
 
           <Link href="/Tree/Cart">
             <Button variant="ghost" size="icon" className="relative rounded-full hover:bg-primary/10 hover:text-primary transition-colors">
@@ -250,7 +252,7 @@ const Navbar = () => {
                   <span className="sr-only">Open menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[350px] p-0 border-l border-border/60">
+              <SheetContent side="right" className="w-[85vw] max-w-[350px] p-0 border-l border-border/60">
                 <SheetHeader className="p-6 border-b border-border/40">
                   <SheetTitle>
                     <div className="flex items-center gap-2">
