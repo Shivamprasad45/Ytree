@@ -5,7 +5,7 @@ import { Visit } from "@/Models/Visit";
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-        const { path, referrer, screenResolution } = body;
+        const { path, referrer, screenResolution, title, userId, email } = body;
 
         // 1. Get IP
         const ip =
@@ -82,6 +82,9 @@ export async function POST(req: NextRequest) {
             device,
             referrer,
             path,
+            title,
+            userId,
+            email,
             screenResolution,
         });
 
