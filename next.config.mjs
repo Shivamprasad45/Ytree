@@ -47,6 +47,8 @@ const nextConfig = {
       "res.cloudinary.com",
       "res-console.cloudinary.com",
       "media.istockphoto.com",
+      "placehold.co",
+      "lh3.googleusercontent.com",
     ],
   },
   experimental: {

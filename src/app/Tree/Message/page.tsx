@@ -34,7 +34,7 @@ export default function MessagePage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const generateResponse = async (userInput: string) => {
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-001" });
+    const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
     const prompt = `Respond to this message in a helpful, friendly manner: ${userInput}`;
 
     try {
