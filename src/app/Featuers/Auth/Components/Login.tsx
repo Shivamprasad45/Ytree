@@ -7,19 +7,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
-import { Leaf, Loader } from "lucide-react";
-
-import { login } from "@/action/action";
+import { Loader, Sprout } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-// import { Input } from "@/components/ui/input";
-// import { Label } from "@/components/ui/label";
-import MaxWidthRappers from "@/components/MaxWidthRapper";
 
 export default function Login() {
   const { data: session } = useSession();
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const searchParams = useSearchParams();
 
@@ -52,102 +46,112 @@ export default function Login() {
     }
   };
 
-  async function handleSubmit(event: React.FormEvent) {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget as HTMLFormElement);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-
-    if (!email || !password) {
-      toast.error("Please provide all fields");
-      return;
-    }
-
-    setIsLoading(true);
-    const toastId = toast.loading("Logging in");
-
-    try {
-      const err = await login({ email, password });
-      if (!err) {
-        toast.success("Login successful", { id: toastId });
-        window.location.reload();
-      } else {
-        toast.error(String(err), { id: toastId });
-      }
-    } catch (error) {
-      toast.error("An error occurred", { id: toastId });
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
   return (
-    <MaxWidthRappers>
-      <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-background">
-        <div className="w-full max-w-md space-y-6 bg-card shadow-lg rounded-2xl p-8 border border-border">
-          <div className="text-center">
-            <Leaf className="mx-auto h-10 w-10 text-primary" />
-            <h2 className="mt-4 text-2xl font-bold text-foreground">
-              Welcome to Vanagrow
-            </h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Sign in to nurture your green space 🌱
-            </p>
+    <div className="min-h-screen w-full lg:grid lg:grid-cols-2">
+      {/* Left Column: Branding and Image */}
+      <div className="hidden lg:flex flex-col relative bg-muted text-white dark:border-r">
+        {/* Background Image/Gradient */}
+        <div className="absolute inset-0 bg-primary/20" />
+        <div className="absolute inset-0 bg-[url('/img/forest-login.jpg')] bg-cover bg-center mix-blend-overlay opacity-20" /> {/* Fallback or texture */}
+
+        {/* Content */}
+        <div className="relative z-20 flex flex-col items-center justify-center h-full p-10 text-center text-[#111811] dark:text-white">
+          <div className="mb-8 p-4 bg-background/30 backdrop-blur-md rounded-full">
+            <Image
+              src="/logo.png"
+              alt="VanaGrow Logo"
+              width={120}
+              height={120}
+              className="drop-shadow-xl"
+              priority
+            />
+          </div>
+          <h1 className="text-4xl font-black tracking-tight lg:text-5xl mb-4">
+            Grow Your Own Forest
+          </h1>
+          <p className="text-lg opacity-90 max-w-[400px]">
+            Join the movement to restore our planet, one tree at a time. Track your impact and watch your legacy grow.
+          </p>
+        </div>
+      </div>
+
+      {/* Right Column: Login Form */}
+      <div className="flex items-center justify-center py-12 px-6 lg:px-8 bg-background">
+        <div className="mx-auto grid w-full max-w-[400px] gap-6">
+
+          {/* Mobile Logo (Visible only on small screens) */}
+          <div className="flex flex-col items-center text-center lg:hidden mb-4">
+            <Image src="/logo.png" alt="VanaGrow" width={60} height={60} className="mb-4" />
+            <h1 className="text-2xl font-bold">Welcome Back</h1>
+            <p className="text-sm text-muted-foreground">Sign in to your VanaGrow account</p>
           </div>
 
-          <div>
+          <div className="grid gap-2 text-center hidden lg:block">
+            <h2 className="text-3xl font-bold tracking-tight">Welcome Back</h2>
+            <p className="text-muted-foreground">Enter your details regarding your account</p>
+          </div>
+
+          <div className="grid gap-4 mt-4">
+            {/* Google Sign In */}
             <Button
               variant="outline"
-              className="w-full flex items-center justify-center gap-2"
+              className="w-full flex items-center justify-center gap-3 h-12 text-base rounded-xl border-2 hover:bg-muted/50 transition-all"
               onClick={handleGoogleSignIn}
               disabled={isGoogleLoading}
             >
               {isGoogleLoading ? (
-                <Loader className="h-4 w-4 animate-spin" />
+                <Loader className="mr-2 h-5 w-5 animate-spin" />
               ) : (
-                <>
-                  <Image
-                    src="/google.svg"
-                    alt="Google"
-                    width={20}
-                    height={20}
-                  />
-                  Continue with Google
-                </>
+                <Image
+                  src="/google.svg"
+                  alt="Google"
+                  width={24}
+                  height={24}
+                />
               )}
+              Continue with Google
+            </Button>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or
+                </span>
+              </div>
+            </div>
+
+            {/* General Sign Up */}
+            <div className="text-center text-sm">
+              New to VanaGrow?{" "}
+              <Link href="/Signup" className="underline font-bold hover:text-primary transition-colors">
+                Create an account
+              </Link>
+            </div>
+          </div>
+
+          {/* Partnership Call to Action - NEW */}
+          <div className="mt-8 p-6 bg-primary/5 rounded-2xl border border-primary/10 text-center">
+            <div className="flex justify-center mb-3">
+              <div className="p-2 bg-primary/10 rounded-full text-primary">
+                <Sprout className="w-6 h-6" />
+              </div>
+            </div>
+            <h3 className="font-bold text-lg mb-1">Corporate Partnership?</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Looking to make a bigger impact? collaborative with us.
+            </p>
+            <Button asChild variant="default" className="w-full rounded-xl font-bold shadow-md">
+              <Link href="/patnerShip">
+                Apply as a Partner
+              </Link>
             </Button>
           </div>
 
-          {/* Optional: Uncomment if you want email/password login later */}
-          {/* <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" autoComplete="email" />
-            </div>
-            <div>
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" name="password" type="password" autoComplete="current-password" />
-            </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? (
-                <Loader className="h-4 w-4 animate-spin mr-2" />
-              ) : (
-                "Sign In"
-              )}
-            </Button>
-          </form> */}
-
-          <p className="text-center text-sm text-muted-foreground">
-            Don't have an account?{" "}
-            <Link
-              href="/Signup"
-              className="font-medium text-primary hover:text-primary/80 transition-colors"
-            >
-              Sign up
-            </Link>
-          </p>
         </div>
       </div>
-    </MaxWidthRappers>
+    </div>
   );
 }

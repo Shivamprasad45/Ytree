@@ -10,6 +10,7 @@ import Lefttab from "./Components/lefttab";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 import LowGravityEffect from "./Components/ui/LowGravityEffect";
+import VisitTracker from "./Components/VisitTracker";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -65,6 +66,7 @@ export default function RootLayout({
         <Providers>
           <Analytics />
           <Toaster />
+          <VisitTracker />
 
           {/* Root layout container */}
           <div className="flex flex-col min-h-screen">

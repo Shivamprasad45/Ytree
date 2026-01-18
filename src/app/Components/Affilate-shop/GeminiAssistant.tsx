@@ -21,7 +21,7 @@ const GeminiAssistant: React.FC<GeminiAssistantProps> = ({ onProductSelect }) =>
         try {
             const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || '');
             const model = genAI.getGenerativeModel({
-                model: "gemini-1.5-flash-001",
+                model: "gemini-3-flash-preview",
                 systemInstruction: 'You are an eco-shopping assistant. Your goal is to help people find sustainable alternatives to common products.',
             });
 
