@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import Providers from "./lib/Providers";
@@ -82,6 +83,12 @@ export default function RootLayout({
             {/* Footer at the bottom */}
             <Footer />
             {/* <LowGravityEffect /> */}
+            <Script
+              async
+              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7763744084891101"
+              crossOrigin="anonymous"
+              strategy="afterInteractive"
+            />
           </div>
         </Providers>
       </body>
