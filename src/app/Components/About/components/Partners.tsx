@@ -1,5 +1,6 @@
 
 import React from 'react';
+import Image from 'next/image';
 
 const partners = [
   'https://lh3.googleusercontent.com/aida-public/AB6AXuB3kLjnL6D4KwB4ac7Ay0iTwek9bXrnqKqFwujRcLmPzeO-X70YFFXGxrHI8GABlF-AUgLbKEcJwXZudpevJVqbwiyDMpdLBkP7acH1LMhe0pqPElHK4k6jV6RQalJE8VyLN542Y81AI4w7qXTZQtm8SMTp5Nqo7-l-xmOFCi0_04IejLRtqDZBR6ui3pf62CO-HwWIrt-SKmLDByA5I6UNL_14pB9tuwUpydpEcQArfex1JjGm0I6TaD-Am7wKkgVUyrhr1Yfmbk9b',
@@ -16,8 +17,8 @@ const Partners: React.FC = () => {
         <h3 className="text-center text-xl font-bold text-[#648764] uppercase tracking-widest mb-12">Our Verified NGO Partners</h3>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-12 items-center opacity-60 grayscale hover:opacity-100 transition-all duration-500">
           {partners.map((logo, idx) => (
-            <div key={idx} className="flex justify-center p-4 h-24">
-              <img alt={`NGO Partner ${idx + 1}`} className="object-contain" src={logo} />
+            <div key={idx} className="relative flex justify-center p-4 h-24">
+              <Image alt={`NGO Partner ${idx + 1}`} className="object-contain" src={logo} fill sizes="(max-width: 768px) 50vw, 20vw" />
             </div>
           ))}
         </div>

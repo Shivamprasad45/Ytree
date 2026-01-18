@@ -177,7 +177,7 @@ const ApplicationForm: React.FC = () => {
                   </div>
                 ) : (
                   <p className="text-[#111811] dark:text-white/90 italic leading-relaxed">
-                    "{aiInsight}"
+                    &quot;{aiInsight}&quot;
                   </p>
                 )}
               </div>
