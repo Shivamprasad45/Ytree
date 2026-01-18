@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import Providers from "./lib/Providers";
@@ -55,6 +54,11 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7763744084891101"
+          crossOrigin="anonymous"
+        ></script>
       </head>
 
       <body className={cn("min-h-screen font-sans antialiased")}>
@@ -83,12 +87,6 @@ export default function RootLayout({
             {/* Footer at the bottom */}
             <Footer />
             {/* <LowGravityEffect /> */}
-            <Script
-              async
-              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7763744084891101"
-              crossOrigin="anonymous"
-              strategy="afterInteractive"
-            />
           </div>
         </Providers>
       </body>
