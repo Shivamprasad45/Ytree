@@ -12,6 +12,9 @@ const VisitSchema = new mongoose.Schema({
     device: { type: String },
     referrer: { type: String },
     path: { type: String },
+    title: { type: String },
+    userId: { type: String },
+    email: { type: String },
     screenResolution: { type: String },
     visitedAt: { type: Date, default: Date.now, index: true },
 });
