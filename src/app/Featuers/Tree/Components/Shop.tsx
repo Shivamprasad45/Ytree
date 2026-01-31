@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Heart, Search, Leaf, MapPin, IndianRupee } from "lucide-react";
@@ -10,30 +9,14 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TreeInfo } from "../../../../type";
 
-export default function Shop() {
-  const [trees, setTrees] = useState<TreeInfo[]>([]);
+interface ShopProps {
+  initialTrees: TreeInfo[];
+}
+
+export default function Shop({ initialTrees }: ShopProps) {
+  const [trees] = useState<TreeInfo[]>(initialTrees);
   const [search, setSearch] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
-
-  // Fetch trees from API
-  useEffect(() => {
-    const fetchTrees = async (): Promise<void> => {
-      try {
-        setLoading(true);
-        const response = await axios.get<TreeInfo[]>("/api/Tree/AllTree");
-        setTrees(response.data);
-      } catch (err) {
-        setError("Failed to fetch trees");
-        console.error("Error fetching trees:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTrees();
-  }, []);
 
   // Filter trees based on search
   const filteredTrees: TreeInfo[] = trees.filter((tree: TreeInfo) =>
@@ -51,43 +34,6 @@ export default function Shop() {
       return newFavorites;
     });
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background">
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="text-center space-y-6">
-            <div className="w-16 h-16 mx-auto">
-              <div className="w-full h-full border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
-            </div>
-            <p className="text-muted-foreground text-lg">Loading plants...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center space-y-6 p-8 max-w-md">
-          <div className="text-6xl">🌿</div>
-          <div className="space-y-2">
-            <h2 className="text-xl font-semibold text-foreground">
-              Something went wrong
-            </h2>
-            <p className="text-muted-foreground">{error}</p>
-          </div>
-          <button
-            onClick={() => window.location.reload()}
-            className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
-          >
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-background">

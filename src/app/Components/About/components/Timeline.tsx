@@ -1,5 +1,6 @@
 
 import React from 'react';
+import MaxWidthRappers from '@/components/MaxWidthRapper';
 
 const timelineEvents = [
   {
@@ -30,25 +31,27 @@ const timelineEvents = [
 
 const Timeline: React.FC = () => {
   return (
-    <section className="py-24 px-6 bg-white dark:bg-background-dark">
-      <div className="max-w-[800px] mx-auto">
-        <h2 className="text-center text-4xl font-black mb-16">Our Growth Journey</h2>
-        <div className="relative">
-          <div className="absolute left-5 top-0 bottom-0 w-[2px] bg-[#dce5dc] dark:bg-[#2a3a2a]"></div>
-          <div className="space-y-12">
-            {timelineEvents.map((event, idx) => (
-              <div key={idx} className="relative pl-16">
-                <div className="absolute left-0 top-1 w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white z-10 border-4 border-white dark:border-background-dark">
-                  <span className="material-symbols-outlined text-sm">{event.icon}</span>
+    <section className="py-24 bg-card">
+      <MaxWidthRappers>
+        <div className="max-w-[800px] mx-auto">
+          <h2 className="text-center text-4xl font-black mb-16 text-foreground">Our Growth Journey</h2>
+          <div className="relative">
+            <div className="absolute left-5 top-0 bottom-0 w-[2px] bg-border"></div>
+            <div className="space-y-12">
+              {timelineEvents.map((event, idx) => (
+                <div key={idx} className="relative pl-16">
+                  <div className="absolute left-0 top-1 w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white z-10 border-4 border-background">
+                    <span className="material-symbols-outlined text-sm">{event.icon}</span>
+                  </div>
+                  <h4 className="text-xl font-bold text-foreground">{event.title}</h4>
+                  <span className="text-primary font-bold text-sm block mb-2 uppercase">{event.year}</span>
+                  <p className="text-muted-foreground">{event.description}</p>
                 </div>
-                <h4 className="text-xl font-bold">{event.title}</h4>
-                <span className="text-primary font-bold text-sm block mb-2 uppercase">{event.year}</span>
-                <p className="text-[#648764] dark:text-[#a0c0a0]">{event.description}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      </MaxWidthRappers>
     </section>
   );
 };

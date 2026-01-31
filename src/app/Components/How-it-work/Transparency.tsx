@@ -1,67 +1,42 @@
+"use client";
 
 import React from 'react';
-
-const features = [
-    {
-        icon: 'payments',
-        title: 'Zero Extra Cost to You',
-        description: 'Product prices remain exactly the same. Retailers share a portion of their profit as a "thank you" to us.'
-    },
-    {
-        icon: 'verified',
-        title: 'Verified NGO Partners',
-        description: 'We partner with organizations like Eden Reforestation Projects and One Tree Planted to ensure real impact.'
-    },
-    {
-        icon: 'map',
-        title: 'Real-Time Impact Map',
-        description: 'Access GPS coordinates and photos of the actual planting sites where your shopping contributed.'
-    }
-];
+import { Badge } from "@/components/ui/badge";
+import MaxWidthRappers from "@/components/MaxWidthRapper";
 
 const Transparency: React.FC = () => {
     return (
-        <section className="py-24 px-6 overflow-hidden">
-            <div className="max-w-[1200px] mx-auto">
-                <div className="bg-white rounded-[3rem] p-8 md:p-16 border border-sage/10 shadow-sm relative">
-                    <div className="grid md:grid-cols-2 gap-16 items-center">
-                        <div className="relative">
-                            <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl">
-                                <img
-                                    alt="Verified reforestation site"
-                                    className="w-full h-full object-cover"
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEUHMdpf_n7-0yZcg_L3O-R91ULB6-vqpRl-Snln9d-97eS_A-qTfmaIuIBUZ3q_hXT2KDMlMc7mhy4t9VimuVM7NadTUxwpLnbSLYodb5Ys3LmFrWq-n9qxkF6L-gkO4bfLpew7PiCvCtQtD9BVLHchc9ABP60AuFSsH0r32qo_6suxTRDKOiBmuGosM2zbrCE4lxYZtW5N8QgZArQxewyL-hmHvhuNJZ34NLuOgExSJNy79ve95-GBZgfKZn3dwmy_373msq2qR1"
-                                />
-                            </div>
-                            <div className="absolute -bottom-6 -right-6 bg-primary p-6 rounded-2xl shadow-xl hidden lg:block">
-                                <p className="text-deep-forest font-black text-2xl">100%</p>
-                                <p className="text-deep-forest/80 text-xs font-bold uppercase tracking-widest leading-none">Verified</p>
-                            </div>
-                        </div>
-
-                        <div>
-                            <h2 className="text-3xl md:text-4xl font-black mb-6">Transparency & Trust</h2>
-                            <p className="text-sage text-lg mb-8 leading-relaxed">
-                                We believe in radical transparency. Every tree we plant is tracked, GPS-tagged, and verified by third-party NGOs.
-                            </p>
-
-                            <ul className="space-y-6">
-                                {features.map((feature, idx) => (
-                                    <li key={idx} className="flex gap-4">
-                                        <div className="size-10 shrink-0 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                                            <span className="material-symbols-outlined text-xl">{feature.icon}</span>
-                                        </div>
-                                        <div>
-                                            <h4 className="font-bold text-lg">{feature.title}</h4>
-                                            <p className="text-sage text-sm">{feature.description}</p>
-                                        </div>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
+        <section className="py-20 bg-muted/30 border-t border-border">
+            <MaxWidthRappers>
+                <div className="text-center max-w-2xl mx-auto mb-16">
+                    <Badge variant="outline" className="mb-4 bg-card text-foreground border-border uppercase tracking-widest font-black py-1 px-3">
+                        Transparency First
+                    </Badge>
+                    <h2 className="text-3xl md:text-5xl font-black text-foreground mb-6">The Cycle of Trust</h2>
+                    <p className="text-muted-foreground font-medium text-lg">
+                        We ensure that every donation results in a living tree through our rigorous 3-step verification process.
+                    </p>
                 </div>
-            </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+                    {/* Connecting Line (Desktop) */}
+                    <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-0.5 bg-border -z-0" />
+
+                    {[
+                        { step: "1", title: "Assignment", desc: "User selects NGO & pays. Funds are held in escrow.", color: "bg-blue-600" },
+                        { step: "2", title: "Plantation", desc: "NGO executes planting and updates status with proofs.", color: "bg-primary" },
+                        { step: "3", title: "Verification", desc: "Third-party audit confirms impact. Funds released.", color: "bg-purple-600" },
+                    ].map((item, i) => (
+                        <div key={i} className="relative z-10 flex flex-col items-center text-center space-y-4">
+                            <div className={`w-24 h-24 rounded-3xl ${item.color} text-white flex items-center justify-center shadow-xl shadow-muted`}>
+                                <span className="text-4xl font-black">{item.step}</span>
+                            </div>
+                            <h3 className="text-xl font-black text-foreground">{item.title}</h3>
+                            <p className="text-muted-foreground font-medium max-w-xs">{item.desc}</p>
+                        </div>
+                    ))}
+                </div>
+            </MaxWidthRappers>
         </section>
     );
 };

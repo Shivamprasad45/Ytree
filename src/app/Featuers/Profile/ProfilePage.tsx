@@ -44,19 +44,19 @@ const ROLES_INFO = {
         label: "Individual User",
         dashboard: "/Tree/Free_clam_tree",
         icon: Users,
-        color: "text-blue-600 bg-blue-50 border-blue-100",
+        color: "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 border-blue-100 dark:border-blue-800",
     },
     NGO: {
         label: "NGO Partner",
         dashboard: "/NGO/Dashboard",
         icon: ShieldCheck,
-        color: "text-green-600 bg-green-50 border-green-100",
+        color: "text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-green-100 dark:border-green-800",
     },
     CORPORATE: {
         label: "Corporate Partner",
         dashboard: "/Corporate/Dashboard",
         icon: Building2,
-        color: "text-purple-600 bg-purple-50 border-purple-100",
+        color: "text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20 border-purple-100 dark:border-purple-800",
     },
 };
 
@@ -264,7 +264,7 @@ export default function ProfilePage() {
     return (
         <div className="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
             {/* Header Profile Section */}
-            <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 mb-8">
+            <div className="bg-card rounded-3xl shadow-xl overflow-hidden border border-border mb-8">
                 <div className="h-32 bg-gradient-to-r from-green-400 to-blue-500" />
                 <div className="px-8 pb-8">
                     <div className="relative flex justify-between items-end -mt-12">
@@ -272,20 +272,20 @@ export default function ProfilePage() {
                             <img
                                 src={userData.image || "/img/default-avatar.png"}
                                 alt="Avatar"
-                                className="w-24 h-24 rounded-2xl border-4 border-white object-cover bg-white shadow-lg"
+                                className="w-24 h-24 rounded-2xl border-4 border-card object-cover bg-card shadow-lg"
                             />
-                            <div className="absolute -bottom-2 -right-2 p-1.5 bg-green-500 rounded-lg border-2 border-white">
+                            <div className="absolute -bottom-2 -right-2 p-1.5 bg-green-500 rounded-lg border-2 border-card">
                                 <CheckCircle className="w-4 h-4 text-white" />
                             </div>
                         </div>
 
                         <div className="flex flex-col items-end gap-2">
                             <div className="w-48 space-y-1.5">
-                                <div className="flex justify-between text-[10px] font-black uppercase tracking-wider text-gray-500">
+                                <div className="flex justify-between text-[10px] font-black uppercase tracking-wider text-muted-foreground">
                                     <span>Profile Completion</span>
-                                    <span className="text-green-600">{completionPercentage}%</span>
+                                    <span className="text-green-600 dark:text-green-400">{completionPercentage}%</span>
                                 </div>
-                                <Progress value={completionPercentage} className="h-2 bg-green-50" />
+                                <Progress value={completionPercentage} className="h-2 bg-muted" />
                             </div>
                             <Button
                                 onClick={() => router.push(roleInfo.dashboard)}
@@ -299,32 +299,32 @@ export default function ProfilePage() {
 
                     <div className="mt-6 flex flex-col md:flex-row md:items-start justify-between gap-6">
                         <div className="flex-1">
-                            <h1 className="text-3xl font-black text-gray-900 leading-tight">
+                            <h1 className="text-3xl font-black text-foreground leading-tight">
                                 {userData.firstName} {userData.lastName}
                             </h1>
                             {(profileData.roleSpecificData.ngoName || profileData.roleSpecificData.companyName) && (
-                                <p className="text-lg font-bold text-green-700 -mt-1">
+                                <p className="text-lg font-bold text-green-700 dark:text-green-400 -mt-1">
                                     {profileData.roleSpecificData.ngoName || profileData.roleSpecificData.companyName}
                                 </p>
                             )}
-                            <div className="flex flex-wrap items-center gap-4 text-gray-500 mt-2">
-                                <div className="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100">
-                                    <Mail className="w-4 h-4 text-green-600" />
+                            <div className="flex flex-wrap items-center gap-4 text-muted-foreground mt-2">
+                                <div className="flex items-center gap-1.5 bg-muted/50 px-3 py-1.5 rounded-lg border border-border">
+                                    <Mail className="w-4 h-4 text-green-600 dark:text-green-400" />
                                     <span className="text-sm font-semibold">{userData.email}</span>
                                 </div>
                                 {profileData.address.city && (
-                                    <div className="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100">
+                                    <div className="flex items-center gap-1.5 bg-muted/50 px-3 py-1.5 rounded-lg border border-border">
                                         <MapPin className="w-4 h-4 text-orange-500" />
                                         <span className="text-sm font-semibold">{profileData.address.city}</span>
                                     </div>
                                 )}
-                                <div className="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100">
+                                <div className="flex items-center gap-1.5 bg-muted/50 px-3 py-1.5 rounded-lg border border-border">
                                     <Users className="w-4 h-4 text-blue-500" />
                                     <span className="text-sm font-semibold">{userData.referredUsers} Referrals</span>
                                 </div>
                             </div>
                             {profileData.bio && (
-                                <p className="mt-4 text-gray-600 leading-relaxed text-sm font-medium bg-green-50/30 p-4 rounded-2xl border border-green-100/50 italic">
+                                <p className="mt-4 text-muted-foreground leading-relaxed text-sm font-medium bg-green-50/30 dark:bg-green-900/10 p-4 rounded-2xl border border-green-100/50 dark:border-green-800/30 italic">
                                     &quot;{profileData.bio}&quot;
                                 </p>
                             )}
@@ -344,14 +344,14 @@ export default function ProfilePage() {
             <form onSubmit={handleUpdate} className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {/* General Information */}
-                    <section className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
+                    <section className="bg-card p-6 rounded-3xl border border-border shadow-sm space-y-4">
                         <h2 className="text-lg font-bold flex items-center gap-2 mb-2">
-                            <UserIcon className="w-5 h-5 text-gray-400" />
+                            <UserIcon className="w-5 h-5 text-muted-foreground" />
                             Account Info
                         </h2>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <label className="text-xs font-bold text-gray-500 uppercase ml-1">First Name</label>
+                                <label className="text-xs font-bold text-muted-foreground uppercase ml-1">First Name</label>
                                 <Input
                                     value={userData.firstName}
                                     onChange={(e) => setUserData({ ...userData, firstName: e.target.value })}
@@ -360,7 +360,7 @@ export default function ProfilePage() {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-xs font-bold text-gray-500 uppercase ml-1">Last Name</label>
+                                <label className="text-xs font-bold text-muted-foreground uppercase ml-1">Last Name</label>
                                 <Input
                                     value={userData.lastName}
                                     onChange={(e) => setUserData({ ...userData, lastName: e.target.value })}
@@ -370,7 +370,7 @@ export default function ProfilePage() {
                             </div>
                         </div>
                         <div className="space-y-2">
-                            <label className="text-xs font-bold text-gray-500 uppercase ml-1">Bio</label>
+                            <label className="text-xs font-bold text-muted-foreground uppercase ml-1">Bio</label>
                             <Textarea
                                 value={profileData.bio}
                                 onChange={(e) => setProfileData({ ...profileData, bio: e.target.value })}
@@ -381,13 +381,13 @@ export default function ProfilePage() {
                     </section>
 
                     {/* Contact Details */}
-                    <section className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
+                    <section className="bg-card p-6 rounded-3xl border border-border shadow-sm space-y-4">
                         <h2 className="text-lg font-bold flex items-center gap-2 mb-2">
-                            <Phone className="w-5 h-5 text-gray-400" />
+                            <Phone className="w-5 h-5 text-muted-foreground" />
                             Contact Details
                         </h2>
                         <div className="space-y-2">
-                            <label className="text-xs font-bold text-gray-500 uppercase ml-1">Phone Number</label>
+                            <label className="text-xs font-bold text-muted-foreground uppercase ml-1">Phone Number</label>
                             <Input
                                 value={profileData.phoneNumber}
                                 onChange={(e) => setProfileData({ ...profileData, phoneNumber: e.target.value })}
@@ -396,9 +396,9 @@ export default function ProfilePage() {
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-xs font-bold text-gray-500 uppercase ml-1">Location</label>
-                            <div className="flex items-center gap-2 bg-gray-50 p-1 rounded-xl">
-                                <MapPin className="ml-2 w-4 h-4 text-gray-400" />
+                            <label className="text-xs font-bold text-muted-foreground uppercase ml-1">Location</label>
+                            <div className="flex items-center gap-2 bg-muted/50 p-1 rounded-xl">
+                                <MapPin className="ml-2 w-4 h-4 text-muted-foreground" />
                                 <Input
                                     value={profileData.address.city}
                                     onChange={(e) => setProfileData({ ...profileData, address: { ...profileData.address, city: e.target.value } })}
@@ -409,9 +409,9 @@ export default function ProfilePage() {
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <label className="text-xs font-bold text-gray-500 uppercase ml-1">Website</label>
-                                <div className="flex items-center gap-2 bg-gray-50 p-1 rounded-xl">
-                                    <Globe className="ml-2 w-4 h-4 text-gray-400" />
+                                <label className="text-xs font-bold text-muted-foreground uppercase ml-1">Website</label>
+                                <div className="flex items-center gap-2 bg-muted/50 p-1 rounded-xl">
+                                    <Globe className="ml-2 w-4 h-4 text-muted-foreground" />
                                     <Input
                                         value={profileData.socialLinks.website}
                                         onChange={(e) => setProfileData({ ...profileData, socialLinks: { ...profileData.socialLinks, website: e.target.value } })}
@@ -421,9 +421,9 @@ export default function ProfilePage() {
                                 </div>
                             </div>
                             <div className="space-y-2">
-                                <label className="text-xs font-bold text-gray-500 uppercase ml-1">Twitter</label>
-                                <div className="flex items-center gap-2 bg-gray-50 p-1 rounded-xl">
-                                    <Twitter className="ml-2 w-4 h-4 text-gray-400" />
+                                <label className="text-xs font-bold text-muted-foreground uppercase ml-1">Twitter</label>
+                                <div className="flex items-center gap-2 bg-muted/50 p-1 rounded-xl">
+                                    <Twitter className="ml-2 w-4 h-4 text-muted-foreground" />
                                     <Input
                                         value={profileData.socialLinks.twitter}
                                         onChange={(e) => setProfileData({ ...profileData, socialLinks: { ...profileData.socialLinks, twitter: e.target.value } })}
@@ -433,9 +433,9 @@ export default function ProfilePage() {
                                 </div>
                             </div>
                             <div className="space-y-2">
-                                <label className="text-xs font-bold text-gray-500 uppercase ml-1">LinkedIn</label>
-                                <div className="flex items-center gap-2 bg-gray-50 p-1 rounded-xl">
-                                    <Linkedin className="ml-2 w-4 h-4 text-gray-400" />
+                                <label className="text-xs font-bold text-muted-foreground uppercase ml-1">LinkedIn</label>
+                                <div className="flex items-center gap-2 bg-muted/50 p-1 rounded-xl">
+                                    <Linkedin className="ml-2 w-4 h-4 text-muted-foreground" />
                                     <Input
                                         value={profileData.socialLinks.linkedin}
                                         onChange={(e) => setProfileData({ ...profileData, socialLinks: { ...profileData.socialLinks, linkedin: e.target.value } })}
@@ -445,9 +445,9 @@ export default function ProfilePage() {
                                 </div>
                             </div>
                             <div className="space-y-2">
-                                <label className="text-xs font-bold text-gray-500 uppercase ml-1">Instagram</label>
-                                <div className="flex items-center gap-2 bg-gray-50 p-1 rounded-xl">
-                                    <Instagram className="ml-2 w-4 h-4 text-gray-400" />
+                                <label className="text-xs font-bold text-muted-foreground uppercase ml-1">Instagram</label>
+                                <div className="flex items-center gap-2 bg-muted/50 p-1 rounded-xl">
+                                    <Instagram className="ml-2 w-4 h-4 text-muted-foreground" />
                                     <Input
                                         value={profileData.socialLinks.instagram}
                                         onChange={(e) => setProfileData({ ...profileData, socialLinks: { ...profileData.socialLinks, instagram: e.target.value } })}
@@ -457,9 +457,9 @@ export default function ProfilePage() {
                                 </div>
                             </div>
                             <div className="space-y-2">
-                                <label className="text-xs font-bold text-gray-500 uppercase ml-1">Facebook</label>
-                                <div className="flex items-center gap-2 bg-gray-50 p-1 rounded-xl">
-                                    <Facebook className="ml-2 w-4 h-4 text-gray-400" />
+                                <label className="text-xs font-bold text-muted-foreground uppercase ml-1">Facebook</label>
+                                <div className="flex items-center gap-2 bg-muted/50 p-1 rounded-xl">
+                                    <Facebook className="ml-2 w-4 h-4 text-muted-foreground" />
                                     <Input
                                         value={profileData.socialLinks.facebook}
                                         onChange={(e) => setProfileData({ ...profileData, socialLinks: { ...profileData.socialLinks, facebook: e.target.value } })}
@@ -474,14 +474,14 @@ export default function ProfilePage() {
 
                 {/* Role Specific Sections */}
                 {userData.role === "NGO" && (
-                    <section className="bg-white p-6 rounded-3xl border border-blue-100 shadow-sm space-y-4">
-                        <h2 className="text-lg font-bold flex items-center gap-2 mb-2 text-blue-600">
+                    <section className="bg-card p-6 rounded-3xl border border-blue-100 dark:border-blue-900 shadow-sm space-y-4">
+                        <h2 className="text-lg font-bold flex items-center gap-2 mb-2 text-blue-600 dark:text-blue-400">
                             <ShieldCheck className="w-5 h-5" />
                             NGO Verification & Details
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <label className="text-xs font-bold text-gray-500 uppercase ml-1">NGO Legal Name</label>
+                                <label className="text-xs font-bold text-muted-foreground uppercase ml-1">NGO Legal Name</label>
                                 <Input
                                     value={profileData.roleSpecificData.ngoName}
                                     onChange={(e) => setProfileData({
@@ -493,7 +493,7 @@ export default function ProfilePage() {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-xs font-bold text-gray-500 uppercase ml-1">Registration Number</label>
+                                <label className="text-xs font-bold text-muted-foreground uppercase ml-1">Registration Number</label>
                                 <Input
                                     value={profileData.roleSpecificData.registrationNumber}
                                     onChange={(e) => setProfileData({
@@ -506,7 +506,7 @@ export default function ProfilePage() {
                             </div>
                         </div>
                         <div className="space-y-2">
-                            <label className="text-xs font-bold text-gray-500 uppercase ml-1">Mission Statement</label>
+                            <label className="text-xs font-bold text-muted-foreground uppercase ml-1">Mission Statement</label>
                             <Textarea
                                 value={profileData.roleSpecificData.missionStatement}
                                 onChange={(e) => setProfileData({
@@ -518,7 +518,7 @@ export default function ProfilePage() {
                             />
                         </div>
                         <div className="space-y-4">
-                            <label className="text-xs font-bold text-gray-500 uppercase ml-1">Areas of Operation</label>
+                            <label className="text-xs font-bold text-muted-foreground uppercase ml-1">Areas of Operation</label>
 
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                                 <Select
@@ -575,7 +575,7 @@ export default function ProfilePage() {
                             <Button
                                 type="button"
                                 variant="outline"
-                                className="w-full rounded-xl border-dashed border-2 hover:bg-green-50 hover:text-green-700 hover:border-green-200 transition-all font-bold"
+                                className="w-full rounded-xl border-dashed border-2 hover:bg-green-50 dark:hover:bg-green-900/10 hover:text-green-700 dark:hover:text-green-400 hover:border-green-200 dark:hover:border-green-800 transition-all font-bold"
                                 disabled={!locationSelection.countryCode}
                                 onClick={() => {
                                     const c = Country.getCountryByCode(locationSelection.countryCode);
@@ -601,14 +601,14 @@ export default function ProfilePage() {
                                 + Add Operation Area
                             </Button>
 
-                            <div className="flex flex-wrap gap-2 mt-2 min-h-12 p-3 bg-gray-50 rounded-2xl border border-gray-100">
+                            <div className="flex flex-wrap gap-2 mt-2 min-h-12 p-3 bg-muted/50 rounded-2xl border border-border">
                                 {profileData.roleSpecificData.areasOfOperation.length === 0 ? (
-                                    <span className="text-xs text-gray-400 font-medium italic">No areas added yet...</span>
+                                    <span className="text-xs text-muted-foreground font-medium italic">No areas added yet...</span>
                                 ) : (
                                     profileData.roleSpecificData.areasOfOperation.map((area, idx) => (
                                         <Badge
                                             key={idx}
-                                            className="px-3 py-1.5 rounded-xl bg-white text-gray-700 border-gray-200 shadow-sm hover:bg-red-50 hover:text-red-700 hover:border-red-100 transition-all group flex items-center gap-2"
+                                            className="px-3 py-1.5 rounded-xl bg-card text-foreground border-border shadow-sm hover:bg-red-50 hover:text-red-700 hover:border-red-100 transition-all group flex items-center gap-2"
                                         >
                                             <span className="text-[11px] font-bold">{area}</span>
                                             <X
@@ -629,7 +629,7 @@ export default function ProfilePage() {
                             </div>
                         </div>
                         <div className="space-y-2">
-                            <label className="text-xs font-bold text-gray-500 uppercase ml-1">Registration Certificate URL</label>
+                            <label className="text-xs font-bold text-muted-foreground uppercase ml-1">Registration Certificate URL</label>
                             <Input
                                 value={profileData.roleSpecificData.certificateUrl}
                                 onChange={(e) => setProfileData({
@@ -644,14 +644,14 @@ export default function ProfilePage() {
                 )}
 
                 {userData.role === "CORPORATE" && (
-                    <section className="bg-white p-6 rounded-3xl border border-purple-100 shadow-sm space-y-4">
-                        <h2 className="text-lg font-bold flex items-center gap-2 mb-2 text-purple-600">
+                    <section className="bg-card p-6 rounded-3xl border border-purple-100 dark:border-purple-900 shadow-sm space-y-4">
+                        <h2 className="text-lg font-bold flex items-center gap-2 mb-2 text-purple-600 dark:text-purple-400">
                             <Building2 className="w-5 h-5" />
                             Corporate Partnership Details
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <label className="text-xs font-bold text-gray-500 uppercase ml-1">Company Name</label>
+                                <label className="text-xs font-bold text-muted-foreground uppercase ml-1">Company Name</label>
                                 <Input
                                     value={profileData.roleSpecificData.companyName}
                                     onChange={(e) => setProfileData({
@@ -663,7 +663,7 @@ export default function ProfilePage() {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-xs font-bold text-gray-500 uppercase ml-1">Industry</label>
+                                <label className="text-xs font-bold text-muted-foreground uppercase ml-1">Industry</label>
                                 <Input
                                     value={profileData.roleSpecificData.industry}
                                     onChange={(e) => setProfileData({
@@ -676,7 +676,7 @@ export default function ProfilePage() {
                             </div>
                         </div>
                         <div className="space-y-2">
-                            <label className="text-xs font-bold text-gray-500 uppercase ml-1">CSR Focus Area</label>
+                            <label className="text-xs font-bold text-muted-foreground uppercase ml-1">CSR Focus Area</label>
                             <Input
                                 value={profileData.roleSpecificData.csrFocus}
                                 onChange={(e) => setProfileData({
@@ -688,7 +688,7 @@ export default function ProfilePage() {
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-xs font-bold text-gray-500 uppercase ml-1">Sustainability Goals</label>
+                            <label className="text-xs font-bold text-muted-foreground uppercase ml-1">Sustainability Goals</label>
                             <Textarea
                                 value={profileData.roleSpecificData.sustainabilityGoals}
                                 onChange={(e) => setProfileData({
@@ -703,7 +703,7 @@ export default function ProfilePage() {
                 )}
 
                 {/* Footer Actions */}
-                <div className="flex justify-end gap-4 p-4 bg-gray-50/50 rounded-2xl border border-gray-100">
+                <div className="flex justify-end gap-4 p-4 bg-muted/50 rounded-2xl border border-border">
                     <Button
                         type="button"
                         variant="ghost"
@@ -715,7 +715,7 @@ export default function ProfilePage() {
                     </Button>
                     <Button
                         type="submit"
-                        className="rounded-xl min-w-[140px] font-bold shadow-lg shadow-green-200"
+                        className="rounded-xl min-w-[140px] font-bold shadow-lg shadow-primary/20"
                         disabled={isUpdating}
                     >
                         {isUpdating ? (

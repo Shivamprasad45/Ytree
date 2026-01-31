@@ -3,26 +3,32 @@ import React from 'react';
 import Image from 'next/image';
 
 const Testimonials: React.FC = () => {
-  const testimonials = [
-    {
-      name: "Elena Rodriguez",
-      role: "Active Member since 2022",
-      content: "Seeing the GPS coordinates of my tree in Brazil was a game-changer. It makes the impact feel so real and personal. Vanagrow is the future of retail.",
-      imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuDmXO7HK5jPkqKw7YANevlxOzNRwkUFW3avRAp9IwgjlsMDQTtMFDeQ5OD5ld7HR55E9KsN7F9nmHf_N-55ufU5gD57UdyQouAiHZxZd8zVgHTL23XHtrSn1-YPAZpnoqWn39zhcHEwJdkaRC6w1-sUJoGuwM8lSUI8SL9tXpMCd2lG8oVowTHhwWDcICVAVjqf222U4FvF-_97T6DuY9uKjwPRnP8C4K9ms6eOIn9DlXc0ZxA-fJkGqmcYShT4CqTOV2e4ZNNheWa-"
-    },
-    {
-      name: "David Chen",
-      role: "Legacy Planter",
-      content: "I've switched all my home essentials to Vanagrow. Not only are the products superior quality, but knowing I've offset my entire year's carbon footprint is incredible.",
-      imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuB1ZkmDLyLr53zfPTwOWQ-Hitms6qJtVP3NOujdpE94NAXFDIqhU9GTABRCgfnLPGdOc32LZDIlLs-UbkBu4Jgst5qcFu945J23sPUCKmbZ0dcLWR9C92gojBvPVMAWU4BmGCInvkmwEQnMe87QNLOWI3ZKfQ0Odf3km37buGBGbD7UiZkPumNFejPq7TEsPYt1CyEUE8nIo-yE2yLU7RusTnk0sQC9B4KbKeYqBrnUM1SHG2M89ibpg0gQeYBJq5oYeqkpFooONhMK"
-    },
-    {
-      name: "Sarah Jenkins",
-      role: "Verified Impact Maker",
-      content: "Their transparency is unmatched. Most companies just talk about sustainability, but Vanagrow shows you exactly where your money goes. 12 trees and counting!",
-      imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuC6W1f3mKNa_PH7lB1kKBvoeUOfVYEVYrVVvUHeh4lrg0UD1iS9qZALvLQuVwjSJdpcYpsmuhjcVUrAskUv3TYfoMUQmpgCzj4B2Paocjk1bFl-6nlOPuSSVFU9DU2naRYXuzF8R4g4QjQKS83AhgTWlAfmlGjyI3X7YO1KSRjC1ye9q1U9FdiVmYZhMjp3adosXimYdkKtEYd2l9LS_Ao3OY_hwULofW4zEyOjiH04lb95EvtgPRwS2jrDVOLtV5rQXRoK_TeNBEzj"
-    }
-  ];
+const testimonials = [
+  {
+    name: "Aarav Mehta",
+    role: "Member since 2023",
+    content:
+      "I honestly didn’t expect this level of transparency. Being able to see the exact location of the tree planted in my name made the experience feel very real. It’s not just a purchase anymore, it feels like participation.",
+    imageUrl:
+      "https://randomuser.me/api/portraits/men/32.jpg",
+  },
+  {
+    name: "Priya Sharma",
+    role: "Verified Planter",
+    content:
+      "What I like most about Vanagrow is that they actually show proof. From coordinates to regular updates, everything feels trustworthy. I’ve already gifted a tree to my parents, and they loved the idea.",
+    imageUrl:
+      "https://randomuser.me/api/portraits/women/44.jpg",
+  },
+  {
+    name: "Rohit Verma",
+    role: "Impact Contributor",
+    content:
+      "I’ve tried supporting sustainable brands before, but this is the first time I felt connected to the impact. Seeing my planted trees on the map gives a strange sense of pride. Simple concept, executed well.",
+    imageUrl:
+      "https://randomuser.me/api/portraits/men/65.jpg",
+  },
+];
 
   return (
     <section className="bg-white dark:bg-gray-900 py-16 sm:py-24">
@@ -49,7 +55,7 @@ const Testimonials: React.FC = () => {
               <div className="flex items-center gap-4">
                 <div className="relative size-14 rounded-full border-2 border-primary/20 overflow-hidden flex-shrink-0">
                   <Image
-                    src={t.imageUrl}
+                    src={"https://lh3.googleusercontent.com/aida-public/AB6AXuB1ZkmDLyLr53zfPTwOWQ-Hitms6qJtVP3NOujdpE94NAXFDIqhU9GTABRCgfnLPGdOc32LZDIlLs-UbkBu4Jgst5qcFu945J23sPUCKmbZ0dcLWR9C92gojBvPVMAWU4BmGCInvkmwEQnMe87QNLOWI3ZKfQ0Odf3km37buGBGbD7UiZkPumNFejPq7TEsPYt1CyEUE8nIo-yE2yLU7RusTnk0sQC9B4KbKeYqBrnUM1SHG2M89ibpg0gQeYBJq5oYeqkpFooONhMK"}
                     alt={`${t.name} - ${t.role}`}
                     fill
                     className="object-cover"

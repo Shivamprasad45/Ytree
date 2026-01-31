@@ -40,7 +40,7 @@ const Footer: React.FC = () => {
               <Phone className="w-5 h-5 text-primary mt-0.5 group-hover:scale-110 transition-transform" />
               <div>
                 <p className="text-xs text-sage dark:text-gray-400 font-semibold uppercase tracking-wider mb-1">Phone</p>
-                <p className="text-sm font-medium text-deep-forest dark:text-white">+91 123 456 7890</p>
+                <p className="text-sm font-medium text-deep-forest dark:text-white">+91 830 336 7981</p>
               </div>
             </a>
 

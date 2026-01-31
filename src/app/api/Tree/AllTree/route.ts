@@ -12,7 +12,12 @@ export async function GET(req: NextRequest) {
     const limit = parseInt(searchParams.get("limit") ?? "8"); // Fallback to "8" if null
     const skip = (page - 1) * limit;
 
-    const tree = await Tree.find().skip(skip).limit(limit);
+    const tree = await Tree.find({
+      deletedAt: null,
+      isPublished: true,
+    })
+      .skip(skip)
+      .limit(limit);
 
     if (!tree) {
       return NextResponse.json({ error: "Tree not found" }, { status: 404 });

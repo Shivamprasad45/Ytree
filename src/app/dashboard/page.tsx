@@ -36,22 +36,22 @@ export default function DashboardPage() {
     const isBusiness = role === "CORPORATE" || role === "BUSINESS";
 
     return (
-        <div className="min-h-screen bg-white pb-20">
+        <div className="min-h-screen bg-background pb-20">
             {/* Dashboard Hero */}
-            <section className="relative pt-16 pb-12 overflow-hidden bg-gray-50/50">
-                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-green-50 rounded-full -mr-64 -mt-64 blur-3xl opacity-50" />
+            <section className="relative pt-16 pb-12 overflow-hidden bg-muted/50">
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full -mr-64 -mt-64 blur-3xl opacity-50" />
                 <MaxWidthRappers>
                     <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
                         <div className="space-y-4">
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-gray-100 shadow-sm text-green-700 text-[10px] font-black uppercase tracking-wider">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-background border border-border shadow-sm text-primary text-[10px] font-black uppercase tracking-wider">
                                 <LayoutDashboard className="w-3 h-3" />
                                 Interactive Hub
                             </div>
-                            <h1 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight">
+                            <h1 className="text-4xl md:text-5xl font-black text-foreground leading-tight">
                                 {isNGO ? "Partner " : "Impact "}
-                                <span className="text-green-600">Dashboard</span>
+                                <span className="text-primary">Dashboard</span>
                             </h1>
-                            <p className="text-gray-500 font-medium max-w-xl">
+                            <p className="text-muted-foreground font-medium max-w-xl">
                                 {isNGO
                                     ? "Manage your plantation tasks, update progress, and coordinate with corporate sponsors."
                                     : "Monitor your funded projects, track tree growth, and verify your environmental impact."}
@@ -59,22 +59,22 @@ export default function DashboardPage() {
                         </div>
 
                         <div className="flex gap-4">
-                            <div className="p-4 rounded-3xl bg-white border border-gray-100 shadow-sm flex items-center gap-4">
-                                <div className="p-2 bg-green-100 text-green-600 rounded-xl">
+                            <div className="p-4 rounded-3xl bg-background border border-border shadow-sm flex items-center gap-4">
+                                <div className="p-2 bg-primary/20 text-primary rounded-xl">
                                     <TreePine className="w-5 h-5" />
                                 </div>
                                 <div>
-                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Earth Status</p>
-                                    <p className="text-sm font-black text-gray-900">Active Monitor</p>
+                                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Earth Status</p>
+                                    <p className="text-sm font-black text-foreground">Active Monitor</p>
                                 </div>
                             </div>
-                            <div className="p-4 rounded-3xl bg-white border border-gray-100 shadow-sm flex items-center gap-4">
+                            <div className="p-4 rounded-3xl bg-background border border-border shadow-sm flex items-center gap-4">
                                 <div className="p-2 bg-purple-100 text-purple-600 rounded-xl">
                                     <ShieldCheck className="w-5 h-5" />
                                 </div>
                                 <div>
-                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Total Nodes</p>
-                                    <p className="text-sm font-black text-gray-900">Verified Sync</p>
+                                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Total Nodes</p>
+                                    <p className="text-sm font-black text-foreground">Verified Sync</p>
                                 </div>
                             </div>
                         </div>
