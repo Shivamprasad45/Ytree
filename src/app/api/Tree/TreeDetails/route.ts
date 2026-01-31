@@ -16,7 +16,11 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Missing tree ID" }, { status: 400 });
     }
 
-    const treeDetails = await Tree.findById(id);
+    const treeDetails = await Tree.findOne({
+      _id: id,
+      deletedAt: null,
+      isPublished: true,
+    });
 
     if (!treeDetails) {
       return NextResponse.json({ error: "Tree not found" }, { status: 404 });

@@ -43,7 +43,7 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
           commonName: PlantDetails?.commonName || "",
           scientificName: PlantDetails?.scientificName || "",
           description: PlantDetails?.description || "",
-          price: 45,
+          price: PlantDetails?.prise || 0,
           imageURL: PlantDetails?.imageURL || "",
 
           region: PlantDetails?.region || "",
@@ -84,7 +84,7 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
             <Badge className="mb-4">Native to {PlantDetails.region}</Badge>
             <p className="text-lg mb-4">{PlantDetails.description}</p>
             <div className="flex items-center justify-between mb-6">
-              <span className="text-2xl font-bold">₹45</span>
+              <span className="text-2xl font-bold">₹{PlantDetails.prise || 0}</span>
               <div className="flex flex-1 gap-3 flex-wrap px-4 py-3 justify-end">
                 <Button disabled={isAddLoading} onClick={() => Addtocart()}>
                   <span>Add to cart</span>

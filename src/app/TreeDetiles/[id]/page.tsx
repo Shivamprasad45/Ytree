@@ -1,21 +1,37 @@
 import Tree_details from "@/app/Components/tree_details";
 import { Metadata } from "next";
-
 import React from "react";
-import { TreeInfo } from "../../../type";
+import Tree from "@/Models/TreeCollection";
+import DbConnect from "@/Utils/mongooesConnect";
+import { notFound } from "next/navigation";
+
+async function getTreeData(id: string) {
+  try {
+    await DbConnect();
+    const tree = await Tree.findOne({
+      _id: id,
+      deletedAt: null,
+      isPublished: true,
+    }).lean();
+
+    if (!tree) return null;
+
+    // Serialize Mongoose document to plain JSON
+    return JSON.parse(JSON.stringify(tree));
+  } catch (error) {
+    console.error("Error fetching tree data:", error);
+    return null;
+  }
+}
 
 export async function generateMetadata({
   params,
 }: {
   params: { id: string };
 }): Promise<Metadata | undefined> {
-  // Fetch data here
+  const PlantDetails = await getTreeData(params.id);
 
-  const response = await fetch(
-    `${process.env.URL}/api/Tree/TreeDetails?id=${params.id}`
-  );
-  const PlantDetails: TreeInfo = await response.json();
-  if (PlantDetails === undefined) {
+  if (!PlantDetails) {
     return undefined;
   }
 
@@ -24,7 +40,7 @@ export async function generateMetadata({
     description: PlantDetails.seoDescription,
     openGraph: {
       type: "website",
-      url: `${process.env.URL}/api/Tree/TreeDetails?id=${params.id}`,
+      url: `${process.env.URL}/TreeDetiles/${params.id}`,
       title: PlantDetails.seoTitle,
       description: PlantDetails.seoDescription,
       locale: "en_US",
@@ -40,12 +56,12 @@ export async function generateMetadata({
 }
 
 const Page = async ({ params }: { params: { id: string } }) => {
-  // Fetch data here
+  const PlantDetails = await getTreeData(params.id);
 
-  const response = await fetch(
-    `${process.env.URL}/api/Tree/TreeDetails?id=${params.id}`
-  );
-  const PlantDetails = await response.json();
+  if (!PlantDetails) {
+    notFound();
+  }
+
   return <Tree_details PlantDetails={PlantDetails} />;
 };
 
