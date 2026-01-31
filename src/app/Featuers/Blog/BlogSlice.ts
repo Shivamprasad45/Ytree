@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IBlog } from "../../../../type";
+import { IBlog } from "../../../type";
 
 interface BlogState {
     blogs: IBlog[];

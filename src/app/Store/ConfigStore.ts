@@ -14,6 +14,8 @@ import TreeOrderSlice from "../Featuers/TreeOrder/TreeOrderSlice";
 import { GlobelApi as GlobeApi } from "../Featuers/Global/GlobeServices";
 import { BlogApi } from "../Featuers/Blog/BlogServices";
 import { PartnershipApi } from "../Featuers/Partnership/PartnershipApi";
+import { ProfileApi } from "../Featuers/Profile/ProfileAPIS";
+import { PartnerStatsApi } from "../Featuers/Partners/PartnerStatsApi";
 
 // Adjust the import path as necessary
 
@@ -32,6 +34,8 @@ export const store = configureStore({
     [TreeOrder_API.reducerPath]: TreeOrder_API.reducer,
     [BlogApi.reducerPath]: BlogApi.reducer,
     [PartnershipApi.reducerPath]: PartnershipApi.reducer,
+    [ProfileApi.reducerPath]: ProfileApi.reducer,
+    [PartnerStatsApi.reducerPath]: PartnerStatsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -41,7 +45,9 @@ export const store = configureStore({
       TreeOrder_API.middleware,
       GlobeApi.middleware,
       BlogApi.middleware,
-      PartnershipApi.middleware
+      PartnershipApi.middleware,
+      ProfileApi.middleware,
+      PartnerStatsApi.middleware
       // Add any other middleware you want to use
     ),
 });

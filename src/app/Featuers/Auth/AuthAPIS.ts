@@ -1,6 +1,6 @@
 // services/authApi.ts
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { EnterUser, LoginUser, User, UserMessage } from "../../../../type";
+import { EnterUser, LoginUser, User, UserMessage } from "../../../type";
 import { setIsCreating, setLoginMessage, setUserMessage } from "./AuthSlice";
 
 // Define a service using a base URL and expected endpoints

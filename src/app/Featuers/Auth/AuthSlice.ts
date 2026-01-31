@@ -1,7 +1,7 @@
 "use client";
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { Data, User, UserMessage } from "../../../../type"; // Adjust the import path as necessary
+import { Data, User, UserMessage } from "../../../type"; // Adjust the import path as necessary
 
 interface State {
   userData: Data | null;

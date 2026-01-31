@@ -6,7 +6,7 @@ import Image from "next/image";
 import Sidebar from "../../Components/Blog/Sidebar";
 import ArticleContent from "../../Components/Blog/ArticleContent";
 import RelatedSection from "../../Components/Blog/RelatedSection";
-import { IBlog } from "../../../../type";
+import { IBlog } from "@/type";
 import { Author, ImpactStats, RelatedArticle } from "../../Components/Blog/types";
 
 interface BlogDetailClientProps {
@@ -15,19 +15,20 @@ interface BlogDetailClientProps {
 }
 
 export default function BlogDetailContent({ blog, relatedBlogs }: BlogDetailClientProps) {
-    // Hardcoded mock data as requested to fill in missing fields from IBlog
+    // Construct author object from blog data
     const authorValues: Author = {
-        name: blog.author || "Sarah Jenkins",
-        role: "Chief Ecologist",
-        image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&q=80",
+        name: blog.author,
+        role: (blog as any).authorRole || "Author",
+        image: (blog as any).authorImage || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
         date: new Date(blog.publishedAt || blog.createdAt || Date.now()).toLocaleDateString("en-US", { month: 'long', day: 'numeric', year: 'numeric' }),
-        bio: "Sarah has over 15 years of experience in tropical forest restoration. She leads Vanagrow's biodiversity initiatives in the Amazon basin."
+        bio: (blog as any).authorBio
     };
 
-    const impactValues: ImpactStats = {
-        hectares: 5400,
-        trees: 125000,
-        jobs: 340
+    // Impact stats from blog or fallback to zeros
+    const impactValues: ImpactStats = (blog as any).impactStats || {
+        hectares: 0,
+        trees: 0,
+        jobs: 0
     };
 
     // Transform relatedBlogs (IBlog[]) to RelatedArticle[]
@@ -38,36 +39,6 @@ export default function BlogDetailContent({ blog, relatedBlogs }: BlogDetailClie
         description: rb.excerpt,
         image: rb.featuredImage
     }));
-
-    // If fewer than 3 related articles, fill with mock data
-    if (relatedArticles.length < 3) {
-        const mockRelated = [
-            {
-                id: 'mock-1',
-                title: 'The Future of Carbon Credits',
-                category: 'Market Trends',
-                description: 'How blockchain technology is bringing transparency to the voluntary carbon market and ensuring real impact.',
-                image: 'https://images.unsplash.com/photo-1550989460-0adf9ea622e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
-            },
-            {
-                id: 'mock-2',
-                title: 'Indigenous Wisdom in Modern Conservation',
-                category: 'Community',
-                description: 'Learning from the guardians of the forest: how traditional knowledge is shaping our restoration strategies.',
-                image: 'https://images.unsplash.com/photo-1596392927818-f2a893c52402?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
-            },
-            {
-                id: 'mock-3',
-                title: 'Water Cycles and Reforestation',
-                category: 'Science',
-                description: 'Understanding the critical link between tree cover and regional rainfall patterns in agricultural zones.',
-                image: 'https://images.unsplash.com/photo-1468476396571-4d6f2a427ee7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
-            }
-        ];
-        // Add only enough mocks to reach 3
-        const needed = 3 - relatedArticles.length;
-        relatedArticles.push(...mockRelated.slice(0, needed));
-    }
 
     return (
         <div className="min-h-screen">
@@ -110,8 +81,8 @@ export default function BlogDetailContent({ blog, relatedBlogs }: BlogDetailClie
 
                 {/* Content Grid */}
                 <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 mb-20">
-                    {/* Pass the constructed Author object to ArticleContent */}
-                    <ArticleContent author={authorValues} />
+                    {/* Pass the constructed Author object and the blog data to ArticleContent */}
+                    <ArticleContent author={authorValues} blog={blog} />
                     {/* Pass constructed ImpactStats and Tags to Sidebar */}
                     <Sidebar impact={impactValues} tags={blog.tags} />
                 </div>

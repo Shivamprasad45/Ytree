@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Allow_Notification } from "../Featuers/TreeOrder/TreeOrderSlice";
-import { CustomSubscription } from "../../../type";
+import { CustomSubscription } from "../../type";
 const PushNotifications: React.FC = () => {
   const dispatch = useDispatch();
   useEffect(() => {

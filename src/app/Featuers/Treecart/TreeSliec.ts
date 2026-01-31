@@ -1,6 +1,6 @@
 "use client";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TreeCart } from "../../../../type";
+import { TreeCart } from "../../../type";
 import { LocationData } from "@/lib/locationService";
 
 interface State {

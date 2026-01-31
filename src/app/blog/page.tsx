@@ -2,7 +2,7 @@ import React from "react";
 import Blog from "@/Models/BlogCollection";
 import DbConnect from "@/Utils/mongooesConnect";
 import BlogListClient from "./BlogListClient";
-import { IBlog } from "../../../type";
+import { IBlog } from "../../type";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";

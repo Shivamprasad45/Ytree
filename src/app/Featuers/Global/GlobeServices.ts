@@ -1,6 +1,6 @@
 // services/authApi.ts
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { All_Users, Coordinate } from "../../../../type";
+import { All_Users, Coordinate } from "../../../type";
 
 // Define a service using a base URL and expected endpoints
 export const GlobelApi = createApi({

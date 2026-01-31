@@ -65,31 +65,53 @@
     --radius: 0.5rem;
   }
 
+  /* Keyboard Navigation Focus Styles for Accessibility */
+  *:focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  a:focus-visible,
+  button:focus-visible {
+    outline: 3px solid hsl(var(--primary));
+    outline-offset: 3px;
+  }
+
+  /* Ensure sufficient color contrast */
+  .text-sage {
+    color: hsl(120, 10%, 35%); /* Improved contrast ratio */
+  }
+
+  .dark .text-sage {
+    color: hsl(80, 25%, 75%);
+  }
 }
+
 .Image {
   background-image: url('https://i.ibb.co/gRj1LQq/Firefly-Beautiful-cozy-fantasy-stone-cottage-in-a-spring-forest-aside-a-cobblestone-path-and-a-babbl.jpg');
-  background-size: cover; /* Ensures the image covers the entire div */
-  background-position: center; /* Centers the image */
-  width: 100%; /* Ensures the div takes up the full width */
-  height: 30vh; /* Sets the height to 40% of the viewport height for smaller screens */
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 30vh;
 }
 
 /* Media query for medium and larger screens */
 @media (min-width: 768px) {
   .Image {
-    background-size: cover; /* Ensures the image covers the entire div */
-  background-position: center; /* Centers the image */
-  width: 100%;
-      height: 30vh; /* Sets the height to 50% of the viewport height for medium and larger screens */
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 30vh;
   }
 }
 
 @media (min-width: 668px) {
   .Image {
-    background-size: cover; /* Ensures the image covers the entire div */
-  background-position: center; /* Centers the image */
-  width: 100%;
-      height: 30vh; /* Sets the height to 50% of the viewport height for medium and larger screens */
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 30vh;
   }
 }
 

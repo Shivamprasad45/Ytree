@@ -2,8 +2,9 @@ import cart from "@/Models/Cartmodel";
 import Order from "@/Models/CheckoutSchema";
 import DbConnect from "@/Utils/mongooesConnect";
 import { NextRequest, NextResponse } from "next/server";
-import { InMytrees, TreeCarts } from "../../../../../type";
+import { InMytrees, TreeCarts } from "../../../../type";
 import Mytree from "@/Models/Mytree";
+import PlantationTask from "@/Models/PlantationTask";
 import shortid from "shortid";
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
@@ -36,10 +37,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       }
     });
 
-    // Check if no data was found
-    if (treeData.length === 0) {
-      return NextResponse.json({
-        error: "Data not save",
+    // Create Plantation Task if an NGO is assigned
+    if (data.assignedNGO) {
+      await PlantationTask.create({
+        assignedBuyer: data.plants[0].UserId,
+        assignedNGO: data.assignedNGO,
+        orderId: data.Orderid,
+        plants: data.plants,
+        status: "assigned",
       });
     }
 

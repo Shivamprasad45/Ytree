@@ -22,15 +22,17 @@ const Sidebar: React.FC<SidebarProps> = ({ impact, tags }) => {
                     </div>
 
                     <div className="space-y-6">
-                        <div>
-                            <div className="flex items-baseline justify-between">
-                                <span className="font-display text-4xl font-bold text-slate-900">{impact.hectares.toLocaleString()}</span>
-                                <span className="text-sm font-medium text-vanagrow-accent">Hectares Protected</span>
+                        {impact.hectares > 0 && (
+                            <div>
+                                <div className="flex items-baseline justify-between">
+                                    <span className="font-display text-4xl font-bold text-slate-900">{impact.hectares.toLocaleString()}</span>
+                                    <span className="text-sm font-medium text-vanagrow-accent">Hectares Protected</span>
+                                </div>
+                                <div className="mt-3 h-2.5 w-full rounded-full bg-slate-100">
+                                    <div className="h-full rounded-full bg-primary" style={{ width: '85%' }} />
+                                </div>
                             </div>
-                            <div className="mt-3 h-2.5 w-full rounded-full bg-slate-100">
-                                <div className="h-full rounded-full bg-primary" style={{ width: '85%' }} />
-                            </div>
-                        </div>
+                        )}
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="rounded-xl bg-vanagrow-light p-4">

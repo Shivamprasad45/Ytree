@@ -29,6 +29,26 @@ const nextConfig = {
           },
         ],
       },
+      {
+        // Cache static assets
+        source: "/:all*(svg|jpg|jpeg|png|gif|ico|webp)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        // Cache fonts
+        source: "/:all*(woff|woff2|ttf|otf|eot)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
     ];
   },
   images: {
@@ -49,11 +69,18 @@ const nextConfig = {
       "media.istockphoto.com",
       "placehold.co",
       "lh3.googleusercontent.com",
+      "m.media-amazon.com",
     ],
+    formats: ["image/avif", "image/webp"],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60,
   },
+  compress: true,
   experimental: {
     missingSuspenseWithCSRBailout: false,
   },
+  poweredByHeader: false,
 };
 
 export default nextConfig;

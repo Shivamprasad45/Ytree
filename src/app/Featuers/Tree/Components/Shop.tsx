@@ -8,7 +8,7 @@ import { Heart, Search, Leaf, MapPin, IndianRupee } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { TreeInfo } from "../../../../../type";
+import { TreeInfo } from "../../../../type";
 
 export default function Shop() {
   const [trees, setTrees] = useState<TreeInfo[]>([]);

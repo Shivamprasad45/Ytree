@@ -14,7 +14,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { useSession } from "next-auth/react";
-import { TreeCart, TreeInfo } from "../../../type";
+import { TreeCart, TreeInfo } from "../../type";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Droplet, Leaf, MapPin, Sun } from "lucide-react";

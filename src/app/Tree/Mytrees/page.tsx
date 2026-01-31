@@ -17,7 +17,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { MapPinIcon, TreePine, Leaf, AlertCircle } from "lucide-react";
 import Loading from "@/app/Loading/Loading";
 import { EmptyState } from "./Components/empty-state";
-import { IPlantProfile } from "../../../../type";
+import { IPlantProfile } from "../../../type";
 import { TreeCard } from "./Components/tree-card";
 import { TreeCoordCard } from "./Components/tree-coord-card";
 

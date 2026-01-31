@@ -5,7 +5,6 @@ import Google from "next-auth/providers/google";
 import { compare } from "bcryptjs";
 import DbConnect from "./Utils/mongooesConnect";
 import { User } from "./Models/SignupModel";
-import { ReferralTemp } from "./Models/ReferralTempModel";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -115,31 +114,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           const { email, name, image, id } = user;
           await DbConnect();
 
+          // Get reliable data from cookies (set on the frontend in Login.tsx)
+          const { cookies } = await import("next/headers");
+          const cookieStore = cookies();
+
+          const selectedRole = cookieStore.get("selected_role")?.value?.toUpperCase() || "USER";
+          const referralCode = cookieStore.get("referral_code")?.value || null;
+
           const existingUser = await User.findOne({ email });
-          let referralCode = null;
-
-          // Get the latest stored temp email from localStorage (via an API call)
-          // For demonstration, we'll query for any recent referral record
-          const tempRecord = await ReferralTemp.findOne({
-            createdAt: { $gte: new Date(Date.now() - 5 * 60 * 1000) }, // Last 5 minutes
-          })
-            .sort({ createdAt: -1 })
-            .limit(1);
-
-          if (tempRecord) {
-            referralCode = tempRecord.referralCode;
-            // Update the record with the real email
-            await ReferralTemp.findByIdAndUpdate(tempRecord._id, {
-              email: email,
-            });
-          }
 
           if (!existingUser) {
             await User.create({
               email,
               firstName: name?.trim().split(" ")[0] || "",
               lastName: name?.trim().split(" ")[1] || "",
-              role: "user",
+              role: selectedRole,
               image,
               authProviderId: id,
               referralCode: Math.random().toString(36).substring(2, 10),
@@ -151,6 +140,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 { referralCode },
                 { $inc: { referredUsers: 1 } }
               );
+            }
+          } else {
+            // Update role if it's different to honor the current selection
+            if (existingUser.role !== selectedRole) {
+              existingUser.role = selectedRole;
+              await existingUser.save();
             }
           }
 

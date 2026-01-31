@@ -27,7 +27,7 @@ import {
   useGetALL_coordsMutation,
   useGetAll_usersMutation,
 } from "../Featuers/Global/GlobeServices";
-import { Coordinate, All_Users } from "../../../type";
+import { Coordinate, All_Users } from "../../type";
 import { toast } from "sonner";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { indiaStatesGeoJson } from "./Anothers/GeoJson";
@@ -114,9 +114,8 @@ function MapUpdater({
               <h3 class="text-base font-semibold text-gray-900 truncate">
                 ${coord.commonName ?? coord.name}
               </h3>
-              <p class="text-xs text-gray-500 truncate">${
-                coord.Plant_Addresses
-              }</p>
+              <p class="text-xs text-gray-500 truncate">${coord.Plant_Addresses
+          }</p>
             </div>
       
             <!-- Conservationist Info -->
@@ -126,11 +125,10 @@ function MapUpdater({
                   d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
               <span class="text-xs font-medium text-gray-700">Conservationist:</span>
-              ${
-                userName
-                  ? `<span class="text-green-600 text-xs font-semibold">${userName.firstName} ${userName.lastName}</span>`
-                  : `<span class="text-red-500 text-xs font-semibold">Unassigned</span>`
-              }
+              ${userName
+            ? `<span class="text-green-600 text-xs font-semibold">${userName.firstName} ${userName.lastName}</span>`
+            : `<span class="text-red-500 text-xs font-semibold">Unassigned</span>`
+          }
             </div>
           </div>
         </div>
@@ -503,9 +501,8 @@ export default function Component() {
     if (stateData) {
       layer.bindPopup(`
         <div class="p-2">
-          <h3 class="font-bold text-sm" style="color: ${
-            getColorByTreesPerPerson(stateData.treesPerPerson).stroke
-          }">
+          <h3 class="font-bold text-sm" style="color: ${getColorByTreesPerPerson(stateData.treesPerPerson).stroke
+        }">
             ${stateData.state}
           </h3>
           <p class="text-xs">

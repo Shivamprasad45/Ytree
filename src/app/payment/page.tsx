@@ -13,11 +13,12 @@ import {
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/components/ui/use-toast";
-import { Loader2, ShoppingCart, CreditCard } from "lucide-react";
+import { Loader2, ShoppingCart, CreditCard, Leaf, ShieldCheck } from "lucide-react";
 import { cartDataSelector } from "../Featuers/Treecart/TreeSliec";
 import { Before_PlantOrder_Selector } from "../Featuers/TreeOrder/TreeOrderSlice";
 import { useSave_plants_OrderMutation } from "../Featuers/TreeOrder/TreeOrderServices";
-import { Plant_order } from "../../../type";
+import { Plant_order } from "../../type";
+import NgoSelection from "../Components/NgoSelection";
 
 declare global {
   interface Window {
@@ -54,6 +55,15 @@ export default function Payment() {
       toast({
         title: "Error",
         description: "Payment gateway is not ready. Please try again.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!plant_order?.assignedNGO) {
+      toast({
+        title: "NGO Not Selected",
+        description: "Please select a verified NGO to handle your tree plantation.",
         variant: "destructive",
       });
       return;
@@ -186,11 +196,23 @@ export default function Payment() {
           <span>₹{Total_Cart_price.toFixed(2)}</span>
         </div>
       </CardContent>
-      <CardFooter>
+
+      <div className="px-6 pb-6">
+        <NgoSelection />
+      </div>
+
+      <CardFooter className="flex flex-col gap-4">
+        {!plant_order?.assignedNGO && (
+          <div className="w-full p-3 bg-red-50 rounded-xl border border-red-100 flex items-center gap-3 text-red-700 text-xs font-bold animate-in slide-in-from-bottom-2">
+            <ShieldCheck className="w-4 h-4" />
+            Verification required: Choose an NGO to proceed.
+          </div>
+        )}
         <Button
-          className="w-full h-12 text-lg"
+          className={`w-full h-12 text-lg font-black transition-all duration-300 ${!plant_order?.assignedNGO ? "bg-gray-200 text-gray-400" : "bg-green-600 hover:bg-green-700 shadow-lg shadow-green-100"
+            }`}
           onClick={handlePayment}
-          disabled={loading}
+          disabled={loading || !plant_order?.assignedNGO}
         >
           {loading ? (
             <>

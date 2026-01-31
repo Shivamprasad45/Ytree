@@ -1,12 +1,98 @@
-
 import React from 'react';
 import { Author } from './types';
+import { IBlog, ISection, ISubsection } from '@/type';
+import GoogleAds from '../Home/GoogleAds';
+import Image from 'next/image';
+import Link from 'next/link';
 
 interface ArticleContentProps {
     author: Author;
+    blog: IBlog;
 }
 
-const ArticleContent: React.FC<ArticleContentProps> = ({ author }) => {
+const SubsectionCard: React.FC<{ subsection: ISubsection }> = ({ subsection }) => {
+    return (
+        <div className="mt-8 pl-6 border-l-2 border-vanagrow-border/50">
+            <h3 className="text-2xl font-bold text-slate-800 mb-4">{subsection.title}</h3>
+            {subsection.imageUrl && (
+                <div className="relative aspect-video w-full overflow-hidden rounded-xl mb-6">
+                    <Image
+                        src={subsection.imageUrl}
+                        alt={subsection.title}
+                        fill
+                        className="object-cover"
+                    />
+                </div>
+            )}
+            {subsection.youtubeUrl && (
+                <div className="relative aspect-video w-full overflow-hidden rounded-xl mb-6">
+                    <iframe
+                        src={subsection.youtubeUrl.replace("watch?v=", "embed/")}
+                        title={subsection.title}
+                        className="absolute inset-0 h-full w-full border-0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                    ></iframe>
+                </div>
+            )}
+            <div
+                className="text-slate-700 text-lg leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: subsection.content }}
+            />
+        </div>
+    );
+};
+
+const SectionCard: React.FC<{ section: ISection; index: number }> = ({ section, index }) => {
+    return (
+        <div className="mt-12">
+            <h2 className="text-3xl font-bold text-slate-900 mb-6">{section.title}</h2>
+
+            {section.imageUrl && (
+                <div className="relative aspect-video w-full overflow-hidden rounded-2xl mb-8">
+                    <Image
+                        src={section.imageUrl}
+                        alt={section.title}
+                        fill
+                        className="object-cover"
+                    />
+                </div>
+            )}
+
+            {section.youtubeUrl && (
+                <div className="relative aspect-video w-full overflow-hidden rounded-2xl mb-8 shadow-lg">
+                    <iframe
+                        src={section.youtubeUrl.replace("watch?v=", "embed/")}
+                        title={section.title}
+                        className="absolute inset-0 h-full w-full border-0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                    ></iframe>
+                </div>
+            )}
+
+            <div
+                className="text-slate-700 text-xl leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: section.content }}
+            />
+
+            {section.subsections && section.subsections.length > 0 && (
+                <div className="mt-8 space-y-10">
+                    {section.subsections
+                        .sort((a: ISubsection, b: ISubsection) => a.order - b.order)
+                        .map((sub: ISubsection) => (
+                            <SubsectionCard key={sub.id} subsection={sub} />
+                        ))}
+                </div>
+            )}
+
+            {/* Injected Ad after the first section if there are many */}
+            {index === 0 && <GoogleAds />}
+        </div>
+    );
+};
+
+const ArticleContent: React.FC<ArticleContentProps> = ({ author, blog }) => {
     return (
         <article className="lg:col-span-8">
             {/* Author Header */}
@@ -27,34 +113,55 @@ const ArticleContent: React.FC<ArticleContentProps> = ({ author }) => {
                 </div>
             </div>
 
-            {/* Body Text */}
+            {/* Subtitle if available */}
+            {blog.subtitle && (
+                <p className="mb-8 text-2xl font-medium text-slate-600 italic leading-relaxed">
+                    {blog.subtitle}
+                </p>
+            )}
+
+            {/* Featured Video if available */}
+            {blog.featuredVideo && (
+                <div className="mb-10 relative aspect-video w-full overflow-hidden rounded-2xl shadow-xl">
+                    <iframe
+                        src={blog.featuredVideo.replace("watch?v=", "embed/")}
+                        title={blog.title}
+                        className="absolute inset-0 h-full w-full border-0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                    ></iframe>
+                </div>
+            )}
+
+            {/* Main Content (Rich Text) */}
             <div className="prose prose-lg prose-slate max-w-none prose-headings:font-display prose-headings:font-bold prose-p:font-display prose-p:text-xl prose-p:leading-relaxed prose-p:text-slate-700">
-                The Amazon basin, often called the lungs of the Earth, is undergoing a transformation that goes beyond mere recovery. For the past twelve months, Vanagrow has partnered with local indigenous communities to pioneer a regenerative reforestation model that doesn&apos;t just plant trees, but restores entire ecosystems.
+                <div dangerouslySetInnerHTML={{ __html: blog.content }} />
 
-                <h2 className="mt-12 text-3xl text-slate-900">Beyond Reforestation: Regeneration</h2>
-                <p>
-                    Unlike traditional monoculture planting, our &quot;Biodiverse Nucleus&quot; method involves planting 40 different native species simultaneously. This mimics the natural succession of the jungle, allowing the forest to become self-sustaining in record time. In the Xingu region alone, we&apos;ve successfully established 5,400 hectares of protected buffer zones.
-                </p>
-
-                <blockquote className="my-12 rounded-r-xl border-l-4 border-primary bg-primary/5 py-8 pl-10 pr-6 italic text-vanagrow-dark not-italic">
-                    <span className="text-2xl font-medium leading-snug">
-                        &quot;The goal isn&apos;t just to replace what was lost, but to create a thriving corridor for species like the Jaguar and the Harpy Eagle to return to their ancestral homes.&quot;
-                    </span>
-                </blockquote>
-
-                Community involvement remains the bedrock of this success. By employing 400 local residents as &quot;Guardian Seeders,&quot; we&apos;ve ensured that the economic benefits of restoration directly support those who protect the land. This year, seed collection programs have generated over $250k in local revenue, proving that conservation is a viable economic path.
-
-                <h2 className="mt-12 text-3xl text-slate-900">Tracking Our Progress</h2>
-                <p>
-                    Through advanced satellite monitoring and ground-level bio-acoustic sensors, we track more than just tree height. We track bird songs, insect diversity, and soil carbon sequestration rates. The results are clear: the Amazon is breathing again.
-                </p>
+                {blog.sections && blog.sections.length > 0 && (
+                    <div className="mt-12 space-y-16">
+                        {blog.sections
+                            .sort((a: ISection, b: ISection) => a.order - b.order)
+                            .map((section: ISection, index: number) => (
+                                <SectionCard key={section.id} section={section} index={index} />
+                            ))}
+                    </div>
+                )}
             </div>
+
+            {/* Ad at the bottom of content */}
+            {(!blog.sections || blog.sections.length === 0) && <GoogleAds />}
 
             {/* Share Actions */}
             <div className="mt-16 flex flex-col gap-4 border-y border-vanagrow-border py-10">
                 <span className="font-display text-lg font-bold text-slate-900">Share this milestone</span>
                 <div className="flex gap-4">
-                    <button className="flex items-center gap-2 rounded-lg bg-slate-900 px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-black">
+                    <button
+                        onClick={() => {
+                            navigator.clipboard.writeText(window.location.href);
+                            alert("Link copied to clipboard!");
+                        }}
+                        className="flex items-center gap-2 rounded-lg bg-slate-900 px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-black"
+                    >
                         <span className="material-symbols-outlined text-sm">link</span>
                         Copy Link
                     </button>
@@ -79,9 +186,9 @@ const ArticleContent: React.FC<ArticleContentProps> = ({ author }) => {
                         <span className="font-display text-xl font-bold text-slate-900">About the Author</span>
                         <p className="mt-1 font-semibold text-slate-900">{author.name}</p>
                         <p className="mt-2 text-slate-600 leading-relaxed">{author.bio}</p>
-                        <a href="#" className="mt-4 inline-flex items-center gap-1 font-bold text-primary transition-colors hover:underline">
+                        <Link href="/blog" className="mt-4 inline-flex items-center gap-1 font-bold text-primary transition-colors hover:underline">
                             View all posts <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

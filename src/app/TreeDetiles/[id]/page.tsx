@@ -2,7 +2,7 @@ import Tree_details from "@/app/Components/tree_details";
 import { Metadata } from "next";
 
 import React from "react";
-import { TreeInfo } from "../../../../type";
+import { TreeInfo } from "../../../type";
 
 export async function generateMetadata({
   params,

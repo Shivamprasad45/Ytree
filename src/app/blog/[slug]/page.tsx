@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Blog from "@/Models/BlogCollection";
 import DbConnect from "@/Utils/mongooesConnect";
 import BlogDetailClient from "./BlogDetailContent";
-import { IBlog } from "../../../../type";
+import { IBlog } from "@/type";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";

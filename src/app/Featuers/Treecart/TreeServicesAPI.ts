@@ -5,7 +5,7 @@ import {
   TreeCarts,
   Update_Cart,
   UserMessage,
-} from "../../../../type";
+} from "../../../type";
 import { toast } from "sonner";
 // Corrected import name if there's a typo
 import { Treecartdata } from "./TreeSliec";

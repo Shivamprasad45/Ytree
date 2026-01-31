@@ -7,7 +7,7 @@ import {
   Plant_coords,
   Plant_order,
   UserMessage,
-} from "../../../../type";
+} from "../../../type";
 import { MyTrees_Dis, setReferred } from "./TreeOrderSlice";
 import { toast } from "sonner";
 

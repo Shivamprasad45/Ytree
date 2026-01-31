@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IBlog } from "../../../../type";
+import { IBlog } from "../../../type";
 
 interface BlogsResponse {
     success: boolean;

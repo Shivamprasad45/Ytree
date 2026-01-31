@@ -162,6 +162,7 @@ const Navbar = () => {
             </DropdownMenu>
 
             <NavLink href="/how-it-works" icon={<Lightbulb className="w-4 h-4" />} label="How it Works" active={pathname === "/how-it-works"} />
+            <NavLink href="/dashboard" icon={<Grid className="w-4 h-4" />} label="Dashboard" active={pathname === "/dashboard"} />
           </div>
         </div>
 
@@ -300,6 +301,7 @@ const Navbar = () => {
                     <MobileNavLink href="/affiliate-shop" icon={<Store />} label="Shop" onClick={() => setSheetOpen(false)} active={pathname === '/affiliate-shop'} />
                     <MobileNavLink href="/blog" icon={<Newspaper />} label="Blog" onClick={() => setSheetOpen(false)} active={pathname === '/blog'} />
                     <MobileNavLink href="/how-it-works" icon={<Lightbulb />} label="How it Works" onClick={() => setSheetOpen(false)} active={pathname === '/how-it-works'} />
+                    <MobileNavLink href="/dashboard" icon={<Grid />} label="Dashboard" onClick={() => setSheetOpen(false)} active={pathname === '/dashboard'} />
 
                     <div className="my-4 border-t border-border/40" />
                     <p className="text-xs font-semibold text-muted-foreground px-4 mb-2 uppercase tracking-wider">Services</p>

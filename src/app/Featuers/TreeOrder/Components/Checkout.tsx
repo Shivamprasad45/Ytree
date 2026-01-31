@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Loader2, ArrowLeft, ShoppingCart } from "lucide-react";
 import { Plant_Order_before } from "../TreeOrderSlice";
-import type { Plant_order } from "../../../../../type";
+import type { Plant_order } from "../../../../type";
 import { UserSelector } from "../../Auth/AuthSlice";
 import { useGetCartItemByIdQuery } from "../../Treecart/TreeServicesAPI";
 import Payment from "@/app/payment/page";

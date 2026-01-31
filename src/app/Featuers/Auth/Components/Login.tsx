@@ -1,38 +1,82 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
-import { Loader, Sprout } from "lucide-react";
+import { Loader, Sprout, User, Users, Building2, CheckCircle2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+const ROLES = [
+  {
+    id: "USER",
+    title: "User",
+    description: "Individual planting trees & viewing impact.",
+    icon: User,
+    color: "bg-blue-500/10 text-blue-600 border-blue-200",
+    activeColor: "ring-blue-500 bg-blue-50",
+  },
+  {
+    id: "NGO",
+    title: "NGO Partner",
+    description: "Plants, maintains, and uploads proof.",
+    icon: Users,
+    color: "bg-green-500/10 text-green-600 border-green-200",
+    activeColor: "ring-green-500 bg-green-50",
+  },
+  {
+    id: "CORPORATE",
+    title: "Corporate",
+    description: "Sponsors plantations & views dashboards.",
+    icon: Building2,
+    color: "bg-purple-500/10 text-purple-600 border-purple-200",
+    activeColor: "ring-purple-500 bg-purple-50",
+  },
+];
 
 export default function Login() {
   const { data: session } = useSession();
   const router = useRouter();
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<string | null>(null);
   const searchParams = useSearchParams();
+
+  useEffect(() => {
+    // Try to get role from localStorage if it exists
+    const savedRole = localStorage.getItem("userRole");
+    if (savedRole && ROLES.find(r => r.id === savedRole)) {
+      setSelectedRole(savedRole);
+    }
+  }, []);
 
   if (session?.user) {
     router.push("/");
   }
 
   const handleGoogleSignIn = async () => {
+    if (!selectedRole) {
+      toast.error("Please select a role first");
+      return;
+    }
+
     setIsGoogleLoading(true);
     try {
+      // Save selected role to localStorage
+      localStorage.setItem("userRole", selectedRole);
+
+      // Set cookies for the server to read during the auth callback
+      // Using a short expiry (5 minutes) and Lax SameSite for security/reliability
+      const cookieConfig = "path=/; max-age=300; SameSite=Lax";
+      document.cookie = `selected_role=${selectedRole}; ${cookieConfig}`;
+
       const referralCode = searchParams.get("referral");
       if (referralCode) {
-        const tempEmail = `temp_${Date.now()}@example.com`;
-        localStorage.setItem("tempEmail", tempEmail);
-        await fetch("/api/store-referral", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: tempEmail, referralCode }),
-        });
+        document.cookie = `referral_code=${referralCode}; ${cookieConfig}`;
       }
 
       await signIn("google", {
@@ -91,13 +135,47 @@ export default function Login() {
             <p className="text-muted-foreground">Enter your details regarding your account</p>
           </div>
 
-          <div className="grid gap-4 mt-4">
+          <div className="grid gap-4 mt-2">
+            <div className="text-sm font-semibold text-muted-foreground mb-1">Select Your Role:</div>
+            <div className="grid gap-3 mb-4">
+              {ROLES.map((role) => {
+                const Icon = role.icon;
+                const isSelected = selectedRole === role.id;
+                return (
+                  <button
+                    key={role.id}
+                    onClick={() => setSelectedRole(role.id)}
+                    className={cn(
+                      "flex items-center gap-4 p-4 rounded-2xl border-2 transition-all text-left group relative",
+                      isSelected
+                        ? cn("border-primary ring-2 ring-primary/20 bg-primary/5", role.activeColor)
+                        : "border-transparent bg-muted/30 hover:bg-muted/50"
+                    )}
+                  >
+                    <div className={cn("p-3 rounded-xl", role.color)}>
+                      <Icon className="w-6 h-6" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-bold text-sm">{role.title}</div>
+                      <div className="text-xs text-muted-foreground line-clamp-1">{role.description}</div>
+                    </div>
+                    {isSelected && (
+                      <CheckCircle2 className="w-5 h-5 text-primary absolute top-4 right-4 animate-in zoom-in duration-300" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
             {/* Google Sign In */}
             <Button
               variant="outline"
-              className="w-full flex items-center justify-center gap-3 h-12 text-base rounded-xl border-2 hover:bg-muted/50 transition-all"
+              className={cn(
+                "w-full flex items-center justify-center gap-3 h-14 text-base rounded-2xl border-2 transition-all font-bold",
+                !selectedRole ? "opacity-50 grayscale cursor-not-allowed" : "hover:bg-muted/50 border-primary/20"
+              )}
               onClick={handleGoogleSignIn}
-              disabled={isGoogleLoading}
+              disabled={isGoogleLoading || !selectedRole}
             >
               {isGoogleLoading ? (
                 <Loader className="mr-2 h-5 w-5 animate-spin" />
@@ -109,7 +187,7 @@ export default function Login() {
                   height={24}
                 />
               )}
-              Continue with Google
+              {selectedRole ? `Continue as ${ROLES.find(r => r.id === selectedRole)?.title.split(' ')[0]}` : "Select a Role to Continue"}
             </Button>
 
             <div className="relative">

@@ -5,11 +5,11 @@ import { ReferralTemp } from "@/Models/ReferralTempModel";
 
 export async function POST(req: NextRequest) {
   try {
-    const { email, referralCode } = await req.json();
+    const { email, referralCode, role } = await req.json();
 
-    if (!email || !referralCode) {
+    if (!email || !role) {
       return NextResponse.json(
-        { error: "Email and referral code required" },
+        { error: "Email and role are required" },
         { status: 400 }
       );
     }
@@ -18,15 +18,15 @@ export async function POST(req: NextRequest) {
 
     await ReferralTemp.findOneAndUpdate(
       { email },
-      { email, referralCode },
+      { email, referralCode, role },
       { upsert: true, new: true }
     );
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Error storing referral:", error);
+    console.error("Error storing session data:", error);
     return NextResponse.json(
-      { error: "Failed to store referral" },
+      { error: "Failed to store session data" },
       { status: 500 }
     );
   }

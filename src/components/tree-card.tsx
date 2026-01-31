@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { TreeInfo } from "../../type";
+import { TreeInfo } from "../type";
 // import type { TreeInfo } from "@/type"
 
 interface TreeCardProps {

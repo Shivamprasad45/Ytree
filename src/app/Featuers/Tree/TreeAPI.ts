@@ -1,5 +1,5 @@
 import axios from "axios";
-import { TreeInfo } from "../../../../type";
+import { TreeInfo } from "../../../type";
 
 export async function Plantsdetails(id: string): Promise<TreeInfo | null> {
   return new Promise<TreeInfo>(async (resolve, reject) => {

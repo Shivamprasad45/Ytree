@@ -5,7 +5,7 @@ import {
   CustomSubscription,
   IPlantProfile,
   Plant_order,
-} from "../../../../type";
+} from "../../../type";
 
 // Adjust the import path as necessary
 
@@ -46,6 +46,11 @@ const OrderSlice = createSlice({
     setReferred(state, action: PayloadAction<any>) {
       state.referred = action.payload;
     },
+    assignNGO(state, action: PayloadAction<string>) {
+      if (state.Order_before) {
+        state.Order_before.assignedNGO = action.payload;
+      }
+    },
   },
 });
 
@@ -56,6 +61,7 @@ export const {
   Plant_Order_before,
   Allow_Notification,
   setReferred,
+  assignNGO,
 } = OrderSlice.actions;
 
 export const MyTreesSelector = (state: { order: State }) =>

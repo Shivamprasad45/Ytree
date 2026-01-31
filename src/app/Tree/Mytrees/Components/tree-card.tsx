@@ -16,7 +16,8 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import Link from "next/link";
-import type { IPlantProfile } from "../../../../../type";
+import Image from "next/image";
+import type { IPlantProfile } from "../../../../type";
 
 interface TreeCardProps {
   tree: IPlantProfile;
@@ -71,11 +72,13 @@ export function TreeCard({ tree, getDaysOld }: TreeCardProps) {
 
   return (
     <Card className="overflow-hidden transition-all hover:shadow-md">
-      <div className="relative">
-        <img
+      <div className="relative h-48 w-full">
+        <Image
           src={tree.imageUrl || "/placeholder.svg"}
           alt={`${tree.name} tree`}
-          className="w-full h-48 object-cover"
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         <div
           className={`absolute top-3 right-3 ${getStatusColor()} px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5`}

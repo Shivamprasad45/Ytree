@@ -2,7 +2,8 @@ import mongoose, { Document, Model, Schema } from "mongoose";
 
 interface IReferralTemp extends Document {
   email: string;
-  referralCode: string;
+  referralCode?: string;
+  role: string;
   createdAt: Date;
 }
 
@@ -13,6 +14,10 @@ const ReferralTempSchema = new Schema<IReferralTemp>({
     index: true,
   },
   referralCode: {
+    type: String,
+    required: false,
+  },
+  role: {
     type: String,
     required: true,
   },

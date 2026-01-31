@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { TreeInfo } from "../../../../type";
+import { TreeInfo } from "../../../type";
 import { Plantsdetails } from "./TreeAPI";
 
 interface State {

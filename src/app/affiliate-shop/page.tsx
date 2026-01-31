@@ -2,7 +2,7 @@ import React from "react"; // Removed "use client"
 import Tree from "@/Models/TreeCollection";
 import DbConnect from "@/Utils/mongooesConnect";
 import AffiliateShopClient from "./AffiliateShopClient";
-import { TreeInfo } from "../../../type";
+import { TreeInfo } from "../../type";
 
 // Force dynamic rendering if we want fresh data on every request, 
 // or let Next.js cache it if we prefer static/ISR.

@@ -23,6 +23,7 @@ const plantOrderSchema = new Schema({
   Orderid: { type: String, required: true },
   plants: { type: [cartSchema], required: true },
   User_name: { type: String, required: true },
+  assignedNGO: { type: Schema.Types.ObjectId, ref: "User", required: false },
 });
 const Order =
   mongoose.models.Order || mongoose.model("Order", plantOrderSchema);

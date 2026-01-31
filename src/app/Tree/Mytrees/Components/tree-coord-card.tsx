@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Leaf, MapPin, AlertCircle } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface TreeCoordCardProps {
   coord: {
@@ -18,12 +19,14 @@ export function TreeCoordCard({ coord }: TreeCoordCardProps) {
     <Card className="overflow-hidden transition-all hover:shadow-md">
       <Link href={`/Tree/Aboutmytree/${coord.find_id}`} className="block">
         <div className="relative">
-          <div className="h-48 w-full overflow-hidden">
-            <img
+          <div className="h-48 w-full overflow-hidden relative">
+            <Image
               src={coord.imageURL || "/placeholder.svg"}
               alt={coord.name || "Tree image"}
-              className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+              fill
+              className="object-cover transition-transform duration-300 hover:scale-105"
               style={{ objectPosition: "center" }}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
 

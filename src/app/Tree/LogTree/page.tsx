@@ -8,7 +8,7 @@ import {
   Allow_Notification_Endpoints_Selector,
   Coords_Selector,
 } from "@/app/Featuers/TreeOrder/TreeOrderSlice";
-import { Enter_Plant_coords } from "../../../../type";
+import { Enter_Plant_coords } from "../../../type";
 import { useSave_plants_coordsMutation } from "@/app/Featuers/TreeOrder/TreeOrderServices";
 import PushNotifications from "@/app/lib/PushNoti";
 import { toast } from "sonner";

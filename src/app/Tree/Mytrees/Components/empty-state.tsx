@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { TreePine } from "lucide-react"
 import Link from "next/link"
 import MaxWidthRappers from "@/components/MaxWidthRapper"
+import Image from "next/image"
 
 export function EmptyState() {
   return (
@@ -17,9 +18,11 @@ export function EmptyState() {
             <p className="text-muted-foreground mb-6">
               You haven&apos;t planted any trees yet. Start your forest journey by planting your first tree.
             </p>
-            <img
+            <Image
               src="/placeholder.svg?height=200&width=300"
               alt="Empty forest illustration"
+              width={300}
+              height={200}
               className="mx-auto rounded-lg mb-6"
             />
           </CardContent>

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { Coordinate } from "../../../type";
+import { Coordinate } from "../../type";
 
 // Define your custom icon
 const customIcon = new L.Icon({

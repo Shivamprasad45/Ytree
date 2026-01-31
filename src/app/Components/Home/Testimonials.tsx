@@ -1,5 +1,6 @@
 
 import React from 'react';
+import Image from 'next/image';
 
 const Testimonials: React.FC = () => {
   const testimonials = [
@@ -24,35 +25,41 @@ const Testimonials: React.FC = () => {
   ];
 
   return (
-    <section className="bg-white py-24">
-      <div className="max-w-[1200px] mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-deep-forest text-4xl md:text-5xl font-black mb-4">What Our Community Says</h2>
-          <p className="text-sage text-lg max-w-2xl mx-auto font-medium">Real stories from the people making the reforestation of our planet possible every day.</p>
+    <section className="bg-white dark:bg-gray-900 py-16 sm:py-24">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-deep-forest dark:text-white text-3xl sm:text-4xl md:text-5xl font-black mb-4">What Our Community Says</h2>
+          <p className="text-sage dark:text-gray-300 text-base sm:text-lg max-w-2xl mx-auto font-medium">Real stories from the people making the reforestation of our planet possible every day.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-start">
           {testimonials.map((t, idx) => (
             <div
               key={idx}
-              className={`bg-background-light p-10 rounded-[2.5rem] border border-sage/10 shadow-sm transition-all hover:shadow-xl hover:-translate-y-1 ${idx === 1 ? 'md:-translate-y-6' : ''}`}
+              className={`bg-background-light dark:bg-gray-800 p-6 sm:p-10 rounded-[2.5rem] border border-sage/10 dark:border-gray-700 shadow-sm transition-all hover:shadow-xl hover:-translate-y-1 ${idx === 1 ? 'md:-translate-y-6' : ''}`}
             >
-              <div className="flex gap-1 text-primary mb-6">
+              <div className="flex gap-1 text-primary mb-6" role="img" aria-label="5 star rating">
                 {[...Array(5)].map((_, i) => (
                   <span key={i} className="material-symbols-outlined text-[20px] fill-current">star</span>
                 ))}
               </div>
-              <p className="text-deep-forest text-lg font-medium italic mb-10 leading-relaxed">
+              <p className="text-deep-forest dark:text-gray-200 text-base sm:text-lg font-medium italic mb-8 sm:mb-10 leading-relaxed">
                 &quot;{t.content}&quot;
               </p>
               <div className="flex items-center gap-4">
-                <div
-                  className="size-14 rounded-full bg-cover bg-center border-2 border-primary/20"
-                  style={{ backgroundImage: `url("${t.imageUrl}")` }}
-                ></div>
+                <div className="relative size-14 rounded-full border-2 border-primary/20 overflow-hidden flex-shrink-0">
+                  <Image
+                    src={t.imageUrl}
+                    alt={`${t.name} - ${t.role}`}
+                    fill
+                    className="object-cover"
+                    sizes="56px"
+                    loading="lazy"
+                  />
+                </div>
                 <div>
-                  <p className="font-bold text-deep-forest">{t.name}</p>
-                  <p className="text-sm text-sage font-medium">{t.role}</p>
+                  <p className="font-bold text-deep-forest dark:text-white">{t.name}</p>
+                  <p className="text-sm text-sage dark:text-gray-400 font-medium">{t.role}</p>
                 </div>
               </div>
             </div>

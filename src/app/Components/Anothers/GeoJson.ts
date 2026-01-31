@@ -1,6 +1,6 @@
 // import { GeoJsonData } from "@/types/map";
 
-import { GeoJsonData } from "../../../../type";
+import { GeoJsonData } from "../../../type";
 
 // This is a simplified version of India's states GeoJSON
 // In a real application, you would want a complete GeoJSON file with accurate borders

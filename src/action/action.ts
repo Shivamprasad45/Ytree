@@ -6,7 +6,7 @@ import DbConnect from "@/Utils/mongooesConnect";
 import { hash } from "bcryptjs";
 import { CredentialsSignin } from "next-auth";
 import { redirect } from "next/navigation";
-import { ContactFormData } from "../../type";
+import { ContactFormData } from "../type";
 import ContactForm from "@/Models/Contact";
 
 const login = async ({

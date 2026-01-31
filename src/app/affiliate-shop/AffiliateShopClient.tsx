@@ -6,7 +6,7 @@ import SearchFilters from '../Components/Affilate-shop/SearchFilters';
 import ProductGrid from '../Components/Affilate-shop/ProductGrid';
 import GeminiAssistant from '../Components/Affilate-shop/GeminiAssistant';
 import { ProductCategory } from '../Components/Affilate-shop/types';
-import { TreeInfo } from '../../../type'; // Updated to point to main type.ts
+import { TreeInfo } from '../../type'; // Updated to point to main type.ts
 
 
 interface AffiliateShopClientProps {
