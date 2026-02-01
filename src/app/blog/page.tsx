@@ -4,6 +4,7 @@ import DbConnect from "@/Utils/mongooesConnect";
 import BlogListClient from "./BlogListClient";
 import { IBlog } from "../../type";
 import type { Metadata } from "next";
+import GoogleAd from "../Components/GoogleAd";
 
 export const dynamic = "force-dynamic";
 
@@ -55,5 +56,11 @@ async function getBlogs() {
 export default async function BlogPage() {
     const { blogs, categories, tags } = await getBlogs();
 
-    return <BlogListClient initialBlogs={blogs} categories={categories} tags={tags} />;
+    return (
+        <div className="container mx-auto px-4 py-8">
+            <GoogleAd slotId="8932948273" className="mb-6" />
+            <BlogListClient initialBlogs={blogs} categories={categories} tags={tags} />
+            <GoogleAd slotId="8932948273" className="mt-8" />
+        </div>
+    );
 }

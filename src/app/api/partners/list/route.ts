@@ -42,6 +42,7 @@ export async function GET() {
                 }
             }
         ]);
+        console.log(partners)
 
         return NextResponse.json({
             success: true,

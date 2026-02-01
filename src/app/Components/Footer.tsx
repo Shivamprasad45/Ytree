@@ -33,9 +33,9 @@ const Footer: React.FC = () => {
             </a>
 
             <a
-              href="tel:+911234567890"
+              href="tel:+918303367981"
               className="flex items-start gap-3 p-4 bg-white dark:bg-gray-800 rounded-xl hover:shadow-md transition-all group"
-              aria-label="Call us at +91 123 456 7890"
+              aria-label="Call us"
             >
               <Phone className="w-5 h-5 text-primary mt-0.5 group-hover:scale-110 transition-transform" />
               <div>
@@ -78,7 +78,7 @@ const Footer: React.FC = () => {
               <h2 className="text-2xl font-black tracking-tight">Vanagrow</h2>
             </div>
             <p className="text-sage dark:text-gray-400 max-w-xs leading-relaxed text-base sm:text-lg mb-8 sm:mb-10 font-medium">
-              Empowering consumers to restore the earth&apos;s vital ecosystems through sustainable shopping and transparent reforestation.
+              Empowering individuals and businesses to restore the earth&apos;s vital ecosystems through sustainable planting and transparent impact.
             </p>
 
             {/* Trust Badges */}
@@ -126,10 +126,10 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="font-bold text-base sm:text-lg mb-6 sm:mb-8 text-deep-forest dark:text-white">Platform</h4>
             <ul className="flex flex-col gap-4 sm:gap-5 text-sage dark:text-gray-400 text-sm sm:text-base font-medium">
-              <li><Link className="hover:text-primary transition-colors inline-block" href="/shop">Browse Products</Link></li>
-              <li><Link className="hover:text-primary transition-colors inline-block" href="/Tree/Global">Planting Sites</Link></li>
-              <li><Link className="hover:text-primary transition-colors inline-block" href="/Tree/Global">The Forest Map</Link></li>
-              <li><Link className="hover:text-primary transition-colors inline-block" href="/Planted">Leaderboard</Link></li>
+              <li><Link className="hover:text-primary transition-colors inline-block" href="/Tree/Shop">Plant Trees</Link></li>
+              <li><Link className="hover:text-primary transition-colors inline-block" href="/partners">Partners</Link></li>
+              <li><Link className="hover:text-primary transition-colors inline-block" href="/Tree/Global">Global Map</Link></li>
+              <li><Link className="hover:text-primary transition-colors inline-block" href="/dashboard">My Forest</Link></li>
             </ul>
           </div>
 
@@ -137,9 +137,9 @@ const Footer: React.FC = () => {
             <h4 className="font-bold text-base sm:text-lg mb-6 sm:mb-8 text-deep-forest dark:text-white">Company</h4>
             <ul className="flex flex-col gap-4 sm:gap-5 text-sage dark:text-gray-400 text-sm sm:text-base font-medium">
               <li><Link className="hover:text-primary transition-colors inline-block" href="/About">Our Story</Link></li>
-              <li><Link className="hover:text-primary transition-colors inline-block" href="/blog">Impact Report</Link></li>
               <li><Link className="hover:text-primary transition-colors inline-block" href="/how-it-works">How It Works</Link></li>
-              <li><Link className="hover:text-primary transition-colors inline-block" href="/blog">Press Kit</Link></li>
+              <li><Link className="hover:text-primary transition-colors inline-block" href="/blog">Blog & Impact</Link></li>
+              <li><Link className="hover:text-primary transition-colors inline-block" href="/Contact">Contact Us</Link></li>
             </ul>
           </div>
 
@@ -147,18 +147,19 @@ const Footer: React.FC = () => {
             <h4 className="font-bold text-base sm:text-lg mb-6 sm:mb-8 text-deep-forest dark:text-white">Support</h4>
             <ul className="flex flex-col gap-4 sm:gap-5 text-sage dark:text-gray-400 text-sm sm:text-base font-medium">
               <li><Link className="hover:text-primary transition-colors inline-block" href="/Contact">Help Center</Link></li>
-              <li><Link className="hover:text-primary transition-colors inline-block" href="/Planted">Track My Tree</Link></li>
-              <li><Link className="hover:text-primary transition-colors inline-block" href="/Contact">Contact Us</Link></li>
+              <li><Link className="hover:text-primary transition-colors inline-block" href="/Terms">Terms of Service</Link></li>
               <li><Link className="hover:text-primary transition-colors inline-block" href="/PrivacyPolicy">Privacy Policy</Link></li>
+              <li><Link className="hover:text-primary transition-colors inline-block" href="/refund">Refund Policy</Link></li>
             </ul>
           </div>
         </div>
 
         <div className="pt-8 border-t border-sage/10 dark:border-gray-800 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6 text-sage dark:text-gray-400 text-xs sm:text-sm font-semibold">
-          <p className="text-center sm:text-left">© 2024 Vanagrow Foundation. All rights reserved. Reforesting the world, one purchase at a time.</p>
+          <p className="text-center sm:text-left">© {new Date().getFullYear()} Vanagrow Foundation. All rights reserved.</p>
           <div className="flex gap-6 sm:gap-10">
-            <Link className="hover:text-deep-forest dark:hover:text-white transition-colors" href="/Terms">Terms of Service</Link>
-            <Link className="hover:text-deep-forest dark:hover:text-white transition-colors" href="/refund">Cookie Settings</Link>
+            <Link className="hover:text-deep-forest dark:hover:text-white transition-colors" href="/Terms">Terms</Link>
+            <Link className="hover:text-deep-forest dark:hover:text-white transition-colors" href="/PrivacyPolicy">Privacy</Link>
+            <Link className="hover:text-deep-forest dark:hover:text-white transition-colors" href="/refund">Cookies</Link>
           </div>
         </div>
       </div>

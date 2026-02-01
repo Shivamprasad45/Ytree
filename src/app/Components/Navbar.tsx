@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { signOut, useSession } from "next-auth/react";
 import { useGetCartItemByIdQuery } from "../Featuers/Treecart/TreeServicesAPI";
 import { setUserInfo, UserSelector } from "../Featuers/Auth/AuthSlice";
-import { menuItems } from "./lefttab";
 
 import {
   Sheet,
@@ -21,7 +20,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -35,15 +33,15 @@ import {
   Menu,
   ShoppingBasket,
   LogOut,
-  ChevronDown,
   Home,
   Users,
-  Store,
-  Newspaper,
   Lightbulb,
   Grid,
   Leaf,
-  UserCircle
+  UserCircle,
+  TreePine,
+  Handshake,
+  LayoutDashboard
 } from "lucide-react";
 
 const Navbar = () => {
@@ -91,6 +89,14 @@ const Navbar = () => {
 
   const totalCartItems = cartdata?.reduce((a, b) => a + b.quantity, 0) || 0;
 
+  const navLinks = [
+    { href: "/", label: "Home", icon: <Home className="w-4 h-4" /> },
+    { href: "/Tree/Shop", label: "Plant Trees", icon: <TreePine className="w-4 h-4" /> },
+    { href: "/partners", label: "Partners", icon: <Handshake className="w-4 h-4" /> },
+    { href: "/About", label: "About", icon: <Users className="w-4 h-4" /> },
+    { href: "/how-it-works", label: "How it Works", icon: <Lightbulb className="w-4 h-4" /> },
+  ];
+
   return (
     <nav
       className={`sticky top-0 z-50 transition-all duration-300 ${scrolled
@@ -125,44 +131,19 @@ const Navbar = () => {
         {/* Center Section: Navigation */}
         <div className="hidden lg:flex items-center bg-muted/40 rounded-full px-6 py-2 border border-border/50 backdrop-blur-sm">
           <div className="flex items-center gap-1">
-            <NavLink href="/" icon={<Home className="w-4 h-4" />} label="Home" active={pathname === "/"} />
-            <NavLink href="/About" icon={<Users className="w-4 h-4" />} label="About" active={pathname === "/About"} />
-            <NavLink href="/affiliate-shop" icon={<Store className="w-4 h-4" />} label="Shop" active={pathname === "/affiliate-shop"} />
-            <NavLink href="/blog" icon={<Newspaper className="w-4 h-4" />} label="Blog" active={pathname === "/blog"} />
-
-            {/* Services Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="gap-1.5 px-3 py-1.5 rounded-full text-muted-foreground hover:text-primary hover:bg-muted font-medium transition-all"
-                >
-                  <Grid className="w-4 h-4" />
-                  Services <ChevronDown className="h-3 w-3 opacity-50" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="center" className="w-56 p-2 rounded-xl border-border/60 shadow-lg bg-background/95 backdrop-blur-md">
-                {menuItems
-                  .filter((item) => item.id !== 6)
-                  .map((item) => (
-                    <DropdownMenuItem key={item.id} asChild className="rounded-lg focus:bg-primary/10 focus:text-primary cursor-pointer">
-                      <Link
-                        href={item.path}
-                        className="flex items-center gap-3 py-2"
-                      >
-                        <div className="p-1.5 rounded-md bg-muted text-foreground">
-                          {React.cloneElement(item.icon, { className: "h-4 w-4" })}
-                        </div>
-                        <span className="font-medium">{item.label}</span>
-                      </Link>
-                    </DropdownMenuItem>
-                  ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            <NavLink href="/how-it-works" icon={<Lightbulb className="w-4 h-4" />} label="How it Works" active={pathname === "/how-it-works"} />
-            <NavLink href="/dashboard" icon={<Grid className="w-4 h-4" />} label="Dashboard" active={pathname === "/dashboard"} />
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.href}
+                href={link.href}
+                icon={link.icon}
+                label={link.label}
+                active={pathname === link.href}
+              />
+            ))}
+            {/* Show Dashboard only if logged in */}
+            {user?.email && (
+              <NavLink href="/dashboard" icon={<LayoutDashboard className="w-4 h-4" />} label="My Forest" active={pathname === "/dashboard"} />
+            )}
           </div>
         </div>
 
@@ -226,6 +207,11 @@ const Navbar = () => {
                 <DropdownMenuItem asChild className="rounded-lg cursor-pointer">
                   <Link href="/Tree/Mytrees" className="flex items-center gap-2">
                     <Leaf className="w-4 h-4" /> My Trees
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="rounded-lg cursor-pointer">
+                  <Link href="/dashboard" className="flex items-center gap-2">
+                    <Grid className="w-4 h-4" /> Dashboard
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
@@ -296,30 +282,25 @@ const Navbar = () => {
 
                   {/* Mobile Links */}
                   <div className="flex-1 space-y-1 overflow-y-auto pr-2">
-                    <MobileNavLink href="/" icon={<Home />} label="Home" onClick={() => setSheetOpen(false)} active={pathname === '/'} />
-                    <MobileNavLink href="/About" icon={<Users />} label="About" onClick={() => setSheetOpen(false)} active={pathname === '/About'} />
-                    <MobileNavLink href="/affiliate-shop" icon={<Store />} label="Shop" onClick={() => setSheetOpen(false)} active={pathname === '/affiliate-shop'} />
-                    <MobileNavLink href="/blog" icon={<Newspaper />} label="Blog" onClick={() => setSheetOpen(false)} active={pathname === '/blog'} />
-                    <MobileNavLink href="/how-it-works" icon={<Lightbulb />} label="How it Works" onClick={() => setSheetOpen(false)} active={pathname === '/how-it-works'} />
-                    <MobileNavLink href="/dashboard" icon={<Grid />} label="Dashboard" onClick={() => setSheetOpen(false)} active={pathname === '/dashboard'} />
-
-                    <div className="my-4 border-t border-border/40" />
-                    <p className="text-xs font-semibold text-muted-foreground px-4 mb-2 uppercase tracking-wider">Services</p>
-                    {menuItems
-                      .filter((item) => item.id !== 6)
-                      .map((item) => (
-                        <Link
-                          key={item.id}
-                          href={item.path}
-                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/60 transition-colors text-foreground/80 hover:text-primary"
-                          onClick={() => setSheetOpen(false)}
-                        >
-                          {React.cloneElement(item.icon, {
-                            className: "h-5 w-5",
-                          })}
-                          <span className="font-medium">{item.label}</span>
-                        </Link>
-                      ))}
+                    {navLinks.map((link) => (
+                      <MobileNavLink
+                        key={link.href}
+                        href={link.href}
+                        icon={link.icon}
+                        label={link.label}
+                        onClick={() => setSheetOpen(false)}
+                        active={pathname === link.href}
+                      />
+                    ))}
+                    {user?.email && (
+                      <MobileNavLink
+                        href="/dashboard"
+                        icon={<LayoutDashboard />}
+                        label="My Forest"
+                        onClick={() => setSheetOpen(false)}
+                        active={pathname === '/dashboard'}
+                      />
+                    )}
                   </div>
 
                   <div className="mt-auto pt-4 border-t border-border/40">

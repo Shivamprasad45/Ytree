@@ -7,6 +7,7 @@ import MaxWidthRappers from "@/components/MaxWidthRapper";
 import BusinessDashboard from "./BusinessDashboard";
 import NgoDashboard from "./NgoDashboard";
 import { Loader2, LayoutDashboard, TreePine, ShieldCheck } from "lucide-react";
+import GoogleAd from "../Components/GoogleAd";
 
 export default function DashboardPage() {
     const { data: session, status } = useSession();
@@ -85,6 +86,7 @@ export default function DashboardPage() {
             {/* Dashboard Content */}
             <MaxWidthRappers>
                 <div className="mt-12">
+                    <GoogleAd slotId="8932948273" className="mb-8" />
                     {isNGO ? (
                         <NgoDashboard />
                     ) : (
