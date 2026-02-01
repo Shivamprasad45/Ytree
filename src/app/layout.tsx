@@ -17,6 +17,10 @@ const fontSans = FontSans({
   variable: "--font-sans",
 });
 
+export const viewport = {
+  themeColor: "#22c55e",
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://vanagrow.com/"),
   title: {
