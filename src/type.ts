@@ -64,6 +64,19 @@ export interface TreeInfo {
     AffiliatePrise?: number;
     AffiliateDiscount?: number;
     AffiliatePriseAfterDiscount?: number;
+    sideImages?: string[];
+    stock?: number;
+    offer?: {
+        type: 'none' | 'discount' | 'b2g1' | 'combo';
+        value?: number;
+        buyQuantity?: number;
+        getQuantity?: number;
+        label?: string;
+        bundleItems?: {
+            itemId: string;
+            qty: number;
+        }[];
+    };
 }
 
 export interface ISubsection {
