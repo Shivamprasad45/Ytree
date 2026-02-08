@@ -119,7 +119,13 @@ export default function Shop({ initialTrees }: ShopProps) {
                   />
 
                   {/* Price Badge */}
-                  <div className="absolute bottom-3 left-3">
+                  <div className="absolute bottom-3 left-3 flex flex-col gap-2 items-start">
+                    {tree.offer && tree.offer.type !== 'none' && (
+                      <Badge className="bg-red-500 hover:bg-red-600 text-white border-0 font-bold shadow-md">
+                        {tree.offer.label || tree.offer.type.toUpperCase()}
+                      </Badge>
+                    )}
+
                     <Badge className="bg-background/90 text-foreground border-0 font-medium dark:bg-black/60 backdrop-blur-sm">
                       {tree.prise ? (
                         <div className="flex items-center space-x-1">

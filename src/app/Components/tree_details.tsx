@@ -1,5 +1,4 @@
-"use client";
-
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 import Image from "next/image";
@@ -17,18 +16,18 @@ import { useSession } from "next-auth/react";
 import { TreeCart, TreeInfo } from "../../type";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Droplet, Leaf, MapPin, Sun } from "lucide-react";
+import { Droplet, Leaf, MapPin, Sun, AlertCircle, CheckCircle2 } from "lucide-react";
 
 const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
   const { data: user, status } = useSession();
-  //For redirect to Login or signup
   const route = useRouter();
-  const [AddPlants, { isLoading: isAddLoading, isSuccess }] =
-    useAddCartMutation();
-  //for user reload
+  const [AddPlants, { isLoading: isAddLoading, isSuccess }] = useAddCartMutation();
+  const [activeImage, setActiveImage] = useState(PlantDetails.imageURL);
+
   if (isSuccess) {
     route.push("/Tree/Checkout");
   }
+
   const Addtocart = async () => {
     try {
       if (user?.user.id) {
@@ -45,12 +44,14 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
           description: PlantDetails?.description || "",
           price: PlantDetails?.prise || 0,
           imageURL: PlantDetails?.imageURL || "",
-
           region: PlantDetails?.region || "",
           benefits: benefits || [],
           growthRequirements: PlantDetails?.growthRequirements || "",
-          quantity: 1,
+          quantity: 1, // Default quantity
         };
+
+        // Logic to handle offers (e.g. adding B2G1 items) would go here in backing API or expanded Cart logic
+
         await AddPlants(treeDetails);
       } else {
         toast("User id not found please Signup");
@@ -61,39 +62,107 @@ const Page = ({ PlantDetails }: { PlantDetails: TreeInfo }) => {
     }
   };
 
+  const images = [PlantDetails.imageURL, ...(PlantDetails.sideImages || [])];
+
   return (
-    <div className=" flex flex-row max-w-6xl m-auto">
+    <div className="flex flex-row max-w-6xl m-auto">
       <div className="container mx-auto px-4 py-8">
         <div className="grid md:grid-cols-2 gap-8">
-          <div>
-            <Image
-              src={PlantDetails.imageURL}
-              width={300}
-              height={300}
-              alt={PlantDetails.commonName}
-              className="w-full h-auto rounded-lg shadow-lg"
-            />
+
+          {/* Gallery Section */}
+          <div className="space-y-4">
+            <div className="relative aspect-square overflow-hidden rounded-xl border border-border bg-muted">
+              <Image
+                src={activeImage}
+                fill
+                alt={PlantDetails.commonName}
+                className="object-cover"
+              />
+              {PlantDetails.offer && PlantDetails.offer.type !== 'none' && (
+                <div className="absolute top-4 left-4">
+                  <Badge className="bg-red-500 text-white border-0 px-3 py-1 text-sm font-bold shadow-md">
+                    {PlantDetails.offer.label || "Special Offer"}
+                  </Badge>
+                </div>
+              )}
+            </div>
+            {images.length > 1 && (
+              <div className="flex gap-4 overflow-x-auto pb-2">
+                {images.map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveImage(img)}
+                    className={`relative w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all ${activeImage === img ? 'border-primary ring-2 ring-primary/20' : 'border-transparent hover:border-gray-300'}`}
+                  >
+                    <Image src={img} fill alt="view" className="object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
-          <div>
-            <h1 className="text-3xl font-bold mb-2">
-              {PlantDetails.commonName}
-            </h1>
-            <p className="text-xl text-muted-foreground mb-4">
-              {PlantDetails.scientificName}
+
+          {/* Details Section */}
+          <div className="flex flex-col h-full">
+            <div className="space-y-2 mb-6">
+              <h1 className="text-4xl font-black text-foreground">
+                {PlantDetails.commonName}
+              </h1>
+              <p className="text-xl text-muted-foreground font-medium italic">
+                {PlantDetails.scientificName}
+              </p>
+              <div className="flex items-center gap-2">
+                <Badge variant="outline" className="text-primary border-primary/20 bg-primary/5">
+                  <MapPin className="w-3 h-3 mr-1" /> Native to {PlantDetails.region}
+                </Badge>
+                {PlantDetails.stock !== undefined && (
+                  <Badge variant={PlantDetails.stock > 0 ? "default" : "destructive"} className={PlantDetails.stock > 0 ? "bg-green-600 hover:bg-green-700" : ""}>
+                    {PlantDetails.stock > 0 ? (
+                      <span className="flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> In Stock</span>
+                    ) : (
+                      <span className="flex items-center gap-1"><AlertCircle className="w-3 h-3" /> Out of Stock</span>
+                    )}
+                  </Badge>
+                )}
+              </div>
+            </div>
+
+            <p className="text-lg text-muted-foreground leading-relaxed mb-8 border-b border-border pb-8">
+              {PlantDetails.description}
             </p>
-            <Badge className="mb-4">Native to {PlantDetails.region}</Badge>
-            <p className="text-lg mb-4">{PlantDetails.description}</p>
-            <div className="flex items-center justify-between mb-6">
-              <span className="text-2xl font-bold">₹{PlantDetails.prise || 0}</span>
-              <div className="flex flex-1 gap-3 flex-wrap px-4 py-3 justify-end">
-                <Button disabled={isAddLoading} onClick={() => Addtocart()}>
-                  <span>Add to cart</span>
-                </Button>
-                <Button className="">
-                  <span className="truncate">
-                    <Link href="/Tree/Shop"> Back to Plants</Link>
-                  </span>
-                </Button>
+
+            {/* Offer Callout */}
+            {PlantDetails.offer && PlantDetails.offer.type !== 'none' && (
+              <div className="mb-8 p-4 bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 rounded-xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 -mt-2 -mr-2 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-bl-xl shadow-sm">LIMITED DEAL</div>
+                <h3 className="text-lg font-bold text-red-600 dark:text-red-400 mb-1">
+                  {PlantDetails.offer.label || "Special Deal Active!"}
+                </h3>
+                <p className="text-sm text-red-600/80 dark:text-red-400/80 font-medium">
+                  {PlantDetails.offer.type === 'b2g1' && `Buy ${PlantDetails.offer.buyQuantity}, Get ${PlantDetails.offer.getQuantity} FREE!`}
+                  {PlantDetails.offer.type === 'combo' && "Includes specific bundle items for a complete package."}
+                  {PlantDetails.offer.type === 'discount' && `Save big with this exclusive discount.`}
+                </p>
+              </div>
+            )}
+
+            <div className="mt-auto">
+              <div className="flex items-center justify-between p-6 bg-muted/30 rounded-2xl border border-border">
+                <div className="space-y-1">
+                  <p className="text-sm font-medium text-muted-foreground">Price per unit</p>
+                  <span className="text-3xl font-black text-foreground">₹{PlantDetails.prise || 0}</span>
+                </div>
+                <div className="flex gap-3">
+                  <Button variant="outline" className="border-border hover:bg-background" asChild>
+                    <Link href="/Tree/Shop">Back to Shop</Link>
+                  </Button>
+                  <Button
+                    disabled={isAddLoading || (PlantDetails.stock !== undefined && PlantDetails.stock <= 0)}
+                    onClick={() => Addtocart()}
+                    className="px-8 font-bold shadow-lg shadow-primary/20"
+                  >
+                    <span>{isAddLoading ? "Adding..." : "Add to Cart"}</span>
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

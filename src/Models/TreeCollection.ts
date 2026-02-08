@@ -9,6 +9,25 @@ const treeSchema = new mongoose.Schema({
   benefits: { type: [String], required: true },
   region: { type: String, required: true },
   imageURL: { type: String, required: true },
+  sideImages: { type: [String], required: false, default: [] }, // Additional images for gallery
+  stock: { type: Number, default: 0 }, // Inventory count
+
+  // Offer & Combo Configuration
+  offer: {
+    type: {
+      type: String,
+      enum: ['none', 'discount', 'b2g1', 'combo'],
+      default: 'none'
+    },
+    value: { type: Number }, // Percentage or detailed value
+    buyQuantity: { type: Number }, // For B2G1: Buy X
+    getQuantity: { type: Number }, // For B2G1: Get Y
+    label: { type: String }, // e.g. "Mega Saver Pack" or "Buy 2 Get 1 Free"
+    bundleItems: [{ // If type is 'combo', list contents
+      itemId: { type: String },
+      qty: { type: Number }
+    }]
+  },
   prise: { type: Number },
   seoTitle: { type: String, required: true },
   seoDescription: { type: String, required: true },
