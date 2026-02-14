@@ -61,7 +61,7 @@ export default function Home() {
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-green-400/20 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-emerald-400/20 rounded-full blur-3xl" />
       </div>
-      {/* </section> */} */
+      {/* </section> */}
 
       {/* Original Homepage Content */}
       <div className="">
