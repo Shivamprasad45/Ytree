@@ -27,20 +27,35 @@ export default function Home() {
   return (
     <>
       {/* Scroll-based storytelling section */}
-      <div
-        ref={ref}
-        className="relative bg-black"
-        style={{ height: `${scenes.length * 100}vh` }}
-      >
-        {scenes.map((scene, index) => (
-          <Scene
-            key={scene.id}
-            scene={scene}
-            index={index}
-            activeScene={activeScene}
-          />
+
+
+
+      <div className="h-screen overflow-y-scroll snap-y snap-mandatory scroll-smooth bg-black">
+        {scenes.map((scene) => (
+          <div key={scene.id} className="h-screen snap-start relative">
+
+            <video
+              src={scene.video}
+              className="absolute inset-0 w-full h-full object-cover"
+              autoPlay
+              muted
+              loop
+            />
+
+            <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-black/80"></div>
+
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,rgba(0,0,0,0.7)_100%)]"></div>
+
+            <div className="relative z-10 flex items-center justify-center h-full">
+              <h1 className="text-white text-5xl md:text-7xl font-bold text-center px-6 animate-fadeUp">
+                {scene.text}
+              </h1>
+            </div>
+
+          </div>
         ))}
       </div>
+
 
       {/* CTA Section */}
       {/* <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-green-900 via-green-800 to-emerald-900">
