@@ -2,7 +2,6 @@
   @tailwind components;
   @tailwind utilities;
 
- 
 @layer base {
   .material-symbols-outlined {
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -36,7 +35,7 @@
     --ring: 142 76% 36%;
     --radius: 0.5rem;
   }
-  
+
   .dark {
     --background: 120 15% 10%;
     --foreground: 60 10% 98%;
@@ -136,7 +135,6 @@
   background-image: url('https://cdn.usegalileo.ai/maps/2ff0e106-1e33-46fa-bc34-70d8c445cac5.png');
 }
 
-
 .text-container {
   display: flex;
 }
@@ -169,7 +167,6 @@
   }
 }
 
-
 @keyframes spin-slow {
   from {
     transform: rotate(0deg);
@@ -182,8 +179,6 @@
 .animate-spin-slow {
   animation: spin-slow 20s linear infinite;
 }
-
-
 
 /* globals.css */
 @keyframes flyAcross {
@@ -249,4 +244,9 @@
 
 .photo-gallery {
   @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 p-4 bg-black;
+}
+
+::view-transition-old(root), ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
 }

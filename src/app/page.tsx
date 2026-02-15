@@ -1,57 +1,43 @@
 "use client";
 
-import { useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
 import { scenes } from "@/lib/scenes";
-import Scene from "@/components/Scene";
 import Homes from "./pages/Home";
 import GoogleAds from "./Components/Home/GoogleAds";
 import GoogleAd from "./Components/GoogleAd";
+import BlurIn from "@/components/ui/blur-in";
 
 export default function Home() {
-  const ref = useRef<HTMLDivElement>(null);
-
-  // Track scroll progress
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end end"],
-  });
-
-  // Map scroll progress to active scene index
-  const activeScene = useTransform(
-    scrollYProgress,
-    scenes.map((_, i) => i / scenes.length),
-    scenes.map((_, i) => i)
-  );
-
   return (
     <>
       {/* Scroll-based storytelling section */}
 
-
-
-      <div className="h-screen overflow-y-scroll snap-y snap-mandatory scroll-smooth bg-black">
+      <div className="h-screen overflow-y-scroll snap-y snap-mandatory scroll-smooth 
+                [scrollbar-width:none] 
+                [-ms-overflow-style:none] 
+                [&::-webkit-scrollbar]:hidden">
         {scenes.map((scene) => (
-          <div key={scene.id} className="h-screen snap-start relative">
-
+          <div key={scene.id} className="h-screen snap-start relative flex items-center justify-center overflow-hidden">
+            {/* Background Video */}
             <video
               src={scene.video}
               className="absolute inset-0 w-full h-full object-cover"
               autoPlay
               muted
               loop
+              playsInline
             />
+            {/* Overlays */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/90"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.8)_100%)]"></div>
 
-            <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-black/80"></div>
-
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,rgba(0,0,0,0.7)_100%)]"></div>
-
-            <div className="relative z-10 flex items-center justify-center h-full">
-              <h1 className="text-white text-5xl md:text-7xl font-bold text-center px-6 animate-fadeUp">
-                {scene.text}
-              </h1>
+            {/* Video Text Overlay */}
+            <div className="relative z-10 w-full px-6 h-48 md:h-72 flex items-center justify-center">
+              <div className="w-full max-w-4xl h-full rounded-2xl px-4 py-4 md:px-10 md:py-6 flex items-center justify-center text-center">
+                <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white drop-shadow-lg leading-tight">
+                  {scene.text}
+                </h1>
+              </div>
             </div>
-
           </div>
         ))}
       </div>

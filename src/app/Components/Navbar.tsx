@@ -26,7 +26,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ModeToggle } from "./Togglemode";
+import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import ConnectionStatus from "../lib/Connection";
 
 import {
@@ -150,190 +150,188 @@ const Navbar = () => {
         {/* Right Section: Actions */}
         <div className="flex items-center gap-2 md:gap-3">
 
-          <div className="hidden md:block">
-            <ModeToggle />
-          </div>
+          <AnimatedThemeToggler />
+        </div>
 
-          <Link href="/Tree/Cart">
-            <Button variant="ghost" size="icon" className="relative rounded-full hover:bg-primary/10 hover:text-primary transition-colors">
-              <ShoppingBasket className="w-5 h-5" />
-              {totalCartItems > 0 && (
-                <Badge
-                  className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-[10px] bg-primary text-primary-foreground border-2 border-background animate-in zoom-in"
-                >
-                  {totalCartItems}
-                </Badge>
-              )}
-            </Button>
-          </Link>
+        <Link href="/Tree/Cart">
+          <Button variant="ghost" size="icon" className="relative rounded-full hover:bg-primary/10 hover:text-primary transition-colors">
+            <ShoppingBasket className="w-5 h-5" />
+            {totalCartItems > 0 && (
+              <Badge
+                className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-[10px] bg-primary text-primary-foreground border-2 border-background animate-in zoom-in"
+              >
+                {totalCartItems}
+              </Badge>
+            )}
+          </Button>
+        </Link>
 
-          {user?.email ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-9 w-9 rounded-full ring-2 ring-transparent hover:ring-primary/20 transition-all">
-                  <Avatar className="h-9 w-9">
-                    {session?.user.image ? (
-                      <AvatarImage src={session.user.image} alt="Profile" />
-                    ) : (
-                      <AvatarFallback className="bg-primary/10 text-primary font-bold">
-                        {user.Username?.slice(0, 2).toUpperCase() || "U"}
-                      </AvatarFallback>
-                    )}
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-64 p-2 rounded-xl border-border/60 shadow-lg">
-                <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg mb-2">
-                  <Avatar className="h-10 w-10 border border-border">
-                    {session?.user.image ? (
-                      <AvatarImage src={session.user.image} alt="Profile" />
-                    ) : (
-                      <AvatarFallback>
-                        {user.Username?.slice(0, 2).toUpperCase() || "U"}
-                      </AvatarFallback>
-                    )}
-                  </Avatar>
-                  <div className="overflow-hidden">
-                    <p className="font-semibold truncate">{user.Username || "User"}</p>
-                    <p className="text-xs text-muted-foreground truncate">{user.email}</p>
-                  </div>
+        {user?.email ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="relative h-9 w-9 rounded-full ring-2 ring-transparent hover:ring-primary/20 transition-all">
+                <Avatar className="h-9 w-9">
+                  {session?.user.image ? (
+                    <AvatarImage src={session.user.image} alt="Profile" />
+                  ) : (
+                    <AvatarFallback className="bg-primary/10 text-primary font-bold">
+                      {user.Username?.slice(0, 2).toUpperCase() || "U"}
+                    </AvatarFallback>
+                  )}
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-64 p-2 rounded-xl border-border/60 shadow-lg">
+              <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg mb-2">
+                <Avatar className="h-10 w-10 border border-border">
+                  {session?.user.image ? (
+                    <AvatarImage src={session.user.image} alt="Profile" />
+                  ) : (
+                    <AvatarFallback>
+                      {user.Username?.slice(0, 2).toUpperCase() || "U"}
+                    </AvatarFallback>
+                  )}
+                </Avatar>
+                <div className="overflow-hidden">
+                  <p className="font-semibold truncate">{user.Username || "User"}</p>
+                  <p className="text-xs text-muted-foreground truncate">{user.email}</p>
                 </div>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild className="rounded-lg cursor-pointer">
-                  <Link href="/profile" className="flex items-center gap-2">
-                    <UserCircle className="w-4 h-4" /> Profile
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild className="rounded-lg cursor-pointer">
-                  <Link href="/Tree/Mytrees" className="flex items-center gap-2">
-                    <Leaf className="w-4 h-4" /> My Trees
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild className="rounded-lg cursor-pointer">
-                  <Link href="/dashboard" className="flex items-center gap-2">
-                    <Grid className="w-4 h-4" /> Dashboard
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={() => signOut()}
-                  className="text-destructive focus:text-destructive focus:bg-destructive/10 rounded-lg cursor-pointer font-medium"
-                >
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Log out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <Button asChild className="rounded-full px-6 font-semibold shadow-md hover:shadow-lg transition-all" size="sm">
-              <Link href="/login">Sign In</Link>
-            </Button>
-          )}
+              </div>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild className="rounded-lg cursor-pointer">
+                <Link href="/profile" className="flex items-center gap-2">
+                  <UserCircle className="w-4 h-4" /> Profile
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild className="rounded-lg cursor-pointer">
+                <Link href="/Tree/Mytrees" className="flex items-center gap-2">
+                  <Leaf className="w-4 h-4" /> My Trees
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild className="rounded-lg cursor-pointer">
+                <Link href="/dashboard" className="flex items-center gap-2">
+                  <Grid className="w-4 h-4" /> Dashboard
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => signOut()}
+                className="text-destructive focus:text-destructive focus:bg-destructive/10 rounded-lg cursor-pointer font-medium"
+              >
+                <LogOut className="mr-2 h-4 w-4" />
+                Log out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <Button asChild className="rounded-full px-6 font-semibold shadow-md hover:shadow-lg transition-all" size="sm">
+            <Link href="/login">Sign In</Link>
+          </Button>
+        )}
 
-          {/* Mobile Menu Toggle */}
-          <div className="lg:hidden">
-            <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full">
-                  <Menu className="h-6 w-6" />
-                  <span className="sr-only">Open menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-[85vw] max-w-[350px] p-0 border-l border-border/60">
-                <SheetHeader className="p-6 border-b border-border/40">
-                  <SheetTitle>
-                    <div className="flex items-center gap-2">
-                      <Image
-                        height={32}
-                        width={32}
-                        alt="VanaGrow Logo"
-                        src="/logo.png"
-                        className="w-8 h-8"
-                      />
-                      <span className="font-bold text-xl">
-                        <span className="text-primary">Vana</span>
-                        <span>Grow</span>
-                      </span>
-                    </div>
-                  </SheetTitle>
-                </SheetHeader>
+        {/* Mobile Menu Toggle */}
+        <div className="lg:hidden">
+          <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Open menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[85vw] max-w-[350px] p-0 border-l border-border/60">
+              <SheetHeader className="p-6 border-b border-border/40">
+                <SheetTitle>
+                  <div className="flex items-center gap-2">
+                    <Image
+                      height={32}
+                      width={32}
+                      alt="VanaGrow Logo"
+                      src="/logo.png"
+                      className="w-8 h-8"
+                    />
+                    <span className="font-bold text-xl">
+                      <span className="text-primary">Vana</span>
+                      <span>Grow</span>
+                    </span>
+                  </div>
+                </SheetTitle>
+              </SheetHeader>
 
-                <div className="flex flex-col h-full py-6 px-4">
-                  {/* User Status (Mobile) */}
-                  {user?.email && (
-                    <div className="mb-6 p-4 bg-muted/40 rounded-xl border border-border/50">
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-10 w-10 border border-border">
-                          {session?.user.image ? (
-                            <AvatarImage src={session.user.image} alt="Profile" />
-                          ) : (
-                            <AvatarFallback>
-                              {user.Username?.slice(0, 2).toUpperCase() || "U"}
-                            </AvatarFallback>
-                          )}
-                        </Avatar>
-                        <div>
-                          <p className="font-semibold">{user.Username || "User"}</p>
-                          <p className="text-xs text-muted-foreground">{user.email}</p>
-                        </div>
+              <div className="flex flex-col h-full py-6 px-4">
+                {/* User Status (Mobile) */}
+                {user?.email && (
+                  <div className="mb-6 p-4 bg-muted/40 rounded-xl border border-border/50">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-10 w-10 border border-border">
+                        {session?.user.image ? (
+                          <AvatarImage src={session.user.image} alt="Profile" />
+                        ) : (
+                          <AvatarFallback>
+                            {user.Username?.slice(0, 2).toUpperCase() || "U"}
+                          </AvatarFallback>
+                        )}
+                      </Avatar>
+                      <div>
+                        <p className="font-semibold">{user.Username || "User"}</p>
+                        <p className="text-xs text-muted-foreground">{user.email}</p>
                       </div>
                     </div>
+                  </div>
+                )}
+
+                {/* Mobile Links */}
+                <div className="flex-1 space-y-1 overflow-y-auto pr-2">
+                  {navLinks.map((link) => (
+                    <MobileNavLink
+                      key={link.href}
+                      href={link.href}
+                      icon={link.icon}
+                      label={link.label}
+                      onClick={() => setSheetOpen(false)}
+                      active={pathname === link.href}
+                    />
+                  ))}
+                  {user?.email && (
+                    <MobileNavLink
+                      href="/dashboard"
+                      icon={<LayoutDashboard />}
+                      label="My Forest"
+                      onClick={() => setSheetOpen(false)}
+                      active={pathname === '/dashboard'}
+                    />
                   )}
-
-                  {/* Mobile Links */}
-                  <div className="flex-1 space-y-1 overflow-y-auto pr-2">
-                    {navLinks.map((link) => (
-                      <MobileNavLink
-                        key={link.href}
-                        href={link.href}
-                        icon={link.icon}
-                        label={link.label}
-                        onClick={() => setSheetOpen(false)}
-                        active={pathname === link.href}
-                      />
-                    ))}
-                    {user?.email && (
-                      <MobileNavLink
-                        href="/dashboard"
-                        icon={<LayoutDashboard />}
-                        label="My Forest"
-                        onClick={() => setSheetOpen(false)}
-                        active={pathname === '/dashboard'}
-                      />
-                    )}
-                  </div>
-
-                  <div className="mt-auto pt-4 border-t border-border/40">
-                    <div className="flex items-center justify-between gap-4 mb-4">
-                      <div className="font-medium text-sm text-muted-foreground">App Theme</div>
-                      <ModeToggle />
-                    </div>
-                    {user?.email ? (
-                      <Button
-                        onClick={() => {
-                          setSheetOpen(false);
-                          signOut();
-                        }}
-                        variant="destructive"
-                        className="w-full rounded-xl font-semibold shadow-sm"
-                      >
-                        <LogOut className="mr-2 h-4 w-4" />
-                        Log out
-                      </Button>
-                    ) : (
-                      <Button
-                        asChild
-                        className="w-full rounded-xl font-semibold shadow-sm"
-                        onClick={() => setSheetOpen(false)}
-                      >
-                        <Link href="/login">Sign In</Link>
-                      </Button>
-                    )}
-                  </div>
                 </div>
-              </SheetContent>
-            </Sheet>
-          </div>
+
+                <div className="mt-auto pt-4 border-t border-border/40">
+                  <div className="flex items-center justify-between gap-4 mb-4">
+                    <div className="font-medium text-sm text-muted-foreground">App Theme</div>
+                    <AnimatedThemeToggler />
+                  </div>
+                  {user?.email ? (
+                    <Button
+                      onClick={() => {
+                        setSheetOpen(false);
+                        signOut();
+                      }}
+                      variant="destructive"
+                      className="w-full rounded-xl font-semibold shadow-sm"
+                    >
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Log out
+                    </Button>
+                  ) : (
+                    <Button
+                      asChild
+                      className="w-full rounded-xl font-semibold shadow-sm"
+                      onClick={() => setSheetOpen(false)}
+                    >
+                      <Link href="/login">Sign In</Link>
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </nav>

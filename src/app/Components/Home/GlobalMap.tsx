@@ -8,7 +8,7 @@ const GlobalMap: React.FC = () => {
       <div className="relative w-full aspect-video rounded-[3rem] overflow-hidden shadow-2xl group border-8 border-white">
         <div className="absolute inset-0 bg-sage/10 mix-blend-multiply z-10 pointer-events-none group-hover:bg-transparent transition-colors duration-700"></div>
         <div className="w-full h-full bg-map-pattern bg-cover bg-center transition-transform duration-[10s] group-hover:scale-110"></div>
-        
+
         {/* Map Marker 1 */}
         <div className="absolute top-[30%] left-[25%] z-20 group/marker">
           <div className="size-8 bg-primary rounded-full animate-ping absolute opacity-75"></div>
@@ -29,7 +29,8 @@ const GlobalMap: React.FC = () => {
 
         <div className="absolute bottom-10 left-10 z-30 bg-white/95 backdrop-blur-md p-8 rounded-[2rem] max-w-xs shadow-2xl hidden md:block border border-white/50 animate-in fade-in zoom-in duration-500">
           <p className="text-xs font-black text-primary uppercase tracking-[0.2em] mb-3">Live Impact Map</p>
-          <h4 className="text-2xl font-bold mb-3 tracking-tight">Real-time Verification</h4>
+          <h4 className="text-3xl font-extrabold leading-tight 
+           text-black dark:text-white">Real-time Verification</h4>
           <p className="text-sm text-sage leading-relaxed">
             We use satellite imagery and local field teams to verify every single tree planted. Transparency is our core value.
           </p>
