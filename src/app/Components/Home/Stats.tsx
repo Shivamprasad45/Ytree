@@ -1,13 +1,14 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { NumberTicker } from "@/components/ui/number-ticker"
 
 const Stats: React.FC = () => {
   const impactStats = [
-    { icon: 'forest', label: 'Trees Planted', value: '1.2M+' },
-    { icon: 'co2', label: 'CO2 Offset', value: '450k Tons' },
-    { icon: 'landscape', label: 'Hectares Restored', value: '12,000' },
-    { icon: 'groups', label: 'Active Communities', value: '500+' },
+    { icon: 'forest', label: 'Trees Planted', value: 1.2, suffix: 'M+', decimalPlaces: 1 },
+    { icon: 'co2', label: 'CO2 Offset', value: 450, suffix: 'k Tons' },
+    { icon: 'landscape', label: 'Hectares Restored', value: 12000 },
+    { icon: 'groups', label: 'Active Communities', value: 500, suffix: '+' },
   ];
 
   return (
@@ -20,7 +21,14 @@ const Stats: React.FC = () => {
           >
             <span className="material-symbols-outlined text-primary text-3xl sm:text-4xl group-hover:scale-110 transition-transform">{stat.icon}</span>
             <p className="text-sage dark:text-gray-400 text-xs sm:text-sm font-bold uppercase tracking-wider mt-3 sm:mt-4">{stat.label}</p>
-            <p className="text-deep-forest dark:text-white text-3xl sm:text-4xl font-black leading-tight">{stat.value}</p>
+            <p className="flex items-baseline text-deep-forest dark:text-white text-3xl sm:text-4xl font-black leading-tight">
+              <NumberTicker
+                value={stat.value}
+                decimalPlaces={stat.decimalPlaces || 0}
+                className="text-deep-forest dark:text-white text-3xl sm:text-4xl font-black leading-tight tracking-tighter"
+              />
+              {stat.suffix && <span>{stat.suffix}</span>}
+            </p>
           </div>
         ))}
       </div>

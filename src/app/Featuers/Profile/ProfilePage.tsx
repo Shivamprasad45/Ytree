@@ -4,6 +4,7 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+
 import { toast } from "sonner";
 import {
     User as UserIcon,
@@ -25,7 +26,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Progress } from "@/components/ui/progress";
 import { useGetProfileQuery, useUpdateProfileMutation } from "./ProfileAPIS";
 import { Country, State, City } from "country-state-city";
 import {
@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
+import { AnimatedCircularProgressBar } from "@/components/ui/animated-circular-progress-bar";
 
 
 const ROLES_INFO = {
@@ -263,82 +264,153 @@ export default function ProfilePage() {
 
     return (
         <div className="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-            {/* Header Profile Section */}
             <div className="bg-card rounded-3xl shadow-xl overflow-hidden border border-border mb-8">
-                <div className="h-32 bg-gradient-to-r from-green-400 to-blue-500" />
-                <div className="px-8 pb-8">
-                    <div className="relative flex justify-between items-end -mt-12">
-                        <div className="relative">
-                            <img
-                                src={userData.image || "/img/default-avatar.png"}
-                                alt="Avatar"
-                                className="w-24 h-24 rounded-2xl border-4 border-card object-cover bg-card shadow-lg"
-                            />
-                            <div className="absolute -bottom-2 -right-2 p-1.5 bg-green-500 rounded-lg border-2 border-card">
-                                <CheckCircle className="w-4 h-4 text-white" />
-                            </div>
-                        </div>
+                <div className="px-8 pb-10">
+                    <div className="rounded-3xl p-8">
+                        <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-10">
+                            <div className="flex-1">
+                                {/* Avatar + Name */}
+                                <div className="flex items-center gap-6">
+                                    <div className="relative">
+                                        <img
+                                            src={userData.image || "/img/default-avatar.png"}
+                                            alt="Avatar"
+                                            className="w-28 h-28 rounded-3xl object-cover 
+                         border-4 "
+                                        />
+                                        <div className="absolute -bottom-2 -right-2 
+                            bg-emerald-500 p-2 rounded-xl 
+                            border-4 border-black/40 shadow-lg">
+                                            <CheckCircle className="w-4 h-4 text-white" />
+                                        </div>
+                                    </div>
 
-                        <div className="flex flex-col items-end gap-2">
-                            <div className="w-48 space-y-1.5">
-                                <div className="flex justify-between text-[10px] font-black uppercase tracking-wider text-muted-foreground">
-                                    <span>Profile Completion</span>
-                                    <span className="text-green-600 dark:text-green-400">{completionPercentage}%</span>
-                                </div>
-                                <Progress value={completionPercentage} className="h-2 bg-muted" />
-                            </div>
-                            <Button
-                                onClick={() => router.push(roleInfo.dashboard)}
-                                className="rounded-xl shadow-md flex items-center gap-2 font-bold"
-                            >
-                                <LayoutDashboard className="w-4 h-4" />
-                                Go to Dashboard
-                            </Button>
-                        </div>
-                    </div>
+                                    <div>
+                                        <h1 className="text-3xl font-extrabold leading-tight text-black dark:text-white">
+                                            {userData.firstName} {userData.lastName}
+                                        </h1>
 
-                    <div className="mt-6 flex flex-col md:flex-row md:items-start justify-between gap-6">
-                        <div className="flex-1">
-                            <h1 className="text-3xl font-black text-foreground leading-tight">
-                                {userData.firstName} {userData.lastName}
-                            </h1>
-                            {(profileData.roleSpecificData.ngoName || profileData.roleSpecificData.companyName) && (
-                                <p className="text-lg font-bold text-green-700 dark:text-green-400 -mt-1">
-                                    {profileData.roleSpecificData.ngoName || profileData.roleSpecificData.companyName}
-                                </p>
-                            )}
-                            <div className="flex flex-wrap items-center gap-4 text-muted-foreground mt-2">
-                                <div className="flex items-center gap-1.5 bg-muted/50 px-3 py-1.5 rounded-lg border border-border">
-                                    <Mail className="w-4 h-4 text-green-600 dark:text-green-400" />
-                                    <span className="text-sm font-semibold">{userData.email}</span>
+                                        {(profileData.roleSpecificData.ngoName ||
+                                            profileData.roleSpecificData.companyName) && (
+                                                <p className="text-black font-semibold text-emerald-400">
+                                                    {profileData.roleSpecificData.ngoName ||
+                                                        profileData.roleSpecificData.companyName}
+                                                </p>
+                                            )}
+                                    </div>
                                 </div>
-                                {profileData.address.city && (
-                                    <div className="flex items-center gap-1.5 bg-muted/50 px-3 py-1.5 rounded-lg border border-border">
-                                        <MapPin className="w-4 h-4 text-orange-500" />
-                                        <span className="text-sm font-semibold">{profileData.address.city}</span>
+
+                                {/* Info Chips */}
+                                <div className="flex flex-wrap gap-3 mt-6">
+
+                                    <div className="flex items-center gap-2 
+                          bg-white/5 border border-white/10 
+                          px-4 py-2 rounded-xl text-sm font-medium">
+                                        <Mail className="w-4 h-4 text-emerald-400" />
+                                        <span>{userData.email}</span>
+                                    </div>
+
+                                    {profileData.address.city && (
+                                        <div className="flex items-center gap-2 
+                            bg-white/5 border border-white/10 
+                            px-4 py-2 rounded-xl text-sm font-medium">
+                                            <MapPin className="w-4 h-4 text-orange-400" />
+                                            <span>{profileData.address.city}</span>
+                                        </div>
+                                    )}
+
+                                    <div className="flex items-center gap-2 
+                          bg-white/5 border border-white/10 
+                          px-4 py-2 rounded-xl text-sm font-medium">
+                                        <Users className="w-4 h-4 text-blue-400" />
+                                        <span>{userData.referredUsers} Referrals</span>
+                                    </div>
+
+                                </div>
+
+                                {/* Bio */}
+                                {profileData.bio && (
+                                    <div className="mt-6 bg-white/5 border border-white/10 
+                          p-5 rounded-2xl text-sm italic 
+                          text-gray-300 leading-relaxed">
+                                        “{profileData.bio}”
                                     </div>
                                 )}
-                                <div className="flex items-center gap-1.5 bg-muted/50 px-3 py-1.5 rounded-lg border border-border">
-                                    <Users className="w-4 h-4 text-blue-500" />
-                                    <span className="text-sm font-semibold">{userData.referredUsers} Referrals</span>
-                                </div>
-                            </div>
-                            {profileData.bio && (
-                                <p className="mt-4 text-muted-foreground leading-relaxed text-sm font-medium bg-green-50/30 dark:bg-green-900/10 p-4 rounded-2xl border border-green-100/50 dark:border-green-800/30 italic">
-                                    &quot;{profileData.bio}&quot;
-                                </p>
-                            )}
-                        </div>
 
-                        <div className={`flex items-center gap-3 px-5 py-3 rounded-2xl border shadow-sm ${roleInfo.color}`}>
-                            <RoleIcon className="w-6 h-6" />
-                            <div>
-                                <p className="text-[10px] uppercase font-black opacity-60 leading-none mb-1">Account Type</p>
-                                <p className="font-black text-sm tracking-tight">{roleInfo.label}</p>
+                            </div>
+
+                            {/* RIGHT SIDE */}
+                            <div className="flex flex-col items-end gap-6">
+
+                                {/* Progress Card */}
+                                <div className=" p-6 rounded-2xl text-center w-60">
+
+                                    <p className="text-xs uppercase tracking-widest 
+                        text-gray-400 font-semibold mb-4">
+                                        Profile Completion
+                                    </p>
+
+                                    <div className="relative flex items-center justify-center">
+                                        <AnimatedCircularProgressBar
+                                            max={100}
+                                            min={0}
+                                            value={completionPercentage}
+                                            gaugePrimaryColor="rgb(99 102 241)"
+                                            gaugeSecondaryColor="rgba(255,255,255,0.08)"
+                                            className="w-28 h-28"
+                                        />
+                                        {/* <span className="absolute text-xl font-bold text-black">
+                                            {completionPercentage}%
+                                        </span> */}
+                                    </div>
+                                </div>
+
+                                {/* Dashboard Button */}
+                                <div className="flex flex-col gap-4 w-64">
+
+                                    <Button
+                                        onClick={() => router.push(roleInfo.dashboard)}
+                                        className="group relative w-full h-12 rounded-2xl 
+               bg-gradient-to-r from-indigo-600 to-indigo-500 
+               hover:from-indigo-500 hover:to-indigo-400
+               transition-all duration-300 ease-out
+               shadow-lg hover:shadow-indigo-500/30
+               active:scale-[0.98]
+               flex items-center justify-center gap-2
+               font-semibold text-white tracking-wide"
+                                    >
+                                        <LayoutDashboard className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                                        <span>Go to Dashboard</span>
+                                    </Button>
+
+                                    <div className={`flex items-center gap-4 px-5 py-4 
+                   rounded-2xl border border-white/10
+                   bg-white/5 backdrop-blur-lg
+                   shadow-md hover:shadow-lg
+                   transition-all duration-300 ${roleInfo.color}`}>
+
+                                        <div className="p-2 rounded-xl bg-white/10">
+                                            <RoleIcon className="w-5 h-5" />
+                                        </div>
+
+                                        <div className="leading-tight">
+                                            <p className="text-[11px] uppercase font-semibold opacity-60 tracking-wider">
+                                                Account Type
+                                            </p>
+                                            <p className="font-semibold text-sm mt-0.5">
+                                                {roleInfo.label}
+                                            </p>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <form onSubmit={handleUpdate} className="space-y-8">
